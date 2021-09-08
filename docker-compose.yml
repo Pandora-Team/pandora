@@ -13,3 +13,13 @@ services:
     volumes:
       - nest_volume:/usr/src/app
     command: npm run start:dev
+  database:
+    image: 'mongo'
+    container_name: mongo_db
+    environment:
+      - MONGO_INITDB_DATABASE=pandora
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=1qaz2wsx
+    volumes:
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+      - ./mongo-volume:/data/db
