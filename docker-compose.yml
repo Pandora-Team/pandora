@@ -5,14 +5,13 @@ volumes:
   mongo-volume:
 
 services:
-  dev:
+  nest:
     container_name: nest_api
     restart: always
     build: nest/
     depends_on:
       - mongodb
     environment:
-      - WAIT_HOSTS=mongodb:27017
       - MONGODB_URI=${MONGODB_URI}
       - JWT_SECRET=${JWT_SECRET}
       - JWT_EXPIRES_IN=${JWT_EXPIRES_IN}
@@ -22,6 +21,8 @@ services:
     volumes:
       - nest_volume:/usr/src/app
     command: npm run start:dev
+    links:
+      - mongodb
   mongodb:
     image: 'mongo'
     container_name: mongodb
