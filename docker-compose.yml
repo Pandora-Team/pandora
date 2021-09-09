@@ -2,24 +2,35 @@ version: '3.8'
 
 volumes:
   nest_volume:
+  mongo-volume:
 
 services:
   dev:
     container_name: nest_api
     restart: always
     build: nest/
+    depends_on:
+      - mongodb
+    environment:
+      - WAIT_HOSTS=mongodb:27017
+      - MONGODB_URI=${MONGODB_URI}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRES_IN=${JWT_EXPIRES_IN}
+      - PORT=${NEST_PORT}
     ports:
-      - 5000:5000
+      - ${NEST_PORT}:${NEST_PORT}
     volumes:
       - nest_volume:/usr/src/app
     command: npm run start:dev
-  database:
+  mongodb:
     image: 'mongo'
-    container_name: mongo_db
+    container_name: mongodb
     environment:
-      - MONGO_INITDB_DATABASE=pandora
-      - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD=1qaz2wsx
+      - MONGO_INITDB_DATABASE=${MONGO_DATABASE}
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
+    ports:
+      - '27017:27017'
+      - '28017:28017'
     volumes:
-      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
       - ./mongo-volume:/data/db

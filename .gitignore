@@ -25,6 +25,7 @@ lerna-debug.log*
 .settings/
 *.sublime-workspace
 
+.env
 .env.local
 
 # Editor directories and files
@@ -35,3 +36,5 @@ lerna-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
+/mongo-volume
