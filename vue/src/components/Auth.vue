@@ -31,21 +31,20 @@
 <script lang="ts">
 
 import { Component, Vue } from "vue-property-decorator"
-import axios from "axios"
+import { auth } from "@/api/auth"
+
 
 @Component({})
 export default class Auth extends Vue {
     phone = ""
     password = ""
-    error = ""
     loading = false
 
     submitForm() : void {
-        axios
-            .post("http://localhost:5000/auth", {
-                phone: this.phone,
-                password: this.password,
-            })
+        auth({
+            phone:    this.phone,
+            password: this.password,
+        })
             .then(res => {
                 const token = res.data.access_token
                 localStorage.setItem("at", token)
@@ -53,7 +52,6 @@ export default class Auth extends Vue {
             })
             .catch(error => {
                 console.error(error)
-                this.error = "Пользователь не найден"
             })
             .finally(() => (this.loading = false))
     }

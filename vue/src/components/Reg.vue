@@ -39,7 +39,7 @@
 <script lang="ts">
 
 import { Component, Vue } from "vue-property-decorator"
-import axios from "axios"
+import { create } from "@/api/users"
 
 @Component({})
 export default class Reg extends Vue {
@@ -50,12 +50,11 @@ export default class Reg extends Vue {
     loading = false
 
     submitForm() : void {
-        axios
-            .post("http://localhost:5000/users/create", {
-                password: this.password,
-                name:     this.name,
-                phone:    this.phone,
-            })
+        create({
+            password: this.password,
+            name:     this.name,
+            phone:    this.phone,
+        })
             .then(res => {
                 console.log(res)
                 this.prevStep()
