@@ -1,9 +1,7 @@
 import Vue from "vue"
 import VueRouter, { RouteConfig } from "vue-router"
-import Auth from "../views/Auth.vue"
 import Lk from "../views/Lk.vue"
 import Login from "@/views/Login.vue"
-import Reg from "@/views/Reg.vue"
 import Profile from "@/components/Profile.vue"
 
 Vue.use(VueRouter)
@@ -27,18 +25,8 @@ const routes: RouteConfig[] = [
         component: Login,
     },
     {
-        path:      "/auth",
-        name:      "auth",
-        component: Auth,
-    },
-    {
-        path:      "/reg",
-        name:      "reg",
-        component: Reg,
-    },
-    {
         path:     "*",
-        redirect: "/auth",
+        redirect: "/login",
     },
 ]
 

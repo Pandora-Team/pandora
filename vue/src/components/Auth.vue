@@ -1,9 +1,6 @@
 <template>
     <div class="auth">
         <h1>Авторизация</h1>
-        <h2 v-if="error">
-            {{ error }}
-        </h2>
         <form class="form">
             <div class="form__item">
                 <label for="username">Введите имя</label>
@@ -24,6 +21,9 @@
             <button @click.prevent="submitForm">
                 Войти
             </button>
+            <button @click.prevent="prevStep">
+                Назад
+            </button>
         </form>
     </div>
 </template>
@@ -40,7 +40,7 @@ export default class Auth extends Vue {
     error = ""
     loading = false
 
-    submitForm() {
+    submitForm() : void {
         axios
             .post("http://localhost:5000/auth", {
                 username: this.username,
@@ -56,6 +56,10 @@ export default class Auth extends Vue {
                 this.error = "Пользователь не найден"
             })
             .finally(() => (this.loading = false))
+    }
+
+    prevStep() : void {
+        this.$emit("prev-step")
     }
 }
 </script>

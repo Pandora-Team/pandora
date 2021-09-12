@@ -29,14 +29,14 @@ if (isProduction) {
 }
 
 module.exports = {
-    lintOnSave:       true,
-    /*devServer: {
+    lintOnSave: true,
+    devServer:  {
         proxy: {
             "^/api": {
                 target: process.env.VUE_APP_API_URL,
             },
         },
-    },*/
+    },
     configureWebpack: {
         devtool: "source-map",
         resolve: {
@@ -45,17 +45,18 @@ module.exports = {
                 "@c": path.resolve(__dirname, "src/components"),
                 "@v": path.resolve(__dirname, "src/views"),
                 "@r": path.resolve(__dirname, "src/router"),
+                "@s": path.resolve(__dirname, "src/store"),
             },
         },
         plugins,
     },
-    /*css: {
+    css: {
         loaderOptions: {
             scss: {
                 prependData: `
-                    @import "@skins/megafon/styles/_fonts.scss";
+                    @import "~@/styles/variables.scss";
                 `,
             },
         },
-    },*/
+    },
 }

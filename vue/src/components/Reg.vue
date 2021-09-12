@@ -45,6 +45,9 @@
             <button @click.prevent="submitForm">
                 Зарегистрироваться
             </button>
+            <button @click.prevent="prevStep">
+                Назад
+            </button>
         </form>
     </div>
 </template>
@@ -64,7 +67,7 @@ export default class Reg extends Vue {
     birthday = ""
     loading = false
 
-    submitForm() {
+    submitForm() : void {
         axios
             .post("http://localhost:5000/users/create", {
                 username: this.username,
@@ -81,6 +84,10 @@ export default class Reg extends Vue {
                 console.error(error)
             })
             .finally(() => (this.loading = false))
+    }
+
+    prevStep() : void {
+        this.$emit("prev-step")
     }
 }
 </script>

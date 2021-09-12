@@ -6,6 +6,7 @@ import "./class-component-hooks"
 import { useStore } from "vuex-simple"
 import Vuelidate from "vuelidate"
 import sanitizeHtml from "sanitize-html"
+import './styles/main.scss';
 
 Vue.use(Vuelidate)
 

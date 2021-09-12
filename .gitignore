@@ -25,7 +25,7 @@ lerna-debug.log*
 .settings/
 *.sublime-workspace
 
-.env.local
+nest/.env.local
 
 # Editor directories and files
 .idea
