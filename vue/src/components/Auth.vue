@@ -6,17 +6,41 @@
                 <label for="phone">Введите номер телефона</label>
                 <input
                     id="phone"
-                    v-model="phone"
+                    v-model.trim="$v.phone.$model"
                     type="text"
                 >
+                <div
+                    class="form-error"
+                    v-if="!$v.phone.required"
+                >
+                    Поле обязательно для заполнения
+                </div>
+                <div
+                    class="form-error"
+                    v-if="$v.phone.$invalid"
+                >
+                    Поле заполнено неверно
+                </div>
             </div>
             <div class="form__item">
                 <label for="password">Введите пароль</label>
                 <input
                     id="password"
-                    v-model="password"
+                    v-model.trim="$v.password.$model"
                     type="password"
                 >
+                <div
+                    class="form-error"
+                    v-if="!$v.password.required"
+                >
+                    Поле обязательно для заполнения
+                </div>
+                <div
+                    class="form-error"
+                    v-if="!$v.password.minLength"
+                >
+                    Пароль должен состоять минимум из {{ $v.password.$params.minLength.min }} символов
+                </div>
             </div>
             <button @click.prevent="submitForm">
                 Войти
@@ -32,15 +56,32 @@
 
 import { Component, Vue } from "vue-property-decorator"
 import { auth } from "@/api/auth"
+import { required, minLength, maxLength } from "vuelidate/lib/validators"
 
 
-@Component({})
+@Component({
+    validations: {
+        phone: {
+            required,
+            minLength: minLength(11),
+            maxLength: maxLength(11),
+        },
+        password: {
+            required,
+            minLength: minLength(6),
+        },
+    },
+})
 export default class Auth extends Vue {
     phone = ""
     password = ""
     loading = false
 
     submitForm() : void {
+        if (this.$v.$invalid) {
+            console.error("Forms invalid")
+            return
+        }
         auth({
             phone:    this.phone,
             password: this.password,
