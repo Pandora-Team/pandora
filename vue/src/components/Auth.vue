@@ -3,10 +3,10 @@
         <h1>Авторизация</h1>
         <form class="form">
             <div class="form__item">
-                <label for="username">Введите имя</label>
+                <label for="phone">Введите номер телефона</label>
                 <input
-                    id="username"
-                    v-model="username"
+                    id="phone"
+                    v-model="phone"
                     type="text"
                 >
             </div>
@@ -35,7 +35,7 @@ import axios from "axios"
 
 @Component({})
 export default class Auth extends Vue {
-    username = ""
+    phone = ""
     password = ""
     error = ""
     loading = false
@@ -43,7 +43,7 @@ export default class Auth extends Vue {
     submitForm() : void {
         axios
             .post("http://localhost:5000/auth", {
-                username: this.username,
+                phone: this.phone,
                 password: this.password,
             })
             .then(res => {

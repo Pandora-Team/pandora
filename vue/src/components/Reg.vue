@@ -3,10 +3,10 @@
         <h1>Регистрация</h1>
         <form class="form">
             <div class="form__item">
-                <label for="username">Введите эмейл</label>
+                <label for="phone">Введите номер телефона</label>
                 <input
-                    id="username"
-                    v-model="username"
+                    id="phone"
+                    v-model="phone"
                     type="text"
                 >
             </div>
@@ -23,22 +23,6 @@
                 <input
                     id="name"
                     v-model="name"
-                    type="text"
-                >
-            </div>
-            <div class="form__item">
-                <label for="phone">Введите телефон</label>
-                <input
-                    id="phone"
-                    v-model="phone"
-                    type="text"
-                >
-            </div>
-            <div class="form__item">
-                <label for="birthday">Введите дату рождения</label>
-                <input
-                    id="birthday"
-                    v-model="birthday"
                     type="text"
                 >
             </div>
@@ -60,25 +44,21 @@ import axios from "axios"
 @Component({})
 export default class Reg extends Vue {
 
-    username = ""
     password = ""
     name = ""
     phone = ""
-    birthday = ""
     loading = false
 
     submitForm() : void {
         axios
             .post("http://localhost:5000/users/create", {
-                username: this.username,
                 password: this.password,
                 name:     this.name,
                 phone:    this.phone,
-                birthday: this.birthday,
             })
             .then(res => {
                 console.log(res)
-                this.$router.push({ name: "auth" })
+                this.prevStep()
             })
             .catch(error => {
                 console.error(error)
