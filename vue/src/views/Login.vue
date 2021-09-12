@@ -41,18 +41,24 @@
                     @prev-step="returnBaseView"
                 />
             </transition>
-            <div
-                class="login-action"
-                key="default"
+            <transition
+                name="default-trans"
+                appear
+                mode="out-in"
                 v-else
             >
-                <button @click="reg = true">
-                    Регистрация
-                </button>
-                <button @click="auth = true">
-                    Авторизация
-                </button>
-            </div>
+                <div
+                    class="login-action"
+                    key="default"
+                >
+                    <button @click="reg = true">
+                        Регистрация
+                    </button>
+                    <button @click="auth = true">
+                        Авторизация
+                    </button>
+                </div>
+            </transition>
         </div>
     </div>
 </template>
@@ -144,6 +150,17 @@ export default class Login extends Vue {
 }
 
 .reg-trans {
+    &-enter-active,
+    &-leave-active {
+        transition: all 1s;
+    }
+    &-enter,
+    &-leave-to {
+        opacity: 0;
+        transform: translateY(100px);
+    }
+}
+.default-trans {
     &-enter-active,
     &-leave-active {
         transition: all 1s;
