@@ -21,8 +21,8 @@ import {JwtModule} from "@nestjs/jwt";
     EventsModule,
     PaymentsModule,
     JwtModule.register({
-      secret: `${process.env.S_KEY}`,
-      signOptions: {expiresIn: '60s'}
+      secret: `${process.env.JWT_SECRET}`,
+      signOptions: {expiresIn: `${process.env.JWT_EXPIRES_IN}`}
     }),
   ],
 })

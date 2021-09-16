@@ -1,0 +1,37 @@
+version: '3.8'
+
+volumes:
+  nest_volume:
+  mongo-volume:
+
+services:
+  nest:
+    container_name: nest_api
+    restart: always
+    build: nest/
+    depends_on:
+      - mongodb
+    environment:
+      - MONGODB_URI=${MONGODB_URI}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRES_IN=${JWT_EXPIRES_IN}
+      - PORT=${NEST_PORT}
+    ports:
+      - ${NEST_PORT}:${NEST_PORT}
+    volumes:
+      - nest_volume:/usr/src/app
+    command: npm run start:dev
+    links:
+      - mongodb
+  mongodb:
+    image: 'mongo'
+    container_name: mongodb
+    environment:
+      - MONGO_INITDB_DATABASE=${MONGO_DATABASE}
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
+    ports:
+      - '27017:27017'
+      - '28017:28017'
+    volumes:
+      - ./mongo-volume:/data/db

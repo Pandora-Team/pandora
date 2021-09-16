@@ -1,6 +1,9 @@
 # compiled output
 /dist
 /node_modules
+/vue/node_modules
+/nest/dist
+/nest/node_modules
 
 # Logs
 logs
@@ -25,7 +28,8 @@ lerna-debug.log*
 .settings/
 *.sublime-workspace
 
-nest/.env.local
+.env
+.env.local
 
 # Editor directories and files
 .idea
@@ -35,3 +39,5 @@ nest/.env.local
 *.njsproj
 *.sln
 *.sw?
+
+/mongo-volume
