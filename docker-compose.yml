@@ -9,8 +9,6 @@ services:
     container_name: nest_api
     restart: always
     build: nest/
-    depends_on:
-      - mongodb
     environment:
       - MONGODB_URI=${MONGODB_URI}
       - JWT_SECRET=${JWT_SECRET}
@@ -35,3 +33,11 @@ services:
       - '28017:28017'
     volumes:
       - ./mongo-volume:/data/db
+  vue:
+    container_name: vue_app
+    restart: always
+    build: vue/
+    ports:
+      - "80:80"
+    depends_on:
+      - nest
