@@ -10,14 +10,14 @@
                     type="text"
                 >
                 <div
-                    class="form-error"
                     v-if="!$v.phone.required"
+                    class="form-error"
                 >
                     Поле обязательно для заполнения
                 </div>
                 <div
-                    class="form-error"
                     v-if="$v.phone.$invalid"
+                    class="form-error"
                 >
                     Поле заполнено неверно
                 </div>
@@ -30,14 +30,14 @@
                     type="password"
                 >
                 <div
-                    class="form-error"
                     v-if="!$v.password.required"
+                    class="form-error"
                 >
                     Поле обязательно для заполнения
                 </div>
                 <div
-                    class="form-error"
                     v-if="!$v.password.minLength"
+                    class="form-error"
                 >
                     Пароль должен состоять минимум из {{ $v.password.$params.minLength.min }} символов
                 </div>
