@@ -1,6 +1,6 @@
-import axios from "axios"
+import api from "./index";
 
-const basePath = "http://localhost:5000/users"
+const BASE_URL = "users"
 
 interface RegData {
     phone: string,
@@ -8,4 +8,4 @@ interface RegData {
     name: string
 }
 
-export const create = (params : RegData) => axios.post(`${basePath}/create`, params)
+export const create = (params : RegData) => api.post(`${BASE_URL}/create`, params)
