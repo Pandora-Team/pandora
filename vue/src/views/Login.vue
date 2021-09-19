@@ -11,7 +11,6 @@
             >
                 <div
                     class="logo"
-                    key="logo"
                 >
                     <img
                         src="@a/svg/logo.svg"
@@ -20,10 +19,10 @@
                 </div>
             </transition>
             <transition
+                v-if="auth"
                 appear
                 mode="out-in"
                 name="auth-trans"
-                v-if="auth"
             >
                 <Auth
                     key="auth"
@@ -31,10 +30,10 @@
                 />
             </transition>
             <transition
+                v-else-if="reg"
                 appear
                 mode="out-in"
                 name="reg-trans"
-                v-else-if="reg"
             >
                 <Reg
                     key="reg"
@@ -42,14 +41,13 @@
                 />
             </transition>
             <transition
+                v-else
                 name="default-trans"
                 appear
                 mode="out-in"
-                v-else
             >
                 <div
                     class="login-action"
-                    key="default"
                 >
                     <button @click="reg = true">
                         Регистрация
