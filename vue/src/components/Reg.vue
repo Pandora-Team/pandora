@@ -7,13 +7,17 @@
         >
             Форма содержит ошибки
         </div>
-        <form class="form">
+        <form
+            class="form"
+            novalidate
+        >
             <div class="form__item">
                 <label for="name">Имя и фамилия*</label>
                 <input
                     id="name"
                     v-model="$v.name.$model"
                     type="text"
+                    autocomplete="off"
                 >
                 <div
                     v-if="$v.name.$dirty && !$v.name.required"
@@ -28,6 +32,7 @@
                     id="phone"
                     v-model="$v.phone.$model"
                     type="text"
+                    autocomplete="off"
                 >
                 <div
                     v-if="$v.phone.$dirty && !$v.phone.required"
@@ -60,6 +65,7 @@
                     id="password"
                     v-model="$v.password.$model"
                     type="password"
+                    autocomplete="off"
                 >
                 <div
                     v-if="$v.password.$dirty && !$v.password.required"
@@ -80,6 +86,7 @@
                     id="repeatPassword"
                     v-model="$v.repeatPassword.$model"
                     type="password"
+                    autocomplete="off"
                 >
                 <div
                     v-if="$v.repeatPassword.$dirty && !$v.repeatPassword.required"
