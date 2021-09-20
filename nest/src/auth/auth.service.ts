@@ -4,7 +4,7 @@ import {InjectModel} from "@nestjs/mongoose";
 import {Users, UsersDocument} from "../users/users.schema";
 import {Model} from "mongoose";
 import {UsersService} from "../users/users.service";
-import {RegisterDto} from "./register.dto";
+import {LoginDto, RegisterDto} from "./dto";
 
 @Injectable()
 export class AuthService {
@@ -23,17 +23,35 @@ export class AuthService {
         return null
     }
 
-    async login(user: any) {
-        const payload = { username: user.username }
-        return {
-            access_token: this.jwtService.sign(payload)
-        }
+    async login(model: LoginDto) {
+        return await this.usersModel.findOne({
+            phone: model.phone,
+            password: model.pass
+        })
+            .exec()
+            .then(u => {
+                const payload = {
+                    username: u.phone,
+                    role: u.role
+                }
+
+                return {
+                    access_token: this.jwtService.sign(payload)
+                }
+            })
+            .catch(e => {
+                console.log(e)
+                return {
+                    access_token: "",
+                    err: e
+                }
+            })
     }
 
     async register(model: RegisterDto){
         return this.usersModel.create({
             name: model.name,
-            email: model.email,
+            phone: model.phone,
             password: model.pass
         })
     }
