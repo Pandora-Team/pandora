@@ -38,6 +38,4 @@ services:
     restart: always
     build: vue/
     ports:
-      - "8080:8080"
-    depends_on:
-      - nest
+      - "8080:80"
