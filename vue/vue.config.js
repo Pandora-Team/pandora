@@ -1,8 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const webpack = require("webpack")
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const CompressionPlugin = require("compression-webpack-plugin")
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const path = require("path")
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { CleanWebpackPlugin } = require("clean-webpack-plugin")
@@ -20,15 +18,11 @@ if (isProduction) {
         new CleanWebpackPlugin({
             cleanOnceBeforeBuildPatterns: ["**/*", "!props.js", "!image/**"],
         }),
-        new CompressionPlugin({
-            deleteOriginalAssets: true,
-            minRatio:             Infinity,
-            include:              [/\.js$/, /\.css$/],
-        }),
     )
 }
 
 module.exports = {
+    publicPath: "./",
     lintOnSave: true,
     devServer:  {
         proxy: {
