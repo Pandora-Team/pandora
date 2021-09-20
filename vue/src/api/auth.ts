@@ -1,10 +1,10 @@
-import axios from "axios"
+import api from "./index";
 
-const basePath = "http://localhost:5000/auth"
+const BASE_URL = "auth"
 
 interface AuthData {
     phone: string,
     password: string
 }
 
-export const auth = (params : AuthData) => axios.post(`${basePath}`, params)
+export const auth = (params : AuthData) => api.post(`${BASE_URL}`, params)

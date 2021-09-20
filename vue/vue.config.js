@@ -24,13 +24,6 @@ if (isProduction) {
 module.exports = {
     publicPath: "./",
     lintOnSave: true,
-    devServer:  {
-        proxy: {
-            "^/api": {
-                target: process.env.VUE_APP_API_URL,
-            },
-        },
-    },
     configureWebpack: {
         devtool: "source-map",
         resolve: {
