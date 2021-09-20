@@ -11,7 +11,14 @@
             class="form"
             novalidate
         >
-            <div class="form__item">
+            <form-item
+                id="name"
+                v-model="$v.name.$model"
+                label="Имя и фамилия*"
+                type="text"
+                :error="errorNameInput"
+            />
+            <!--<div class="form__item">
                 <label for="name">Имя и фамилия*</label>
                 <input
                     id="name"
@@ -25,7 +32,7 @@
                 >
                     Обязательно для заполнения
                 </div>
-            </div>
+            </div>-->
             <div class="form__item">
                 <label for="phone">Телефон*</label>
                 <input
@@ -116,8 +123,12 @@
 import { Component, Vue } from "vue-property-decorator"
 import { create } from "@/api/users"
 import { maxLength, minLength, required, sameAs, numeric } from "vuelidate/lib/validators"
+import FormItem from "@/components/FormItem.vue"
 
 @Component({
+    components: {
+        FormItem,
+    },
     validations: {
         name: {
             required,
@@ -162,6 +173,13 @@ export default class Reg extends Vue {
                 })
                 .finally(() => (this.loading = false))
         }
+    }
+
+    get errorNameInput(): string {
+        if(this.$v.name.$dirty && !this.$v.name.required) {
+            return "Обязательно для заполнения"
+        }
+        return ""
     }
 
     prevStep() : void {
