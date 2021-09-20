@@ -4,6 +4,7 @@ import {InjectModel} from "@nestjs/mongoose";
 import {Users, UsersDocument} from "../users/users.schema";
 import {Model} from "mongoose";
 import {UsersService} from "../users/users.service";
+import {RegisterDto} from "./register.dto";
 
 @Injectable()
 export class AuthService {
@@ -27,5 +28,13 @@ export class AuthService {
         return {
             access_token: this.jwtService.sign(payload)
         }
+    }
+
+    async register(model: RegisterDto){
+        return this.usersModel.create({
+            name: model.name,
+            email: model.email,
+            password: model.pass
+        })
     }
 }
