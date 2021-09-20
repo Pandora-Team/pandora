@@ -99,7 +99,7 @@ export default class Auth extends Vue {
         if (!this.$v.$invalid) {
             auth({
                 phone:    this.phone,
-                password: this.password,
+                pass: this.password,
             })
                 .then(res => {
                     const token = res.data.access_token

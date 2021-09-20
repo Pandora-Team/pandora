@@ -1,11 +1,9 @@
-import api from "./index";
-
-const BASE_URL = "users"
+import api from "./index"
 
 interface RegData {
-    phone: string,
-    password: string,
+    phone: string
+    pass: string
     name: string
 }
 
-export const create = (params : RegData) => api.post(`${BASE_URL}/create`, params)
+export const create = (params : RegData) => api.post("/register", params)

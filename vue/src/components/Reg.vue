@@ -149,7 +149,7 @@ export default class Reg extends Vue {
     submitForm() : void {
         if(!this.$v.$invalid) {
             create({
-                password: this.password,
+                pass: this.password,
                 name:     this.name,
                 phone:    this.phone,
             })
