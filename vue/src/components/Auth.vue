@@ -1,29 +1,31 @@
 <template>
-    <div class="auth">
-        <h1>Авторизация</h1>
-        <base-form
-            :error="errorForm"
-            submit-text="Войти"
-            cancel-text="Назад"
-            @submit="submitForm"
-            @cancel="prevStep"
-        >
-            <base-form-item
-                id="phone"
-                v-model="$v.phone.$model"
-                label="Телефон*"
-                type="text"
-                :error="errorPhoneInput"
-            />
-            <base-form-item
-                id="password"
-                v-model="$v.password.$model"
-                label="Пароль*"
-                type="password"
-                :error="errorPasswordInput"
-            />
-        </base-form>
-    </div>
+    <transition-to-top>
+        <div class="auth">
+            <h1>Авторизация</h1>
+            <base-form
+                :error="errorForm"
+                submit-text="Войти"
+                cancel-text="Назад"
+                @submit="submitForm"
+                @cancel="goToLogin"
+            >
+                <base-form-item
+                    id="phone"
+                    v-model="$v.phone.$model"
+                    label="Телефон*"
+                    type="text"
+                    :error="errorPhoneInput"
+                />
+                <base-form-item
+                    id="password"
+                    v-model="$v.password.$model"
+                    label="Пароль*"
+                    type="password"
+                    :error="errorPasswordInput"
+                />
+            </base-form>
+        </div>
+    </transition-to-top>
 </template>
 
 <script lang="ts">
@@ -33,12 +35,14 @@ import { auth } from "@/api/auth"
 import { required, minLength, maxLength, numeric } from "vuelidate/lib/validators"
 import BaseFormItem from "@/components/BaseFormItem.vue"
 import BaseForm from "@/components/BaseForm.vue"
+import TransitionToTop from "@/components/TransitionToTop.vue"
 
 
 @Component({
     components: {
         BaseForm,
         BaseFormItem,
+        TransitionToTop,
     },
     validations: {
         phone: {
@@ -61,8 +65,8 @@ export default class Auth extends Vue {
     submitForm() : void {
         if (!this.$v.$invalid) {
             auth({
-                phone:    this.phone,
-                pass: this.password,
+                phone: this.phone,
+                pass:  this.password,
             })
                 .then(res => {
                     const token = res.data.access_token
@@ -109,8 +113,8 @@ export default class Auth extends Vue {
         return ""
     }
 
-    prevStep() : void {
-        this.$emit("prev-step")
+    goToLogin(): void {
+        this.$router.push(this.$mainPaths.Login)
     }
 }
 </script>
