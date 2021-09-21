@@ -6,7 +6,7 @@
             submit-text="Зарегистрироваться"
             cancel-text="Назад"
             @submit="submitForm"
-            @cancel="prevStep"
+            @cancel="goToLogin"
         >
             <base-form-item
                 id="name"
@@ -84,9 +84,9 @@ export default class Reg extends Vue {
     submitForm(): void {
         if(!this.$v.$invalid) {
             create({
-                pass: this.password,
-                name:     this.name,
-                phone:    this.phone,
+                pass:  this.password,
+                name:  this.name,
+                phone: this.phone,
             })
                 .then(res => {
                     console.log(res)
@@ -149,8 +149,8 @@ export default class Reg extends Vue {
         return ""
     }
 
-    prevStep(): void {
-        this.$emit("prev-step")
+    goToLogin(): void {
+        this.$router.push(this.$mainPaths.Login)
     }
 }
 </script>

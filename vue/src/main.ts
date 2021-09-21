@@ -6,7 +6,8 @@ import "./class-component-hooks"
 import { useStore } from "vuex-simple"
 import Vuelidate from "vuelidate"
 import sanitizeHtml from "sanitize-html"
-import './styles/main.scss';
+import "./styles/main.scss"
+import paths from "@/router/paths"
 
 Vue.use(Vuelidate)
 
@@ -16,7 +17,8 @@ sanitizeHtml.defaults.selfClosing = ["br"]
 sanitizeHtml.defaults.allowedSchemesAppliedToAttributes = []
 sanitizeHtml.defaults.disallowedTagsMode = "escape"
 
-Vue.prototype.$store = useStore(store)
+Vue.prototype.$mainStore = useStore(store)
+Vue.prototype.$mainPaths = paths
 Vue.prototype.$sanitizeHtml = sanitizeHtml
 
 Vue.config.productionTip = false

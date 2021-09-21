@@ -6,7 +6,7 @@
             submit-text="Войти"
             cancel-text="Назад"
             @submit="submitForm"
-            @cancel="prevStep"
+            @cancel="goToLogin"
         >
             <base-form-item
                 id="phone"
@@ -61,8 +61,8 @@ export default class Auth extends Vue {
     submitForm() : void {
         if (!this.$v.$invalid) {
             auth({
-                phone:    this.phone,
-                pass: this.password,
+                phone: this.phone,
+                pass:  this.password,
             })
                 .then(res => {
                     const token = res.data.access_token
@@ -109,8 +109,8 @@ export default class Auth extends Vue {
         return ""
     }
 
-    prevStep() : void {
-        this.$emit("prev-step")
+    goToLogin(): void {
+        this.$router.push(this.$mainPaths.Login)
     }
 }
 </script>
