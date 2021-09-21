@@ -1,13 +1,21 @@
 <template>
-    <div>
-        <div
-            v-if="error"
-            class="form-error form-error--title"
+    <div
+        class="form"
+        :class="{'form--pt': error}"
+    >
+        <transition
+            name="error"
+            mode="out-in"
         >
-            {{ error }}
-        </div>
+            <div
+                v-if="error"
+                class="form-error form-error--title"
+            >
+                {{ error }}
+            </div>
+        </transition>
         <form
-            class="form"
+
             novalidate
         >
             <slot />
@@ -48,6 +56,31 @@ export default class BaseForm extends Vue {
 }
 </script>
 
-<style scoped>
+<style lang="scss">
+
+.form {
+    position: relative;
+    transition: 1s;
+    &-error {
+        position: absolute;
+        top: 0;
+        color: #C03221;
+        &--title {
+            font-size: 20px;
+        }
+    }
+    &--pt {
+        padding-top: 30px;
+    }
+}
+
+.error-enter-active,
+.error-leave-active {
+    transition: opacity 1s;
+}
+.error-enter,
+.error-leave-to {
+    opacity: 0;
+}
 
 </style>

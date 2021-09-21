@@ -1,5 +1,8 @@
 <template>
-    <div class="form__item">
+    <div
+        class="form__item"
+        :class="{ 'form__item--pb' : error }"
+    >
         <label :for="id">{{ label }}</label>
         <input
             :id="id"
@@ -8,12 +11,17 @@
             autocomplete="off"
             @input="$emit('input', $event.target.value)"
         >
-        <div
-            v-if="error"
-            class="form-error"
+        <transition
+            name="error"
+            mode="out-in"
         >
-            {{ error }}
-        </div>
+            <div
+                v-if="error"
+                class="form__item-error"
+            >
+                {{ error }}
+            </div>
+        </transition>
     </div>
 </template>
 
@@ -42,6 +50,31 @@ export default class BaseFormItem extends Vue {
 }
 </script>
 
-<style scoped>
+<style lang="scss">
 
+    .form {
+        &__item {
+            margin-bottom: 20px;
+            padding-bottom: 0;
+            transition: padding-bottom 1s;
+            position: relative;
+            &--pb {
+                padding-bottom: 16px;
+            }
+            &-error {
+                padding-top: 10px;
+                position: absolute;
+                color: #C03221;
+            }
+        }
+    }
+
+    .error-enter-active,
+    .error-leave-active {
+        transition: opacity 1s;
+    }
+    .error-enter,
+    .error-leave-to {
+        opacity: 0;
+    }
 </style>
