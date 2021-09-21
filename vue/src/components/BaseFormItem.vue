@@ -22,7 +22,7 @@
 import { Component, Vue, Prop } from "vue-property-decorator"
 
 @Component({})
-export default class FormItem extends Vue {
+export default class BaseFormItem extends Vue {
 
     @Prop({ type: String, default: "" })
     readonly type!: string
