@@ -1,71 +1,28 @@
 <template>
     <div class="auth">
         <h1>Авторизация</h1>
-        <form
-            class="form"
-            novalidate
+        <base-form
+            :error="errorForm"
+            submit-text="Войти"
+            cancel-text="Назад"
+            @submit="submitForm"
+            @cancel="prevStep"
         >
-            <div class="form__item">
-                <label for="phone">Телефон*</label>
-                <input
-                    id="phone"
-                    v-model.trim="$v.phone.$model"
-                    type="text"
-                    autocomplete="off"
-                >
-                <div
-                    v-if="$v.phone.$dirty && !$v.phone.required"
-                    class="form-error"
-                >
-                    Обязательно для заполнения
-                </div>
-                <div
-                    v-if="$v.phone.$dirty && !$v.phone.minLength"
-                    class="form-error"
-                >
-                    В поле должно быть не менее {{ $v.phone.$params.minLength.min }} символов
-                </div>
-                <div
-                    v-if="$v.phone.$dirty && !$v.phone.maxLength"
-                    class="form-error"
-                >
-                    В поле должно быть не более {{ $v.phone.$params.maxLength.max }} символов
-                </div>
-                <div
-                    v-if="$v.phone.$dirty && !$v.phone.numeric"
-                    class="form-error"
-                >
-                    В поле должны быть только цифры
-                </div>
-            </div>
-            <div class="form__item">
-                <label for="password">Пароль*</label>
-                <input
-                    id="password"
-                    v-model.trim="$v.password.$model"
-                    type="password"
-                    autocomplete="off"
-                >
-                <div
-                    v-if="$v.password.$dirty && !$v.password.required"
-                    class="form-error"
-                >
-                    Обязательно для заполнения
-                </div>
-                <div
-                    v-if="$v.password.$dirty && !$v.password.minLength"
-                    class="form-error"
-                >
-                    В поле должно быть {{ $v.password.$params.minLength.min }} символов.
-                </div>
-            </div>
-            <button @click.prevent="submitForm">
-                Войти
-            </button>
-            <button @click.prevent="prevStep">
-                Назад
-            </button>
-        </form>
+            <base-form-item
+                id="phone"
+                v-model="$v.phone.$model"
+                label="Телефон*"
+                type="text"
+                :error="errorPhoneInput"
+            />
+            <base-form-item
+                id="password"
+                v-model="$v.password.$model"
+                label="Пароль*"
+                type="password"
+                :error="errorPasswordInput"
+            />
+        </base-form>
     </div>
 </template>
 
@@ -74,9 +31,15 @@
 import { Component, Vue } from "vue-property-decorator"
 import { auth } from "@/api/auth"
 import { required, minLength, maxLength, numeric } from "vuelidate/lib/validators"
+import BaseFormItem from "@/components/BaseFormItem.vue"
+import BaseForm from "@/components/BaseForm.vue"
 
 
 @Component({
+    components: {
+        BaseForm,
+        BaseFormItem,
+    },
     validations: {
         phone: {
             required,
@@ -111,6 +74,39 @@ export default class Auth extends Vue {
                 })
                 .finally(() => (this.loading = false))
         }
+    }
+
+    get errorPhoneInput(): string {
+        if(this.$v.phone.$dirty && !this.$v.phone.required) {
+            return "Обязательно для заполнения"
+        }
+        if(this.$v.phone.$dirty && !this.$v.phone.numeric) {
+            return "В поле должны быть только цифры"
+        }
+        if(this.$v.phone.$dirty && !this.$v.phone.minLength) {
+            return `В поле должно быть не менее ${this.$v.phone.$params.minLength.min} символов`
+        }
+        if(this.$v.phone.$dirty && !this.$v.phone.maxLength) {
+            return `В поле должно быть не более ${this.$v.phone.$params.maxLength.max} символов`
+        }
+        return ""
+    }
+
+    get errorPasswordInput(): string {
+        if(this.$v.password.$dirty && !this.$v.password.required) {
+            return "Обязательно для заполнения"
+        }
+        if(this.$v.password.$dirty && !this.$v.password.minLength) {
+            return `В поле должно быть ${this.$v.password.$params.minLength.min} символов`
+        }
+        return ""
+    }
+
+    get errorForm():string {
+        if(this.$v.$anyError) {
+            return "Форма содержит ошибки"
+        }
+        return ""
     }
 
     prevStep() : void {
