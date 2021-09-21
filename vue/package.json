@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "axios": "^0.21.1",
+    "axios-cache-adapter": "^2.7.3",
     "core-js": "^3.6.5",
     "lodash": "^4.17.15",
     "sanitize-html": "^1.27.0",

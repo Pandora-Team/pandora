@@ -11,7 +11,6 @@
             >
                 <div
                     class="logo"
-                    key="logo"
                 >
                     <img
                         src="@a/svg/logo.svg"
@@ -19,65 +18,38 @@
                     >
                 </div>
             </transition>
-            <transition
-                appear
-                mode="out-in"
-                name="auth-trans"
-                v-if="auth"
-            >
-                <Auth
-                    key="auth"
-                    @prev-step="returnBaseView"
-                />
-            </transition>
-            <transition
-                appear
-                mode="out-in"
-                name="reg-trans"
-                v-else-if="reg"
-            >
-                <Reg
-                    key="reg"
-                    @prev-step="returnBaseView"
-                />
-            </transition>
-            <transition
-                name="default-trans"
-                appear
-                mode="out-in"
-                v-else
-            >
-                <div
-                    class="login-action"
-                    key="default"
-                >
-                    <button @click="reg = true">
-                        Регистрация
-                    </button>
-                    <button @click="auth = true">
-                        Авторизация
-                    </button>
-                </div>
-            </transition>
+            <router-view />
         </div>
     </div>
 </template>
 
 <script lang="ts">
 
-import { Component, Vue } from "vue-property-decorator"
-import Auth from "@/components/Auth.vue"
-import Reg from "@/components/Reg.vue"
+import { Component, Vue, Watch } from "vue-property-decorator"
+import { Route } from "vue-router"
+import names from "@/router/names"
 
-@Component({
-    components: {
-        Auth,
-        Reg,
-    },
-})
+@Component({})
 export default class Login extends Vue {
+
     auth = false
     reg = false
+
+    @Watch("$route", { immediate: true, deep: true })
+    onRouteChange(route: Route): void {
+        if(route.name === names.LoginDefault) {
+            this.auth = false
+            this.reg = false
+        }
+        if(route.name === names.Reg) {
+            this.auth = false
+            this.reg = true
+        }
+        if(route.name === names.Auth) {
+            this.reg = false
+            this.auth = true
+        }
+    }
 
     get positionLeft() : string {
         if(this.auth) {
@@ -88,16 +60,6 @@ export default class Login extends Vue {
         }
         return "left: calc(50% - 20%);"
     }
-
-    returnBaseView() : void {
-        if(this.auth) {
-            this.auth = false
-        }
-        if(this.reg) {
-            this.reg = false
-        }
-    }
-
 }
 </script>
 
@@ -135,40 +97,6 @@ export default class Login extends Vue {
     &-leave-to {
         opacity: 0;
         transform: translateY(-100px);
-    }
-}
-.auth-trans {
-    &-enter-active,
-    &-leave-active {
-        transition: all 1s;
-    }
-    &-enter,
-    &-leave-to {
-        opacity: 0;
-        transform: translateY(100px);
-    }
-}
-
-.reg-trans {
-    &-enter-active,
-    &-leave-active {
-        transition: all 1s;
-    }
-    &-enter,
-    &-leave-to {
-        opacity: 0;
-        transform: translateY(100px);
-    }
-}
-.default-trans {
-    &-enter-active,
-    &-leave-active {
-        transition: all 1s;
-    }
-    &-enter,
-    &-leave-to {
-        opacity: 0;
-        transform: translateY(100px);
     }
 }
 

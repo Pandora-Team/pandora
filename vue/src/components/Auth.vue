@@ -1,68 +1,53 @@
 <template>
-    <div class="auth">
-        <h1>Авторизация</h1>
-        <form class="form">
-            <div class="form__item">
-                <label for="phone">Введите номер телефона</label>
-                <input
+    <transition-to-top>
+        <div class="auth">
+            <h1>Авторизация</h1>
+            <base-form
+                :error="errorForm"
+                submit-text="Войти"
+                cancel-text="Назад"
+                @submit="submitForm"
+                @cancel="goToLogin"
+            >
+                <base-form-item
                     id="phone"
-                    v-model.trim="$v.phone.$model"
+                    v-model="$v.phone.$model"
+                    label="Телефон*"
                     type="text"
-                >
-                <div
-                    class="form-error"
-                    v-if="!$v.phone.required"
-                >
-                    Поле обязательно для заполнения
-                </div>
-                <div
-                    class="form-error"
-                    v-if="$v.phone.$invalid"
-                >
-                    Поле заполнено неверно
-                </div>
-            </div>
-            <div class="form__item">
-                <label for="password">Введите пароль</label>
-                <input
+                    :error="errorPhoneInput"
+                />
+                <base-form-item
                     id="password"
-                    v-model.trim="$v.password.$model"
+                    v-model="$v.password.$model"
+                    label="Пароль*"
                     type="password"
-                >
-                <div
-                    class="form-error"
-                    v-if="!$v.password.required"
-                >
-                    Поле обязательно для заполнения
-                </div>
-                <div
-                    class="form-error"
-                    v-if="!$v.password.minLength"
-                >
-                    Пароль должен состоять минимум из {{ $v.password.$params.minLength.min }} символов
-                </div>
-            </div>
-            <button @click.prevent="submitForm">
-                Войти
-            </button>
-            <button @click.prevent="prevStep">
-                Назад
-            </button>
-        </form>
-    </div>
+                    :error="errorPasswordInput"
+                />
+            </base-form>
+        </div>
+    </transition-to-top>
 </template>
 
 <script lang="ts">
 
 import { Component, Vue } from "vue-property-decorator"
 import { auth } from "@/api/auth"
-import { required, minLength, maxLength } from "vuelidate/lib/validators"
+import { required, minLength, maxLength, numeric } from "vuelidate/lib/validators"
+import BaseFormItem from "@/components/BaseFormItem.vue"
+import BaseForm from "@/components/BaseForm.vue"
+import TransitionToTop from "@/components/TransitionToTop.vue"
 
 
 @Component({
+    components: {
+        BaseForm,
+        BaseFormItem,
+        TransitionToTop,
+    },
     validations: {
         phone: {
             required,
+            numeric,
             minLength: minLength(11),
             maxLength: maxLength(11),
         },
@@ -78,27 +63,58 @@ export default class Auth extends Vue {
     loading = false
 
     submitForm() : void {
-        if (this.$v.$invalid) {
-            console.error("Forms invalid")
-            return
+        if (!this.$v.$invalid) {
+            auth({
+                phone: this.phone,
+                pass:  this.password,
+            })
+                .then(res => {
+                    const token = res.data.access_token
+                    localStorage.setItem("at", token)
+                    this.$router.push({ name: "lk" })
+                })
+                .catch(error => {
+                    console.error(error)
+                })
+                .finally(() => (this.loading = false))
         }
-        auth({
-            phone:    this.phone,
-            password: this.password,
-        })
-            .then(res => {
-                const token = res.data.access_token
-                localStorage.setItem("at", token)
-                this.$router.push({ name: "lk" })
-            })
-            .catch(error => {
-                console.error(error)
-            })
-            .finally(() => (this.loading = false))
     }
 
-    prevStep() : void {
-        this.$emit("prev-step")
+    get errorPhoneInput(): string {
+        if(this.$v.phone.$dirty && !this.$v.phone.required) {
+            return "Обязательно для заполнения"
+        }
+        if(this.$v.phone.$dirty && !this.$v.phone.numeric) {
+            return "В поле должны быть только цифры"
+        }
+        if(this.$v.phone.$dirty && !this.$v.phone.minLength) {
+            return `В поле должно быть не менее ${this.$v.phone.$params.minLength.min} символов`
+        }
+        if(this.$v.phone.$dirty && !this.$v.phone.maxLength) {
+            return `В поле должно быть не более ${this.$v.phone.$params.maxLength.max} символов`
+        }
+        return ""
+    }
+
+    get errorPasswordInput(): string {
+        if(this.$v.password.$dirty && !this.$v.password.required) {
+            return "Обязательно для заполнения"
+        }
+        if(this.$v.password.$dirty && !this.$v.password.minLength) {
+            return `В поле должно быть ${this.$v.password.$params.minLength.min} символов`
+        }
+        return ""
+    }
+
+    get errorForm():string {
+        if(this.$v.$anyError) {
+            return "Форма содержит ошибки"
+        }
+        return ""
+    }
+
+    goToLogin(): void {
+        this.$router.push(this.$mainPaths.Login)
     }
 }
 </script>
