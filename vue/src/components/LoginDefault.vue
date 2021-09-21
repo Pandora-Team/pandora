@@ -1,20 +1,28 @@
 <template>
     <transition-to-top>
         <div
-            class="login-action"
+            class="login-block"
         >
-            <main-btn
-                type="link"
-                :url="$mainPaths.Reg"
-            >
-                Регистрация
-            </main-btn>
-            <main-btn
-                type="link"
-                :url="$mainPaths.Auth"
-            >
-                Авторизация
-            </main-btn>
+            <div class="login-title">
+                <h1>Привет и добро пожаловать в PANDORA!</h1>
+            </div>
+            <div class="login-subtitle">
+                <h2>Выбирай подходящее поле</h2>
+            </div>
+            <div class="login-action">
+                <main-btn
+                    type="link"
+                    :url="$mainPaths.Auth"
+                >
+                    Авторизация
+                </main-btn>
+                <main-btn
+                    type="link"
+                    :url="$mainPaths.Reg"
+                >
+                    Регистрация
+                </main-btn>
+            </div>
         </div>
     </transition-to-top>
 </template>

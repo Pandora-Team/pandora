@@ -17,13 +17,23 @@
         <form
             novalidate
         >
-            <slot />
-            <main-btn @click="submit">
-                {{ submitText }}
-            </main-btn>
-            <main-btn @click="cancel">
-                {{ cancelText }}
-            </main-btn>
+            <div class="form-row">
+                <slot name="top" />
+            </div>
+            <div class="form-row">
+                <slot name="center" />
+            </div>
+            <div class="form-row">
+                <slot name="bottom" />
+            </div>
+            <div class="login-action">
+                <main-btn @click="submit">
+                    {{ submitText }}
+                </main-btn>
+                <main-btn @click="cancel">
+                    {{ cancelText }}
+                </main-btn>
+            </div>
         </form>
     </div>
 </template>
@@ -65,6 +75,13 @@ export default class BaseForm extends Vue {
 .form {
     position: relative;
     transition: 1s;
+    &-row {
+        display: flex;
+        justify-content: space-between;
+        &:nth-last-of-type(1) {
+            margin-bottom: 30px;
+        }
+    }
     &-error {
         position: absolute;
         top: 0;

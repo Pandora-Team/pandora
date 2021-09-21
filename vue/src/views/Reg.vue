@@ -1,7 +1,9 @@
 <template>
     <transition-to-top>
         <div class="reg">
-            <h1>Регистрация</h1>
+            <div class="login-title">
+                <h1>Регистрация</h1>
+            </div>
             <main-form
                 :error="errorForm"
                 submit-text="Зарегистрироваться"
@@ -9,34 +11,38 @@
                 @submit="submitForm"
                 @cancel="goToLogin"
             >
-                <main-form-item
-                    id="name"
-                    v-model="$v.name.$model"
-                    label="Имя и фамилия*"
-                    type="text"
-                    :error="errorNameInput"
-                />
-                <main-form-item
-                    id="phone"
-                    v-model="$v.phone.$model"
-                    label="Телефон*"
-                    type="text"
-                    :error="errorPhoneInput"
-                />
-                <main-form-item
-                    id="password"
-                    v-model="$v.password.$model"
-                    label="Пароль*"
-                    type="password"
-                    :error="errorPasswordInput"
-                />
-                <main-form-item
-                    id="repeatPassword"
-                    v-model="$v.repeatPassword.$model"
-                    label="Подтвердить пароль*"
-                    type="password"
-                    :error="errorRepeatPasswordInput"
-                />
+                <template #top>
+                    <main-form-item
+                        id="name"
+                        v-model="$v.name.$model"
+                        label="Имя и фамилия*"
+                        type="text"
+                        :error="errorNameInput"
+                    />
+                    <main-form-item
+                        id="phone"
+                        v-model="$v.phone.$model"
+                        label="Телефон*"
+                        type="text"
+                        :error="errorPhoneInput"
+                    />
+                </template>
+                <template #center>
+                    <main-form-item
+                        id="password"
+                        v-model="$v.password.$model"
+                        label="Пароль*"
+                        type="password"
+                        :error="errorPasswordInput"
+                    />
+                    <main-form-item
+                        id="repeatPassword"
+                        v-model="$v.repeatPassword.$model"
+                        label="Подтвердить пароль*"
+                        type="password"
+                        :error="errorRepeatPasswordInput"
+                    />
+                </template>
             </main-form>
         </div>
     </transition-to-top>

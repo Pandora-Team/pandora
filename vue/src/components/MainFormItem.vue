@@ -62,10 +62,14 @@ export default class BaseFormItem extends Vue {
 
     .form {
         &__item {
-            margin-bottom: 20px;
+            margin-bottom: 40px;
             padding-bottom: 0;
             transition: padding-bottom 1s;
             position: relative;
+            margin-right: 40px;
+            &:nth-last-of-type(1) {
+                margin-right: 0;
+            }
             &--pb {
                 padding-bottom: 16px;
             }

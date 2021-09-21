@@ -1,7 +1,9 @@
 <template>
     <transition-to-top>
         <div class="auth">
-            <h1>Авторизация</h1>
+            <div class="login-title">
+                <h1>Авторизация</h1>
+            </div>
             <main-form
                 :error="errorForm"
                 submit-text="Войти"
@@ -9,20 +11,22 @@
                 @submit="submitForm"
                 @cancel="goToLogin"
             >
-                <main-form-item
-                    id="phone"
-                    v-model="$v.phone.$model"
-                    label="Телефон*"
-                    type="text"
-                    :error="errorPhoneInput"
-                />
-                <main-form-item
-                    id="password"
-                    v-model="$v.password.$model"
-                    label="Пароль*"
-                    type="password"
-                    :error="errorPasswordInput"
-                />
+                <template #top>
+                    <main-form-item
+                        id="phone"
+                        v-model="$v.phone.$model"
+                        label="Телефон*"
+                        type="text"
+                        :error="errorPhoneInput"
+                    />
+                    <main-form-item
+                        id="password"
+                        v-model="$v.password.$model"
+                        label="Пароль*"
+                        type="password"
+                        :error="errorPasswordInput"
+                    />
+                </template>
             </main-form>
         </div>
     </transition-to-top>
