@@ -2,28 +2,28 @@
     <transition-to-top>
         <div class="auth">
             <h1>Авторизация</h1>
-            <base-form
+            <main-form
                 :error="errorForm"
                 submit-text="Войти"
                 cancel-text="Назад"
                 @submit="submitForm"
                 @cancel="goToLogin"
             >
-                <base-form-item
+                <main-form-item
                     id="phone"
                     v-model="$v.phone.$model"
                     label="Телефон*"
                     type="text"
                     :error="errorPhoneInput"
                 />
-                <base-form-item
+                <main-form-item
                     id="password"
                     v-model="$v.password.$model"
                     label="Пароль*"
                     type="password"
                     :error="errorPasswordInput"
                 />
-            </base-form>
+            </main-form>
         </div>
     </transition-to-top>
 </template>
@@ -33,15 +33,15 @@
 import { Component, Vue } from "vue-property-decorator"
 import { auth } from "@/api/auth"
 import { required, minLength, maxLength, numeric } from "vuelidate/lib/validators"
-import BaseFormItem from "@/components/BaseFormItem.vue"
-import BaseForm from "@/components/BaseForm.vue"
+import MainFormItem from "@/components/MainFormItem.vue"
+import MainForm from "@/components/MainForm.vue"
 import TransitionToTop from "@/components/TransitionToTop.vue"
 
 
 @Component({
     components: {
-        BaseForm,
-        BaseFormItem,
+        MainForm,
+        MainFormItem,
         TransitionToTop,
     },
     validations: {

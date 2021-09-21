@@ -15,16 +15,15 @@
             </div>
         </transition>
         <form
-
             novalidate
         >
             <slot />
-            <button @click.prevent="submit">
+            <main-btn @click="submit">
                 {{ submitText }}
-            </button>
-            <button @click.prevent="cancel">
+            </main-btn>
+            <main-btn @click="cancel">
                 {{ cancelText }}
-            </button>
+            </main-btn>
         </form>
     </div>
 </template>
@@ -32,8 +31,13 @@
 <script lang="ts">
 
 import { Component, Vue, Prop } from "vue-property-decorator"
+import MainBtn from "@/components/MainBtn.vue"
 
-@Component({})
+@Component({
+    components: {
+        MainBtn,
+    },
+})
 export default class BaseForm extends Vue {
 
     @Prop({ type: String, default: "" })

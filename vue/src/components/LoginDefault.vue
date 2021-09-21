@@ -3,16 +3,18 @@
         <div
             class="login-action"
         >
-            <router-link :to="$mainPaths.Reg">
-                <button>
-                    Регистрация
-                </button>
-            </router-link>
-            <router-link :to="$mainPaths.Auth">
-                <button>
-                    Авторизация
-                </button>
-            </router-link>
+            <main-btn
+                type="link"
+                :url="$mainPaths.Reg"
+            >
+                Регистрация
+            </main-btn>
+            <main-btn
+                type="link"
+                :url="$mainPaths.Auth"
+            >
+                Авторизация
+            </main-btn>
         </div>
     </transition-to-top>
 </template>
@@ -20,9 +22,11 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator"
 import TransitionToTop from "@/components/TransitionToTop.vue"
+import MainBtn from "@/components/MainBtn.vue"
 @Component({
     components: {
         TransitionToTop,
+        MainBtn,
     },
 })
 export default class LoginDefault extends Vue {}

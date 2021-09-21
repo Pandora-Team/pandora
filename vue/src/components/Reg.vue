@@ -2,42 +2,42 @@
     <transition-to-top>
         <div class="reg">
             <h1>Регистрация</h1>
-            <base-form
+            <main-form
                 :error="errorForm"
                 submit-text="Зарегистрироваться"
                 cancel-text="Назад"
                 @submit="submitForm"
                 @cancel="goToLogin"
             >
-                <base-form-item
+                <main-form-item
                     id="name"
                     v-model="$v.name.$model"
                     label="Имя и фамилия*"
                     type="text"
                     :error="errorNameInput"
                 />
-                <base-form-item
+                <main-form-item
                     id="phone"
                     v-model="$v.phone.$model"
                     label="Телефон*"
                     type="text"
                     :error="errorPhoneInput"
                 />
-                <base-form-item
+                <main-form-item
                     id="password"
                     v-model="$v.password.$model"
                     label="Пароль*"
                     type="password"
                     :error="errorPasswordInput"
                 />
-                <base-form-item
+                <main-form-item
                     id="repeatPassword"
                     v-model="$v.repeatPassword.$model"
                     label="Подтвердить пароль*"
                     type="password"
                     :error="errorRepeatPasswordInput"
                 />
-            </base-form>
+            </main-form>
         </div>
     </transition-to-top>
 </template>
@@ -47,14 +47,14 @@
 import { Component, Vue } from "vue-property-decorator"
 import { create } from "@/api/users"
 import { maxLength, minLength, required, sameAs, numeric } from "vuelidate/lib/validators"
-import BaseFormItem from "@/components/BaseFormItem.vue"
-import BaseForm from "@/components/BaseForm.vue"
+import MainFormItem from "@/components/MainFormItem.vue"
+import MainForm from "@/components/MainForm.vue"
 import TransitionToTop from "@/components/TransitionToTop.vue"
 
 @Component({
     components: {
-        BaseForm,
-        BaseFormItem,
+        MainForm,
+        MainFormItem,
         TransitionToTop,
     },
     validations: {
