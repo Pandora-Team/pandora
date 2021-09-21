@@ -56,9 +56,9 @@ export default class Login extends Vue {
             return "left: 0%;"
         }
         if(this.reg) {
-            return "left: calc(100% - 40%);"
+            return "left: calc(100% - 50%);"
         }
-        return "left: calc(50% - 20%);"
+        return "left: calc(50% - 25%);"
     }
 }
 </script>
@@ -71,8 +71,8 @@ export default class Login extends Vue {
     &-body {
         overflow: hidden;
         transition: 1s;
-        background: white;
-        width: 40%;
+        background: #17171E;
+        width: 50%;
         position: relative;
         min-height: 100vh;
         display: flex;
@@ -81,11 +81,37 @@ export default class Login extends Vue {
         .logo {
             max-width: 160px;
             max-height: 160px;
-            margin: 60px;
+            margin: 100px auto 115px;
             img {
                 width: 100%;
             }
         }
+    }
+    &-title {
+        margin-bottom: 70px;
+        h1 {
+            color: #FFFFFF;
+            letter-spacing: 0.01em;
+            font-weight: 600;
+            font-size: 24px;
+            line-height: 29px;
+        }
+    }
+    &-subtitle {
+        margin-bottom: 40px;
+        text-align: center;
+        h2 {
+            font-weight: 300;
+            font-size: 18px;
+            line-height: 22px;
+            letter-spacing: 0.01em;
+            color: white;
+        }
+    }
+    &-action {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 }
 .logo-trans {
