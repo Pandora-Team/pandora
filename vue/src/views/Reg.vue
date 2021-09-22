@@ -5,7 +5,6 @@
                 <h1>Регистрация</h1>
             </div>
             <main-form
-                :error="errorForm"
                 submit-text="Зарегистрироваться"
                 cancel-text="Назад"
                 @submit="submitForm"
@@ -148,13 +147,6 @@ export default class Reg extends Vue {
         }
         if(this.$v.repeatPassword.$dirty && !this.$v.repeatPassword.sameAsPassword) {
             return "Пароли не совпадают"
-        }
-        return ""
-    }
-
-    get errorForm():string {
-        if(this.$v.$anyError) {
-            return "Форма содержит ошибки"
         }
         return ""
     }

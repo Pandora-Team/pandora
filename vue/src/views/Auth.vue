@@ -5,7 +5,6 @@
                 <h1>Авторизация</h1>
             </div>
             <main-form
-                :error="errorForm"
                 submit-text="Войти"
                 cancel-text="Назад"
                 @submit="submitForm"
@@ -107,13 +106,6 @@ export default class Auth extends Vue {
         }
         if(this.$v.password.$dirty && !this.$v.password.minLength) {
             return `В поле должно быть ${this.$v.password.$params.minLength.min} символов`
-        }
-        return ""
-    }
-
-    get errorForm():string {
-        if(this.$v.$anyError) {
-            return "Форма содержит ошибки"
         }
         return ""
     }
