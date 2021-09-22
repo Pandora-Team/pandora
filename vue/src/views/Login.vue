@@ -19,6 +19,10 @@
                 </div>
             </transition>
             <router-view />
+            <div
+                class="login-line"
+                :style="positionLeftForLine"
+            />
         </div>
     </div>
 </template>
@@ -60,6 +64,16 @@ export default class Login extends Vue {
         }
         return "left: calc(50% - 25%);"
     }
+
+    get positionLeftForLine(): string {
+        if(this.auth) {
+            return "left: 0%;"
+        }
+        if(this.reg) {
+            return "left: -100%;"
+        }
+        return "left: -50%;"
+    }
 }
 </script>
 
@@ -71,7 +85,7 @@ export default class Login extends Vue {
     &-body {
         overflow: hidden;
         transition: 1s;
-        background: #17171E;
+        background: #111227 url("../assets/bg/bg-login-center.png");
         width: 50%;
         position: relative;
         min-height: 100vh;
@@ -112,6 +126,18 @@ export default class Login extends Vue {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        position: relative;
+        z-index: 1;
+    }
+    &-line {
+        transition: 1s;
+        position: absolute;
+        bottom: 5%;
+        width: 1920px;
+        height: 226px;
+        background: url("../assets/bg/line.png") no-repeat;
+        background-size: cover;
+        z-index: 0;
     }
 }
 .logo-trans {

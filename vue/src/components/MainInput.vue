@@ -4,10 +4,16 @@
             :id="id"
             class="input input--main"
             :value="value"
-            :type="type"
+            :type="typeInput"
             autocomplete="off"
             @input="$emit('input', $event.target.value)"
         >
+        <div
+            v-if="type === 'password'"
+            class="eye"
+            :class="{'eye--visible': visiblePassword}"
+            @click="changeVisiblePassword"
+        />
     </div>
 </template>
 
@@ -15,6 +21,8 @@
 import { Component, Vue, Prop } from "vue-property-decorator"
 @Component({})
 export default class MainInput extends Vue {
+
+    visiblePassword = false
 
     @Prop({ type: String, default: "" })
     readonly type!: string
@@ -24,6 +32,15 @@ export default class MainInput extends Vue {
 
     @Prop({ type: String, default: "" })
     readonly value!: string
+
+    changeVisiblePassword(): void {
+        this.visiblePassword = !this.visiblePassword
+    }
+
+    get typeInput():string {
+        if(this.visiblePassword) return "text"
+        return this.type
+    }
 
 }
 </script>
@@ -58,5 +75,20 @@ export default class MainInput extends Vue {
         font-size: 16px;
         line-height: 20px;
         color: white;
+    }
+    .eye {
+        cursor: pointer;
+        background-image: url("../assets/svg/eye-close.svg");
+        width: 20px;
+        height: 24px;
+        background-size: cover;
+        background-repeat: no-repeat;
+        position: absolute;
+        right: 20px;
+        top: calc(50% - 13px);
+        z-index: 2;
+        &--visible {
+            background-image: url("../assets/svg/eye-open.svg");
+        }
     }
 </style>
