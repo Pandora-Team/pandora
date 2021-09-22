@@ -19,6 +19,10 @@
                 </div>
             </transition>
             <router-view />
+            <div
+                class="login-line"
+                :style="positionLeftForLine"
+            />
         </div>
     </div>
 </template>
@@ -30,22 +34,22 @@ import { Route } from "vue-router"
 import names from "@/router/names"
 
 @Component({})
-export default class Login extends Vue {
+export default class LoginLayout extends Vue {
 
     auth = false
     reg = false
 
     @Watch("$route", { immediate: true, deep: true })
     onRouteChange(route: Route): void {
-        if(route.name === names.LoginDefault) {
+        if(route.name === names.LoginView) {
             this.auth = false
             this.reg = false
         }
-        if(route.name === names.Reg) {
+        if(route.name === names.RegistrationView) {
             this.auth = false
             this.reg = true
         }
-        if(route.name === names.Auth) {
+        if(route.name === names.AuthenticationView) {
             this.reg = false
             this.auth = true
         }
@@ -56,9 +60,19 @@ export default class Login extends Vue {
             return "left: 0%;"
         }
         if(this.reg) {
-            return "left: calc(100% - 40%);"
+            return "left: calc(100% - 50%);"
         }
-        return "left: calc(50% - 20%);"
+        return "left: calc(50% - 25%);"
+    }
+
+    get positionLeftForLine(): string {
+        if(this.auth) {
+            return "left: 0%;"
+        }
+        if(this.reg) {
+            return "left: -100%;"
+        }
+        return "left: -50%;"
     }
 }
 </script>
@@ -71,8 +85,8 @@ export default class Login extends Vue {
     &-body {
         overflow: hidden;
         transition: 1s;
-        background: white;
-        width: 40%;
+        background: #111227 url("../assets/bg/bg-login-center.png");
+        width: 50%;
         position: relative;
         min-height: 100vh;
         display: flex;
@@ -81,11 +95,49 @@ export default class Login extends Vue {
         .logo {
             max-width: 160px;
             max-height: 160px;
-            margin: 60px;
+            margin: 100px auto 115px;
             img {
                 width: 100%;
             }
         }
+    }
+    &-title {
+        margin-bottom: 70px;
+        h1 {
+            color: #FFFFFF;
+            letter-spacing: 0.01em;
+            font-weight: 600;
+            font-size: 24px;
+            line-height: 29px;
+        }
+    }
+    &-subtitle {
+        margin-bottom: 40px;
+        text-align: center;
+        h2 {
+            font-weight: 300;
+            font-size: 18px;
+            line-height: 22px;
+            letter-spacing: 0.01em;
+            color: white;
+        }
+    }
+    &-action {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+        z-index: 1;
+    }
+    &-line {
+        transition: 1s;
+        position: absolute;
+        bottom: 5%;
+        width: 1920px;
+        height: 226px;
+        background: url("../assets/bg/line.png") no-repeat;
+        background-size: cover;
+        z-index: 0;
     }
 }
 .logo-trans {

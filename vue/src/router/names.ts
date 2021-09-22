@@ -1,8 +1,8 @@
 const names = {
-    Login:        "login",
-    LoginDefault: "loginDefault",
-    Auth:         "authorization",
-    Reg:          "registration",
+    LoginView:          "login",
+    AuthenticationView: "authorization",
+    RegistrationView:   "registration",
+    ProfileView:        "profile",
 } as const
 
 export default names

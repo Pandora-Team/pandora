@@ -16,14 +16,16 @@ export default class TransitionToTop extends Vue {}
 
 <style lang="scss">
 .top {
-    &-enter-active,
-    &-leave-active {
+    &-enter-active {
         transition: all 1s;
+    }
+    &-leave-active {
+        transition: all .5s;
     }
     &-enter,
     &-leave-to {
         opacity: 0;
-        transform: translateY(100px);
+        transform: translateY(100%);
     }
 }
 </style>

@@ -1,45 +1,50 @@
 <template>
-    <transition-to-top>
+    <transition-from-right>
         <div class="reg">
-            <h1>Регистрация</h1>
-            <base-form
-                :error="errorForm"
+            <div class="login-title">
+                <h1>Регистрация</h1>
+            </div>
+            <main-form
                 submit-text="Зарегистрироваться"
                 cancel-text="Назад"
                 @submit="submitForm"
                 @cancel="goToLogin"
             >
-                <base-form-item
-                    id="name"
-                    v-model="$v.name.$model"
-                    label="Имя и фамилия*"
-                    type="text"
-                    :error="errorNameInput"
-                />
-                <base-form-item
-                    id="phone"
-                    v-model="$v.phone.$model"
-                    label="Телефон*"
-                    type="text"
-                    :error="errorPhoneInput"
-                />
-                <base-form-item
-                    id="password"
-                    v-model="$v.password.$model"
-                    label="Пароль*"
-                    type="password"
-                    :error="errorPasswordInput"
-                />
-                <base-form-item
-                    id="repeatPassword"
-                    v-model="$v.repeatPassword.$model"
-                    label="Подтвердить пароль*"
-                    type="password"
-                    :error="errorRepeatPasswordInput"
-                />
-            </base-form>
+                <template #top>
+                    <main-form-item
+                        id="name"
+                        v-model="$v.name.$model"
+                        label="Имя и фамилия*"
+                        type="text"
+                        :error="errorNameInput"
+                    />
+                    <main-form-item
+                        id="phone"
+                        v-model="$v.phone.$model"
+                        label="Телефон*"
+                        type="text"
+                        :error="errorPhoneInput"
+                    />
+                </template>
+                <template #center>
+                    <main-form-item
+                        id="password"
+                        v-model="$v.password.$model"
+                        label="Пароль*"
+                        type="password"
+                        :error="errorPasswordInput"
+                    />
+                    <main-form-item
+                        id="repeatPassword"
+                        v-model="$v.repeatPassword.$model"
+                        label="Подтвердить пароль*"
+                        type="password"
+                        :error="errorRepeatPasswordInput"
+                    />
+                </template>
+            </main-form>
         </div>
-    </transition-to-top>
+    </transition-from-right>
 </template>
 
 <script lang="ts">
@@ -47,15 +52,16 @@
 import { Component, Vue } from "vue-property-decorator"
 import { create } from "@/api/users"
 import { maxLength, minLength, required, sameAs, numeric } from "vuelidate/lib/validators"
-import BaseFormItem from "@/components/BaseFormItem.vue"
-import BaseForm from "@/components/BaseForm.vue"
-import TransitionToTop from "@/components/TransitionToTop.vue"
+import MainFormItem from "@/components/MainFormItem.vue"
+import MainForm from "@/components/MainForm.vue"
+import TransitionFromRight from "@/components/transition/TransitionFromRight.vue"
+import paths from "@/router/paths"
 
 @Component({
     components: {
-        BaseForm,
-        BaseFormItem,
-        TransitionToTop,
+        MainForm,
+        MainFormItem,
+        TransitionFromRight,
     },
     validations: {
         name: {
@@ -77,7 +83,7 @@ import TransitionToTop from "@/components/TransitionToTop.vue"
         },
     },
 })
-export default class Reg extends Vue {
+export default class RegistrationView extends Vue {
 
     name = ""
     phone = ""
@@ -94,7 +100,6 @@ export default class Reg extends Vue {
             })
                 .then(res => {
                     console.log(res)
-                    this.prevStep()
                 })
                 .catch(error => {
                     console.error(error)
@@ -146,15 +151,8 @@ export default class Reg extends Vue {
         return ""
     }
 
-    get errorForm():string {
-        if(this.$v.$anyError) {
-            return "Форма содержит ошибки"
-        }
-        return ""
-    }
-
     goToLogin(): void {
-        this.$router.push(this.$mainPaths.Login)
+        this.$router.push(paths.LoginLayout)
     }
 }
 </script>

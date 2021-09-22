@@ -1,7 +1,9 @@
 const paths = {
-    Login: "/login",
-    Auth:  "/login/authorization",
-    Reg:   "/login/registration",
+    LoginLayout:        "/login",
+    AuthenticationView: "/login/authorization",
+    RegistrationView:   "/login/registration",
+    LkLayout:           "/lk",
+    ProfileView:        "/lk/profile",
 } as const
 
 export default paths

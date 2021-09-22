@@ -4,13 +4,12 @@
         :class="{ 'form__item--pb' : error }"
     >
         <label :for="id">{{ label }}</label>
-        <input
+        <main-input
             :id="id"
             :value="value"
             :type="type"
-            autocomplete="off"
-            @input="$emit('input', $event.target.value)"
-        >
+            @input="changeValue"
+        />
         <transition
             name="error"
             mode="out-in"
@@ -28,8 +27,13 @@
 <script lang="ts">
 
 import { Component, Vue, Prop } from "vue-property-decorator"
+import MainInput from "@/components/MainInput.vue"
 
-@Component({})
+@Component({
+    components: {
+        MainInput,
+    },
+})
 export default class BaseFormItem extends Vue {
 
     @Prop({ type: String, default: "" })
@@ -47,6 +51,10 @@ export default class BaseFormItem extends Vue {
     @Prop({ type: String, default: "" })
     readonly error!: string
 
+    changeValue(value: string): void {
+        this.$emit("input", value)
+    }
+
 }
 </script>
 
@@ -54,10 +62,14 @@ export default class BaseFormItem extends Vue {
 
     .form {
         &__item {
-            margin-bottom: 20px;
+            margin-bottom: 40px;
             padding-bottom: 0;
             transition: padding-bottom 1s;
             position: relative;
+            margin-right: 40px;
+            &:nth-last-of-type(1) {
+                margin-right: 0;
+            }
             &--pb {
                 padding-bottom: 16px;
             }

@@ -1,31 +1,34 @@
 <template>
-    <transition-to-top>
+    <transition-from-left>
         <div class="auth">
-            <h1>Авторизация</h1>
-            <base-form
-                :error="errorForm"
+            <div class="login-title">
+                <h1>Авторизация</h1>
+            </div>
+            <main-form
                 submit-text="Войти"
                 cancel-text="Назад"
                 @submit="submitForm"
                 @cancel="goToLogin"
             >
-                <base-form-item
-                    id="phone"
-                    v-model="$v.phone.$model"
-                    label="Телефон*"
-                    type="text"
-                    :error="errorPhoneInput"
-                />
-                <base-form-item
-                    id="password"
-                    v-model="$v.password.$model"
-                    label="Пароль*"
-                    type="password"
-                    :error="errorPasswordInput"
-                />
-            </base-form>
+                <template #top>
+                    <main-form-item
+                        id="phone"
+                        v-model="$v.phone.$model"
+                        label="Телефон*"
+                        type="text"
+                        :error="errorPhoneInput"
+                    />
+                    <main-form-item
+                        id="password"
+                        v-model="$v.password.$model"
+                        label="Пароль*"
+                        type="password"
+                        :error="errorPasswordInput"
+                    />
+                </template>
+            </main-form>
         </div>
-    </transition-to-top>
+    </transition-from-left>
 </template>
 
 <script lang="ts">
@@ -33,16 +36,17 @@
 import { Component, Vue } from "vue-property-decorator"
 import { auth } from "@/api/auth"
 import { required, minLength, maxLength, numeric } from "vuelidate/lib/validators"
-import BaseFormItem from "@/components/BaseFormItem.vue"
-import BaseForm from "@/components/BaseForm.vue"
-import TransitionToTop from "@/components/TransitionToTop.vue"
+import MainFormItem from "@/components/MainFormItem.vue"
+import MainForm from "@/components/MainForm.vue"
+import TransitionFromLeft from "@/components/transition/TransitionFromLeft.vue"
+import paths from "@/router/paths"
 
 
 @Component({
     components: {
-        BaseForm,
-        BaseFormItem,
-        TransitionToTop,
+        MainForm,
+        MainFormItem,
+        TransitionFromLeft,
     },
     validations: {
         phone: {
@@ -57,7 +61,7 @@ import TransitionToTop from "@/components/TransitionToTop.vue"
         },
     },
 })
-export default class Auth extends Vue {
+export default class AuthenticationView extends Vue {
     phone = ""
     password = ""
     loading = false
@@ -106,15 +110,8 @@ export default class Auth extends Vue {
         return ""
     }
 
-    get errorForm():string {
-        if(this.$v.$anyError) {
-            return "Форма содержит ошибки"
-        }
-        return ""
-    }
-
     goToLogin(): void {
-        this.$router.push(this.$mainPaths.Login)
+        this.$router.push(paths.LoginLayout)
     }
 }
 </script>
