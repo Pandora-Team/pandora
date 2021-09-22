@@ -71,7 +71,7 @@ export default class Login extends Vue {
     &-body {
         overflow: hidden;
         transition: 1s;
-        background: #17171E;
+        background: #111227 url("../assets/bg/bg-login-center.png");
         width: 50%;
         position: relative;
         min-height: 100vh;
