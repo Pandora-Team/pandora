@@ -1,8 +1,8 @@
 <template>
     <transition
-        name="top"
+        name="right"
         appear
-        mode="out-in"
+        mode="in-out"
     >
         <slot />
     </transition>
@@ -11,11 +11,11 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator"
 @Component({})
-export default class TransitionToTop extends Vue {}
+export default class TransitionFromRight extends Vue {}
 </script>
 
 <style lang="scss">
-.top {
+.right {
     &-enter-active {
         transition: all 1s;
     }
@@ -25,7 +25,11 @@ export default class TransitionToTop extends Vue {}
     &-enter,
     &-leave-to {
         opacity: 0;
-        transform: translateY(100%);
+        transform: translateX(100%);
+    }
+    &-leave-to {
+    opacity: 0;
+    transform: translateY(100%);
     }
 }
 </style>

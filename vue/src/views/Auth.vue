@@ -1,5 +1,5 @@
 <template>
-    <transition-to-top>
+    <transition-from-left>
         <div class="auth">
             <div class="login-title">
                 <h1>Авторизация</h1>
@@ -29,7 +29,7 @@
                 </template>
             </main-form>
         </div>
-    </transition-to-top>
+    </transition-from-left>
 </template>
 
 <script lang="ts">
@@ -39,7 +39,7 @@ import { auth } from "@/api/auth"
 import { required, minLength, maxLength, numeric } from "vuelidate/lib/validators"
 import MainFormItem from "@/components/MainFormItem.vue"
 import MainForm from "@/components/MainForm.vue"
-import TransitionToTop from "@/components/TransitionToTop.vue"
+import TransitionFromLeft from "@/components/TransitionFromLeft.vue"
 import paths from "@/router/paths"
 
 
@@ -47,7 +47,7 @@ import paths from "@/router/paths"
     components: {
         MainForm,
         MainFormItem,
-        TransitionToTop,
+        TransitionFromLeft,
     },
     validations: {
         phone: {

@@ -1,5 +1,5 @@
 <template>
-    <transition-to-top>
+    <transition-from-right>
         <div class="reg">
             <div class="login-title">
                 <h1>Регистрация</h1>
@@ -45,7 +45,7 @@
                 </template>
             </main-form>
         </div>
-    </transition-to-top>
+    </transition-from-right>
 </template>
 
 <script lang="ts">
@@ -55,14 +55,14 @@ import { create } from "@/api/users"
 import { maxLength, minLength, required, sameAs, numeric } from "vuelidate/lib/validators"
 import MainFormItem from "@/components/MainFormItem.vue"
 import MainForm from "@/components/MainForm.vue"
-import TransitionToTop from "@/components/TransitionToTop.vue"
+import TransitionFromRight from "@/components/TransitionFromRight.vue"
 import paths from "@/router/paths"
 
 @Component({
     components: {
         MainForm,
         MainFormItem,
-        TransitionToTop,
+        TransitionFromRight,
     },
     validations: {
         name: {
