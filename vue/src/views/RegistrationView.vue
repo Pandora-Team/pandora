@@ -1,16 +1,23 @@
 <template>
-    <transition-from-left>
-        <div class="auth">
+    <transition-from-right>
+        <div class="reg">
             <div class="login-title">
-                <h1>Авторизация</h1>
+                <h1>Регистрация</h1>
             </div>
             <main-form
-                submit-text="Войти"
+                submit-text="Зарегистрироваться"
                 cancel-text="Назад"
                 @submit="submitForm"
                 @cancel="goToLogin"
             >
                 <template #top>
+                    <main-form-item
+                        id="name"
+                        v-model="$v.name.$model"
+                        label="Имя и фамилия*"
+                        type="text"
+                        :error="errorNameInput"
+                    />
                     <main-form-item
                         id="phone"
                         v-model="$v.phone.$model"
@@ -18,6 +25,8 @@
                         type="text"
                         :error="errorPhoneInput"
                     />
+                </template>
+                <template #center>
                     <main-form-item
                         id="password"
                         v-model="$v.password.$model"
@@ -25,30 +34,39 @@
                         type="password"
                         :error="errorPasswordInput"
                     />
+                    <main-form-item
+                        id="repeatPassword"
+                        v-model="$v.repeatPassword.$model"
+                        label="Подтвердить пароль*"
+                        type="password"
+                        :error="errorRepeatPasswordInput"
+                    />
                 </template>
             </main-form>
         </div>
-    </transition-from-left>
+    </transition-from-right>
 </template>
 
 <script lang="ts">
 
 import { Component, Vue } from "vue-property-decorator"
-import { auth } from "@/api/auth"
-import { required, minLength, maxLength, numeric } from "vuelidate/lib/validators"
+import { create } from "@/api/users"
+import { maxLength, minLength, required, sameAs, numeric } from "vuelidate/lib/validators"
 import MainFormItem from "@/components/MainFormItem.vue"
 import MainForm from "@/components/MainForm.vue"
-import TransitionFromLeft from "@/components/TransitionFromLeft.vue"
+import TransitionFromRight from "@/components/transition/TransitionFromRight.vue"
 import paths from "@/router/paths"
-
 
 @Component({
     components: {
         MainForm,
         MainFormItem,
-        TransitionFromLeft,
+        TransitionFromRight,
     },
     validations: {
+        name: {
+            required,
+        },
         phone: {
             required,
             numeric,
@@ -59,29 +77,42 @@ import paths from "@/router/paths"
             required,
             minLength: minLength(6),
         },
+        repeatPassword: {
+            required,
+            sameAsPassword: sameAs("password"),
+        },
     },
 })
-export default class Auth extends Vue {
+export default class RegistrationView extends Vue {
+
+    name = ""
     phone = ""
     password = ""
+    repeatPassword = ""
     loading = false
 
-    submitForm() : void {
-        if (!this.$v.$invalid) {
-            auth({
-                phone: this.phone,
+    submitForm(): void {
+        if(!this.$v.$invalid) {
+            create({
                 pass:  this.password,
+                name:  this.name,
+                phone: this.phone,
             })
                 .then(res => {
-                    const token = res.data.access_token
-                    localStorage.setItem("at", token)
-                    this.$router.push({ name: "lk" })
+                    console.log(res)
                 })
                 .catch(error => {
                     console.error(error)
                 })
                 .finally(() => (this.loading = false))
         }
+    }
+
+    get errorNameInput(): string {
+        if(this.$v.name.$dirty && !this.$v.name.required) {
+            return "Обязательно для заполнения"
+        }
+        return ""
     }
 
     get errorPhoneInput(): string {
@@ -110,8 +141,18 @@ export default class Auth extends Vue {
         return ""
     }
 
+    get errorRepeatPasswordInput(): string {
+        if(this.$v.repeatPassword.$dirty && !this.$v.repeatPassword.required) {
+            return "Обязательно для заполнения"
+        }
+        if(this.$v.repeatPassword.$dirty && !this.$v.repeatPassword.sameAsPassword) {
+            return "Пароли не совпадают"
+        }
+        return ""
+    }
+
     goToLogin(): void {
-        this.$router.push(paths.Login)
+        this.$router.push(paths.LoginLayout)
     }
 }
 </script>

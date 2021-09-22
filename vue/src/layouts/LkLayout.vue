@@ -12,7 +12,7 @@
 import { Component, Vue } from "vue-property-decorator"
 
 @Component({})
-export default class Lk extends Vue {
+export default class LkLayout extends Vue {
 
 }
 </script>

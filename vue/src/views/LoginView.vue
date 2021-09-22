@@ -12,13 +12,13 @@
             <div class="login-action">
                 <main-btn
                     type="link"
-                    :url="$mainPaths.Auth"
+                    :url="$mainPaths.AuthenticationView"
                 >
                     Авторизация
                 </main-btn>
                 <main-btn
                     type="link"
-                    :url="$mainPaths.Reg"
+                    :url="$mainPaths.RegistrationView"
                 >
                     Регистрация
                 </main-btn>
@@ -29,7 +29,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator"
-import TransitionToTop from "@/components/TransitionToTop.vue"
+import TransitionToTop from "@/components/transition/TransitionToTop.vue"
 import MainBtn from "@/components/MainBtn.vue"
 @Component({
     components: {
@@ -37,7 +37,7 @@ import MainBtn from "@/components/MainBtn.vue"
         MainBtn,
     },
 })
-export default class LoginDefault extends Vue {}
+export default class LoginView extends Vue {}
 </script>
 
 <style lang="scss">

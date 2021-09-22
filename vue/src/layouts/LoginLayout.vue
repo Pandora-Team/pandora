@@ -34,22 +34,22 @@ import { Route } from "vue-router"
 import names from "@/router/names"
 
 @Component({})
-export default class Login extends Vue {
+export default class LoginLayout extends Vue {
 
     auth = false
     reg = false
 
     @Watch("$route", { immediate: true, deep: true })
     onRouteChange(route: Route): void {
-        if(route.name === names.LoginDefault) {
+        if(route.name === names.LoginView) {
             this.auth = false
             this.reg = false
         }
-        if(route.name === names.Reg) {
+        if(route.name === names.RegistrationView) {
             this.auth = false
             this.reg = true
         }
-        if(route.name === names.Auth) {
+        if(route.name === names.AuthenticationView) {
             this.reg = false
             this.auth = true
         }
