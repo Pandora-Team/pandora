@@ -32,6 +32,7 @@ export default class MainBtn extends Vue {
 
 <style lang="scss">
     .btn--main {
+        min-width: 264px;
         color: $color-text-main-btn;
         background: $gradient-main-btn;
     }

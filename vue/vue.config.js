@@ -22,8 +22,8 @@ if (isProduction) {
 }
 
 module.exports = {
-    publicPath: "./",
-    lintOnSave: true,
+    publicPath:       "/",
+    lintOnSave:       true,
     configureWebpack: {
         devtool: "source-map",
         resolve: {
