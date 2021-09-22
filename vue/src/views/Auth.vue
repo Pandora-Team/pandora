@@ -40,6 +40,7 @@ import { required, minLength, maxLength, numeric } from "vuelidate/lib/validator
 import MainFormItem from "@/components/MainFormItem.vue"
 import MainForm from "@/components/MainForm.vue"
 import TransitionToTop from "@/components/TransitionToTop.vue"
+import paths from "@/router/paths"
 
 
 @Component({
@@ -118,7 +119,7 @@ export default class Auth extends Vue {
     }
 
     goToLogin(): void {
-        this.$router.push(this.$mainPaths.Login)
+        this.$router.push(paths.Login)
     }
 }
 </script>

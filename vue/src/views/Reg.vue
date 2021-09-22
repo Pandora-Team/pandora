@@ -56,6 +56,7 @@ import { maxLength, minLength, required, sameAs, numeric } from "vuelidate/lib/v
 import MainFormItem from "@/components/MainFormItem.vue"
 import MainForm from "@/components/MainForm.vue"
 import TransitionToTop from "@/components/TransitionToTop.vue"
+import paths from "@/router/paths"
 
 @Component({
     components: {
@@ -100,7 +101,6 @@ export default class Reg extends Vue {
             })
                 .then(res => {
                     console.log(res)
-                    this.prevStep()
                 })
                 .catch(error => {
                     console.error(error)
@@ -160,7 +160,7 @@ export default class Reg extends Vue {
     }
 
     goToLogin(): void {
-        this.$router.push(this.$mainPaths.Login)
+        this.$router.push(paths.Login)
     }
 }
 </script>
