@@ -8,6 +8,7 @@ import RegistrationView from "@/views/RegistrationView.vue"
 import AuthenticationView from "@/views/AuthenticationView.vue"
 import LkLayout from "@/layouts/LkLayout.vue"
 import ProfileView from "@/views/ProfileView.vue"
+import PolicyView from "@/views/PolicyView.vue"
 
 Vue.use(VueRouter)
 
@@ -43,6 +44,11 @@ const routes: RouteConfig[] = [
                 component: RegistrationView,
             },
         ],
+    },
+    {
+        path:      paths.PolicyView,
+        name:      names.PolicyView,
+        component: PolicyView,
     },
     {
         path:     "*",
