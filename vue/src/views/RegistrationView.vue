@@ -43,6 +43,15 @@
                     />
                 </template>
             </main-form>
+            <p class="privacy">
+                Нажимая на кнопку Зарегистрироваться, вы подтверждаете, что согласны с
+                <a
+                    :href="$mainPaths.PolicyView"
+                    target="_blank"
+                >
+                    Политикой конфиденциальности
+                </a>
+            </p>
         </div>
     </transition-from-right>
 </template>
@@ -158,5 +167,15 @@ export default class RegistrationView extends Vue {
 </script>
 
 <style lang="scss">
-
+    .privacy {
+        max-width: 560px;
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        color: white;
+        line-height: 1.5;
+        a {
+            color: white;
+        }
+    }
 </style>

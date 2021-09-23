@@ -63,10 +63,11 @@ export default class BaseForm extends Vue {
 .form {
     position: relative;
     transition: 1s;
+    margin-bottom: 30px;
     &-row {
         display: flex;
-        justify-content: space-between;
-        &:nth-last-of-type(1) {
+        justify-content: center;
+        &:nth-of-type(3) {
             margin-bottom: 30px;
         }
     }
