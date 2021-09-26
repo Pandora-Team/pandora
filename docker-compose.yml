@@ -1,38 +1,41 @@
 version: '3.8'
 
 volumes:
-  mongo-volume:
-    external: true
+  data:
 
 services:
   api:
-    restart: unless-stopped
     build: ./nest/
+    restart: unless-stopped
     environment:
       - MONGODB_URI=${MONGODB_URI}
       - JWT_SECRET=${JWT_SECRET}
       - JWT_EXPIRES_IN=${JWT_EXPIRES_IN}
-      - PORT=${NEST_PORT}
+      - PANDORA_API_PORT=${PANDORA_API_PORT}
     ports:
-      - ${NEST_PORT}:${NEST_PORT}
+      - ${PANDORA_API_PORT}:${PANDORA_API_PORT}
     depends_on:
       - db
 
   db:
-    image: 'mongo:4.4'
+    image: mongo:4.
     restart: unless-stopped
     environment:
       - MONGO_INITDB_DATABASE=${MONGO_DATABASE}
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USERNAME}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
     ports:
-      - '27017:27017'
-      - '28017:28017'
+      - 27017:27017
+      - 28017:28017
     volumes:
-      - mongo-volume:/data/db
+      - type: volume
+        source: data
+        target: /data/db
 
   web:
-    restart: unless-stopped
     build: ./vue/
+    restart: unless-stopped
+    environment:
+      PANDORA_API_URL=http://api:${PANDORA_API_PORT}
     ports:
-      - '80:80'
+      - 8000:80
