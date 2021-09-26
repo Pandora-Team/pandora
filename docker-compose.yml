@@ -35,6 +35,6 @@ services:
     build: ./vue/
     restart: unless-stopped
     environment:
-      PANDORA_API_URL=http://api:${PANDORA_API_PORT}
+      API_URL=http://api:${PANDORA_API_PORT}
     ports:
       - 8000:80
