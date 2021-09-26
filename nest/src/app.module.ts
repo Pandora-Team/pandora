@@ -18,7 +18,7 @@ import {JwtModule} from "@nestjs/jwt";
     ServeStaticModule.forRoot({
       rootPath: path.resolve(__dirname, 'static'),
     }),
-    MongooseModule.forRoot(process.env.MONGODB_URI),
+    MongooseModule.forRoot(process.env.DB_URI),
     AuthModule,
     UsersModule,
     EventsModule,
