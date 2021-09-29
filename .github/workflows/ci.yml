@@ -10,4 +10,4 @@ jobs:
         with:
           context: ./vue
           push: false
-          tags: user/web:${{ env.GITHUB_RUN_ID }}
+          tags: user/web:${{ github.run_number }}
