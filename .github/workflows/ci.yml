@@ -4,12 +4,22 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      -
+        name: Checkout
         uses: actions/checkout@v2
-      - name: Build 'web'
+      -
+        name: Build 'web'
         id: build_web
         uses: docker/build-push-action@v2
         with:
           context: ./vue
           push: false
           tags: user/web:${{ github.run_number }}
+      -
+        name: Build 'api'
+        id: build_web
+        uses: docker/build-push-action@v2
+        with:
+          context: ./nest
+          push: false
+          tags: user/api:${{ github.run_number }}
