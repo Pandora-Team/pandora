@@ -20,7 +20,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./vue
-          push: false
+          push: true
           tags: ${{ secrets.registry_host }}/lib/web:${{ github.run_number }}
       -
         name: Build 'api'
@@ -28,5 +28,5 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./nest
-          push: false
+          push: true
           tags: ${{ secrets.registry_host }}/lib/api:${{ github.run_number }}
