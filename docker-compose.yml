@@ -6,7 +6,7 @@ volumes:
 
 services:
   web:
-    image: ${PANDORA_IMAGES_PREFIX}web:${GITHUB_RUN_ID}
+    image: ${PANDORA_IMAGES_PREFIX}web:dev
     build: ./vue/
     restart: unless-stopped
     environment:
@@ -15,7 +15,7 @@ services:
       - ${PANDORA_WEB_PORT}:80
 
   api:
-    image: ${PANDORA_IMAGES_PREFIX}api:${GITHUB_RUN_ID}
+    image: ${PANDORA_IMAGES_PREFIX}api:dev
     build: ./nest/
     restart: unless-stopped
     environment:
