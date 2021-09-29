@@ -1,0 +1,13 @@
+name: ci
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build web
+        id: build_web
+        uses: docker/build-push-action@v2
+        with:
+          context: ./vue
+          push: false
+          tags: user/web:$GITHUB_RUN_ID
