@@ -4,7 +4,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Build web
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build 'web'
         id: build_web
         uses: docker/build-push-action@v2
         with:
