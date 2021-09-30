@@ -1,7 +1,7 @@
 version: '3.8'
 
 volumes:
-  data:
+  pandora-data:
     external: true
 
 services:
@@ -39,5 +39,5 @@ services:
       - ${PANDORA_DB_PORT}:27017
     volumes:
       - type: volume
-        source: data
+        source: pandora-data
         target: /data/db
