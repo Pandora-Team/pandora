@@ -39,7 +39,7 @@ jobs:
           mkdir -v ~/.ssh 
           chmod -v 700 ~/.ssh
           echo "$DEPLOY_TARGET_IDENTITY" > ~/.ssh/known_hosts
-          echo "$DEPLOY_TARGET_KEY" > ~/.ssh/id_rsa
+          echo "$DEPLOY_TARGET_KEY" > ~/.ssh/id_ed25519
           chmod -v 600 ~/.ssh/*
         env:
           DEPLOY_TARGET_IDENTITY: ${{ secrets.deploy_target_identity }}
