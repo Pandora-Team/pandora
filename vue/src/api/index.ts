@@ -10,7 +10,7 @@ const cache : ISetupCache = setupCache({
 })
 
 const api = axios.create({
-    baseURL:         process.env.API_URL,
+    baseURL:         process.env.API_URI,
     withCredentials: true,
     adapter:         cache.adapter,
 })
