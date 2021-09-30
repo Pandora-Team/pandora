@@ -1,5 +1,10 @@
 name: ci
-on: [push]
+
+on:
+  push:
+    branches:
+      - main  # TODO: make branch 'release'
+
 jobs:
 
   build:
