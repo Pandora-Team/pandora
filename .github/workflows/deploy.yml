@@ -30,7 +30,7 @@ jobs:
                   "docker-compose --project-name pandora --file - $@"
           }
           remote_docker_compose pull
-          remote_docker_compose up --detach
+          remote_docker_compose up --no-build --detach
         env:
           DEPLOY_TARGET_USER: ${{ secrets.deploy_target_user }}
           DEPLOY_TARGET_HOST: ${{ secrets.deploy_target_host }}
