@@ -26,7 +26,7 @@ jobs:
             | ssh \
                 -T "$DEPLOY_TARGET_USER@$DEPLOY_TARGET_HOST" \
                 -p "$DEPLOY_TARGET_PORT" \
-                "docker-compose --project-name pandora --file - up --detach"
+                "env $(cat ~/.env | xargs) docker-compose --project-name pandora --file - up --detach"
         env:
           DEPLOY_TARGET_USER: ${{ secrets.deploy_target_user }}
           DEPLOY_TARGET_HOST: ${{ secrets.deploy_target_host }}
