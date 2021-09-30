@@ -1,0 +1,31 @@
+name: ci
+on: [push]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - 
+        name: Create SSH key
+        shell: bash
+        run: |
+          mkdir ~/.ssh 
+          chmod 700 ~/.ssh
+          cp $DEPLOY_TARGET_IDENTITY ~/.ssh/known_hosts
+          cp $DEPLOY_TARGET_KEY ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/*
+        env:
+          DEPLOY_TARGET_IDENTITY: ${{ secrets.deploy_target_identity }}
+          DEPLOY_TARGET_KEY: ${{ secrets.deploy_target_key }}
+      - 
+        name: SSH into the Production Server
+        shell: bash
+        run: |
+          ssh $DEPLOY_TARGET_USER@$DEPLOY_TARGET_HOST -p $DEPLOY_TARGET_PORT 'hostname'
+        env:
+          DEPLOY_TARGET_USER: ${{ secrets.deploy_target_user }}
+          DEPLOY_TARGET_HOST: ${{ secrets.deploy_target_host }}
+          DEPLOY_TARGET_PORT: ${{ secrets.deploy_target_port }}
+      -
+        name: Destroy SSH key
+        shell: bash
+        run: shred -u ~/.ssh/*
