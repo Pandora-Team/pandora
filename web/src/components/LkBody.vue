@@ -1,7 +1,9 @@
 <template>
     <div class="body">
         <lk-header />
-        <router-view />
+        <div class="body-wrapper">
+            <router-view />
+        </div>
     </div>
 </template>
 
@@ -21,5 +23,13 @@ export default class LkBody extends Vue {
 </script>
 
 <style lang="scss">
-
+    .body {
+        width: 100%;
+        margin: 40px;
+        background: #FFFFFF;
+        border-radius: 40px;
+        &-wrapper {
+            padding: 40px;
+        }
+    }
 </style>

@@ -37,8 +37,7 @@ export default class LkLayout extends Vue {
         background-position: left bottom;
         background-size: 280px 234px;
         &-aside {
-            margin-right: 90px;
-            min-width: 300px;
+            min-width: 260px;
         }
     }
 </style>
