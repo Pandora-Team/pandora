@@ -9,4 +9,4 @@ FROM node:lts-alpine
 RUN npm install -g http-server
 EXPOSE 8080
 COPY --from=build /app/dist /app
-CMD [ "http-server", "/app" ]
+CMD [ "http-server", "/app", "--proxy", "http://localhost:8080?" ]
