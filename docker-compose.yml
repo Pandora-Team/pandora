@@ -12,7 +12,7 @@ services:
     environment:
       - API_URI=${PANDORA_API_SCHEME}://${PANDORA_API_HOST}:${PANDORA_API_PORT}
     ports:
-      - ${PANDORA_WEB_PORT}:8080
+      - 127.0.0.1:${PANDORA_WEB_PORT}:8080
 
   api:
     image: ${PANDORA_IMAGES_PREFIX}api:${PANDORA_IMAGES_TAG}
@@ -24,7 +24,7 @@ services:
       - JWT_EXPIRES_IN=${PANDORA_JWT_EXPIRES_IN}
       - API_PORT=${PANDORA_API_PORT}
     ports:
-      - ${PANDORA_API_PORT}:${PANDORA_API_PORT}
+      - 127.0.0.1:${PANDORA_API_PORT}:${PANDORA_API_PORT}
     depends_on:
       - db
 
