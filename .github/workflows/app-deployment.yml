@@ -1,9 +1,9 @@
-name: ci
-
 on:
   push:
     branches:
-      - main  # TODO: make branch 'release'
+      - main
+    paths:
+      - '!server/**'
 
 jobs:
 
@@ -57,9 +57,9 @@ jobs:
         run: |
           remote_docker_compose() {
             cat "$GITHUB_WORKSPACE/docker-compose.yml" \
-              | ssh \
-                  -T "ci@$DEPLOY_TARGET_HOST" \
-                  -p "$DEPLOY_TARGET_PORT" \
+              | ssh -T \
+                  ci@$DEPLOY_TARGET_HOST \
+                  -p $DEPLOY_TARGET_PORT \
                   "PANDORA_IMAGES_TAG=$TAG docker-compose --project-name pandora --file - $@"
           }
           remote_docker_compose pull --quiet

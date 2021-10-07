@@ -1,0 +1,47 @@
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'server/**'
+      - '.github/workflows/server-config-update.yml'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Put SSH key
+        shell: bash
+        run: |
+          mkdir -v ~/.ssh 
+          chmod -v 700 ~/.ssh
+          echo "$DEPLOY_TARGET_IDENTITY" > ~/.ssh/known_hosts
+          echo "$DEPLOY_TARGET_KEY" > ~/.ssh/id_ed25519
+          chmod -v 600 ~/.ssh/*
+        env:
+          DEPLOY_TARGET_IDENTITY: ${{ secrets.deploy_target_identity }}
+          DEPLOY_TARGET_KEY: ${{ secrets.deploy_target_key }}
+      -
+        uses: actions/checkout@v2
+      -
+        name: Update server configuration
+        shell: bash
+        run: |
+          cat "$GITHUB_WORKSPACE/server/nginx.conf" \
+            | ssh -T \
+                ci@$DEPLOY_TARGET_HOST \
+                -p $DEPLOY_TARGET_PORT \
+                "env \$(cat /home/ci/.env | xargs) envsubst '\$PANDORA_WEB_PORT\$PANDORA_API_PORT' > /etc/nginx/sites-enabled/pandora"
+          ssh -T \
+              ci@$DEPLOY_TARGET_HOST \
+              -p $DEPLOY_TARGET_PORT \
+              "sudo nginx -t && sudo nginx -s reload"
+        env:
+          DEPLOY_TARGET_HOST: ${{ secrets.deploy_target_host }}
+          DEPLOY_TARGET_PORT: ${{ secrets.deploy_target_port }}
+          TAG: ${{ github.run_number }}
+      -
+        name: Destroy SSH key
+        shell: bash
+        run: shred -u ~/.ssh/*
