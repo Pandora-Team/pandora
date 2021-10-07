@@ -32,14 +32,11 @@ jobs:
                   -p $DEPLOY_TARGET_PORT \
                   "env \$(cat /home/ci/.env | xargs) envsubst '\$PANDORA_WEB_PORT\$PANDORA_API_PORT' > $2"
           }
-          put_file 'server/nginx.conf' '/home/ci/new-nginx.conf'
-          scp -P $DEPLOY_TARGET_PORT \
-              $GITHUB_WORKSPACE/install-nginx-conf.sh \
-              ci@$DEPLOY_TARGET_HOST:/home/ci/install-nginx-conf.sh
+          put_file 'server/nginx.conf' '/etc/nginx/sites-enabled/pandora'
           ssh -T \
               ci@$DEPLOY_TARGET_HOST \
               -p $DEPLOY_TARGET_PORT \
-              "chmod +x /home/ci/install-nginx-conf.sh"
+              "sudo nginx -t && sudo nginx -s reload"
         env:
           DEPLOY_TARGET_HOST: ${{ secrets.deploy_target_host }}
           DEPLOY_TARGET_PORT: ${{ secrets.deploy_target_port }}
