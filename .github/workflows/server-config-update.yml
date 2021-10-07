@@ -30,7 +30,7 @@ jobs:
               | ssh -T \
                   "ci@$DEPLOY_TARGET_HOST" \
                   -p "$DEPLOY_TARGET_PORT" \
-                  "env \$(cat .env | xargs) envsubst > $2"
+                  "env \$(cat .env | xargs) envsubst '$PANDORA_WEB_PORT$PANDORA_API_PORT' > $2"
           }
           put_file 'server/nginx.conf' '~/test-ci.conf'
         env:
