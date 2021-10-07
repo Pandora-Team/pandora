@@ -1,9 +1,9 @@
-name: ci
-
 on:
   push:
     branches:
-      - main  # TODO: make branch 'release'
+      - main
+    paths:
+      - '!server/**'
 
 jobs:
 

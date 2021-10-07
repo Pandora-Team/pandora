@@ -1,0 +1,43 @@
+on: push
+  # push:
+  #   paths:
+  #     - 'server/**'
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Put SSH key
+        shell: bash
+        run: |
+          mkdir -v ~/.ssh 
+          chmod -v 700 ~/.ssh
+          echo "$DEPLOY_TARGET_IDENTITY" > ~/.ssh/known_hosts
+          echo "$DEPLOY_TARGET_KEY" > ~/.ssh/id_ed25519
+          chmod -v 600 ~/.ssh/*
+        env:
+          DEPLOY_TARGET_IDENTITY: ${{ secrets.deploy_target_identity }}
+          DEPLOY_TARGET_KEY: ${{ secrets.deploy_target_key }}
+      -
+        uses: actions/checkout@v2
+      -
+        name: Deploy
+        shell: bash
+        run: |
+          put_file() {
+            cat "$GITHUB_WORKSPACE/$1" \
+              | ssh \
+                  -T "ci@$DEPLOY_TARGET_HOST" \
+                  -p "$DEPLOY_TARGET_PORT" \
+                  "env $(cat .env | xargs) envsubst > $2"
+          }
+          put_file server/nginx.conf ~/test-ci.conf
+        env:
+          DEPLOY_TARGET_HOST: ${{ secrets.deploy_target_host }}
+          DEPLOY_TARGET_PORT: ${{ secrets.deploy_target_port }}
+          TAG: ${{ github.run_number }}
+      -
+        name: Destroy SSH key
+        shell: bash
+        run: shred -u ~/.ssh/*
