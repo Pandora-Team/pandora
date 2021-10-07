@@ -27,12 +27,12 @@ jobs:
         run: |
           put_file() {
             cat "$GITHUB_WORKSPACE/$1" \
-              | ssh \
-                  -T "ci@$DEPLOY_TARGET_HOST" \
+              | ssh -T \
+                  "ci@$DEPLOY_TARGET_HOST" \
                   -p "$DEPLOY_TARGET_PORT" \
                   "env $(cat .env | xargs) envsubst > $2"
           }
-          put_file server/nginx.conf ~/test-ci.conf
+          put_file 'server/nginx.conf' '~/test-ci.conf'
         env:
           DEPLOY_TARGET_HOST: ${{ secrets.deploy_target_host }}
           DEPLOY_TARGET_PORT: ${{ secrets.deploy_target_port }}
