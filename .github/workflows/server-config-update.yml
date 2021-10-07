@@ -25,12 +25,13 @@ jobs:
         name: Deploy
         shell: bash
         run: |
+          expand_vars='$PANDORA_WEB_PORT$PANDORA_API_PORT'
           put_file() {
             cat "$GITHUB_WORKSPACE/$1" \
               | ssh -T \
                   "ci@$DEPLOY_TARGET_HOST" \
                   -p "$DEPLOY_TARGET_PORT" \
-                  "env \$(cat .env | xargs) envsubst '$PANDORA_WEB_PORT$PANDORA_API_PORT' > $2"
+                  "env \$(cat /home/ci/.env | xargs) envsubst $expand_vars > $2"
           }
           put_file 'server/nginx.conf' '~/test-ci.conf'
         env:
