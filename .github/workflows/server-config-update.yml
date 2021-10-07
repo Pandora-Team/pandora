@@ -1,7 +1,8 @@
 on: push
-  # push:
-  #   paths:
-  #     - 'server/**'
+  push:
+    paths:
+      - 'server/**'
+      - '.github/workflows/server-config-update.yml'
 
 jobs:
   deploy:
@@ -25,14 +26,11 @@ jobs:
         name: Deploy
         shell: bash
         run: |
-          put_file() {
-            cat "$GITHUB_WORKSPACE/$1" \
-              | ssh -T \
-                  ci@$DEPLOY_TARGET_HOST \
-                  -p $DEPLOY_TARGET_PORT \
-                  "env \$(cat /home/ci/.env | xargs) envsubst '\$PANDORA_WEB_PORT\$PANDORA_API_PORT' > $2"
-          }
-          put_file 'server/nginx.conf' '/etc/nginx/sites-enabled/pandora'
+          cat "$GITHUB_WORKSPACE/server/nginx.conf" \
+            | ssh -T \
+                ci@$DEPLOY_TARGET_HOST \
+                -p $DEPLOY_TARGET_PORT \
+                "env \$(cat /home/ci/.env | xargs) envsubst '\$PANDORA_WEB_PORT\$PANDORA_API_PORT' > /etc/nginx/sites-enabled/pandora"
           ssh -T \
               ci@$DEPLOY_TARGET_HOST \
               -p $DEPLOY_TARGET_PORT \
