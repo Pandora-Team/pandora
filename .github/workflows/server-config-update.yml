@@ -3,8 +3,8 @@ on: push
   #   paths:
   #     - 'server/**'
 
+jobs:
   deploy:
-    needs: build
     runs-on: ubuntu-latest
     steps:
       -
