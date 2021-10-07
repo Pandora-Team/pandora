@@ -1,5 +1,7 @@
 on:
   push:
+    branches:
+      - main
     paths:
       - 'server/**'
       - '.github/workflows/server-config-update.yml'
@@ -23,7 +25,7 @@ jobs:
       -
         uses: actions/checkout@v2
       -
-        name: Deploy
+        name: Update server configuration
         shell: bash
         run: |
           cat "$GITHUB_WORKSPACE/server/nginx.conf" \
