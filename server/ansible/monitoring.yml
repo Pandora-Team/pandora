@@ -1,0 +1,49 @@
+---
+- hosts: pandora
+  user: admin
+  tasks:
+    - name: grafana volumes exist
+      docker_volume:
+        name: "{{ item }}"
+      with_items:
+        - grafana-config
+        - grafana-storage
+
+    - name: actual grafana config is in the volume
+      command:
+        cmd: docker run --rm -iv grafana-config:/v busybox sh -c 'cat > /v/grafana.ini'
+        stdin: "{{ lookup('template', 'grafana.ini.j2') | regex_replace('\\r\\n', '\\n') }}"
+
+    - name: got grafana container info
+      docker_container_info:
+        name: grafana
+      register: grafana_container
+
+    - name: remove existing grafana container
+      docker_container:
+        name: grafana
+        state: absent
+      when: grafana_container.exists
+
+    - name: grafana up
+      docker_compose:
+        project_name: grafana
+        pull: yes
+        definition:
+          version: '3.8'
+          services:
+            app:
+              image: grafana/grafana
+              container_name: grafana
+              ports: [ "127.0.0.1:3000:3000" ]
+              restart: unless-stopped
+              volumes:
+                - grafana-config:/etc/grafana
+                - grafana-storage:/var/lib/grafana
+          volumes:
+            grafana-config:
+              name: grafana-config
+              external: true
+            grafana-storage:
+              name: grafana-storage
+              external: true
