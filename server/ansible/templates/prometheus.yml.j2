@@ -1,0 +1,14 @@
+# {{ ansible_managed }}
+# Example: https://github.com/prometheus/prometheus/blob/master/documentation/examples/prometheus.yml
+
+global:
+  scrape_interval: 30s
+
+scrape_configs:
+  - job_name: server
+    static_configs:
+      - targets:
+        - localhost:9090  # prometheus
+        - host.docker.internal:{{ node_exporter_port }}  # system
+        - cadvisor:8080  # docker
+        - nginx-exporter:9113  # nginx

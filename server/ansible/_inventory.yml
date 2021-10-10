@@ -1,0 +1,5 @@
+all:
+  hosts:
+    pandora:  # defiend in ~/.ssh/config
+      ansible_python_interpreter: /usr/bin/python3
+      monitoring_network_name: monitoring
