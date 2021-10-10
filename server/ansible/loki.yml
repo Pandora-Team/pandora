@@ -50,3 +50,48 @@
       tags: loki-service
 
 
+
+
+    - name: actual promtail config is in the volume
+      command:
+        cmd: docker run --rm -iv promtail-config:/v busybox sh -c 'cat > /v/config.yml'
+        stdin: "{{ lookup('template', 'promtail-config.yml.j2') | regex_replace('\\r\\n', '\\n') }}"
+      tags: promtail-service
+
+    - name: got promtail container info
+      docker_container_info:
+        name: promtail
+      register: promtail_container
+      tags: promtail-service
+
+    - name: remove existing promtail container
+      docker_container:
+        name: promtail
+        state: absent
+      when: promtail_container.exists
+      tags: promtail-service
+
+    - name: promtail up
+      docker_compose:
+        project_name: promtail
+        pull: yes
+        definition:
+          version: '3.8'
+          services:
+            app:
+              container_name: promtail
+              image: grafana/promtail
+              command: -config.file=/etc/promtail/config.yml
+              volumes:
+                - promtail-config:/etc/promtail
+                - /var/log:/var/log
+              restart: unless-stopped
+          volumes:
+            promtail-config:
+              name: promtail-config
+              external: true
+          networks:
+            default:
+              external: true
+              name: "{{ monitoring_network_name }}"
+      tags: promtail-service
