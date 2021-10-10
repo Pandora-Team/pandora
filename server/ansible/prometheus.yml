@@ -1,0 +1,83 @@
+- hosts: pandora
+  user: admin
+  become_method: sudo
+  vars:
+    node_exporter_port: 9100
+
+  tasks:
+    - name: prometheus volumes exist
+      docker_volume:
+        name: "{{ item }}"
+      with_items:
+        - prometheus-config
+        - prometheus-storage
+      tags: prometheus-service
+
+    - name: actual prometheus config is in the volume
+      command:
+        cmd: docker run --rm -iv prometheus-config:/v busybox sh -c 'cat > /v/prometheus.yml'
+        stdin: "{{ lookup('template', 'prometheus.yml.j2') | regex_replace('\\r\\n', '\\n') }}"
+      tags: prometheus-service
+
+    - name: got prometheus container info
+      docker_container_info:
+        name: prometheus
+      register: prometheus_container
+      tags: prometheus-service
+
+    - name: remove existing prometheus container
+      docker_container:
+        name: prometheus
+        state: absent
+      when: prometheus_container.exists
+      tags: prometheus-service
+
+    - name: prometheus up
+      docker_compose:
+        project_name: prometheus
+        pull: yes
+        definition:
+          version: '3.8'
+          services:
+            app:
+              image: prom/prometheus
+              container_name: prometheus
+              ports: [ ]
+              restart: unless-stopped
+              volumes:
+                - prometheus-config:/etc/prometheus
+                - prometheus-storage:/prometheus
+              extra_hosts:
+                - "host.docker.internal:host-gateway"  # access host network via docker0 interface
+          volumes:
+            prometheus-config:
+              name: prometheus-config
+              external: true
+            prometheus-storage:
+              name: prometheus-storage
+              external: true
+          networks:
+            default:
+              external: true
+              name: grafana_default
+      tags: prometheus-service
+
+    - name: prometheus node exporter up
+      docker_compose:
+        project_name: prometheus-node-exporter
+        pull: yes
+        definition:
+          version: '3.8'
+          services:
+            app:
+              image: prom/node-exporter
+              container_name: prometheus-node-exporter
+              command:
+                - "--path.rootfs=/host"
+                - "--web.listen-address={{ ansible_docker0.ipv4.address }}:{{ node_exporter_port }}"
+              network_mode: host
+              pid: host
+              restart: unless-stopped
+              volumes:
+                - "/:/host:ro,rslave"
+      tags: node-exporter
