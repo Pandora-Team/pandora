@@ -62,16 +62,16 @@
               name: grafana_default
       tags: prometheus-service
 
-    - name: prometheus node exporter up
+    - name: node exporter up
       docker_compose:
-        project_name: prometheus-node-exporter
+        project_name: node-exporter
         pull: yes
         definition:
           version: '3.8'
           services:
             app:
               image: prom/node-exporter
-              container_name: prometheus-node-exporter
+              container_name: node-exporter
               command:
                 - "--path.rootfs=/host"
                 - "--web.listen-address={{ ansible_docker0.ipv4.address }}:{{ node_exporter_port }}"
@@ -81,3 +81,29 @@
               volumes:
                 - "/:/host:ro,rslave"
       tags: node-exporter
+
+    - name: cadvisor up
+      docker_compose:
+        project_name: cadvisor
+        pull: yes
+        definition:
+          version: '3.8'
+          services:
+            app:
+              image: gcr.io/cadvisor/cadvisor
+              container_name: cadvisor
+              restart: unless-stopped
+              volumes:
+                - /:/rootfs:ro
+                - /var/run:/var/run:ro
+                - /sys:/sys:ro
+                - /var/lib/docker/:/var/lib/docker:ro
+                - /dev/disk/:/dev/disk:ro
+              devices:
+                - /dev/kmsg
+              privileged: true
+          networks:
+            default:
+              external: true
+              name: grafana_default
+      tags: cadvisor
