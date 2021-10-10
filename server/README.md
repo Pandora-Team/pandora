@@ -21,6 +21,8 @@
     * `Port <random>`
     * `PasswordAuthentication no`
     * `PermitRootLogin no`
+    * `ClientAliveInterval 120`
+    * `ClientAliveCountMax 3`
 1. `/etc/sudoers`:
     * `%sudo ALL=(ALL:ALL) NOPASSWD: ALL`
     * `ci    ALL=(root)    NOPASSWD: /usr/sbin/nginx`
@@ -37,4 +39,10 @@
 1. [Настроить автообновление SSL-сертификатов](https://certbot.eff.org/docs/using.html?highlight=renew#setting-up-automated-renewal):
     ```
     SLEEPTIME=$(awk 'BEGIN{srand(); print int(rand()*(3600+1))}'); echo "0 0,12 * * * root sleep $SLEEPTIME && certbot renew -q" | sudo tee -a /etc/crontab > /dev/null
+    ```
+1. Настроить `nginx` запускаться после `docker` (так как `stub_status` должен биндиться на адрес интерфейса `docker0`, который не существвет до запуска докер-демона)
+    ```
+    sed '/^After=/ s/$/ docker.service/' /lib/systemd/system/nginx.service | sudo tee /etc/systemd/system/nginx.service
+    sudo systemctl daemon-reload
+    sudo service nginx status
     ```
