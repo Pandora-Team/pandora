@@ -1,0 +1,34 @@
+- hosts: pandora
+  user: admin
+  become_method: sudo
+
+  tasks:
+    - name: docker volumes exist
+      docker_volume:
+        name: "{{ item }}"
+      with_items:
+        - grafana-config
+        - grafana-storage
+        - prometheus-config
+        - prometheus-storage
+      tags: docker
+
+    - name: monitoring network exist
+      docker_network:
+        name: "{{ monitoring_network_name }}"
+      tags: docker
+
+    - name: all apt packages are updated
+      apt:
+        name: "*"
+        state: latest
+        update_cache: yes
+        autoremove: yes
+      become: yes
+      register: apt_output
+      tags: apt
+
+    - name: apt output printed
+      debug:
+        msg: "{{ apt_output }}"
+      tags: apt

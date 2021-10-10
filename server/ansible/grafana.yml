@@ -5,19 +5,6 @@
     grafana_host: monitoring.pandora-kpop.ru
 
   tasks:
-    - name: grafana volumes exist
-      docker_volume:
-        name: "{{ item }}"
-      with_items:
-        - grafana-config
-        - grafana-storage
-      tags: grafana-service
-
-    - name: monitoring network exist
-      docker_network:
-        name: "{{ monitoring_network_name }}"
-      tags: grafana-service
-
     - name: actual grafana config is in the volume
       command:
         cmd: docker run --rm -iv grafana-config:/v busybox sh -c 'cat > /v/grafana.ini'
@@ -79,7 +66,7 @@
       when: nginx_config.changed
       tags: grafana-proxy
 
-    - name: nginx config errors output
+    - name: nginx config errors printed
       debug:
         msg: "{{ nginx_config_status }}"
       when: nginx_config.changed and nginx_config_status.rc != 0

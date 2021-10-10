@@ -6,19 +6,6 @@
     nginx_status_port: 22392
 
   tasks:
-    - name: prometheus volumes exist
-      docker_volume:
-        name: "{{ item }}"
-      with_items:
-        - prometheus-config
-        - prometheus-storage
-      tags: prometheus-service
-
-    - name: monitoring network exist
-      docker_network:
-        name: "{{ monitoring_network_name }}"
-      tags: prometheus-service
-
     - name: actual prometheus config is in the volume
       command:
         cmd: docker run --rm -iv prometheus-config:/v busybox sh -c 'cat > /v/prometheus.yml'
@@ -132,7 +119,7 @@
       when: nginx_config.changed
       tags: nginx-status
 
-    - name: nginx config errors output
+    - name: nginx config errors printed
       debug:
         msg: "{{ nginx_config_status }}"
       when: nginx_config.changed and nginx_config_status.rc != 0
