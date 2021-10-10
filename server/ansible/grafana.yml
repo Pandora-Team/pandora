@@ -32,13 +32,13 @@
           version: '3.8'
           services:
             app:
-              image: grafana/grafana
               container_name: grafana
+              image: grafana/grafana
               ports: [ "127.0.0.1:3000:3000" ]
-              restart: unless-stopped
               volumes:
                 - grafana-config:/etc/grafana
                 - grafana-storage:/var/lib/grafana
+              restart: unless-stopped
           volumes:
             grafana-config:
               name: grafana-config

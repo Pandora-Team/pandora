@@ -11,6 +11,9 @@
         - grafana-storage
         - prometheus-config
         - prometheus-storage
+        - loki-config
+        - loki-storage
+        - promtail-config
       tags: docker
 
     - name: monitoring network exist

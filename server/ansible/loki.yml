@@ -1,0 +1,52 @@
+- hosts: pandora
+  user: admin
+
+  tasks:
+    - name: actual loki config is in the volume
+      command:
+        cmd: docker run --rm -iv loki-config:/v busybox sh -c 'cat > /v/config.yaml'
+        stdin: "{{ lookup('template', 'loki-config.yaml.j2') | regex_replace('\\r\\n', '\\n') }}"
+      tags: loki-service
+
+    - name: got loki container info
+      docker_container_info:
+        name: loki
+      register: loki_container
+      tags: loki-service
+
+    - name: remove existing loki container
+      docker_container:
+        name: loki
+        state: absent
+      when: loki_container.exists
+      tags: loki-service
+
+    - name: loki up
+      docker_compose:
+        project_name: loki
+        pull: yes
+        definition:
+          version: '3.8'
+          services:
+            app:
+              container_name: loki
+              image: grafana/loki
+              command: -config.file=/etc/loki/config.yaml
+              volumes:
+                - loki-config:/etc/loki
+                - loki-storage:/loki
+              restart: unless-stopped
+          volumes:
+            loki-config:
+              name: loki-config
+              external: true
+            loki-storage:
+              name: loki-storage
+              external: true
+          networks:
+            default:
+              external: true
+              name: "{{ monitoring_network_name }}"
+      tags: loki-service
+
+
