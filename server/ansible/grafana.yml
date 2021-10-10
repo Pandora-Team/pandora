@@ -13,6 +13,11 @@
         - grafana-storage
       tags: grafana-service
 
+    - name: monitoring network exist
+      docker_network:
+        name: "{{ monitoring_network_name }}"
+      tags: grafana-service
+
     - name: actual grafana config is in the volume
       command:
         cmd: docker run --rm -iv grafana-config:/v busybox sh -c 'cat > /v/grafana.ini'
@@ -54,6 +59,10 @@
             grafana-storage:
               name: grafana-storage
               external: true
+          networks:
+            default:
+              external: true
+              name: "{{ monitoring_network_name }}"
       tags: grafana-service
 
     - name: grafana nginx config is updated
@@ -70,10 +79,10 @@
       when: nginx_config.changed
       tags: grafana-proxy
 
-    - name: nginx configs status output
+    - name: nginx config errors output
       debug:
         msg: "{{ nginx_config_status }}"
-      when: nginx_config.changed
+      when: nginx_config.changed and nginx_config_status.rc != 0
       tags: grafana-proxy
 
     - name: nginx reloaded

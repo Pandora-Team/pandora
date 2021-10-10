@@ -3,6 +3,7 @@
   become_method: sudo
   vars:
     node_exporter_port: 9100
+    nginx_status_port: 22392
 
   tasks:
     - name: prometheus volumes exist
@@ -11,6 +12,11 @@
       with_items:
         - prometheus-config
         - prometheus-storage
+      tags: prometheus-service
+
+    - name: monitoring network exist
+      docker_network:
+        name: "{{ monitoring_network_name }}"
       tags: prometheus-service
 
     - name: actual prometheus config is in the volume
@@ -59,8 +65,10 @@
           networks:
             default:
               external: true
-              name: grafana_default
+              name: "{{ monitoring_network_name }}"
       tags: prometheus-service
+
+
 
     - name: node exporter up
       docker_compose:
@@ -105,5 +113,56 @@
           networks:
             default:
               external: true
-              name: grafana_default
+              name: "{{ monitoring_network_name }}"
       tags: cadvisor
+
+
+
+    - name: nginx stub_status config is updated
+      template:
+        src: status-nginx.conf.j2
+        dest: /etc/nginx/sites-enabled/status
+      register: nginx_config
+      tags: nginx-status
+
+    - name: nginx configs checked
+      become: yes
+      shell: "/usr/sbin/nginx -t"
+      register: nginx_config_status
+      when: nginx_config.changed
+      tags: nginx-status
+
+    - name: nginx config errors output
+      debug:
+        msg: "{{ nginx_config_status }}"
+      when: nginx_config.changed and nginx_config_status.rc != 0
+      tags: nginx-status
+
+    - name: nginx reloaded
+      become: yes
+      service:
+        name: nginx
+        state: reloaded
+      when: nginx_config.changed and nginx_config_status.rc == 0
+      tags: nginx-status
+
+    - name: nginx exporter up
+      docker_compose:
+        project_name: nginx-exporter
+        pull: yes
+        definition:
+          version: '3.8'
+          services:
+            app:
+              image: nginx/nginx-prometheus-exporter
+              container_name: nginx-exporter
+              command:
+                - "-nginx.scrape-uri=http://host.docker.internal:{{ nginx_status_port }}/stub_status"
+              extra_hosts:
+                - "host.docker.internal:host-gateway"  # access host network via docker0 interface
+              restart: unless-stopped
+          networks:
+            default:
+              external: true
+              name: "{{ monitoring_network_name }}"
+      tags: nginx-exporter

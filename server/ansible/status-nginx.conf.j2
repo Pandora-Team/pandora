@@ -1,0 +1,8 @@
+# {{ ansible_managed }}
+
+server {
+	listen {{ ansible_docker0.ipv4.address }}:{{ nginx_status_port }};
+	location = /stub_status {
+		stub_status;
+	}
+}
