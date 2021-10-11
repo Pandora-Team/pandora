@@ -95,6 +95,8 @@
               devices:
                 - /dev/kmsg
               privileged: true
+              healthcheck:
+                disable: true
               restart: unless-stopped
           networks:
             default:
