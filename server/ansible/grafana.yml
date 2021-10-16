@@ -57,7 +57,7 @@
       block:
         - name: grafana nginx config is updated
           template:
-            src: gradana-nginx.conf.j2
+            src: grafana-nginx.conf.j2
             dest: /etc/nginx/sites-enabled/grafana
           register: nginx_config
 

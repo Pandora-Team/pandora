@@ -1,3 +1,13 @@
+## Схема мониторинга
+
+
+![monitoring.dot.svg](img/monitoring.dot.svg)
+
+```
+# update
+dot -Tsvg img/monitoring.dot -o img/monitoring.dot.svg
+```
+
 ## Установленные пакеты
 
 1. `sudo`

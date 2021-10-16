@@ -1,0 +1,33 @@
+digraph pandora_monitoring {
+    
+    subgraph cluster_host_network {
+        label="host network"
+        nginx_grafana_proxy [shape=hexagon]
+        nginx_stub_status
+        node_exporter
+    }
+    
+    subgraph cluster_docker_network {
+        label="docker 'monitoring' network"
+        grafana
+        prometheus
+        cadvisor
+        nginx_exporter
+        loki
+        promtail
+    }
+    
+    nginx_grafana_proxy -> grafana [label="localhost:3000"]
+    
+    grafana -> loki
+    grafana -> prometheus
+    
+    promtail -> loki
+    
+    prometheus -> node_exporter
+    prometheus -> cadvisor
+    prometheus -> nginx_exporter [label="host.docker.internal"]
+    
+    nginx_exporter -> nginx_stub_status [label="host.docker.internal"]
+    
+}
