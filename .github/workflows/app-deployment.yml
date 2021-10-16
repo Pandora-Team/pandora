@@ -2,8 +2,9 @@ on:
   push:
     branches:
       - main
-    paths:
-      - '!server/**'
+    paths-ignore:
+      - 'server/**'
+      - '.github/workflows/server-config-update.yml'
 
 jobs:
 
