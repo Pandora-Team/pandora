@@ -1,0 +1,65 @@
+- hosts: pandora
+  user: root
+  # user: admin
+  # become: yes
+  tasks:
+
+    # TODO: install sudo and docker
+
+    - name: Users exist and added to required groups
+      user:
+        name: '{{ item.user }}'
+        groups: '{{ item.groups }}'
+      with_items:
+        - user: admin
+          groups: sudo,docker
+        - user: ci
+          groups: docker
+
+    - name: Passwordless sudo enabled
+      lineinfile:
+        path: /etc/sudoers
+        state: present
+        regex: '^%sudo'
+        line: '%sudo	ALL=(ALL:ALL) NOPASSWD: ALL'
+        validate: /usr/sbin/visudo -cf %s
+
+    - name: Authorized keys are added to users
+      authorized_key:
+        user: '{{ item.user }}'
+        state: present
+        key: '{{ item.public_key }}'
+      with_items:
+        - user: ci
+          public_key: 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPoEb8YFv4G9wCM5BHLowzCrI1R3x0RMV0tibjb+uUlz ci@pandora-kpop'
+        - user: admin
+          public_key: "{{ lookup('file', lookup('fileglob', lookup('env','HOME') + '/.ssh/id_*.pub')) }}"
+
+    - name: User passwords are locked
+      user:
+        name: '{{ item }}'
+        password: ''
+        password_lock: yes
+      with_items:
+        - ci
+        - admin
+        - root
+
+    - name: SSHd configured
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regex: '^(#)?{{ item.key }}'
+        line: '{{ item.key }} {{ item.value }}'
+        state: present
+      loop:
+        - { key: 'PermitRootLogin', value: 'no' }
+        - { key: 'PasswordAuthentication', value: 'no' } 
+      notify:
+        - restart sshd
+
+
+  handlers:
+    - name: restart sshd
+      service:
+        name: sshd
+        state: restarted
