@@ -1,97 +1,121 @@
 - hosts: pandora
   user: admin
-
+  become_method: sudo
   tasks:
-    - name: actual loki config is in the volume
-      command:
-        cmd: docker run --rm -iv loki-config:/v busybox sh -c 'cat > /v/config.yaml'
-        stdin: "{{ lookup('template', 'loki-config.yaml.j2') | regex_replace('\\r\\n', '\\n') }}"
-      tags: loki-service
 
-    - name: got loki container info
-      docker_container_info:
-        name: loki
-      register: loki_container
-      tags: loki-service
+    - name: loki service
+      block:
+        - name: actual loki config is in the volume
+          command:
+            cmd: docker run --rm -iv loki-config:/v busybox sh -c 'cat > /v/config.yaml'
+            stdin: "{{ lookup('template', 'loki-config.yaml.j2') | regex_replace('\\r\\n', '\\n') }}"
 
-    - name: remove existing loki container
-      docker_container:
-        name: loki
-        state: absent
-      when: loki_container.exists
-      tags: loki-service
+        - name: got loki container info
+          docker_container_info:
+            name: loki
+          register: loki_container
 
-    - name: loki up
-      docker_compose:
-        project_name: loki
-        pull: yes
-        definition:
-          version: '3.8'
-          services:
-            app:
-              container_name: loki
-              image: grafana/loki
-              command: -config.file=/etc/loki/config.yaml
+        - name: remove existing loki container
+          docker_container:
+            name: loki
+            state: absent
+          when: loki_container.exists
+
+        - name: loki up
+          docker_compose:
+            project_name: loki
+            pull: yes
+            definition:
+              version: '3.8'
+              services:
+                app:
+                  container_name: loki
+                  image: grafana/loki
+                  command: -config.file=/etc/loki/config.yaml
+                  volumes:
+                    - loki-config:/etc/loki
+                    - loki-storage:/loki
+                  restart: unless-stopped
               volumes:
-                - loki-config:/etc/loki
-                - loki-storage:/loki
-              restart: unless-stopped
-          volumes:
-            loki-config:
-              name: loki-config
-              external: true
-            loki-storage:
-              name: loki-storage
-              external: true
-          networks:
-            default:
-              external: true
-              name: "{{ monitoring_network_name }}"
+                loki-config:
+                  name: loki-config
+                  external: true
+                loki-storage:
+                  name: loki-storage
+                  external: true
+              networks:
+                default:
+                  external: true
+                  name: "{{ monitoring_network_name }}"
       tags: loki-service
 
 
+    - name: promtail service
+      block:
+        - name: actual promtail config is in the volume
+          command:
+            cmd: docker run --rm -iv promtail-config:/v busybox sh -c 'cat > /v/config.yml'
+            stdin: "{{ lookup('template', 'promtail-config.yml.j2') | regex_replace('\\r\\n', '\\n') }}"
 
+        - name: got promtail container info
+          docker_container_info:
+            name: promtail
+          register: promtail_container
 
-    - name: actual promtail config is in the volume
-      command:
-        cmd: docker run --rm -iv promtail-config:/v busybox sh -c 'cat > /v/config.yml'
-        stdin: "{{ lookup('template', 'promtail-config.yml.j2') | regex_replace('\\r\\n', '\\n') }}"
-      tags: promtail-service
+        - name: remove existing promtail container
+          docker_container:
+            name: promtail
+            state: absent
+          when: promtail_container.exists
 
-    - name: got promtail container info
-      docker_container_info:
-        name: promtail
-      register: promtail_container
-      tags: promtail-service
-
-    - name: remove existing promtail container
-      docker_container:
-        name: promtail
-        state: absent
-      when: promtail_container.exists
-      tags: promtail-service
-
-    - name: promtail up
-      docker_compose:
-        project_name: promtail
-        pull: yes
-        definition:
-          version: '3.8'
-          services:
-            app:
-              container_name: promtail
-              image: grafana/promtail
-              command: -config.file=/etc/promtail/config.yml
+        - name: promtail up
+          docker_compose:
+            project_name: promtail
+            pull: yes
+            definition:
+              version: '3.8'
+              services:
+                app:
+                  container_name: promtail
+                  image: grafana/promtail
+                  command: -config.file=/etc/promtail/config.yml
+                  volumes:
+                    - promtail-config:/etc/promtail
+                    - /var/log:/var/log
+                  restart: unless-stopped
               volumes:
-                - promtail-config:/etc/promtail
-                - /var/log:/var/log
-              restart: unless-stopped
-          volumes:
-            promtail-config:
-              name: promtail-config
-              external: true
-          networks:
-            default:
-              external: true
-              name: "{{ monitoring_network_name }}"
+                promtail-config:
+                  name: promtail-config
+                  external: true
+              networks:
+                default:
+                  external: true
+                  name: "{{ monitoring_network_name }}"
       tags: promtail-service
+
+
+    - name: docker log-driver
+      block:
+    #     - name: ckeck plugins list
+    #       command: "docker plugin ls --format '{%raw%}{{ .Name }}{%endraw%}'"
+    #       register: docker_plugins
+
+    #     - name: loki-docker-driver installed
+    #       command: "docker plugin install grafana/loki-docker-driver:latest --alias loki --grant-all-permissions"
+    #       when: "'loki:latest' not in docker_plugins.stdout_lines"
+      
+        - name: docker daemon config is up to date
+          template:
+            src: docker-daemon.json.j2
+            dest: /etc/docker/daemon.json
+          become: yes
+          notify: reload containerd
+      tags: docker-log-driver
+
+
+  handlers:
+    - name: reload containerd
+      service:
+        name: containerd
+        state: restarted
+      become: yes

@@ -3,79 +3,79 @@
   become_method: sudo
   vars:
     grafana_host: monitoring.pandora-kpop.ru
-
   tasks:
-    - name: actual grafana config is in the volume
-      command:
-        cmd: docker run --rm -iv grafana-config:/v busybox sh -c 'cat > /v/grafana.ini'
-        stdin: "{{ lookup('template', 'grafana.ini.j2') | regex_replace('\\r\\n', '\\n') }}"
-      tags: grafana-service
 
-    - name: got grafana container info
-      docker_container_info:
-        name: grafana
-      register: grafana_container
-      tags: grafana-service
+    - name: grafana service
+      block:
+        - name: actual grafana config is in the volume
+          command:
+            cmd: docker run --rm -iv grafana-config:/v busybox sh -c 'cat > /v/grafana.ini'
+            stdin: "{{ lookup('template', 'grafana.ini.j2') | regex_replace('\\r\\n', '\\n') }}"
 
-    - name: remove existing grafana container
-      docker_container:
-        name: grafana
-        state: absent
-      when: grafana_container.exists
-      tags: grafana-service
+        - name: got grafana container info
+          docker_container_info:
+            name: grafana
+          register: grafana_container
 
-    - name: grafana up
-      docker_compose:
-        project_name: grafana
-        pull: yes
-        definition:
-          version: '3.8'
-          services:
-            app:
-              container_name: grafana
-              image: grafana/grafana
-              ports: [ "127.0.0.1:3000:3000" ]
+        - name: remove existing grafana container
+          docker_container:
+            name: grafana
+            state: absent
+          when: grafana_container.exists
+
+        - name: grafana up
+          docker_compose:
+            project_name: grafana
+            pull: yes
+            definition:
+              version: '3.8'
+              services:
+                app:
+                  container_name: grafana
+                  image: grafana/grafana
+                  ports: [ "127.0.0.1:3000:3000" ]
+                  volumes:
+                    - grafana-config:/etc/grafana
+                    - grafana-storage:/var/lib/grafana
+                  restart: unless-stopped
               volumes:
-                - grafana-config:/etc/grafana
-                - grafana-storage:/var/lib/grafana
-              restart: unless-stopped
-          volumes:
-            grafana-config:
-              name: grafana-config
-              external: true
-            grafana-storage:
-              name: grafana-storage
-              external: true
-          networks:
-            default:
-              external: true
-              name: "{{ monitoring_network_name }}"
+                grafana-config:
+                  name: grafana-config
+                  external: true
+                grafana-storage:
+                  name: grafana-storage
+                  external: true
+              networks:
+                default:
+                  external: true
+                  name: "{{ monitoring_network_name }}"
       tags: grafana-service
 
-    - name: grafana nginx config is updated
-      template:
-        src: gradana-nginx.conf.j2
-        dest: /etc/nginx/sites-enabled/grafana
-      register: nginx_config
-      tags: grafana-proxy
 
-    - name: nginx configs checked
-      become: yes
-      shell: "/usr/sbin/nginx -t"
-      register: nginx_config_status
-      when: nginx_config.changed
-      tags: grafana-proxy
 
-    - name: nginx config errors printed
-      debug:
-        msg: "{{ nginx_config_status }}"
-      when: nginx_config.changed and nginx_config_status.rc != 0
-      tags: grafana-proxy
+    - name: grafana proxy
+      block:
+        - name: grafana nginx config is updated
+          template:
+            src: gradana-nginx.conf.j2
+            dest: /etc/nginx/sites-enabled/grafana
+          register: nginx_config
 
-    - name: nginx reloaded
-      become: yes
-      service:
-        name: nginx
-        state: reloaded
-      when: nginx_config.changed and nginx_config_status.rc == 0
+        - name: nginx configs checked
+          become: yes
+          shell: "/usr/sbin/nginx -t"
+          register: nginx_config_status
+          when: nginx_config.changed
+
+        - name: nginx config errors printed
+          debug:
+            msg: "{{ nginx_config_status }}"
+          when: nginx_config.changed and nginx_config_status.rc != 0
+
+        - name: nginx reloaded
+          become: yes
+          service:
+            name: nginx
+            state: reloaded
+          when: nginx_config.changed and nginx_config_status.rc == 0
       tags: grafana-proxy
