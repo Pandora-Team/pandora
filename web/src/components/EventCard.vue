@@ -49,10 +49,10 @@ export default class EventCard extends Vue {
         return
     }
 
-    get bgImage(): string {
+    get bgImage() {
         return require(`@/assets/bg/${this.event.background}`)
     }
-    get inlineStyle(): string {
+    get inlineStyle() {
         return {
             backgroundImage: `url(${this.bgImage})`,
         }
