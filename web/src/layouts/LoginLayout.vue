@@ -86,16 +86,17 @@ export default class LoginLayout extends Vue {
         overflow: hidden;
         transition: 1s;
         background: #111227 url("../assets/bg/bg-login-center.png");
-        width: 50%;
+        width: calc(50% - 80px);
         position: relative;
         min-height: 100vh;
         display: flex;
         flex-direction: column;
         align-items: center;
+        padding: 0 40px;
         .logo {
             max-width: 160px;
             max-height: 160px;
-            margin: 100px auto 115px;
+            margin: 70px auto;
             img {
                 width: 100%;
             }
@@ -124,7 +125,7 @@ export default class LoginLayout extends Vue {
     }
     &-action {
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
         align-items: center;
         position: relative;
         z-index: 1;

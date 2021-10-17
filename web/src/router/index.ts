@@ -8,6 +8,13 @@ import RegistrationView from "@/views/RegistrationView.vue"
 import AuthenticationView from "@/views/AuthenticationView.vue"
 import LkLayout from "@/layouts/LkLayout.vue"
 import ProfileView from "@/views/ProfileView.vue"
+import PolicyView from "@/views/PolicyView.vue"
+import WelcomeView from "@/views/WelcomeView.vue"
+import EventsView from "@/views/EventsView.vue"
+import RulesView from "@/views/RulesView.vue"
+import StorageView from "@/views/StorageView.vue"
+import InformationView from "@/views/InformationView.vue"
+import StudentsView from "@/views/StudentsView.vue"
 
 Vue.use(VueRouter)
 
@@ -17,9 +24,39 @@ const routes: RouteConfig[] = [
         component: LkLayout,
         children:  [
             {
+                path:      "",
+                name:      names.WelcomeView,
+                component: WelcomeView,
+            },
+            {
                 path:      paths.ProfileView,
                 name:      names.ProfileView,
                 component: ProfileView,
+            },
+            {
+                path:      paths.EventsView,
+                name:      names.EventsView,
+                component: EventsView,
+            },
+            {
+                path:      paths.RulesView,
+                name:      names.RulesView,
+                component: RulesView,
+            },
+            {
+                path:      paths.StorageView,
+                name:      names.StorageView,
+                component: StorageView,
+            },
+            {
+                path:      paths.InformationView,
+                name:      names.InformationView,
+                component: InformationView,
+            },
+            {
+                path:      paths.StudentsView,
+                name:      names.StudentsView,
+                component: StudentsView,
             },
         ],
     },
@@ -43,6 +80,11 @@ const routes: RouteConfig[] = [
                 component: RegistrationView,
             },
         ],
+    },
+    {
+        path:      paths.PolicyView,
+        name:      names.PolicyView,
+        component: PolicyView,
     },
     {
         path:     "*",
