@@ -2,7 +2,9 @@
     <div class="body">
         <lk-header />
         <div class="body-wrapper">
-            <router-view />
+            <transition-fade>
+                <router-view />
+            </transition-fade>
         </div>
     </div>
 </template>
@@ -11,10 +13,12 @@
 
 import { Component, Vue } from "vue-property-decorator"
 import LkHeader from "@/components/LkHeader.vue"
+import TransitionFade from "@/components/transition/TransitionFade.vue"
 
 @Component({
     components: {
         LkHeader,
+        TransitionFade,
     },
 })
 export default class LkBody extends Vue {

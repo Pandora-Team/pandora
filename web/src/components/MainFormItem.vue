@@ -74,6 +74,7 @@ export default class BaseFormItem extends Vue {
                 padding-bottom: 16px;
             }
             &-error {
+                font-size: 12px;
                 padding-top: 10px;
                 position: absolute;
                 color: #C03221;

@@ -1,14 +1,13 @@
 <template>
-    <transition-from-left>
+    <transition-fade>
         <div class="auth">
-            <div class="login-title">
-                <h1>Авторизация</h1>
+            <div class="auth-title">
+                <h3>Авторизация</h3>
             </div>
             <main-form
                 submit-text="Войти"
-                cancel-text="Назад"
+                :cancel-button="false"
                 @submit="submitForm"
-                @cancel="goToLogin"
             >
                 <template #top>
                     <main-form-item
@@ -26,9 +25,12 @@
                         :error="errorPasswordInput"
                     />
                 </template>
+                <template #cancel>
+                    <p>Забыл зарегистрироваться? Тебе <span @click="goToReg">сюда</span></p>
+                </template>
             </main-form>
         </div>
-    </transition-from-left>
+    </transition-fade>
 </template>
 
 <script lang="ts">
@@ -38,7 +40,7 @@ import { auth } from "@/api/auth"
 import { required, minLength, maxLength, numeric } from "vuelidate/lib/validators"
 import MainFormItem from "@/components/MainFormItem.vue"
 import MainForm from "@/components/MainForm.vue"
-import TransitionFromLeft from "@/components/transition/TransitionFromLeft.vue"
+import TransitionFade from "@/components/transition/TransitionFade.vue"
 import paths from "@/router/paths"
 
 
@@ -46,7 +48,7 @@ import paths from "@/router/paths"
     components: {
         MainForm,
         MainFormItem,
-        TransitionFromLeft,
+        TransitionFade,
     },
     validations: {
         phone: {
@@ -110,12 +112,22 @@ export default class AuthenticationView extends Vue {
         return ""
     }
 
-    goToLogin(): void {
-        this.$router.push(paths.LoginLayout)
+    goToReg(): void {
+        this.$router.push(paths.RegistrationView)
     }
 }
 </script>
 
 <style lang="scss">
-
+    .auth {
+        max-width: 560px;
+        padding: 0 2px;
+        &-title {
+            text-align: center;
+            margin: 0 auto 70px;
+            h3 {
+                color: white;
+            }
+        }
+    }
 </style>

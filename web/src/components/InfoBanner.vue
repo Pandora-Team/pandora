@@ -1,6 +1,6 @@
 <template>
-    <div class="banner">
-        <div class="banner__text">
+    <div class="info-banner">
+        <div class="info-banner__text">
             <h1>Привет, Настя!</h1>
             <p>
                 Добро пожаловать в PANDORA! Здесь ты можешь записаться на занятия,
@@ -18,13 +18,13 @@ import { Component, Vue } from "vue-property-decorator"
 @Component({
     components: {},
 })
-export default class Banner extends Vue {
+export default class InfoBanner extends Vue {
 
 }
 </script>
 
 <style lang="scss">
-    .banner {
+    .info-banner {
         background-size: cover;
         background: url("../assets/banner/banner1.jpg") no-repeat right;
         margin-bottom: 40px;

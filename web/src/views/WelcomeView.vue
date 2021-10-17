@@ -1,7 +1,7 @@
 <template>
     <div class="welcome">
-        <banner />
-        <card-info> 
+        <info-banner />
+        <info-card>
             <template>
                 <p>PANDORA - первые k-pop cover dance классы в Туле.</p>
                 <p>
@@ -15,22 +15,22 @@
                     <li>Весело и с пользой проводим вместе время</li>
                 </ul>
             </template>
-        </card-info>
+        </info-card>
     </div>
 </template>
 
 <script lang="ts">
 
 import { Component, Vue } from "vue-property-decorator"
-import Banner from "@/components/Banner.vue"
-import CardInfo from "@/components/CardInfo.vue"
-import CardEvent from "@/components/CardEvent.vue"
+import InfoBanner from "@/components/InfoBanner.vue"
+import InfoCard from "@/components/InfoCard.vue"
+import EventCard from "@/components/EventCard.vue"
 
 @Component({
     components: {
-        Banner,
-        CardInfo,
-        CardEvent,
+        InfoBanner,
+        InfoCard,
+        EventCard,
     },
 })
 export default class WelcomeView extends Vue {

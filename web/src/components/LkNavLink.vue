@@ -38,6 +38,20 @@ export default class LkNavLink extends Vue {
         display: flex;
         align-items: center;
         padding-left: 30px;
+        position: relative;
+        overflow: hidden;
+        outline: none;
+        &::before {
+            transition: top .5s;
+            content: "";
+            width: 10px;
+            height: 100%;
+            background: #AD00FF;
+            position: absolute;
+            top: -100%;
+            left: 0;
+            border-radius: 0 20px 20px 0;
+        }
         a {
             font-size: 18px;
             line-height: 22px;
@@ -45,8 +59,9 @@ export default class LkNavLink extends Vue {
             text-decoration: none;
         }
         &--active {
-            border-left: 10px solid #AD00FF;
-            border-radius: 0 20px 20px 0;
+            &::before {
+                top: 0;
+            }
         }
     }
 </style>
