@@ -21,7 +21,6 @@ export default class InfoCard extends Vue {
         background: #F6F6FC;
         border-radius: 30px;
         padding: 30px;
-        width: fit-content;
         p {
             font-size: 16px;
             line-height: 20px;

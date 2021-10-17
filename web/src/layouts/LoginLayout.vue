@@ -111,9 +111,9 @@ export default class LoginLayout extends Vue {
     &-line {
         transition: .5s;
         position: absolute;
-        bottom: 1%;
+        bottom: 2%;
         width: 1920px;
-        height: 226px;
+        height: 242px;
         background: url("../assets/bg/line.png") no-repeat;
         background-size: cover;
         z-index: 0;

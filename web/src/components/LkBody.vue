@@ -1,7 +1,7 @@
 <template>
-    <div class="body">
+    <div class="lk-body">
         <lk-header />
-        <div class="body-wrapper">
+        <div class="lk-body__wrapper">
             <transition-fade>
                 <router-view />
             </transition-fade>
@@ -27,12 +27,12 @@ export default class LkBody extends Vue {
 </script>
 
 <style lang="scss">
-    .body {
+    .lk-body {
         width: 100%;
-        margin: 40px;
+        margin: 20px 40px;
         background: #FFFFFF;
         border-radius: 40px;
-        &-wrapper {
+        &__wrapper {
             padding: 40px;
         }
     }
