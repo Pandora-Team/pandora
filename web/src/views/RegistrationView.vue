@@ -1,14 +1,13 @@
 <template>
-    <transition-from-right>
+    <transition-fade>
         <div class="reg">
-            <div class="login-title">
-                <h1>Регистрация</h1>
+            <div class="reg-title">
+                <h3>Регистрация</h3>
             </div>
             <main-form
                 submit-text="Зарегистрироваться"
-                cancel-text="Назад"
+                :cancel-button="false"
                 @submit="submitForm"
-                @cancel="goToLogin"
             >
                 <template #top>
                     <main-form-item
@@ -42,18 +41,23 @@
                         :error="errorRepeatPasswordInput"
                     />
                 </template>
+                <template #privacy>
+                    <p class="privacy">
+                        Нажимая на кнопку Зарегистрироваться, вы подтверждаете, что согласны с
+                        <a
+                            :href="$mainPaths.PolicyView"
+                            target="_blank"
+                        >
+                            Политикой конфиденциальности
+                        </a>
+                    </p>
+                </template>
+                <template #cancel>
+                    <p>Уже был здесь? Тогда тебе <span @click="goToAuth">сюда</span></p>
+                </template>
             </main-form>
-            <p class="privacy">
-                Нажимая на кнопку Зарегистрироваться, вы подтверждаете, что согласны с
-                <a
-                    :href="$mainPaths.PolicyView"
-                    target="_blank"
-                >
-                    Политикой конфиденциальности
-                </a>
-            </p>
         </div>
-    </transition-from-right>
+    </transition-fade>
 </template>
 
 <script lang="ts">
@@ -63,14 +67,14 @@ import { create } from "@/api/users"
 import { maxLength, minLength, required, sameAs, numeric } from "vuelidate/lib/validators"
 import MainFormItem from "@/components/MainFormItem.vue"
 import MainForm from "@/components/MainForm.vue"
-import TransitionFromRight from "@/components/transition/TransitionFromRight.vue"
+import TransitionFade from "@/components/transition/TransitionFade.vue"
 import paths from "@/router/paths"
 
 @Component({
     components: {
         MainForm,
         MainFormItem,
-        TransitionFromRight,
+        TransitionFade,
     },
     validations: {
         name: {
@@ -160,22 +164,34 @@ export default class RegistrationView extends Vue {
         return ""
     }
 
-    goToLogin(): void {
-        this.$router.push(paths.LoginLayout)
+    goToAuth(): void {
+        this.$router.push(paths.AuthenticationView)
     }
 }
 </script>
 
 <style lang="scss">
+    .reg {
+        padding: 0 2px;
+        &-title {
+            text-align: center;
+            margin-bottom: 70px;
+            h3 {
+                color: white;
+            }
+        }
+    }
     .privacy {
+        font-size: 14px;
         max-width: 560px;
         position: relative;
         z-index: 2;
         width: 100%;
         color: white;
         line-height: 1.5;
+        margin-bottom: 40px;
         a {
-            color: white;
+            color: #AD00FF;
         }
     }
 </style>

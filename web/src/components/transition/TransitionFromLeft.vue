@@ -2,7 +2,7 @@
     <transition
         name="left"
         appear
-        mode="in-out"
+        mode="out-in"
     >
         <slot />
     </transition>

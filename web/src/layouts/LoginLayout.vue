@@ -18,7 +18,9 @@
                     >
                 </div>
             </transition>
-            <router-view />
+            <div class="login-content">
+                <router-view />
+            </div>
             <div
                 class="login-line"
                 :style="positionLeftForLine"
@@ -83,59 +85,35 @@ export default class LoginLayout extends Vue {
     background: url("../assets/bg/bg1920.jpg") center no-repeat;
     background-size: cover;
     &-body {
-        overflow: hidden;
-        transition: 1s;
+        transition: .5s;
         background: #111227 url("../assets/bg/bg-login-center.png");
         width: calc(50% - 80px);
         position: relative;
-        min-height: 100vh;
+        overflow: hidden;
+        height: 100vh;
         display: flex;
         flex-direction: column;
         align-items: center;
         padding: 0 40px;
         .logo {
-            max-width: 160px;
+            max-width: 124px;
             max-height: 160px;
-            margin: 70px auto;
+            margin: 40px auto 50px;
             img {
                 width: 100%;
             }
         }
     }
-    &-title {
-        margin-bottom: 70px;
-        h1 {
-            color: #FFFFFF;
-            letter-spacing: 0.01em;
-            font-weight: 600;
-            font-size: 24px;
-            line-height: 29px;
-        }
-    }
-    &-subtitle {
-        margin-bottom: 40px;
-        text-align: center;
-        h2 {
-            font-weight: 300;
-            font-size: 18px;
-            line-height: 22px;
-            letter-spacing: 0.01em;
-            color: white;
-        }
-    }
-    &-action {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-        z-index: 1;
+    &-content {
+        transition: 1s;
+        overflow: hidden;
     }
     &-line {
-        transition: 1s;
+        transition: .5s;
         position: absolute;
-        bottom: 5%;
+        bottom: 2%;
         width: 1920px;
-        height: 226px;
+        height: 242px;
         background: url("../assets/bg/line.png") no-repeat;
         background-size: cover;
         z-index: 0;
@@ -144,7 +122,7 @@ export default class LoginLayout extends Vue {
 .logo-trans {
     &-enter-active,
     &-leave-active {
-        transition: all 1s;
+        transition: all .5s;
     }
     &-enter,
     &-leave-to {

@@ -8,6 +8,8 @@ import {EventsModule} from "./events/events.module";
 import {PaymentsModule} from "./payments/payments.module";
 import {AuthModule} from "./auth/auth.module";
 import {JwtModule} from "@nestjs/jwt";
+import {PlacesModule} from "./places/places.module";
+import {FileModule} from "./file/file.module";
 
 @Module({
   imports: [
@@ -21,8 +23,10 @@ import {JwtModule} from "@nestjs/jwt";
     MongooseModule.forRoot(process.env.DB_URI),
     AuthModule,
     UsersModule,
+    PlacesModule,
     EventsModule,
     PaymentsModule,
+    FileModule,
     JwtModule.register({
       secret: `${process.env.JWT_SECRET}`,
       signOptions: {expiresIn: `${process.env.JWT_EXPIRES_IN}`}

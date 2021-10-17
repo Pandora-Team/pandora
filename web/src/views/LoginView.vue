@@ -1,13 +1,13 @@
 <template>
-    <transition-to-top>
+    <transition-fade>
         <div
             class="login-block"
         >
             <div class="login-title">
-                <h1>Привет и добро пожаловать в PANDORA!</h1>
+                <h3>Привет и добро пожаловать в PANDORA!</h3>
             </div>
             <div class="login-subtitle">
-                <h2>Выбирай подходящее поле</h2>
+                <h6>Выбирай подходящее поле</h6>
             </div>
             <div class="login-action">
                 <main-btn
@@ -24,22 +24,47 @@
                 </main-btn>
             </div>
         </div>
-    </transition-to-top>
+    </transition-fade>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator"
-import TransitionToTop from "@/components/transition/TransitionToTop.vue"
+import TransitionFade from "@/components/transition/TransitionFade.vue"
 import MainBtn from "@/components/MainBtn.vue"
 @Component({
     components: {
-        TransitionToTop,
         MainBtn,
+        TransitionFade,
     },
 })
 export default class LoginView extends Vue {}
 </script>
 
 <style lang="scss">
-
+    .login-block {
+        width: 100%;
+    }
+    .login-title {
+        max-width: 390px;
+        margin: 0 auto 115px;
+        text-align: center;
+        h3 {
+            line-height: 29px;
+            color: white;
+        }
+    }
+    .login-subtitle {
+        margin: 0 auto 40px;
+        text-align: center;
+        h6 {
+            color: white;
+        }
+    }
+    .login-action {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        z-index: 1;
+    }
 </style>

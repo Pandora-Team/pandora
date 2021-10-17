@@ -8,6 +8,7 @@ import Vuelidate from "vuelidate"
 import sanitizeHtml from "sanitize-html"
 import "./styles/main.scss"
 import paths from "@/router/paths"
+import { typesStatus } from "@/constants/typeStatus"
 
 Vue.use(Vuelidate)
 
@@ -19,6 +20,7 @@ sanitizeHtml.defaults.disallowedTagsMode = "escape"
 
 Vue.prototype.$mainStore = useStore(store)
 Vue.prototype.$mainPaths = paths
+Vue.prototype.$typeStatusEvent = typesStatus
 Vue.prototype.$sanitizeHtml = sanitizeHtml
 
 Vue.config.productionTip = false

@@ -1,5 +1,5 @@
 <template>
-    <div class="card-event">
+    <div class="event-banner">
         <slot />
     </div>
 </template>
@@ -11,7 +11,7 @@ import { Component, Vue } from "vue-property-decorator"
 @Component({
     components: {},
 })
-export default class CardEvent extends Vue {
+export default class EventBanner extends Vue {
 
 }
 </script>

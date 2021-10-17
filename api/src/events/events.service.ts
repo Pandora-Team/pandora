@@ -3,15 +3,30 @@ import {Model, ObjectId} from "mongoose";
 import {Events, EventsDocument} from "./events.schema";
 import {InjectModel} from "@nestjs/mongoose";
 import {CreateEventDto} from "./create-event.dto";
+import {PlacesService} from "../places/places.service";
+import {FileType, FileService} from "../file/file.service";
 
 @Injectable()
 export class EventsService {
     constructor(
         @InjectModel(Events.name) private eventsModel: Model<EventsDocument>,
+        private placesService: PlacesService,
+        private fileService: FileService
     ) {}
 
-    async createEvent(dto: CreateEventDto): Promise<Events>{
-        return this.eventsModel.create({...dto})
+    async createEvent(dto: CreateEventDto, poster): Promise<Events> {
+        let newAddress
+        const { place_id, address, ...result } = dto
+        if (address) {
+            const place = await this.placesService.createPlace({ address })
+            newAddress = place.address
+        }
+        if(place_id) {
+            const place = await this.placesService.getOnePlace(place_id)
+            newAddress = place.address
+        }
+        const posterPath = this.fileService.createFile(FileType.IMAGE, poster)
+        return this.eventsModel.create({...result, address: newAddress, poster: posterPath})
     }
 
     async getAllEvents(): Promise<Events[]>{

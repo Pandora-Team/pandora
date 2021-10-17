@@ -14,13 +14,26 @@
             <div class="form-row">
                 <slot name="bottom" />
             </div>
-            <div class="login-action">
-                <main-btn @click="submit">
+            <div class="form-action">
+                <main-btn
+                    :full-width="!cancelButton"
+                    @click="submit"
+                >
                     {{ submitText }}
                 </main-btn>
-                <main-btn @click="cancel">
+                <main-btn
+                    v-if="cancelButton"
+                    @click="cancel"
+                >
                     {{ cancelText }}
                 </main-btn>
+            </div>
+            <slot name="privacy" />
+            <div
+                v-if="!cancelButton"
+                class="form-cancel"
+            >
+                <slot name="cancel" />
             </div>
         </form>
     </div>
@@ -47,6 +60,9 @@ export default class BaseForm extends Vue {
     @Prop({ type: String, default: "" })
     readonly cancelText!: string
 
+    @Prop({ type: Boolean, default: true })
+    readonly cancelButton!: boolean
+
     submit(): void {
         this.$emit("submit")
     }
@@ -69,6 +85,24 @@ export default class BaseForm extends Vue {
         justify-content: center;
         &:nth-of-type(3) {
             margin-bottom: 30px;
+        }
+    }
+    &-action {
+        margin-bottom: 40px;
+        position: relative;
+        z-index: 2;
+    }
+    &-cancel {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        p {
+            color: white;
+        }
+        span {
+            color: #AD00FF;
+            text-decoration: underline;
+            cursor: pointer;
         }
     }
 }
