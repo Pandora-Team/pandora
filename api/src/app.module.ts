@@ -9,6 +9,7 @@ import {PaymentsModule} from "./payments/payments.module";
 import {AuthModule} from "./auth/auth.module";
 import {JwtModule} from "@nestjs/jwt";
 import {PlacesModule} from "./places/places.module";
+import {FileModule} from "./file/file.module";
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import {PlacesModule} from "./places/places.module";
     PlacesModule,
     EventsModule,
     PaymentsModule,
+    FileModule,
     JwtModule.register({
       secret: `${process.env.JWT_SECRET}`,
       signOptions: {expiresIn: `${process.env.JWT_EXPIRES_IN}`}

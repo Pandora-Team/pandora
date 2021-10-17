@@ -1,7 +1,8 @@
-import {Controller, Post, Get, Param, Body, Delete} from "@nestjs/common";
+import {Controller, Post, Get, Param, Body, Delete, UploadedFiles, UseInterceptors} from "@nestjs/common";
 import {ObjectId} from "mongoose";
 import {CreateEventDto} from "./create-event.dto";
 import {EventsService} from "./events.service";
+import {FileFieldsInterceptor} from "@nestjs/platform-express";
 
 @Controller('events')
 export class EventsController {
@@ -20,8 +21,12 @@ export class EventsController {
         return this.eventsService.getOneEvent(id)
     }
     @Post()
-    async createEvent( @Body() dto: CreateEventDto ){
-        return this.eventsService.createEvent(dto)
+    @UseInterceptors(FileFieldsInterceptor([
+        { name: 'poster', maxCount: 1 }
+    ]))
+    async createEvent(@UploadedFiles() files, @Body() dto: CreateEventDto ){
+        const {poster} = files
+        return this.eventsService.createEvent(dto, poster[0])
     }
     @Delete(':id')
     delete(@Param('id') id: ObjectId){

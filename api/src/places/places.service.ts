@@ -13,8 +13,8 @@ export class PlacesService {
     async createPlace(dto: CreatePlaceDto): Promise<Places>{
         const { address } = dto
         const res = await this.placesModel.findOne({address: address})
-        if (res?.address) return
-        return this.placesModel.create(dto)
+        if (res?.address) return res
+        return await this.placesModel.create(dto)
     }
 
     async getOnePlace(id: ObjectId): Promise<Places>{
