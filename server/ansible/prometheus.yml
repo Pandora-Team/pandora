@@ -1,0 +1,153 @@
+- hosts: pandora
+  user: admin
+  become_method: sudo
+  vars:
+    node_exporter_port: 9100
+    nginx_status_port: 22392
+  tasks:
+
+    - name: prometheus service
+      block:
+        - name: actual prometheus config is in the volume
+          command:
+            cmd: docker run --rm -iv prometheus-config:/v busybox sh -c 'cat > /v/prometheus.yml'
+            stdin: "{{ lookup('template', 'prometheus.yml.j2') | regex_replace('\\r\\n', '\\n') }}"
+
+        - name: got prometheus container info
+          docker_container_info:
+            name: prometheus
+          register: prometheus_container
+
+        - name: remove existing prometheus container
+          docker_container:
+            name: prometheus
+            state: absent
+          when: prometheus_container.exists
+
+        - name: prometheus up
+          docker_compose:
+            project_name: prometheus
+            pull: yes
+            definition:
+              version: '3.8'
+              services:
+                app:
+                  container_name: prometheus
+                  image: prom/prometheus
+                  volumes:
+                    - prometheus-config:/etc/prometheus
+                    - prometheus-storage:/prometheus
+                  extra_hosts:
+                    - "host.docker.internal:host-gateway"  # access host network via docker0 interface
+                  restart: unless-stopped
+              volumes:
+                prometheus-config:
+                  name: prometheus-config
+                  external: true
+                prometheus-storage:
+                  name: prometheus-storage
+                  external: true
+              networks:
+                default:
+                  external: true
+                  name: "{{ monitoring_network_name }}"
+      tags: prometheus-service
+
+
+
+    - name: node exporter up
+      docker_compose:
+        project_name: node-exporter
+        pull: yes
+        definition:
+          version: '3.8'
+          services:
+            app:
+              container_name: node-exporter
+              image: prom/node-exporter
+              command:
+                - "--path.rootfs=/host"
+                - "--web.listen-address={{ ansible_docker0.ipv4.address }}:{{ node_exporter_port }}"
+              network_mode: host
+              pid: host
+              restart: unless-stopped
+              volumes:
+                - "/:/host:ro,rslave"
+      tags: node-exporter
+
+    - name: cadvisor up
+      docker_compose:
+        project_name: cadvisor
+        pull: yes
+        definition:
+          version: '3.8'
+          services:
+            app:
+              container_name: cadvisor
+              image: gcr.io/cadvisor/cadvisor
+              volumes:
+                - /:/rootfs:ro
+                - /var/run:/var/run:ro
+                - /sys:/sys:ro
+                - /var/lib/docker/:/var/lib/docker:ro
+                - /dev/disk/:/dev/disk:ro
+              devices:
+                - /dev/kmsg
+              privileged: true
+              healthcheck:
+                disable: true
+              restart: unless-stopped
+          networks:
+            default:
+              external: true
+              name: "{{ monitoring_network_name }}"
+      tags: cadvisor
+
+
+
+    - name: nginx exporter
+      block:
+        - name: nginx stub_status config is updated
+          template:
+            src: status-nginx.conf.j2
+            dest: /etc/nginx/sites-enabled/status
+          register: nginx_config
+
+        - name: nginx configs checked
+          become: yes
+          shell: "/usr/sbin/nginx -t"
+          register: nginx_config_status
+          when: nginx_config.changed
+
+        - name: nginx config errors printed
+          debug:
+            msg: "{{ nginx_config_status }}"
+          when: nginx_config.changed and nginx_config_status.rc != 0
+
+        - name: nginx reloaded
+          become: yes
+          service:
+            name: nginx
+            state: reloaded
+          when: nginx_config.changed and nginx_config_status.rc == 0
+
+        - name: nginx exporter up
+          docker_compose:
+            project_name: nginx-exporter
+            pull: yes
+            definition:
+              version: '3.8'
+              services:
+                app:
+                  container_name: nginx-exporter
+                  image: nginx/nginx-prometheus-exporter
+                  command:
+                    - "-nginx.scrape-uri=http://host.docker.internal:{{ nginx_status_port }}/stub_status"
+                  extra_hosts:
+                    - "host.docker.internal:host-gateway"  # access host network via docker0 interface
+                  restart: unless-stopped
+              networks:
+                default:
+                  external: true
+                  name: "{{ monitoring_network_name }}"
+      tags: nginx-exporter

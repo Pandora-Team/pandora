@@ -1,0 +1,75 @@
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'server/**'
+      - '.github/workflows/server-config-update.yml'
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        uses: actions/checkout@v2
+      -
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ secrets.registry_host }}
+          username: github
+          password: ${{ secrets.registry_password }}
+      -
+        name: Build web
+        uses: docker/build-push-action@v2
+        with:
+          context: ./vue
+          push: true
+          tags: ${{ secrets.registry_host }}/lib/web:${{ github.run_number }}
+      -
+        name: Build api
+        uses: docker/build-push-action@v2
+        with:
+          context: ./nest
+          push: true
+          tags: ${{ secrets.registry_host }}/lib/api:${{ github.run_number }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Put SSH key
+        shell: bash
+        run: |
+          mkdir -v ~/.ssh 
+          chmod -v 700 ~/.ssh
+          echo "$DEPLOY_TARGET_IDENTITY" > ~/.ssh/known_hosts
+          echo "$DEPLOY_TARGET_KEY" > ~/.ssh/id_ed25519
+          chmod -v 600 ~/.ssh/*
+        env:
+          DEPLOY_TARGET_IDENTITY: ${{ secrets.deploy_target_identity }}
+          DEPLOY_TARGET_KEY: ${{ secrets.deploy_target_key }}
+      -
+        uses: actions/checkout@v2
+      -
+        name: Deploy
+        shell: bash
+        run: |
+          remote_docker_compose() {
+            cat "$GITHUB_WORKSPACE/docker-compose.yml" \
+              | ssh -T \
+                  ci@$DEPLOY_TARGET_HOST \
+                  -p $DEPLOY_TARGET_PORT \
+                  "PANDORA_IMAGES_TAG=$TAG docker-compose --project-name pandora --file - $@"
+          }
+          remote_docker_compose pull --quiet
+          remote_docker_compose up --no-build --detach
+        env:
+          DEPLOY_TARGET_HOST: ${{ secrets.deploy_target_host }}
+          DEPLOY_TARGET_PORT: ${{ secrets.deploy_target_port }}
+          TAG: ${{ github.run_number }}
+      -
+        name: Destroy SSH key
+        shell: bash
+        run: shred -u ~/.ssh/*
