@@ -49,7 +49,6 @@ export default class EventCard extends Vue {
         return
     }
 
-
     get bgImage(): string {
         return require(`@/assets/bg/${this.event.background}`)
     }
@@ -64,7 +63,7 @@ export default class EventCard extends Vue {
 <style lang="scss">
    .event-card {
        width: 350px;
-       height: 390px;
+       height: 465px;
        border-radius: 30px;
        padding: 40px 30px;
        &__wrapper {

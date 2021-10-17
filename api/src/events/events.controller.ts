@@ -15,7 +15,7 @@ export class EventsController {
     async getEvents(){
         return this.eventsService.getAllEvents()
     }
-    @Get(':id') //events/id
+    @Get(':id')
     async getEvent(@Param('id') id: ObjectId){
         return this.eventsService.getOneEvent(id)
     }
@@ -23,7 +23,7 @@ export class EventsController {
     async createEvent( @Body() dto: CreateEventDto ){
         return this.eventsService.createEvent(dto)
     }
-    @Delete(':id') //events/id
+    @Delete(':id')
     delete(@Param('id') id: ObjectId){
         return this.eventsService.deleteEvent(id)
     }

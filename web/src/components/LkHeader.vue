@@ -13,6 +13,7 @@
                 class="header__logout"
                 src="@/assets/svg/logout.svg"
                 alt="logout"
+                @click="logout"
             >
         </div>
     </div>
@@ -24,7 +25,9 @@ import { Component, Vue } from "vue-property-decorator"
 
 @Component({})
 export default class LkHeader extends Vue {
-
+    logout(): void {
+        return
+    }
 }
 </script>
 
