@@ -6,7 +6,10 @@ const start = async () => {
   try {
     const PORT = process.env.API_PORT || 5000;
     const app = await NestFactory.create(AppModule)
-    app.enableCors()
+    app.enableCors( {
+        origin: 'http://localhost:8080',
+        credentials: true,
+    })
     await app.listen(PORT, () => console.log(`server started on PORT ${PORT}`))
   } catch (e) {
     console.log(e)

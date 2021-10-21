@@ -9,7 +9,7 @@
                 :position="{top: '-28px', left: '-18px'}"
             />
             <div class="event-card__content">
-                <h2>{{ event.title }}</h2>
+                <h2>{{ event.name }}</h2>
                 <p>{{ event.date }}</p>
                 <main-btn
                     :full-width="true"
@@ -24,15 +24,10 @@
 
 <script lang="ts">
 
-interface eventData {
-    title: string
-    date: string
-    background: string
-}
-
 import { Component, Prop, Vue } from "vue-property-decorator"
 import MainStatus from "@/components/MainStatus.vue"
 import MainBtn from "@/components/MainBtn.vue"
+import { EventData } from "@/constants/interfaces"
 
 @Component({
     components: {
@@ -43,18 +38,15 @@ import MainBtn from "@/components/MainBtn.vue"
 export default class EventCard extends Vue {
 
     @Prop({ type: Object, default: {} })
-    event!: eventData
+    event!: EventData
 
     onClick():void {
         return
     }
 
-    get bgImage() {
-        return require(`@/assets/bg/${this.event.background}`)
-    }
     get inlineStyle() {
         return {
-            backgroundImage: `url(${this.bgImage})`,
+            backgroundImage: `url(${process.env.VUE_APP_API_URL}${this.event.poster})`,
         }
     }
 }

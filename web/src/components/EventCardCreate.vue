@@ -12,8 +12,12 @@ import { Component, Vue } from "vue-property-decorator"
 @Component({})
 export default class EventCardCreate extends Vue {
 
+    eventStore = this.$mainStore.events
+    appStore = this.$mainStore.app
+
     onClick():void {
-        return
+        this.eventStore.changePopup(true)
+        this.appStore.setDisabled(true)
     }
 }
 </script>
