@@ -4,13 +4,15 @@
         :style="inlineStyle"
     >
         <div class="event-card__wrapper">
-            <main-status
+            <!--<main-status
                 :type="$typeStatusEvent.actual"
                 :position="{top: '-28px', left: '-18px'}"
-            />
+            />-->
             <div class="event-card__content">
                 <h2>{{ event.name }}</h2>
-                <p>{{ event.date }}</p>
+                <p>{{ dateAndTime }}</p>
+                <p>{{ event.address }}</p>
+                <p>Стоимость: {{ event.price }} рублей</p>
                 <main-btn
                     :full-width="true"
                     @click="onClick"
@@ -28,6 +30,7 @@ import { Component, Prop, Vue } from "vue-property-decorator"
 import MainStatus from "@/components/MainStatus.vue"
 import MainBtn from "@/components/MainBtn.vue"
 import { EventData } from "@/constants/interfaces"
+import dayjs from "dayjs"
 
 @Component({
     components: {
@@ -40,13 +43,19 @@ export default class EventCard extends Vue {
     @Prop({ type: Object, default: {} })
     event!: EventData
 
+    get dateAndTime(): string {
+        const date = dayjs(this.event.date).format("DD.MM.YYYY")
+        const start = dayjs(this.event.date).format("HH:mm")
+        return `${date} с ${start} до ${this.event.end_time}`
+    }
+
     onClick():void {
         return
     }
 
     get inlineStyle(): { backgroundImage: string } {
         return {
-            backgroundImage: `url(${process.env.VUE_APP_API_URL}${this.event.cover})`,
+            backgroundImage: `url(${process.env.VUE_APP_API_URL}events/${this.event.cover})`,
         }
     }
 }
@@ -74,7 +83,10 @@ export default class EventCard extends Vue {
            }
            p {
                color: white;
-               margin-bottom: 40px;
+               margin-bottom: 20px;
+               &:nth-last-of-type(1) {
+                   margin-bottom: 40px;
+               }
            }
        }
    }

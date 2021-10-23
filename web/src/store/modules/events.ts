@@ -1,5 +1,6 @@
-import { State, Mutation } from "vuex-simple"
+import { State, Mutation, Action } from "vuex-simple"
 import { EventData } from "@/constants/interfaces"
+import { getAllEvent } from "@/api/events"
 
 const initCreateState = () => ({
     date:     new Date(),
@@ -17,7 +18,30 @@ export class Events {
     activePopup = false
 
     @State()
+    listEvents: EventData[] = []
+
+    @State()
     createdState: EventData = initCreateState()
+
+    @Mutation()
+    public addEventToList(event: EventData): void {
+        this.listEvents.push(event)
+    }
+
+    @Action()
+    public async getListEvents(): Promise<void> {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        const { data } = await getAllEvent()
+        if (data?.length) {
+            this.updateListEvent(data)
+        }
+    }
+
+    @Mutation()
+    private updateListEvent(list: EventData[]): void {
+        this.listEvents = list
+    }
 
     @Mutation()
     public changePopup(state: boolean): void {

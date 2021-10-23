@@ -8,6 +8,7 @@
             :id="id"
             :value="value"
             :type="type"
+            :placeholder="placeholder"
             @input="changeValue"
         />
         <transition
@@ -50,6 +51,9 @@ export default class BaseFormItem extends Vue {
 
     @Prop({ type: String, default: "" })
     readonly error!: string
+
+    @Prop({ type: String, default: "" })
+    readonly placeholder!: string
 
     changeValue(value: string): void {
         this.$emit("input", value)

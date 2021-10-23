@@ -3,23 +3,27 @@
         class="form__item address-popup"
         @click="changePopupAddress"
     >
-        <label>Выбрать прежний адрес *</label>
+        <label>Выбрать адрес *</label>
         <main-input
-            id="selectAddress"
-            :value="oldAddress.address"
-            :disabled="true"
+            id="place"
+            :value="selectedAddress.address"
             type="text"
+            placeholder="ул. Жуковского, д. 27, 2 этаж"
+            @input="updateAddress"
         />
         <div
-            v-if="visiblePopupAddress"
+            v-if="visiblePopupAddress && !!places.length"
             class="address-popup__body"
         >
             <div
+                v-for="place in places"
+                :key="place._id"
                 class="address-popup__item"
-                data-id="1"
+                :class="{'address-popup__item--active': place._id === selectedAddress._id }"
+                :data-id="place._id"
                 @click="checkOldAddress"
             >
-                Tula example
+                {{ place.address }}
             </div>
         </div>
     </div>
@@ -27,8 +31,9 @@
 
 <script lang="ts">
 
-import { Component, Vue, Watch } from "vue-property-decorator"
+import { Component, Vue } from "vue-property-decorator"
 import MainInput from "@/components/MainInput.vue"
+import { getAllPlaces } from "@/api/places"
 
 @Component({
     components: {
@@ -37,16 +42,23 @@ import MainInput from "@/components/MainInput.vue"
 })
 export default class EventSelectAddress extends Vue {
 
-    oldAddress = {
-        id:      "",
+    selectedAddress = {
+        _id:     "",
         address: "",
     }
     visiblePopupAddress = false
+    places = []
 
-    @Watch("oldAddress", { deep: true, immediate: true })
-    updatePlaceId(): void {
-        const place_id = this.oldAddress.id
-        this.$mainStore.events.changePlaceId(place_id)
+    async mounted(): void {
+        const { data } = await getAllPlaces()
+        if (data?.length) {
+            this.places = data
+            this.selectedAddress = this.places[0]
+        }
+    }
+
+    updateAddress(value: string): void {
+        this.$mainStore.events.changeAddress(value)
     }
 
     changePopupAddress(): void {
@@ -57,7 +69,8 @@ export default class EventSelectAddress extends Vue {
         const target: EventTarget = e.target
         const id = target?.getAttribute("data-id")
         const address = target?.textContent
-        this.oldAddress = { id, address }
+        this.selectedAddress = { id, address }
+        this.$mainStore.events.changePlaceId(id)
     }
 
 }
@@ -84,6 +97,12 @@ export default class EventSelectAddress extends Vue {
         border-radius: 15px;
         &:hover {
             background: wheat;
+        }
+        &--active {
+            background: cadetblue;
+            &:hover {
+                background: cadetblue;
+            }
         }
     }
 }

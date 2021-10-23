@@ -14,11 +14,10 @@
 
 <script lang="ts">
 
-import { Component, Vue } from "vue-property-decorator"
+import { Component, Vue, Watch } from "vue-property-decorator"
 import EventCard from "@/components/EventCard.vue"
 import EventCardCreate from "@/components/EventCardCreate.vue"
 import EventPopup from "@/components/EventPopup.vue"
-import { getAllEvent } from "@/api/events"
 import { EventData } from "@/constants/interfaces"
 
 @Component({
@@ -30,12 +29,16 @@ import { EventData } from "@/constants/interfaces"
 })
 export default class EventsView extends Vue {
 
-    async mounted() {
-        const { data } = await getAllEvent()
-        this.events = data
+    events: EventData[] = []
+
+    @Watch("$mainStore.events.listEvents", { deep: true, immediate: true })
+    updateEvents(): void {
+        this.events = this.$mainStore.events.listEvents
     }
 
-    events: EventData[] = []
+    mounted(): void {
+        this.$mainStore.events.getListEvents()
+    }
 
 }
 </script>

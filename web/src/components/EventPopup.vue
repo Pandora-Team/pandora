@@ -27,7 +27,7 @@
                     <main-form-item
                         id="price"
                         :value="state.price"
-                        label="Стоимость *"
+                        label="Стоимость ( рублей ) *"
                         type="text"
                         @input="updatePrice"
                     />
@@ -37,16 +37,10 @@
                     />
                 </template>
                 <template #center>
-                    <main-form-item
-                        id="address"
-                        :value="state.address"
-                        label="Выбрать новый адрес *"
-                        type="text"
-                        @input="updateAddress"
+                    <event-select-address
+                        :address="state.address"
+                        :place-id="state.place_id"
                     />
-                    <event-select-address />
-                </template>
-                <template #bottom>
                     <event-file />
                 </template>
             </main-form>
@@ -65,6 +59,7 @@ import MainInput from "@/components/MainInput.vue"
 import EventFile from "@/components/EventFile.vue"
 import EventSelectAddress from "@/components/EventSelectAddress.vue"
 import EventDate from "@/components/EventDate.vue"
+import { createEvent } from "@/api/events"
 
 @Component({
     directives: {
@@ -82,7 +77,7 @@ import EventDate from "@/components/EventDate.vue"
 })
 export default class EventPopup extends Vue {
 
-    state = this.$mainStore.events.createdState
+    state = {}
 
     @Watch("$mainStore.events.createdState", { deep: true, immediate: true })
     updateState(): void {
@@ -101,17 +96,27 @@ export default class EventPopup extends Vue {
         this.$mainStore.events.changePrice(value)
     }
 
-    updateAddress(value: string): void {
-        this.$mainStore.events.changeAddress(value)
-    }
-
     closePopup(): void {
         this.$mainStore.events.changePopup(false)
         this.$mainStore.app.setDisabled(false)
     }
 
-    submitForm(): void {
-        return
+    async submitForm(): void {
+        const formData = new FormData()
+        for (const key in this.state) {
+            if (this.state.hasOwnProperty(key)) {
+                if (this.state[key]) {
+                    formData.append(key, this.state[key])
+                }
+            }
+        }
+        const res = await createEvent(formData)
+        if (res.status === 201) {
+            this.$mainStore.events.addEventToList(res.data)
+            this.closePopup()
+            return
+        }
+        console.log(res)
     }
 
 }
