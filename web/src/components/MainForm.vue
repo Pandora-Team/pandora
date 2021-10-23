@@ -1,6 +1,7 @@
 <template>
     <div
         class="form"
+        :style="{maxWidth: widthForm, margin: marginForm}"
     >
         <form
             novalidate
@@ -63,6 +64,12 @@ export default class BaseForm extends Vue {
     @Prop({ type: Boolean, default: true })
     readonly cancelButton!: boolean
 
+    @Prop({ type: String, default: "100%" })
+    readonly widthForm!: string
+
+    @Prop({ type: String, default: "0 auto" })
+    readonly marginForm!: string
+
     submit(): void {
         this.$emit("submit")
     }
@@ -82,7 +89,8 @@ export default class BaseForm extends Vue {
     margin-bottom: 30px;
     &-row {
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
         &:nth-of-type(3) {
             margin-bottom: 30px;
         }
@@ -91,6 +99,7 @@ export default class BaseForm extends Vue {
         margin-bottom: 40px;
         position: relative;
         z-index: 2;
+        display: flex;
     }
     &-cancel {
         position: relative;

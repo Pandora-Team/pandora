@@ -8,6 +8,7 @@
             :id="id"
             :value="value"
             :type="type"
+            :placeholder="placeholder"
             @input="changeValue"
         />
         <transition
@@ -51,6 +52,9 @@ export default class BaseFormItem extends Vue {
     @Prop({ type: String, default: "" })
     readonly error!: string
 
+    @Prop({ type: String, default: "" })
+    readonly placeholder!: string
+
     changeValue(value: string): void {
         this.$emit("input", value)
     }
@@ -67,9 +71,6 @@ export default class BaseFormItem extends Vue {
             transition: padding-bottom 1s;
             position: relative;
             margin-right: 40px;
-            &:nth-last-of-type(1) {
-                margin-right: 0;
-            }
             &--pb {
                 padding-bottom: 16px;
             }

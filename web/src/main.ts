@@ -5,23 +5,20 @@ import store from "./store"
 import "./class-component-hooks"
 import { useStore } from "vuex-simple"
 import Vuelidate from "vuelidate"
-import sanitizeHtml from "sanitize-html"
 import "./styles/main.scss"
 import paths from "@/router/paths"
 import { typesStatus } from "@/constants/typeStatus"
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import DatePicker from "v-calendar/lib/components/date-picker.umd"
+
+Vue.component("date-picker", DatePicker)
 
 Vue.use(Vuelidate)
-
-sanitizeHtml.defaults.allowedAttributes = {}
-sanitizeHtml.defaults.allowedTags = ["br", "b", "ul", "ol", "li", "span"]
-sanitizeHtml.defaults.selfClosing = ["br"]
-sanitizeHtml.defaults.allowedSchemesAppliedToAttributes = []
-sanitizeHtml.defaults.disallowedTagsMode = "escape"
 
 Vue.prototype.$mainStore = useStore(store)
 Vue.prototype.$mainPaths = paths
 Vue.prototype.$typeStatusEvent = typesStatus
-Vue.prototype.$sanitizeHtml = sanitizeHtml
 
 Vue.config.productionTip = false
 Vue.config.devtools = true

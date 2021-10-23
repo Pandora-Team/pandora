@@ -6,11 +6,8 @@ export type EventsDocument = Events & Document;
 @Schema()
 export class Events {
 
-    @Prop({type: String || []})
-    date: string;
-
     @Prop()
-    start_time: string;
+    date: Date;
 
     @Prop()
     end_time: string;
@@ -19,7 +16,7 @@ export class Events {
     name: string;
 
     @Prop()
-    poster?: string;
+    cover?: string;
 
     @Prop()
     message?: string;

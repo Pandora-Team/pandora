@@ -5,6 +5,8 @@
             class="input input--main"
             :value="value"
             :type="typeInput"
+            :disabled="disabled"
+            :placeholder="placeholder"
             autocomplete="off"
             @input="$emit('input', $event.target.value)"
         >
@@ -32,6 +34,12 @@ export default class MainInput extends Vue {
 
     @Prop({ type: String, default: "" })
     readonly value!: string
+
+    @Prop({ type: Boolean, default: false })
+    readonly disabled!: boolean
+
+    @Prop({ type: String, default: "" })
+    readonly placeholder!: string
 
     changeVisiblePassword(): void {
         this.visiblePassword = !this.visiblePassword

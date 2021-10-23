@@ -120,7 +120,7 @@ export default class AuthenticationView extends Vue {
 
 <style lang="scss">
     .auth {
-        max-width: 560px;
+        max-width: 600px;
         padding: 0 2px;
         &-title {
             text-align: center;

@@ -11,11 +11,11 @@ export enum FileType {
 @Injectable()
 export class FileService {
 
-    createFile(type: FileType, file): string{
+    createFile(type: FileType, file, nameFolder): string{
         try {
             const fileExtension = file.originalname.split('.').pop()
             const fileName = uuid.v4() +'.'+ fileExtension
-            const filePath = path.resolve(__dirname, '..', 'static', type)
+            const filePath = path.resolve(__dirname, '..', `static/${nameFolder}`, type)
             if(!fs.existsSync(filePath)){
                 fs.mkdirSync(filePath, {recursive: true})
             }
@@ -27,6 +27,6 @@ export class FileService {
     }
 
     removeFile(fileName: string){
-
+        console.log(fileName)
     }
 }

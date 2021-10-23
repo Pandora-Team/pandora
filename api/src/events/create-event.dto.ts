@@ -1,11 +1,10 @@
 import {ObjectId} from "mongoose";
 
 export class CreateEventDto {
-    readonly date: string | [];
-    readonly start_time: string;
+    readonly date: Date;
     readonly end_time: string;
     readonly name: string;
-    readonly poster?: string;
+    readonly cover?: string;
     readonly message?: string;
     readonly price: number;
     readonly price_last?: number;

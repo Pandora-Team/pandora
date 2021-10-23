@@ -22,11 +22,11 @@ export class EventsController {
     }
     @Post()
     @UseInterceptors(FileFieldsInterceptor([
-        { name: 'poster', maxCount: 1 }
+        { name: 'cover', maxCount: 1 }
     ]))
     async createEvent(@UploadedFiles() files, @Body() dto: CreateEventDto ){
-        const {poster} = files
-        return this.eventsService.createEvent(dto, poster[0])
+        const {cover} = files
+        return this.eventsService.createEvent(dto, cover[0])
     }
     @Delete(':id')
     delete(@Param('id') id: ObjectId){

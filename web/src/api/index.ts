@@ -1,5 +1,5 @@
 import axios from "axios"
-// @ts-ignore
+
 import { setupCache, ISetupCache } from "axios-cache-adapter"
 
 const cache : ISetupCache = setupCache({
@@ -10,7 +10,7 @@ const cache : ISetupCache = setupCache({
 })
 
 const api = axios.create({
-    baseURL:         process.env.API_URI,
+    baseURL:         process.env.VUE_APP_API_URL,
     withCredentials: true,
     adapter:         cache.adapter,
 })
