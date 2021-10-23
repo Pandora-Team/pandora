@@ -1,5 +1,5 @@
 import axios from "axios"
-// @ts-ignore
+
 import { setupCache, ISetupCache } from "axios-cache-adapter"
 
 const cache : ISetupCache = setupCache({

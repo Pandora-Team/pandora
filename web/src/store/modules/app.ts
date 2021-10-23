@@ -1,16 +1,12 @@
 import { State, Mutation } from "vuex-simple"
-import { Store } from "@/store/store"
 
 export class App {
-
-    constructor(private store: Store) {
-    }
 
     @State()
     disable = false
 
     @Mutation()
-    private setDisabled(status: boolean) {
+    public setDisabled(status: boolean): void {
         this.disable = status
     }
 

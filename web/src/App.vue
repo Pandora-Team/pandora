@@ -9,16 +9,17 @@
 
 <script lang="ts">
 
-import {Component, Vue, Watch} from "vue-property-decorator"
+import { Component, Vue, Watch } from "vue-property-decorator"
 
 @Component({})
 export default class App extends Vue {
     @Watch("$mainStore.app.disable")
-    changeDisable() {
+    changeDisable(): void {
+        const body = document.querySelector("body")
         if (this.$mainStore.app.disable) {
-            document.querySelector("body").style.overflow = "hidden"
+            body!.style.overflow = "hidden"
         } else {
-            document.querySelector("body").style.overflow = "auto"
+            body!.style.overflow = "auto"
         }
     }
 }

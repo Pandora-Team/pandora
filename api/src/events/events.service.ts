@@ -14,7 +14,8 @@ export class EventsService {
         private fileService: FileService
     ) {}
 
-    async createEvent(dto: CreateEventDto, poster): Promise<Events> {
+    async createEvent(dto: CreateEventDto, cover): Promise<Events> {
+        const nameFolder = "events"
         let newAddress
         const { place_id, address, ...result } = dto
         if (address) {
@@ -25,8 +26,8 @@ export class EventsService {
             const place = await this.placesService.getOnePlace(place_id)
             newAddress = place.address
         }
-        const posterPath = this.fileService.createFile(FileType.IMAGE, poster)
-        return this.eventsModel.create({...result, address: newAddress, poster: posterPath})
+        const coverPath = this.fileService.createFile(FileType.IMAGE, cover, nameFolder)
+        return this.eventsModel.create({...result, address: newAddress, cover: coverPath})
     }
 
     async getAllEvents(): Promise<Events[]>{
