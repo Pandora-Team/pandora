@@ -17,9 +17,9 @@
                     </ul>
                 </template>
             </info-card>
-            <event-card
+            <!--<event-card
                 :event="data"
-            />
+            />-->
         </div>
     </div>
 </template>
@@ -39,11 +39,7 @@ import EventCard from "@/components/EventCard.vue"
     },
 })
 export default class WelcomeView extends Vue {
-    data = {
-        background: "events-bg.png",
-        title:      "Taemin - Advice",
-        date:       "05.09.21",
-    }
+
 }
 </script>
 

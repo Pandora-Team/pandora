@@ -14,10 +14,10 @@ export class AuthService {
         @InjectModel(Users.name) private usersModel: Model<UsersDocument>
     ) {}
 
-    async validateUser(username: string, password: string): Promise<any> {
-        const user = await this.usersService.getUser(username)
-        if(user && user.password === password) {
-            const { password, ...result } = user
+    async validateUser(name: string, pass: string): Promise<any> {
+        const user = await this.usersService.getUser(name)
+        if(user && user.pass === pass) {
+            const { pass, ...result } = user
             return result
         }
         return null
@@ -25,23 +25,40 @@ export class AuthService {
 
     async login(dto: LoginDto) {
         const user = await this.usersModel.findOne({...dto})
+
         if (!user) {
-            return { access_token: "" }
+            return { error: true }
         }
 
         const payload = {
+            _id: user._id,
             name: user.name,
             role: user.role
         }
         return {
-            access_token: this.jwtService.sign(payload)
+            access_token: this.jwtService.sign(payload),
+            ...payload
         }
     }
 
-    async register(dto: RegisterDto): Promise<Users> {
+    async register(dto: RegisterDto) {
         if(!dto.role){
             dto.role = "dancer"
         }
-        return this.usersModel.create({...dto})
+        const newUser = await this.usersModel.create({...dto})
+
+        if (!newUser) {
+            return { error: true }
+        }
+
+        const payload = {
+            _id:  newUser._id,
+            name: newUser.name,
+            role: newUser.role
+        }
+        return {
+            access_token: this.jwtService.sign(payload),
+            ...payload
+        }
     }
 }

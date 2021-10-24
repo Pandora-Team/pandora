@@ -102,22 +102,25 @@ export default class RegistrationView extends Vue {
     phone = ""
     password = ""
     repeatPassword = ""
-    loading = false
 
-    submitForm(): void {
+    async submitForm(): Promise<void> {
         if(!this.$v.$invalid) {
-            reg({
+
+            const { data } = await reg({
                 pass:  this.password,
                 name:  this.name,
                 phone: this.phone,
             })
-                .then(res => {
-                    console.log(res)
-                })
-                .catch(error => {
-                    console.error(error)
-                })
-                .finally(() => (this.loading = false))
+
+            if (data?.error) {
+                await this.$router.push({ path: this.$mainPaths.LoginLayout })
+                return
+            }
+
+            const { access_token, name, role, _id } = data
+            localStorage.setItem("at", access_token)
+            await this.$mainStore.user.updateUserInfo({ name, role, id: _id })
+            await this.$router.push({ path: this.$mainPaths.LkLayout })
         }
     }
 

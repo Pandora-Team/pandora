@@ -68,21 +68,23 @@ export default class AuthenticationView extends Vue {
     password = ""
     loading = false
 
-    submitForm() : void {
+    async submitForm() : Promise<void> {
         if (!this.$v.$invalid) {
-            auth({
+
+            const { data } = await auth({
                 phone: this.phone,
                 pass:  this.password,
             })
-                .then(res => {
-                    const token = res.data.access_token
-                    localStorage.setItem("at", token)
-                    this.$router.push({ name: "lk" })
-                })
-                .catch(error => {
-                    console.error(error)
-                })
-                .finally(() => (this.loading = false))
+
+            if (data?.error) {
+                await this.$router.push({ path: this.$mainPaths.LoginLayout })
+                return
+            }
+
+            const { access_token, name, role, _id } = data
+            localStorage.setItem("at", access_token)
+            await this.$mainStore.user.updateUserInfo({ name, role, id: _id })
+            await this.$router.push({ path: this.$mainPaths.LkLayout })
         }
     }
 
