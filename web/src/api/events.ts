@@ -6,7 +6,7 @@ import { EventData } from "@/constants/interfaces"
 
 export const getAllEvent = (): Promise<EventData[]> => api.get(`${BASE_URL}`)
 export const getEvent = (id: string): Promise<EventData> => api.get(`${BASE_URL}/${id}`)
-export const createEvent = (params : EventData): Promise<EventData> =>
+export const createEvent = (params: unknown): Promise<any> =>
     api.post(`${BASE_URL}`, params, { headers: {
         "Content-Type": "multipart/form-data",
     } })
