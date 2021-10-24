@@ -44,6 +44,7 @@ export default class LoginView extends Vue {
         if (token) {
             this.$router.push({ path: this.$mainPaths.LkLayout })
         }
+        console.log(process.env.VUE_APP_API_URL)
     }
 
 }
