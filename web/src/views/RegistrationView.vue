@@ -63,12 +63,12 @@
 <script lang="ts">
 
 import { Component, Vue } from "vue-property-decorator"
-import { create } from "@/api/users"
 import { maxLength, minLength, required, sameAs, numeric } from "vuelidate/lib/validators"
 import MainFormItem from "@/components/MainFormItem.vue"
 import MainForm from "@/components/MainForm.vue"
 import TransitionFade from "@/components/transition/TransitionFade.vue"
 import paths from "@/router/paths"
+import { reg } from "@/api/auth"
 
 @Component({
     components: {
@@ -102,22 +102,25 @@ export default class RegistrationView extends Vue {
     phone = ""
     password = ""
     repeatPassword = ""
-    loading = false
 
-    submitForm(): void {
+    async submitForm(): Promise<void> {
         if(!this.$v.$invalid) {
-            create({
+
+            const { data } = await reg({
                 pass:  this.password,
                 name:  this.name,
                 phone: this.phone,
             })
-                .then(res => {
-                    console.log(res)
-                })
-                .catch(error => {
-                    console.error(error)
-                })
-                .finally(() => (this.loading = false))
+
+            if (data?.error) {
+                await this.$router.push({ path: this.$mainPaths.LoginLayout })
+                return
+            }
+
+            const { access_token, name, role, _id } = data
+            localStorage.setItem("at", access_token)
+            await this.$mainStore.user.updateUserInfo({ name, role, id: _id })
+            await this.$router.push({ path: this.$mainPaths.LkLayout })
         }
     }
 

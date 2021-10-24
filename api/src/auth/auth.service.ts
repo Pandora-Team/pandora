@@ -14,45 +14,51 @@ export class AuthService {
         @InjectModel(Users.name) private usersModel: Model<UsersDocument>
     ) {}
 
-    async validateUser(username: string, password: string): Promise<any> {
-        const user = await this.usersService.getUser(username)
-        if(user && user.password === password) {
-            const { password, ...result } = user
+    async validateUser(name: string, pass: string): Promise<any> {
+        const user = await this.usersService.getUser(name)
+        if(user && user.pass === pass) {
+            const { pass, ...result } = user
             return result
         }
         return null
     }
 
-    async login(model: LoginDto) {
-        return await this.usersModel.findOne({
-            phone: model.phone,
-            password: model.pass
-        })
-            .exec()
-            .then(u => {
-                const payload = {
-                    username: u.phone,
-                    role: u.role
-                }
+    async login(dto: LoginDto) {
+        const user = await this.usersModel.findOne({...dto})
 
-                return {
-                    access_token: this.jwtService.sign(payload)
-                }
-            })
-            .catch(e => {
-                console.log(e)
-                return {
-                    access_token: "",
-                    err: e
-                }
-            })
+        if (!user) {
+            return { error: true }
+        }
+
+        const payload = {
+            _id: user._id,
+            name: user.name,
+            role: user.role
+        }
+        return {
+            access_token: this.jwtService.sign(payload),
+            ...payload
+        }
     }
 
-    async register(model: RegisterDto){
-        return this.usersModel.create({
-            name: model.name,
-            phone: model.phone,
-            password: model.pass
-        })
+    async register(dto: RegisterDto) {
+        if(!dto.role){
+            dto.role = "dancer"
+        }
+        const newUser = await this.usersModel.create({...dto})
+
+        if (!newUser) {
+            return { error: true }
+        }
+
+        const payload = {
+            _id:  newUser._id,
+            name: newUser.name,
+            role: newUser.role
+        }
+        return {
+            access_token: this.jwtService.sign(payload),
+            ...payload
+        }
     }
 }

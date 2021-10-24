@@ -10,10 +10,11 @@
 
 <script lang="ts">
 
-import { Component, Vue } from "vue-property-decorator"
+import { Component, Vue, Watch } from "vue-property-decorator"
 import LkLogo from "@/components/LkLogo.vue"
 import LkBody from "@/components/LkBody.vue"
 import LkNav from "@/components/LkNav.vue"
+import { getUserInfo } from "@/api/auth"
 
 @Component({
     components: {
@@ -23,6 +24,20 @@ import LkNav from "@/components/LkNav.vue"
     },
 })
 export default class LkLayout extends Vue {
+
+    @Watch("$mainStore.user.name", { immediate: true })
+    async updateUserInfo(): Promise<void> {
+        if(!this.$mainStore.user.name) {
+            try {
+                const res = await getUserInfo()
+                const { name, role, id } = res.data
+                this.$mainStore.user.updateUserInfo({ name, role, id })
+            } catch (e) {
+                console.log(e)
+                await this.$router.push({ path: this.$mainPaths.LoginLayout })
+            }
+        }
+    }
 
 }
 </script>

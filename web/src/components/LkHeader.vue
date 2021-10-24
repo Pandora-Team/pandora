@@ -7,7 +7,7 @@
                 alt="avatar"
             >
             <p class="header__name">
-                Евсикова Анастасия
+                {{ name }}
             </p>
             <img
                 class="header__logout"
@@ -21,10 +21,18 @@
 
 <script lang="ts">
 
-import { Component, Vue } from "vue-property-decorator"
+import { Component, Vue, Watch } from "vue-property-decorator"
 
 @Component({})
 export default class LkHeader extends Vue {
+
+    name = ""
+
+    @Watch("$mainStore.user.name", { immediate: true })
+    updateName(): void {
+        this.name = this.$mainStore.user.name
+    }
+
     logout(): void {
         return
     }

@@ -37,7 +37,16 @@ import MainBtn from "@/components/MainBtn.vue"
         TransitionFade,
     },
 })
-export default class LoginView extends Vue {}
+export default class LoginView extends Vue {
+
+    mounted(): void {
+        const token = localStorage.getItem("at")
+        if (token) {
+            this.$router.push({ path: this.$mainPaths.LkLayout })
+        }
+    }
+
+}
 </script>
 
 <style lang="scss">
