@@ -10,7 +10,7 @@ services:
     build: ./vue/
     restart: unless-stopped
     environment:
-      - API_URI=${PANDORA_API_URI}
+      - VUE_APP_API_URL=${PANDORA_API_URI}
     ports:
       - 127.0.0.1:${PANDORA_WEB_PORT}:8080
 
