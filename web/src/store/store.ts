@@ -4,8 +4,8 @@ import { Events } from "./modules/events"
 
 export class Store {
     @Module()
-    public app = new App(this)
+    public app = new App()
 
     @Module()
-    public events = new Events(this)
+    public events = new Events()
 }

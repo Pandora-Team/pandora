@@ -49,7 +49,7 @@ export default class EventSelectAddress extends Vue {
     visiblePopupAddress = false
     places = []
 
-    async mounted(): void {
+    async mounted(): Promise<void> {
         const { data } = await getAllPlaces()
         if (data?.length) {
             this.places = data
@@ -66,11 +66,11 @@ export default class EventSelectAddress extends Vue {
     }
 
     checkOldAddress(e: Event): void {
-        const target: EventTarget = e.target
-        const id = target?.getAttribute("data-id")
+        const target: any = e.target
+        const _id = target?.getAttribute("data-id")
         const address = target?.textContent
-        this.selectedAddress = { id, address }
-        this.$mainStore.events.changePlaceId(id)
+        this.selectedAddress = { _id, address }
+        this.$mainStore.events.changePlaceId(_id)
     }
 
 }

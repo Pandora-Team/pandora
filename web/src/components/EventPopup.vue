@@ -77,7 +77,7 @@ import { createEvent } from "@/api/events"
 })
 export default class EventPopup extends Vue {
 
-    state = {}
+    state: {[index: string]:any} = {}
 
     @Watch("$mainStore.events.createdState", { deep: true, immediate: true })
     updateState(): void {
@@ -101,22 +101,20 @@ export default class EventPopup extends Vue {
         this.$mainStore.app.setDisabled(false)
     }
 
-    async submitForm(): void {
+    async submitForm(): Promise<void> {
         const formData = new FormData()
-        for (const key in this.state) {
-            if (this.state.hasOwnProperty(key)) {
-                if (this.state[key]) {
-                    formData.append(key, this.state[key])
-                }
+        const data = this.state
+        for (const key in data) {
+            if (data.hasOwnProperty(key) && data[key]) {
+                formData.append(key, data[key])
             }
         }
         const res = await createEvent(formData)
-        if (res.status === 201) {
-            this.$mainStore.events.addEventToList(res.data)
+        if (res?.status === 201) {
+            this.$mainStore.events.addEventToList(res?.data)
             this.closePopup()
             return
         }
-        console.log(res)
     }
 
 }
