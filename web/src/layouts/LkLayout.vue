@@ -26,7 +26,7 @@ import { getUserInfo } from "@/api/auth"
 export default class LkLayout extends Vue {
 
     @Watch("$mainStore.user.name", { immediate: true })
-    async updateUserInfo(): void {
+    async updateUserInfo(): Promise<void> {
         if(!this.$mainStore.user.name) {
             try {
                 const res = await getUserInfo()
