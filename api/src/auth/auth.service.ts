@@ -23,36 +23,25 @@ export class AuthService {
         return null
     }
 
-    async login(model: LoginDto) {
-        return await this.usersModel.findOne({
-            phone: model.phone,
-            password: model.pass
-        })
-            .exec()
-            .then(u => {
-                const payload = {
-                    username: u.phone,
-                    role: u.role
-                }
+    async login(dto: LoginDto) {
+        const user = await this.usersModel.findOne({...dto})
+        if (!user) {
+            return { access_token: "" }
+        }
 
-                return {
-                    access_token: this.jwtService.sign(payload)
-                }
-            })
-            .catch(e => {
-                console.log(e)
-                return {
-                    access_token: "",
-                    err: e
-                }
-            })
+        const payload = {
+            name: user.name,
+            role: user.role
+        }
+        return {
+            access_token: this.jwtService.sign(payload)
+        }
     }
 
-    async register(model: RegisterDto){
-        return this.usersModel.create({
-            name: model.name,
-            phone: model.phone,
-            password: model.pass
-        })
+    async register(dto: RegisterDto): Promise<Users> {
+        if(!dto.role){
+            dto.role = "dancer"
+        }
+        return this.usersModel.create({...dto})
     }
 }

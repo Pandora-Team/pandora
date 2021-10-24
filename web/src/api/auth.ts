@@ -1,10 +1,15 @@
 import api from "./index"
 
-const BASE_URL = "auth"
-
 interface AuthData {
     phone: string
     pass: string
 }
 
-export const auth = (params : AuthData) => api.post(`${BASE_URL}`, params)
+interface RegData {
+    phone: string
+    pass: string
+    name: string
+}
+
+export const auth = (params : AuthData): Promise<any> => api.post("/authorization", params)
+export const reg = (params : RegData): Promise<any> => api.post("/registration", params)

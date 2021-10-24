@@ -63,12 +63,12 @@
 <script lang="ts">
 
 import { Component, Vue } from "vue-property-decorator"
-import { create } from "@/api/users"
 import { maxLength, minLength, required, sameAs, numeric } from "vuelidate/lib/validators"
 import MainFormItem from "@/components/MainFormItem.vue"
 import MainForm from "@/components/MainForm.vue"
 import TransitionFade from "@/components/transition/TransitionFade.vue"
 import paths from "@/router/paths"
+import { reg } from "@/api/auth"
 
 @Component({
     components: {
@@ -106,7 +106,7 @@ export default class RegistrationView extends Vue {
 
     submitForm(): void {
         if(!this.$v.$invalid) {
-            create({
+            reg({
                 pass:  this.password,
                 name:  this.name,
                 phone: this.phone,
