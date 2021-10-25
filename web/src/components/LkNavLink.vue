@@ -3,9 +3,17 @@
         class="nav-link"
         :class="{'nav-link--active': active}"
     >
-        <router-link :to="path">
-            {{ name }}
-        </router-link>
+        <div class="nav-link__wrapper">
+            <simple-svg
+                :src="iconPath"
+                width="35"
+                height="35"
+                custom-class-name="nav-link__icon"
+            />
+            <router-link :to="path">
+                {{ name }}
+            </router-link>
+        </div>
     </div>
 </template>
 
@@ -22,11 +30,21 @@ export default class LkNavLink extends Vue {
     @Prop({ type: String, default: "" })
     name!: string
 
+    @Prop({ type: String, default: "" })
+    icon!: string
+
     active = false
+    fillColor = "#FFFFFF"
 
     @Watch("$route.path", { immediate: true, deep: true })
     changeActive(route: string): void {
         this.active = route === this.path
+        this.active ? this.fillColor = "#8A54F2" : this.fillColor = "#FFFFFF"
+    }
+
+    get iconPath(): string {
+        if(!this.icon) return ""
+        return require(`@/assets/svg/${this.icon}-link.svg`)
     }
 
 }
@@ -34,33 +52,51 @@ export default class LkNavLink extends Vue {
 
 <style lang="scss">
     .nav-link {
-        min-height: 100px;
+        min-height: 84px;
         display: flex;
         align-items: center;
-        padding-left: 30px;
         position: relative;
-        overflow: hidden;
         outline: none;
         &::before {
-            transition: top .5s;
+            transition: left .5s;
             content: "";
             width: 10px;
-            height: 100%;
-            background: #AD00FF;
+            height: 100px;
+            background: $color-hover;
             position: absolute;
-            top: -100%;
-            left: 0;
+            top: -7px;
+            left: -10px;
             border-radius: 0 20px 20px 0;
         }
-        a {
-            font-size: 18px;
-            line-height: 22px;
-            color: #FFFFFF;
-            text-decoration: none;
+        &__wrapper {
+          transition: .5s;
+          padding-left: 40px;
+          height: 84px;
+          display: flex;
+          align-items: center;
+          width: 100%;
+        }
+        &__icon {
+          margin-right: 20px;
+          path {
+            transition: .5s;
+            fill: $color-white;
+          }
         }
         &--active {
             &::before {
-                top: 0;
+                left: 0;
+            }
+            .nav-link__wrapper {
+              background: $gradient-active-link;
+            }
+          .nav-link__icon {
+            path {
+              fill: $color-hover-text;
+            }
+          }
+            a {
+              color: $color-hover-text;
             }
         }
     }

@@ -1,6 +1,6 @@
 <template>
     <div class="information">
-        <h1>Информация</h1>
+        <h1>Страница находится в разаработке!</h1>
     </div>
 </template>
 
@@ -9,7 +9,7 @@
 import { Component, Vue } from "vue-property-decorator"
 
 @Component({})
-export default class InformationView extends Vue {
+export default class AboutView extends Vue {
 
 }
 </script>

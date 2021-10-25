@@ -3,18 +3,19 @@
         <div class="header-wrapper">
             <img
                 class="header__avatar"
-                src="@/assets/bg/avatar.png"
+                src="@/assets/images/not-avatar.png"
                 alt="avatar"
             >
             <p class="header__name">
                 {{ name }}
             </p>
-            <img
-                class="header__logout"
-                src="@/assets/svg/logout.svg"
-                alt="logout"
+            <simple-svg
+                :src="iconPath"
+                width="32px"
+                height="32px"
+                custom-class-name="header__logout"
                 @click="logout"
-            >
+            />
         </div>
     </div>
 </template>
@@ -28,21 +29,37 @@ export default class LkHeader extends Vue {
 
     name = ""
 
+    get iconPath(): string {
+        return require("@/assets/svg/logout.svg")
+    }
+
     @Watch("$mainStore.user.name", { immediate: true })
     updateName(): void {
-        this.name = this.$mainStore.user.name
+        const fullName = this.$mainStore.user.name
+        const arrName:string[] = fullName.split(" ")
+        const secondName = arrName[0]
+        const firstName = arrName[1]
+        if (firstName) {
+            const firstNameArr = firstName.split("")
+            const firstLetter = firstNameArr[0]
+            this.name = `${secondName} ${firstLetter}.`
+        } else {
+            this.name = fullName
+        }
     }
 
     logout(): void {
         return
     }
+
+
 }
 </script>
 
 <style lang="scss">
     .header {
-        padding: 20px 34px;
-        border-bottom: 1px solid #d5d3d6;
+        padding: 15px 44px;
+        border-bottom: 1px solid rgba(151, 146, 153, 0.4);
         min-height: 50px;
         &-wrapper {
             display: flex;
@@ -53,14 +70,22 @@ export default class LkHeader extends Vue {
             max-width: 50px;
         }
         &__name {
-            margin: 0 40px 0 24px;
-            color: #242424;
-            font-size: 16px;
-            line-height: 20px;
+            margin: 0 40px 0 16px;
+            color: $color-black;
         }
         &__logout {
-            opacity: 0.6;
+            transition: .5s;
             cursor: pointer;
+            opacity: 0.5;
+            path {
+              transition: .5s;
+            }
+            &:hover {
+              opacity: 1;
+              path {
+                fill: $color-purple;
+              }
+            }
         }
     }
 </style>

@@ -1,30 +1,51 @@
 <template>
-    <div class="info-card">
+    <div
+        :class="`info-card ${gridClass}`"
+    >
         <slot />
     </div>
 </template>
 
 <script lang="ts">
 
-import { Component, Vue } from "vue-property-decorator"
+import { Component, Vue, Prop } from "vue-property-decorator"
 
 @Component({
     components: {},
 })
 export default class InfoCard extends Vue {
 
+    @Prop({ type: String, default: "" })
+    gridClass!: string
+
 }
 </script>
 
 <style lang="scss">
     .info-card {
-        background: #F6F6FC;
+        background: $bg-info;
         border-radius: 30px;
-        padding: 30px;
+        padding: 24px 40px;
+        &__wrapper {
+            display: flex;
+        }
+        &__pic {
+            max-width: 408px;
+            max-height: 210px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 42px;
+            img {
+                width: 100%;
+            }
+        }
+        h4 {
+          color: $color-hover;
+          margin-bottom: 15px;
+        }
         p {
-            font-size: 16px;
-            line-height: 20px;
-            color: #000000;
+            color: $color-dark;
             margin-bottom: 16px;
         }
         ul {
@@ -33,8 +54,8 @@ export default class InfoCard extends Vue {
                 position: relative;
                 font-size: 16px;
                 line-height: 20px;
-                color: #000000;
-                margin-bottom: 6px;
+                color: $color-dark;
+                margin-bottom: 2px;
                 &::before {
                     content: "";
                     position: absolute;
@@ -43,7 +64,7 @@ export default class InfoCard extends Vue {
                     width: 10px;
                     height: 10px;
                     border-radius: 50%;
-                    background: #AD00FF;
+                    background: $color-hover;
                 }
                 &:nth-last-of-type(1) {
                     margin-bottom: 0;

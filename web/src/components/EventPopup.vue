@@ -139,9 +139,8 @@ export default class EventPopup extends Vue {
             cursor: pointer;
             width: 23px;
             height: 23px;
-            background: url("../assets/images/exit.png") center no-repeat;
+            background: url("../assets/svg/close.svg") center no-repeat;
             background-size: contain;
-            filter: invert(1);
         }
         &__body {
             margin: 40px;

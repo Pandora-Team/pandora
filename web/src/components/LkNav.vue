@@ -3,10 +3,32 @@
         <lk-nav-link
             name="Главная"
             path="/lk"
+            icon="home"
         />
         <lk-nav-link
             name="Классы"
-            path="/lk/events"
+            path="/lk/classes"
+            icon="master"
+        />
+        <lk-nav-link
+            name="Профиль"
+            path="/lk/profile"
+            icon="profile"
+        />
+        <lk-nav-link
+            name="О нас"
+            path="/lk/about"
+            icon="about"
+        />
+        <lk-nav-link
+            name="Правила"
+            path="/lk/rules"
+            icon="rule"
+        />
+        <lk-nav-link
+            name="События"
+            path="/lk/storage"
+            icon="events"
         />
     </div>
 </template>

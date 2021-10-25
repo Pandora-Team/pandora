@@ -1,5 +1,6 @@
 body {
   font-family: $font;
+  color: $color-white;
 }
 
 h1 {
@@ -18,47 +19,53 @@ h3 {
 }
 
 h4 {
-  font-size: 20px;
-  font-weight: 600;
-}
-
-h5 {
   font-size: 18px;
   font-weight: 600;
-}
-
-h6 {
-  font-size: 18px;
-  font-weight: 300;
 }
 
 p {
+  font-size: 16px;
+  line-height: 20px;
   margin-bottom: 20px;
 }
 
 button {
+  transition: .5s;
   height: auto;
   display: inline-block;
   border: none;
   outline: none;
-  color: white;
-  font-size: 16px;
-  line-height: 175%;
+  color: $color-text-btn;
+  font-size: $font-size-btn;
+  line-height: $line-height-btn;
   padding: 8px 24px;
+  border-radius: $border-radius-btn;
+  &:hover {
+    background: $bg-hover-btn;
+  }
+  &:disabled {
+    background: $bg-disabled-btn;
+  }
 }
 
 label {
   display: block;
   margin-bottom: 16px;
-  color: white;
+  color: $color-white;
   font-size: 14px;
   line-height: 17px;
 }
 
 a {
+  transition: .5s;
+  font-size: 18px;
+  line-height: 22px;
+  color: $color-white;
+  text-decoration: none;
   outline: none;
   &:active, &:hover, &:focus {
     outline: none;
+    color: $color-hover-text;
   }
 }
 

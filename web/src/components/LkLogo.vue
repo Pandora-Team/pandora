@@ -1,9 +1,10 @@
 <template>
     <div class="logo">
-        <img
-            src="@/assets/svg/logo.svg"
-            alt="logo"
-        >
+        <simple-svg
+            :src="iconPath"
+            width="94px"
+            height="100%"
+        />
     </div>
 </template>
 
@@ -13,7 +14,9 @@ import { Component, Vue } from "vue-property-decorator"
 
 @Component({})
 export default class LkLogo extends Vue {
-
+    get iconPath(): string {
+        return require("@/assets/svg/logo.svg")
+    }
 }
 </script>
 
@@ -23,6 +26,6 @@ export default class LkLogo extends Vue {
         justify-content: center;
         align-items: center;
         width: 100%;
-        margin: 50px auto 100px;
+        margin: 50px auto 60px;
     }
 </style>

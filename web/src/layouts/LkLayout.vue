@@ -4,7 +4,10 @@
             <lk-logo />
             <lk-nav />
         </div>
-        <lk-body />
+        <div class="lk-body">
+            <lk-header />
+            <lk-body />
+        </div>
     </div>
 </template>
 
@@ -14,6 +17,7 @@ import { Component, Vue, Watch } from "vue-property-decorator"
 import LkLogo from "@/components/LkLogo.vue"
 import LkBody from "@/components/LkBody.vue"
 import LkNav from "@/components/LkNav.vue"
+import LkHeader from "@/components/LkHeader.vue"
 import { getUserInfo } from "@/api/auth"
 
 @Component({
@@ -21,6 +25,7 @@ import { getUserInfo } from "@/api/auth"
         LkLogo,
         LkBody,
         LkNav,
+        LkHeader,
     },
 })
 export default class LkLayout extends Vue {
@@ -46,13 +51,19 @@ export default class LkLayout extends Vue {
     .lk {
         display: flex;
         min-height: 100vh;
-        background-color: #242424;
+        background-color: $color-black;
         background-image: url("../assets/svg/lk-line.svg");
         background-repeat: no-repeat;
         background-position: left bottom;
         background-size: 280px 234px;
         &-aside {
-            min-width: 260px;
+            min-width: 300px;
+        }
+        &-body {
+          width: 100%;
+          margin: 40px 40px 40px 0;
+          background: $color-white;
+          border-radius: 40px;
         }
     }
 </style>

@@ -27,7 +27,7 @@ import { EventData } from "@/constants/interfaces"
         EventPopup,
     },
 })
-export default class EventsView extends Vue {
+export default class ClassesView extends Vue {
 
     events: EventData[] = []
 

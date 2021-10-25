@@ -11,10 +11,14 @@ import { typesStatus } from "@/constants/typeStatus"
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import DatePicker from "v-calendar/lib/components/date-picker.umd"
-
-Vue.component("date-picker", DatePicker)
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import { SimpleSVG } from "vue-simple-svg"
 
 Vue.use(Vuelidate)
+
+Vue.component("simple-svg", SimpleSVG)
+Vue.component("date-picker", DatePicker)
 
 Vue.prototype.$mainStore = useStore(store)
 Vue.prototype.$mainPaths = paths
