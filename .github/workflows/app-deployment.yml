@@ -26,8 +26,8 @@ jobs:
           context: ./web
           push: true
           tags: ${{ secrets.registry_host }}/lib/web:${{ github.run_number }}
-          build-args: |
-            VUE_APP_API_URL=https://api.pandora-kpop.ru/
+          build-args:
+            - VUE_APP_API_URL=https://api.pandora-kpop.ru/
       -
         name: Build api
         uses: docker/build-push-action@v2

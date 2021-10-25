@@ -1,4 +1,4 @@
-FROM node:lts-alpine
+FROM docker.io/library/node:lts-alpine
 WORKDIR /usr/src/app
 COPY package*.json .
 RUN npm ci

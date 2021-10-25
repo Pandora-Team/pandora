@@ -14,7 +14,7 @@ jobs:
         name: Put SSH key
         shell: bash
         run: |
-          mkdir -v ~/.ssh 
+          mkdir -v ~/.ssh
           chmod -v 700 ~/.ssh
           echo "$DEPLOY_TARGET_IDENTITY" > ~/.ssh/known_hosts
           echo "$DEPLOY_TARGET_KEY" > ~/.ssh/id_ed25519
