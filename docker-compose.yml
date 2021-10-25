@@ -7,10 +7,11 @@ volumes:
 services:
   web:
     image: ${PANDORA_IMAGES_PREFIX}web:${PANDORA_IMAGES_TAG}
-    build: ./vue/
+    build:
+      context: ./vue/
+      args:
+        - VUE_APP_API_URL=https://api.pandora-kpop.ru/
     restart: unless-stopped
-    environment:
-      - VUE_APP_API_URL=${PANDORA_API_URI}
     ports:
       - 127.0.0.1:${PANDORA_WEB_PORT}:8080
 
