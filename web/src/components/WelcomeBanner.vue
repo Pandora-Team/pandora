@@ -18,7 +18,7 @@ import { Component, Vue, Watch } from "vue-property-decorator"
 @Component({
     components: {},
 })
-export default class InfoBanner extends Vue {
+export default class WelcomeBanner extends Vue {
 
     name = ""
 

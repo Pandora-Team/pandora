@@ -25,7 +25,7 @@ export default class MainStatus extends Vue {
     @Prop({ type: Object, default: {} })
     position!: Position
 
-    get inlineStyle() {
+    get inlineStyle(): {background: string, left: string, top: string} {
         return {
             background: this.type.background,
             left:       this.position.left,

@@ -1,29 +1,9 @@
 <template>
     <div class="welcome">
-        <info-banner />
+        <welcome-banner />
         <div class="welcome-grid">
             <info-card grid-class="info">
-                <div class="info-card__wrapper">
-                    <div class="info-card__pic">
-                        <img
-                            src="@/assets/images/welcome-info.png"
-                            alt="info-pic"
-                        >
-                    </div>
-                    <div>
-                        <h4>PANDORA - первые k-pop cover dance классы в Туле.</h4>
-                        <p>
-                            Наша цель - создать творческое k-pop комьюнити<br> для таких классных ребят,
-                            как ты. Здесь тебе будет<br> комфортно уже после первого занятия.
-                        </p>
-                        <ul>
-                            <li>Мы ставим топовые k-pop хоряги</li>
-                            <li>Учимся как правильно вести себя на камеру</li>
-                            <li>Практикуемся в командной работе</li>
-                            <li>Весело и с пользой проводим вместе время</li>
-                        </ul>
-                    </div>
-                </div>
+                <welcome-info />
             </info-card>
             <!--<event-card
                 :event="data"
@@ -35,15 +15,17 @@
 <script lang="ts">
 
 import { Component, Vue } from "vue-property-decorator"
-import InfoBanner from "@/components/InfoBanner.vue"
+import WelcomeBanner from "@/components/WelcomeBanner.vue"
 import InfoCard from "@/components/InfoCard.vue"
 import EventCard from "@/components/EventCard.vue"
+import WelcomeInfo from "@/components/WelcomeInfo.vue"
 
 @Component({
     components: {
-        InfoBanner,
+        WelcomeBanner,
         InfoCard,
         EventCard,
+        WelcomeInfo,
     },
 })
 export default class WelcomeView extends Vue {

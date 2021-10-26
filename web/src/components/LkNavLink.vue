@@ -52,7 +52,7 @@ export default class LkNavLink extends Vue {
 
 <style lang="scss">
     .nav-link {
-        min-height: 84px;
+        min-height: 82px;
         display: flex;
         align-items: center;
         position: relative;
@@ -71,7 +71,7 @@ export default class LkNavLink extends Vue {
         &__wrapper {
           transition: .5s;
           padding-left: 40px;
-          height: 84px;
+          height: 82px;
           display: flex;
           align-items: center;
           width: 100%;

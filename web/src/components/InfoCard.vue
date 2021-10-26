@@ -61,8 +61,8 @@ export default class InfoCard extends Vue {
                     position: absolute;
                     left: 0;
                     top: 5px;
-                    width: 10px;
-                    height: 10px;
+                    width: 8px;
+                    height: 8px;
                     border-radius: 50%;
                     background: $color-hover;
                 }
