@@ -28,25 +28,52 @@ export default class InfoCard extends Vue {
         padding: 24px 40px;
         &__wrapper {
             display: flex;
+            &--about {
+                .info-card__pic {
+                    max-width: 408px;
+                    max-height: 210px;
+                    margin-right: 42px;
+                }
+                h4 {
+                    color: $color-hover;
+                    margin-bottom: 15px;
+                }
+                p {
+                    color: $color-dark;
+                    margin-bottom: 16px;
+                }
+            }
+            &--profile {
+                justify-content: space-between;
+                .info-card__pic {
+                    max-width: 117px;
+                    max-height: 117px;
+                }
+                h3 {
+                    color: $color-hover;
+                    margin-bottom: 25px;
+                }
+                h4 {
+                    color: $color-dark;
+                    margin-bottom: 10px;
+                }
+                p {
+                    color: $color-gray;
+                    span {
+                        display: inline-block;
+                        margin-left: 16px;
+                        color: $color-black;
+                    }
+                }
+            }
         }
         &__pic {
-            max-width: 408px;
-            max-height: 210px;
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-right: 42px;
             img {
                 width: 100%;
             }
-        }
-        h4 {
-          color: $color-hover;
-          margin-bottom: 15px;
-        }
-        p {
-            color: $color-dark;
-            margin-bottom: 16px;
         }
         ul {
             li {

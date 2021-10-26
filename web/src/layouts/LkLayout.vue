@@ -52,10 +52,10 @@ export default class LkLayout extends Vue {
         display: flex;
         min-height: 100vh;
         background-color: $color-black;
-        background-image: url("../assets/svg/lk-line.svg");
+        background-image: url("../assets/bg/lk-line.png");
         background-repeat: no-repeat;
         background-position: left bottom;
-        background-size: 280px 234px;
+        background-size: 265px 193px;
         &-aside {
             min-width: 300px;
         }

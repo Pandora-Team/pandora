@@ -1,35 +1,36 @@
 <template>
-    <div class="info-card__wrapper">
+    <div class="info-card__wrapper info-card__wrapper--profile">
+        <div class="info-card__content">
+            <h3>Мой профиль</h3>
+            <h4>{{ name }}</h4>
+            <!--<p class="birthday">
+                День рождения: <span>28.03.1996</span>
+            </p>-->
+        </div>
         <div class="info-card__pic">
             <img
-                src="@/assets/images/welcome-info.png"
-                alt="info-pic"
+                src="@/assets/images/not-avatar.png"
+                alt="non-avatar"
             >
-        </div>
-        <div>
-            <h4>PANDORA - первые k-pop cover dance классы в Туле.</h4>
-            <p>
-                Наша цель - создать творческое k-pop комьюнити<br> для таких классных ребят,
-                как ты. Здесь тебе будет<br> комфортно уже после первого занятия.
-            </p>
-            <ul>
-                <li>Мы ставим топовые k-pop хоряги</li>
-                <li>Учимся как правильно вести себя на камеру</li>
-                <li>Практикуемся в командной работе</li>
-                <li>Весело и с пользой проводим вместе время</li>
-            </ul>
         </div>
     </div>
 </template>
 
 <script lang="ts">
 
-import { Component, Vue } from "vue-property-decorator"
+import { Component, Vue, Watch } from "vue-property-decorator"
 
 @Component({
     components: {},
 })
 export default class WelcomeProfile extends Vue {
+
+    name = ""
+
+    @Watch("$mainStore.user.name", { immediate: true })
+    updateName(): void {
+        this.name = this.$mainStore.user.name
+    }
 
 }
 </script>

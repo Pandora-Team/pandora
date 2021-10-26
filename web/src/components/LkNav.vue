@@ -11,6 +11,11 @@
             icon="master"
         />
         <lk-nav-link
+            name="Участники"
+            path="/lk/students"
+            icon="master"
+        />
+        <lk-nav-link
             name="Профиль"
             path="/lk/profile"
             icon="profile"

@@ -52,7 +52,7 @@ export default class LkNavLink extends Vue {
 
 <style lang="scss">
     .nav-link {
-        min-height: 82px;
+        min-height: 76px;
         display: flex;
         align-items: center;
         position: relative;
@@ -64,17 +64,29 @@ export default class LkNavLink extends Vue {
             height: 100px;
             background: $color-hover;
             position: absolute;
-            top: -7px;
+            top: -12px;
             left: -10px;
             border-radius: 0 20px 20px 0;
+        }
+        &::after {
+          content: "";
+          transition: .5s;
+          position: absolute;
+          top: -3px;
+          left: 0;
+          height: 82px;
+          width: 100%;
+          z-index: 0;
         }
         &__wrapper {
           transition: .5s;
           padding-left: 40px;
-          height: 82px;
+          height: 36px;
           display: flex;
           align-items: center;
           width: 100%;
+          position: relative;
+          z-index: 3;
         }
         &__icon {
           margin-right: 20px;
@@ -87,7 +99,7 @@ export default class LkNavLink extends Vue {
             &::before {
                 left: 0;
             }
-            .nav-link__wrapper {
+            &::after {
               background: $gradient-active-link;
             }
           .nav-link__icon {

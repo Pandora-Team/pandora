@@ -1,12 +1,12 @@
 <template>
-    <div class="info-card__wrapper">
+    <div class="info-card__wrapper info-card__wrapper--about">
         <div class="info-card__pic">
             <img
                 src="@/assets/images/welcome-info.png"
                 alt="info-pic"
             >
         </div>
-        <div>
+        <div class="info-card__content">
             <h4>PANDORA - первые k-pop cover dance классы в Туле.</h4>
             <p>
                 Наша цель - создать творческое k-pop комьюнити<br> для таких классных ребят,
