@@ -16,10 +16,17 @@ export class EventsController {
     async getEvents(){
         return this.eventsService.getAllEvents()
     }
+
+    @Get("/nearest")
+    async getNearestEvent(){
+        return this.eventsService.getNearestEvent()
+    }
+
     @Get(':id')
     async getEvent(@Param('id') id: ObjectId){
         return this.eventsService.getOneEvent(id)
     }
+
     @Post()
     @UseInterceptors(FileFieldsInterceptor([
         { name: 'cover', maxCount: 1 }
@@ -28,6 +35,7 @@ export class EventsController {
         const {cover} = files
         return this.eventsService.createEvent(dto, cover[0])
     }
+
     @Delete(':id')
     delete(@Param('id') id: ObjectId){
         return this.eventsService.deleteEvent(id)

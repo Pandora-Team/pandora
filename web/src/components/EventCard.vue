@@ -1,6 +1,7 @@
 <template>
     <div
         class="event-card"
+        :class="gridClass"
         :style="inlineStyle"
     >
         <div class="event-card__wrapper">
@@ -42,6 +43,9 @@ export default class EventCard extends Vue {
 
     @Prop({ type: Object, default: {} })
     event!: EventData
+
+    @Prop({ type: String, default: "" })
+    gridClass!: string
 
     get dateAndTime(): string {
         const date = dayjs(this.event.date).format("DD.MM.YYYY")

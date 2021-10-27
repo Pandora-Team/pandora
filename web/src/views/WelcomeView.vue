@@ -18,7 +18,11 @@
                 bg="classes"
                 text="Все классы"
             />
-            <!--<event-card />-->
+            <event-card
+                v-if="event"
+                :event="event"
+                grid-class="event"
+            />
         </div>
     </div>
 </template>
@@ -32,6 +36,7 @@ import EventCard from "@/components/EventCard.vue"
 import WelcomeInfo from "@/components/WelcomeInfo.vue"
 import WelcomeProfile from "@/components/WelcomeProfile.vue"
 import InfoCardMini from "@/components/InfoCardMini.vue"
+import { getNearestEvent } from "@/api/events"
 
 @Component({
     components: {
@@ -45,6 +50,16 @@ import InfoCardMini from "@/components/InfoCardMini.vue"
 })
 export default class WelcomeView extends Vue {
 
+    event = {}
+
+    async mounted(): Promise<void> {
+        const res = await getNearestEvent()
+        if (res.status === 200) {
+            this.event = res.data
+            return
+        }
+        console.warn("Нет ближайших мероприятий")
+    }
 }
 </script>
 
@@ -71,6 +86,10 @@ export default class WelcomeView extends Vue {
             .classes {
                 grid-column: 3 / 4;
                 grid-row: 2;
+            }
+            .event {
+                grid-column: 4 / 5;
+                grid-row: 1 / 3;
             }
         }
     }

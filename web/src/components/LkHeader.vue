@@ -9,13 +9,14 @@
             <p class="header__name">
                 {{ name }}
             </p>
-            <simple-svg
-                :src="iconPath"
-                width="32px"
-                height="32px"
-                custom-class-name="header__logout"
-                @click="logout"
-            />
+            <div @click="logout">
+                <simple-svg
+                    :src="iconPath"
+                    width="32px"
+                    height="32px"
+                    custom-class-name="header__logout"
+                />
+            </div>
         </div>
     </div>
 </template>
@@ -48,8 +49,9 @@ export default class LkHeader extends Vue {
         }
     }
 
-    logout(): void {
-        return
+    async logout(): Promise<any> {
+        await localStorage.removeItem("at")
+        await this.$mainStore.user.clearUserInfo()
     }
 
 

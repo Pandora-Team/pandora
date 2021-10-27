@@ -31,15 +31,31 @@ export class EventsService {
     }
 
     async getAllEvents(): Promise<Events[]>{
-        return this.eventsModel.find();
+        const events = await this.eventsModel.find({date: {$gte: new Date()}});
+        return this.sortArrayOnDate(events)
     }
 
     async getOneEvent(id: ObjectId): Promise<Events>{
         return this.eventsModel.findById(id)
     }
 
+    async getNearestEvent(): Promise<Events> {
+        const events: Events[] = await this.eventsModel.find({date: {$gte: new Date()}})
+        const sortedEvents = this.sortArrayOnDate(events)
+        return sortedEvents[0]
+    }
+
     async deleteEvent(id: ObjectId): Promise<Events>{
         return this.eventsModel.findByIdAndDelete(id)
+    }
+
+    sortArrayOnDate(array: Events[]): Events[] {
+        return array.sort(function compare(a, b) {
+            var dateA = new Date(a.date);
+            var dateB = new Date(b.date);
+            // @ts-ignore
+            return dateA - dateB;
+        });
     }
 
 }
