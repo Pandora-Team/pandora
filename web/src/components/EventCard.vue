@@ -1,19 +1,30 @@
 <template>
     <div
         class="event-card"
-        :class="gridClass"
+        :class="inlineClass"
         :style="inlineStyle"
     >
         <div class="event-card__wrapper">
-            <!--<main-status
-                :type="$typeStatusEvent.actual"
-                :position="{top: '-28px', left: '-18px'}"
-            />-->
+            <main-status
+                :type="$typeStatusEvent.nearest"
+                :position="{top: '-15px', left: '-15px'}"
+            />
             <div class="event-card__content">
                 <h2>{{ event.name }}</h2>
-                <p>{{ dateAndTime }}</p>
-                <p>{{ event.address }}</p>
-                <p>Стоимость: {{ event.price }} рублей</p>
+                <div
+                    class="event-card__date"
+                    :class="{'event-card__date--mb': nearest}"
+                >
+                    <p>Дата: <span>{{ date }}</span></p>
+                    <p>Время: <span>{{ time }}</span></p>
+                </div>
+
+                <p v-if="!nearest">
+                    Адрес: <span>{{ event.address }}</span>
+                </p>
+                <p v-if="!nearest">
+                    Стоимость: <span>{{ event.price }} р.</span>
+                </p>
                 <main-btn
                     :full-width="true"
                     @click="onClick"
@@ -47,10 +58,16 @@ export default class EventCard extends Vue {
     @Prop({ type: String, default: "" })
     gridClass!: string
 
-    get dateAndTime(): string {
-        const date = dayjs(this.event.date).format("DD.MM.YYYY")
+    @Prop({ type: Boolean, default: false })
+    nearest!: boolean
+
+    get date(): string {
+        return dayjs(this.event.date).format("DD.MM.YYYY")
+    }
+
+    get time(): string {
         const start = dayjs(this.event.date).format("HH:mm")
-        return `${date} с ${start} до ${this.event.end_time}`
+        return `${start}-${this.event.end_time}`
     }
 
     onClick():void {
@@ -62,15 +79,27 @@ export default class EventCard extends Vue {
             backgroundImage: `url(${process.env.VUE_APP_API_URL}events/${this.event.cover})`,
         }
     }
+
+    get inlineClass(): any {
+        return [
+            {
+                "event-card--welcome": this.nearest,
+            },
+            this.gridClass,
+        ]
+    }
 }
 </script>
 
 <style lang="scss">
    .event-card {
        width: 350px;
-       height: 465px;
+       height: 485px;
        border-radius: 30px;
-       padding: 40px 30px;
+       padding: 30px;
+       &--welcome {
+           height: 373px!important;
+       }
        &__wrapper {
            position: relative;
            width: 100%;
@@ -81,16 +110,43 @@ export default class EventCard extends Vue {
            bottom: 0;
            width: 100%;
            h2 {
-               color: white;
-               margin-bottom: 20px;
+               color: $color-white;
+               font-weight: 700;
+               margin-bottom: 15px;
                text-transform: uppercase;
            }
            p {
-               color: white;
-               margin-bottom: 20px;
-               &:nth-last-of-type(1) {
-                   margin-bottom: 40px;
+               color: $color-white;
+               margin-bottom: 15px;
+               font-weight: 600;
+               font-size: $font-size-big-text;
+               line-height: $line-height-big-text;
+               span {
+                   color: $color-white;
+                   display: inline-block;
+                   margin-left: 10px;
+                   font-weight: 400;
+                   font-size: $font-size-big-text;
+                   line-height: $line-height-big-text;
                }
+               &:nth-last-of-type(1) {
+                   margin-bottom: 30px;
+               }
+           }
+       }
+       &__date {
+           display: flex;
+           justify-content: space-between;
+           align-items: center;
+           margin-bottom: 15px;
+           p {
+               margin-bottom: 0;
+               &:nth-last-of-type(1) {
+                   margin-bottom: 0;
+               }
+           }
+           &--mb {
+               margin-bottom: 30px;
            }
        }
    }

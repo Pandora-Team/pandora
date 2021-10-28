@@ -11,6 +11,7 @@
             icon="master"
         />
         <lk-nav-link
+            v-if="isAdmin"
             name="Участники"
             path="/lk/students"
             icon="master"
@@ -49,7 +50,9 @@ import LkNavLink from "@/components/LkNavLink.vue"
     },
 })
 export default class LkNav extends Vue {
-
+    get isAdmin(): boolean {
+        return this.$mainStore.user.role === "admin"
+    }
 }
 </script>
 

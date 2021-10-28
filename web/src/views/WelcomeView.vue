@@ -22,6 +22,7 @@
                 v-if="event"
                 :event="event"
                 grid-class="event"
+                :nearest="true"
             />
         </div>
     </div>

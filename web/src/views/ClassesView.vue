@@ -1,14 +1,17 @@
 <template>
     <div class="events">
-        <event-card-create />
+        <h1>Доступные для записи МК</h1>
         <event-popup v-if="$mainStore.events.activePopup" />
-        <template v-if="!!events.length">
-            <event-card
-                v-for="event in events"
-                :key="event._id"
-                :event="event"
-            />
-        </template>
+        <div class="events__body">
+            <template v-if="!!events.length">
+                <event-card
+                    v-for="event in events"
+                    :key="event._id"
+                    :event="event"
+                />
+            </template>
+            <event-card-create v-if="isAdmin" />
+        </div>
     </div>
 </template>
 
@@ -40,13 +43,24 @@ export default class ClassesView extends Vue {
         this.$mainStore.events.getListEvents()
     }
 
+    get isAdmin(): boolean {
+        return this.$mainStore.user.role === "admin"
+    }
+
 }
 </script>
 
 <style lang="scss">
     .events {
-        display: flex;
-        flex-wrap: wrap;
+        h1 {
+            color: $color-hover;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        &__body {
+            display: flex;
+            flex-wrap: wrap;
+        }
         .event-card {
             margin: 0 40px 40px 0;
         }
