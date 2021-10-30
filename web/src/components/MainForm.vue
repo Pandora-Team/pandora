@@ -100,6 +100,7 @@ export default class BaseForm extends Vue {
         position: relative;
         z-index: 2;
         display: flex;
+        justify-content: space-between;
     }
     &-cancel {
         position: relative;

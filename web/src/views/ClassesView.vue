@@ -1,7 +1,6 @@
 <template>
     <div class="events">
         <h1>Доступные для записи МК</h1>
-        <event-popup v-if="$mainStore.events.activePopup" />
         <div class="events__body">
             <template v-if="!!events.length">
                 <event-card
@@ -17,30 +16,25 @@
 
 <script lang="ts">
 
-import { Component, Vue, Watch } from "vue-property-decorator"
+import { Component, Vue } from "vue-property-decorator"
 import EventCard from "@/components/EventCard.vue"
 import EventCardCreate from "@/components/EventCardCreate.vue"
-import EventPopup from "@/components/EventPopup.vue"
 import { EventData } from "@/constants/interfaces"
 
 @Component({
     components: {
         EventCard,
         EventCardCreate,
-        EventPopup,
     },
 })
 export default class ClassesView extends Vue {
 
-    events: EventData[] = []
-
-    @Watch("$mainStore.events.listEvents", { deep: true, immediate: true })
-    updateEvents(): void {
-        this.events = this.$mainStore.events.listEvents
-    }
-
     mounted(): void {
         this.$mainStore.events.getListEvents()
+    }
+
+    get events(): EventData[] {
+        return this.$mainStore.events.listEvents
     }
 
     get isAdmin(): boolean {

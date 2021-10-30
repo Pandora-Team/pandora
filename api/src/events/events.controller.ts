@@ -1,25 +1,38 @@
-import {Controller, Post, Get, Param, Body, Delete, UploadedFiles, UseInterceptors} from "@nestjs/common";
+import {
+    Controller,
+    Post,
+    Get,
+    Param,
+    Body,
+    Put,
+    Delete,
+    UploadedFiles,
+    UseInterceptors,
+    UseGuards, Request
+} from "@nestjs/common";
 import {ObjectId} from "mongoose";
 import {CreateEventDto} from "./create-event.dto";
 import {EventsService} from "./events.service";
 import {FileFieldsInterceptor} from "@nestjs/platform-express";
+import {JwtAuthGuard} from "../auth/jwt-auth.guard";
 
 @Controller('events')
 export class EventsController {
 
     constructor(
         private eventsService: EventsService
-    ) {
-    }
+    ) {}
 
+    @UseGuards(JwtAuthGuard)
     @Get()
-    async getEvents(){
-        return this.eventsService.getAllEvents()
+    async getEvents(@Request() req){
+        return this.eventsService.getAllEvents(req.user.id)
     }
 
+    @UseGuards(JwtAuthGuard)
     @Get("/nearest")
-    async getNearestEvent(){
-        return this.eventsService.getNearestEvent()
+    async getNearestEvent(@Request() req){
+        return this.eventsService.getNearestEvent(req.user.id)
     }
 
     @Get(':id')
@@ -34,6 +47,11 @@ export class EventsController {
     async createEvent(@UploadedFiles() files, @Body() dto: CreateEventDto ){
         const {cover} = files
         return this.eventsService.createEvent(dto, cover[0])
+    }
+
+    @Put(':id')
+    async updateEvent(@Param('id') id: ObjectId, @Body() dto: CreateEventDto) {
+        return this.eventsService.updateEvent(id, dto)
     }
 
     @Delete(':id')

@@ -1,5 +1,3 @@
-import {ObjectId} from "mongoose";
-
 export class CreateEventDto {
     readonly date: Date;
     readonly end_time: string;
@@ -8,7 +6,7 @@ export class CreateEventDto {
     readonly message?: string;
     readonly price: number;
     readonly price_last?: number;
-    readonly place_id?: ObjectId;
+    readonly place_id?: string;
     readonly address?: string;
     readonly description?: string;
     readonly users_id?: [];

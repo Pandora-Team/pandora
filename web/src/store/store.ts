@@ -8,7 +8,7 @@ export class Store {
     public app = new App()
 
     @Module()
-    public events = new Events()
+    public events = new Events(this)
 
     @Module()
     public user = new User()

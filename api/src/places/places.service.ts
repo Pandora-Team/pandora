@@ -17,8 +17,8 @@ export class PlacesService {
         return await this.placesModel.create(dto)
     }
 
-    async getOnePlace(id: ObjectId): Promise<Places>{
-        return this.placesModel.findById(id)
+    async getOnePlace(id: string): Promise<Places>{
+        return this.placesModel.findOne({_id: id})
     }
 
     async getAllPlaces(): Promise<Places[]> {

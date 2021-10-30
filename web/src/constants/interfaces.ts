@@ -1,4 +1,5 @@
 export interface EventData {
+    _id: string
     date: Date
     start_time?: string
     end_time: string
@@ -8,4 +9,6 @@ export interface EventData {
     address?: string
     users_id?: []
     cover?: File
+    status: string[]
+    payment?: string
 }

@@ -1,20 +1,22 @@
 <template>
-    <div
-        class="nav-link"
-        :class="{'nav-link--active': active}"
-    >
-        <div class="nav-link__wrapper">
-            <simple-svg
-                :src="iconPath"
-                width="35"
-                height="35"
-                custom-class-name="nav-link__icon"
-            />
-            <router-link :to="path">
-                {{ name }}
-            </router-link>
+    <transition name="link">
+        <div
+            class="nav-link"
+            :class="{'nav-link--active': active}"
+        >
+            <div class="nav-link__wrapper">
+                <simple-svg
+                    :src="iconPath"
+                    width="35"
+                    height="35"
+                    custom-class-name="nav-link__icon"
+                />
+                <router-link :to="path">
+                    {{ name }}
+                </router-link>
+            </div>
         </div>
-    </div>
+    </transition>
 </template>
 
 <script lang="ts">
@@ -70,13 +72,17 @@ export default class LkNavLink extends Vue {
         }
         &::after {
           content: "";
-          transition: .5s;
+          transition: background-position 1s;
           position: absolute;
           top: -3px;
           left: 0;
           height: 82px;
           width: 100%;
           z-index: 0;
+          opacity: 0.2;
+          background: $gradient-active-link;
+          background-size: 500% 100%;
+          background-position: -130% 0;
         }
         &__wrapper {
           transition: .5s;
@@ -100,7 +106,7 @@ export default class LkNavLink extends Vue {
                 left: 0;
             }
             &::after {
-              background: $gradient-active-link;
+                background-position: -50% 0;
             }
           .nav-link__icon {
             path {

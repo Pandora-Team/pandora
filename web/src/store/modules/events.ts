@@ -1,8 +1,12 @@
 import { State, Mutation, Action } from "vuex-simple"
 import { EventData } from "@/constants/interfaces"
 import { getAllEvent } from "@/api/events"
+import { Store } from "@/store/store"
+import { statusData } from "@/constants/typeStatus"
+import { cloneDeep } from "lodash"
 
 const initCreateState = () => ({
+    _id:      "",
     date:     new Date(),
     end_time: "",
     name:     "",
@@ -10,18 +14,43 @@ const initCreateState = () => ({
     place_id: "",
     address:  "",
     cover:    undefined,
+    payment:  "",
+    status:   [],
 })
 
 export class Events {
 
+    constructor(private $mainStore: Store) {}
+
     @State()
-    activePopup = false
+    activeCreatePopup = false
+
+    @State()
+    activeRecordPopup = false
 
     @State()
     listEvents: EventData[] = []
 
     @State()
     createdState: EventData = initCreateState()
+
+    @State()
+    recordedState: EventData = initCreateState()
+
+    @Mutation()
+    public changeActiveRecordPopup(value: boolean): void {
+        this.activeRecordPopup = value
+    }
+
+    @Mutation()
+    public changeRecordedState(state: EventData): void {
+        this.recordedState = state
+    }
+
+    @Mutation()
+    public clearRecordedState(): void {
+        this.recordedState = initCreateState()
+    }
 
     @Mutation()
     public addEventToList(event: EventData): void {
@@ -44,8 +73,9 @@ export class Events {
     }
 
     @Mutation()
-    public changePopup(state: boolean): void {
-        this.activePopup = state
+    public changeCreatePopup(state: boolean): void {
+        this.activeCreatePopup = state
+        this.$mainStore.app.setDisabled(state)
     }
 
     @Mutation()
@@ -86,6 +116,25 @@ export class Events {
     @Mutation()
     public resetCreatedState(): void {
         this.createdState = initCreateState()
+    }
+
+    @Action()
+    public closeEventPopup(): void {
+        this.changeActiveRecordPopup(false)
+        this.clearRecordedState()
+        this.$mainStore.app.setDisabled(false)
+    }
+
+    @Mutation()
+    public updateStatuses(data: statusData): void {
+        const newList = this.listEvents.map(event => {
+            if (event._id === data.event_id) {
+                event.status.splice(0, event.status.length)
+                event.status.push(data.event_status, data.payment_status)
+            }
+            return event
+        })
+        this.listEvents = cloneDeep(newList)
     }
 
 }

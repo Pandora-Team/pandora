@@ -8,6 +8,8 @@
             <lk-header />
             <lk-body />
         </div>
+        <record-popup v-if="$mainStore.events.activeRecordPopup" />
+        <event-popup-create v-if="$mainStore.events.activeCreatePopup" />
     </div>
 </template>
 
@@ -19,6 +21,8 @@ import LkBody from "@/components/LkBody.vue"
 import LkNav from "@/components/LkNav.vue"
 import LkHeader from "@/components/LkHeader.vue"
 import { getUserInfo } from "@/api/auth"
+import RecordPopup from "@/components/RecordPopup.vue"
+import EventPopupCreate from "@/components/EventPopupCreate.vue"
 
 @Component({
     components: {
@@ -26,6 +30,8 @@ import { getUserInfo } from "@/api/auth"
         LkBody,
         LkNav,
         LkHeader,
+        RecordPopup,
+        EventPopupCreate,
     },
 })
 export default class LkLayout extends Vue {
@@ -43,7 +49,6 @@ export default class LkLayout extends Vue {
             }
         }
     }
-
 }
 </script>
 

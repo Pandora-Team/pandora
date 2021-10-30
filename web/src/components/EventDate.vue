@@ -89,5 +89,7 @@ export default class EventDate extends Vue {
 <style lang="scss">
     .event-date {
         display: flex;
+        width: 100%;
+        justify-content: space-between;
     }
 </style>

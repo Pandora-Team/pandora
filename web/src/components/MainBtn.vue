@@ -1,7 +1,7 @@
 <template>
     <button
-        class="btn btn--main"
-        :class="{'btn--width': fullWidth}"
+        class="btn"
+        :class="inlineClass"
         @click.prevent="click"
     >
         <slot />
@@ -19,8 +19,20 @@ export default class MainBtn extends Vue {
     @Prop({ type: String, default: "" })
     url!: string
 
+    @Prop({ type: String, default: "main" })
+    view!: string
+
     @Prop({ type: Boolean, default: false })
     fullWidth!: boolean
+
+    get inlineClass(): any {
+        return [
+            {
+                "btn--width": this.fullWidth,
+            },
+            `btn--${this.view}`,
+        ]
+    }
 
     click(): void {
         if(this.type === "link") {
@@ -44,10 +56,23 @@ export default class MainBtn extends Vue {
       }
       &--main {
           min-width: 260px;
+          transition: background-position .5s;
           background: $bg-main-btn;
+          background-size: 300% 100%;
+          background-position: 0 0;
+          &:hover {
+              background-position: 50% 0;
+          }
       }
       &--error {
-        background: $bg-error-btn;
+          min-width: 260px;
+          transition: background-position .5s;
+          background: $bg-error-btn;
+          background-size: 300% 100%;
+          background-position: 0 0;
+          &:hover {
+              background-position: 50% 0;
+          }
       }
       &--width {
           width: 100%;

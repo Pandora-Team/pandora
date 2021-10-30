@@ -7,7 +7,6 @@ import { useStore } from "vuex-simple"
 import Vuelidate from "vuelidate"
 import "./styles/main.scss"
 import paths from "@/router/paths"
-import { typesStatus } from "@/constants/typeStatus"
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import DatePicker from "v-calendar/lib/components/date-picker.umd"
@@ -22,7 +21,6 @@ Vue.component("date-picker", DatePicker)
 
 Vue.prototype.$mainStore = useStore(store)
 Vue.prototype.$mainPaths = paths
-Vue.prototype.$typeStatusEvent = typesStatus
 
 Vue.config.productionTip = false
 Vue.config.devtools = true

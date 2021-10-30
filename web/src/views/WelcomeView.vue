@@ -22,7 +22,7 @@
                 v-if="event"
                 :event="event"
                 grid-class="event"
-                :nearest="true"
+                :welcome="true"
             />
         </div>
     </div>
@@ -51,7 +51,7 @@ import { getNearestEvent } from "@/api/events"
 })
 export default class WelcomeView extends Vue {
 
-    event = {}
+    event = null
 
     async mounted(): Promise<void> {
         const res = await getNearestEvent()
