@@ -1,3 +1,6 @@
 {
-    "log-driver": "journald"
+    "log-driver": "syslog",
+    "log-opts": {
+        "tag": "{% raw %}{{.Name}}{% endraw %}"
+    }
 }
