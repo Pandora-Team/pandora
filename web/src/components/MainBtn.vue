@@ -25,10 +25,14 @@ export default class MainBtn extends Vue {
     @Prop({ type: Boolean, default: false })
     fullWidth!: boolean
 
+    @Prop({ type: Boolean, default: false })
+    autoWidth!: boolean
+
     get inlineClass(): any {
         return [
             {
                 "btn--width": this.fullWidth,
+                "btn--auto":  this.autoWidth,
             },
             `btn--${this.view}`,
         ]
@@ -76,6 +80,11 @@ export default class MainBtn extends Vue {
       }
       &--width {
           width: 100%;
+      }
+      &--auto {
+          padding: 16px 40px;
+          min-width: auto;
+          margin-right: 15px;
       }
     }
 </style>

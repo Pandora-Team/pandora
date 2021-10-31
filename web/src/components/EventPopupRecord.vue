@@ -20,7 +20,7 @@ import EventCard from "@/components/EventCard.vue"
         EventCard,
     },
 })
-export default class RecordPopup extends Vue {
+export default class EventPopupRecord extends Vue {
 
     get event(): EventData {
         return this.$mainStore.events.recordedState

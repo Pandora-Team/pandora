@@ -8,8 +8,9 @@
             <lk-header />
             <lk-body />
         </div>
-        <record-popup v-if="$mainStore.events.activeRecordPopup" />
+        <event-popup-record v-if="$mainStore.events.activeRecordPopup" />
         <event-popup-create v-if="$mainStore.events.activeCreatePopup" />
+        <event-popup-cancel v-if="$mainStore.events.activeCancelPopup" />
     </div>
 </template>
 
@@ -21,8 +22,9 @@ import LkBody from "@/components/LkBody.vue"
 import LkNav from "@/components/LkNav.vue"
 import LkHeader from "@/components/LkHeader.vue"
 import { getUserInfo } from "@/api/auth"
-import RecordPopup from "@/components/RecordPopup.vue"
+import EventPopupRecord from "@/components/EventPopupRecord.vue"
 import EventPopupCreate from "@/components/EventPopupCreate.vue"
+import EventPopupCancel from "@/components/EventPopupCancel.vue"
 
 @Component({
     components: {
@@ -30,8 +32,9 @@ import EventPopupCreate from "@/components/EventPopupCreate.vue"
         LkBody,
         LkNav,
         LkHeader,
-        RecordPopup,
+        EventPopupRecord,
         EventPopupCreate,
+        EventPopupCancel,
     },
 })
 export default class LkLayout extends Vue {

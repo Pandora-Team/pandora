@@ -23,7 +23,9 @@ export class StatusesService {
         return this.statusesModel.updateOne({_id: id}, {...dto})
     }
 
-    async clearStatuses(id: ObjectId): Promise<Statuses> {
-        return this.statusesModel.findByIdAndDelete({_id: id})
+    async clearStatuses(eventId: string, userId: string): Promise<Statuses> {
+        const status = await this.getStatuses(eventId, userId)
+        // @ts-ignore
+        return this.statusesModel.findByIdAndDelete({_id: status._id})
     }
 }

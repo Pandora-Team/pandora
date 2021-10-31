@@ -1,4 +1,4 @@
-import {Body, Controller, Put, Get, Param, Post, Request, UseGuards, Delete} from "@nestjs/common"
+import {Body, Controller, Put, Get, Param, Post, Request, UseGuards} from "@nestjs/common"
 import {StatusesService} from "./statuses.service"
 import {JwtAuthGuard} from "../auth/jwt-auth.guard"
 import {CreateStatusDto} from "./create-status.dto"
@@ -28,9 +28,10 @@ export class StatusesController {
         return this.statusesService.updateStatuses(id, dto)
     }
 
-    @Delete(':id')
-    async clearStatuses(@Param('id') id: ObjectId) {
-        return this.statusesService.clearStatuses(id)
+    @UseGuards(JwtAuthGuard)
+    @Post(':id')
+    async clearStatuses(@Param('id') id: string, @Request() req ) {
+        return this.statusesService.clearStatuses(id, req.user.id)
     }
 
 }

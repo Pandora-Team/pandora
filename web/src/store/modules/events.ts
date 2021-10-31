@@ -29,6 +29,9 @@ export class Events {
     activeRecordPopup = false
 
     @State()
+    activeCancelPopup = false
+
+    @State()
     listEvents: EventData[] = []
 
     @State()
@@ -36,6 +39,19 @@ export class Events {
 
     @State()
     recordedState: EventData = initCreateState()
+
+    @State()
+    canceledState: EventData = initCreateState()
+
+    @Mutation()
+    public changeActiveCancelPopup(value: boolean): void {
+        this.activeCancelPopup = value
+    }
+
+    @Mutation()
+    public changeCanceledState(state: EventData): void {
+        this.canceledState = state
+    }
 
     @Mutation()
     public changeActiveRecordPopup(value: boolean): void {
@@ -50,6 +66,11 @@ export class Events {
     @Mutation()
     public clearRecordedState(): void {
         this.recordedState = initCreateState()
+    }
+
+    @Mutation()
+    public clearCanceledState(): void {
+        this.canceledState = initCreateState()
     }
 
     @Mutation()
@@ -122,6 +143,8 @@ export class Events {
     public closeEventPopup(): void {
         this.changeActiveRecordPopup(false)
         this.clearRecordedState()
+        this.changeActiveCancelPopup(false)
+        this.clearCanceledState()
         this.$mainStore.app.setDisabled(false)
     }
 
@@ -131,6 +154,17 @@ export class Events {
             if (event._id === data.event_id) {
                 event.status.splice(0, event.status.length)
                 event.status.push(data.event_status, data.payment_status)
+            }
+            return event
+        })
+        this.listEvents = cloneDeep(newList)
+    }
+
+    @Mutation()
+    public clearStatuses(_id: string): void {
+        const newList = this.listEvents.map(event => {
+            if (event._id === _id) {
+                event.status.splice(0, event.status.length)
             }
             return event
         })

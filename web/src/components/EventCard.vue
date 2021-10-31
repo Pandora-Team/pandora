@@ -74,7 +74,7 @@
                     v-if="signedUp"
                     :full-width="true"
                     view="error"
-                    @click="onClick"
+                    @click="onCancel"
                 >
                     Отменить запись
                 </main-btn>
@@ -173,6 +173,7 @@ export default class EventCard extends Vue {
 
     updateStatuses(): void {
         this.statuses.splice(0, this.statuses.length)
+        this.signedUp = false
         if (this.event?.status.length > 0) {
             this.event.status.forEach(status => {
                 if (status === typesStatus.go.name) {
@@ -215,7 +216,11 @@ export default class EventCard extends Vue {
             }
             console.log("failure")
         }
+    }
 
+    onCancel(): void {
+        this.$mainStore.events.changeCanceledState(this.event)
+        this.$mainStore.events.changeActiveCancelPopup(true)
     }
 }
 </script>
