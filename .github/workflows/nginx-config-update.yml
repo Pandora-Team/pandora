@@ -3,8 +3,8 @@ on:
     branches:
       - main
     paths:
-      - 'server/**'
-      - '.github/workflows/server-config-update.yml'
+      - 'server/nginx.conf'
+      - '.github/workflows/nginx-config-update.yml'
 
 jobs:
   deploy:
