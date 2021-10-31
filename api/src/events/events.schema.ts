@@ -37,10 +37,13 @@ export class Events {
     description?: string;
 
     @Prop()
-    users_id?: [];
+    users_id: string[];
 
     @Prop()
     status?: string[] | undefined
+
+    @Prop()
+    status_id?: string
 }
 
 export const EventsSchema = SchemaFactory.createForClass(Events);

@@ -25,6 +25,7 @@ export interface typeStatus {
 }
 
 export interface statusData {
+    _id?: string
     event_id: string
     event_status: string
     payment_status: string

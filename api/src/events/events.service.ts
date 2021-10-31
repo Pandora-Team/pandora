@@ -69,9 +69,12 @@ export class EventsService {
             if (index === 0) {
                 event.status.push("nearest")
             }
+            event.status_id = ""
             //@ts-ignore
             const objStatuses = await this.statusesService.getStatuses(event._id, userId)
             if (objStatuses) {
+                //@ts-ignore
+                event.status_id = objStatuses._id
                 event.status.push(objStatuses.event_status, objStatuses.payment_status)
             }
             return event

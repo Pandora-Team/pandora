@@ -7,8 +7,9 @@ export interface EventData {
     price: string
     place_id?: string
     address?: string
-    users_id?: []
+    users_id?: string[]
     cover?: File
     status: string[]
+    status_id: string
     payment?: string
 }

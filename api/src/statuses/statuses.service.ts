@@ -3,12 +3,14 @@ import {InjectModel} from "@nestjs/mongoose";
 import {Model, ObjectId} from "mongoose";
 import {Statuses, StatusesDocument} from "./statuses.schema";
 import {CreateStatusDto} from "./create-status.dto";
+import {Events, EventsDocument} from "../events/events.schema";
 
 @Injectable()
 export class StatusesService {
 
     constructor(
         @InjectModel(Statuses.name) private statusesModel: Model<StatusesDocument>,
+        @InjectModel(Events.name) private eventsModel: Model<EventsDocument>,
     ) {}
 
     async getStatuses(eventId: string, userId: string): Promise<Statuses> {
@@ -16,16 +18,22 @@ export class StatusesService {
     }
 
     async createStatuses(userId: string, dto: CreateStatusDto): Promise<Statuses> {
-        return this.statusesModel.create({...dto, user_id: userId})
+        const status = await this.statusesModel.create({...dto, user_id: userId})
+        if (status) {
+            await this.eventsModel.updateOne({_id: dto.event_id}, {$addToSet: {users_id: userId}})
+        }
+        return status
     }
 
     async updateStatuses(id: ObjectId, dto: CreateStatusDto): Promise<any> {
         return this.statusesModel.updateOne({_id: id}, {...dto})
     }
 
-    async clearStatuses(eventId: string, userId: string): Promise<Statuses> {
-        const status = await this.getStatuses(eventId, userId)
-        // @ts-ignore
-        return this.statusesModel.findByIdAndDelete({_id: status._id})
+    async clearStatuses(statusId: string): Promise<Statuses> {
+        const status = await this.statusesModel.findByIdAndDelete({_id: statusId})
+        if (status) {
+            await this.eventsModel.updateOne({_id: status.event_id}, {$pull: {users_id: status.user_id}})
+        }
+        return status
     }
 }
