@@ -1,6 +1,6 @@
 <template>
     <div class="students">
-        <h1>Список студентов</h1>
+        <h1>Страница находится в разработке!</h1>
     </div>
 </template>
 

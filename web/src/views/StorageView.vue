@@ -1,6 +1,6 @@
 <template>
     <div class="storage">
-        <h1>Хранилище</h1>
+        <h1>Страница находится в разработке!</h1>
     </div>
 </template>
 

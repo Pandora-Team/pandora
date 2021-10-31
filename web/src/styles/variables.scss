@@ -1,6 +1,55 @@
+//Text
+$font-size-big-text: 18px;
+$line-height-big-text: 22px;
+
+//Color
+$gradient-radial: radial-gradient(81.66% 81.66% at 50.02% 49.98%, #AD00FF 0%, #3532DE 100%);
+$gradient-btn: linear-gradient(90deg,#4430fd,#e03dee,#4430fd,#e03dee);
+$gradient-error2: linear-gradient(278.56deg, #F9FD30 -47%, #EE3DA7 144.56%);
+$gradient-error: linear-gradient(90deg, rgba(249, 253, 48, 0.8), #EE3DA7, rgba(249, 253, 48, 0.8), #EE3DA7);
+$gradient-black: linear-gradient(277.61deg, #080332 -6.19%, #B04BFF 141.82%);
+$gradient-active-link: linear-gradient(90deg, rgb(38, 38, 38), rgb(38, 38, 38), rgb(94, 42, 195) 50%, rgb(38, 38, 38), rgb(38, 38, 38));
+$gradient-info-card: linear-gradient(360deg, #14082C -13.75%, rgba(94, 42, 195, 0) 100%);
+$gradient-white: linear-gradient(360deg, rgba(255, 255, 255, 0.9) 50.09%, rgba(148, 119, 203, 0) 136.24%);
+
+$color-lilac: #AD00FF;  //сиреневый
+$color-purple: #3532DE; //фиолетовый
+$color-white: #FFFFFF;  //белый
+$color-black: #242424;  //черный
+$color-dark: #000000;
+$color-gray: #979299;   //серый
+$color-red: #F17188;    //красный
+$color-blue: #0071B0;   //синий
+$color-green: #00B0A6;  //зеленый
+
+$color-hover-text: #8A54F2;
+$color-hover: #5E2AC3;
+
+$bg-info: #F6F6FC;
+$bg-popup: rgba(33, 23, 52, 0.95);
+
+
 //Button
-$color-text-main-btn: #FFFFFF;
-$gradient-main-btn: linear-gradient(278.56deg, #4430FD -47%, #E03DEE 144.56%);
+$font-size-btn: 16px;
+$line-height-btn: 20px;
+$color-text-btn: $color-white;
+$bg-main-btn: $gradient-btn;
+$bg-error-btn: $gradient-error;
+$bg-hover-btn: $color-lilac;
+$bg-disabled-btn: $color-gray;
+$border-radius-btn: 50px;
+
+//Status
+$font-size-status: 16px;
+$line-height-status: 20px;
+$color-text-status: $color-white;
+$bg-success-status: $color-green;
+$bg-error-status: $color-red;
+$bg-payment-status: $color-blue;
+$border-radius-status: 20px;
+
+//Input
+$border-radius-input: 50px;
 
 $font: "Montserrat", Arial, sans-serif;
 

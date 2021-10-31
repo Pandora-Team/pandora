@@ -5,7 +5,7 @@ import * as path from 'path'
 import {ConfigModule} from "@nestjs/config";
 import {UsersModule} from "./users/users.module";
 import {EventsModule} from "./events/events.module";
-import {PaymentsModule} from "./payments/payments.module";
+import {StatusesModule} from "./statuses/statuses.module";
 import {AuthModule} from "./auth/auth.module";
 import {JwtModule} from "@nestjs/jwt";
 import {PlacesModule} from "./places/places.module";
@@ -25,7 +25,7 @@ import {FileModule} from "./file/file.module";
     UsersModule,
     PlacesModule,
     EventsModule,
-    PaymentsModule,
+    StatusesModule,
     FileModule,
     JwtModule.register({
       secret: `${process.env.JWT_SECRET}`,

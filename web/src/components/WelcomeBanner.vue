@@ -18,13 +18,14 @@ import { Component, Vue, Watch } from "vue-property-decorator"
 @Component({
     components: {},
 })
-export default class InfoBanner extends Vue {
+export default class WelcomeBanner extends Vue {
 
     name = ""
 
     @Watch("$mainStore.user.name", { immediate: true })
     updateName(): void {
-        this.name = this.$mainStore.user.name
+        const fullName = this.$mainStore.user.name
+        this.name = fullName.split(" ")[1]
     }
 
 }
@@ -32,25 +33,24 @@ export default class InfoBanner extends Vue {
 
 <style lang="scss">
     .info-banner {
-        background-size: cover;
-        background: url("../assets/banner/banner1.jpg") no-repeat right;
-        margin-bottom: 20px;
+        margin-bottom: 30px;
         border-radius: 30px;
-        padding: 45px 80px;
+        padding: 45px 40px;
+        background-image: url("../assets/banner/welcome-banner.png"), $gradient-black;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: right;
         &__text {
             max-width: 660px;
             h1 {
                 text-align: left;
-                font-weight: 700;
-                color: white;
-                font-size: 30px;
-                line-height: 37px;
+                color: $color-white;
                 margin-bottom: 26px;
             }
             p {
-                font-size: 18px;
-                line-height: 22px;
-                color: white;
+                font-size: $font-size-big-text;
+                line-height: $line-height-big-text;
+                color: $color-white;
                 margin-bottom: 14px;
                 &:nth-last-of-type(1) {
                     margin-bottom: 0;

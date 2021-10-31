@@ -54,10 +54,17 @@ export default class MainInput extends Vue {
 </script>
 
 <style lang="scss">
+    input {
+      display: block;
+      border-radius: $border-radius-input;
+      padding: 16px 40px;
+      border: none;
+      outline: none;
+    }
     .input-wrapper {
         display: inline-flex;
         position: relative;
-        border-radius: 50px;
+        border-radius: $border-radius-input;
         background: transparent;
         height: 52px;
         width: 260px;
@@ -68,21 +75,21 @@ export default class MainInput extends Vue {
             bottom: -2px;
             left: -2px;
             right: -2px;
-            border-radius: 50px;
+            border-radius: $border-radius-input;
             z-index: 0;
-            background: linear-gradient(278.56deg, #4430FD -47%, #E03DEE 144.56%);;
+            background: $gradient-btn;
         }
         input {
             position: absolute;
             z-index: 1;
             width: 180px;
-            background: rgba(23, 23, 30, 1);
+            background: $color-black;
         }
     }
     .input--main {
         font-size: 16px;
         line-height: 20px;
-        color: white;
+        color: $color-white;
     }
     .eye {
         cursor: pointer;

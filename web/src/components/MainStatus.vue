@@ -1,18 +1,13 @@
 <template>
     <div
         class="main-status"
-        :style="inlineStyle"
+        :class="`main-status--${status.class}`"
     >
-        {{ type.title }}
+        {{ status.title }}
     </div>
 </template>
 
 <script lang="ts">
-
-interface Position {
-    left: string
-    top: string
-}
 
 import { Component, Vue, Prop } from "vue-property-decorator"
 import { typeStatus } from "@/constants/typeStatus"
@@ -20,31 +15,31 @@ import { typeStatus } from "@/constants/typeStatus"
 export default class MainStatus extends Vue {
 
     @Prop({ type: Object, default: {} })
-    type!: typeStatus
-
-    @Prop({ type: Object, default: {} })
-    position!: Position
-
-    get inlineStyle() {
-        return {
-            background: this.type.background,
-            left:       this.position.left,
-            top:        this.position.top,
-        }
-    }
+    status!: typeStatus
 
 }
 </script>
 
 <style lang="scss">
    .main-status {
-       font-size: 16px;
+       margin-right: 15px;
+       font-size: $font-size-status;
+       line-height: $line-height-status;
        padding: 10px;
-       color: white;
-       line-height: 20px;
-       position: absolute;
-       top: 0;
-       left: 0;
-       border-radius: 20px;
+       color: $color-text-status;
+       border-radius: $border-radius-status;
+       display: inline-block;
+       &:nth-last-of-type(1) {
+           margin-right: 0;
+       }
+       &--success {
+            background: $bg-success-status;
+       }
+       &--payment {
+            background: $bg-payment-status;
+       }
+       &--failure {
+            background: $bg-error-status;
+       }
    }
 </style>

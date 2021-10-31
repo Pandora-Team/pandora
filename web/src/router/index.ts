@@ -10,11 +10,11 @@ import LkLayout from "@/layouts/LkLayout.vue"
 import ProfileView from "@/views/ProfileView.vue"
 import PolicyView from "@/views/PolicyView.vue"
 import WelcomeView from "@/views/WelcomeView.vue"
-import EventsView from "@/views/EventsView.vue"
 import RulesView from "@/views/RulesView.vue"
 import StorageView from "@/views/StorageView.vue"
-import InformationView from "@/views/InformationView.vue"
 import StudentsView from "@/views/StudentsView.vue"
+import ClassesView from "@/views/ClassesView.vue"
+import AboutView from "@/views/AboutView.vue"
 
 Vue.use(VueRouter)
 
@@ -34,9 +34,9 @@ const routes: RouteConfig[] = [
                 component: ProfileView,
             },
             {
-                path:      paths.EventsView,
-                name:      names.EventsView,
-                component: EventsView,
+                path:      paths.ClassesView,
+                name:      names.ClassesView,
+                component: ClassesView,
             },
             {
                 path:      paths.RulesView,
@@ -49,9 +49,9 @@ const routes: RouteConfig[] = [
                 component: StorageView,
             },
             {
-                path:      paths.InformationView,
-                name:      names.InformationView,
-                component: InformationView,
+                path:      paths.AboutView,
+                name:      names.AboutView,
+                component: AboutView,
             },
             {
                 path:      paths.StudentsView,

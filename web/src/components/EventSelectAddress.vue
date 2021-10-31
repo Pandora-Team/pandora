@@ -53,7 +53,8 @@ export default class EventSelectAddress extends Vue {
         const { data } = await getAllPlaces()
         if (data?.length) {
             this.places = data
-            this.selectedAddress = this.places[0]
+            this.selectedAddress = data[0]
+            this.$mainStore.events.changePlaceId(data[0]._id)
         }
     }
 
@@ -65,12 +66,14 @@ export default class EventSelectAddress extends Vue {
         this.visiblePopupAddress = !this.visiblePopupAddress
     }
 
-    checkOldAddress(e: Event): void {
-        const target: any = e.target
+    checkOldAddress(event: { target: HTMLInputElement }): void {
+        const target = event.target
         const _id = target?.getAttribute("data-id")
         const address = target?.textContent
-        this.selectedAddress = { _id, address }
-        this.$mainStore.events.changePlaceId(_id)
+        if (_id && address) {
+            this.selectedAddress = { _id, address }
+            this.$mainStore.events.changePlaceId(_id)
+        }
     }
 
 }

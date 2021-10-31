@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import {Document, ObjectId} from 'mongoose';
+import {Document} from 'mongoose';
 
 export type EventsDocument = Events & Document;
 
@@ -27,8 +27,8 @@ export class Events {
     @Prop()
     price_last?: number;
 
-    @Prop({type: String})
-    place_id?: ObjectId;
+    @Prop()
+    place_id?: string;
 
     @Prop()
     address?: string;
@@ -38,6 +38,9 @@ export class Events {
 
     @Prop()
     users_id?: [];
+
+    @Prop()
+    status?: string[] | undefined
 }
 
 export const EventsSchema = SchemaFactory.createForClass(Events);

@@ -1,6 +1,6 @@
 <template>
     <div class="rules">
-        <h1>Правила</h1>
+        <h1>Страница находится в разработке!</h1>
     </div>
 </template>
 

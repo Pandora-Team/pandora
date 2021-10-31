@@ -18,4 +18,11 @@ export class User {
         this.role = user.role
     }
 
+    @Mutation()
+    public clearUserInfo(): void {
+        this.id = ""
+        this.name = ""
+        this.role = ""
+    }
+
 }

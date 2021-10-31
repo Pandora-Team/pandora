@@ -1,25 +1,29 @@
 <template>
     <div class="welcome">
-        <info-banner />
-        <div class="welcome-wrapper">
-            <info-card>
-                <template>
-                    <p>PANDORA - первые k-pop cover dance классы в Туле.</p>
-                    <p>
-                        Наша цель - создать творческое k-pop комьюнити для таких<br> классных ребят,
-                        как ты. Здесь тебе будет комфортно уже после<br> первого занятия.
-                    </p>
-                    <ul>
-                        <li>Мы ставим топовые k-pop хоряги</li>
-                        <li>Учимся как правильно вести себя на камеру</li>
-                        <li>Практикуемся в командной работе</li>
-                        <li>Весело и с пользой проводим вместе время</li>
-                    </ul>
-                </template>
+        <welcome-banner />
+        <div class="welcome-grid">
+            <info-card grid-class="info">
+                <welcome-info />
             </info-card>
-            <!--<event-card
-                :event="data"
-            />-->
+            <info-card grid-class="profile">
+                <welcome-profile />
+            </info-card>
+            <info-card-mini
+                grid-class="questions"
+                bg="questions"
+                text="Вопрос - ответ"
+            />
+            <info-card-mini
+                grid-class="classes"
+                bg="classes"
+                text="Все классы"
+            />
+            <event-card
+                v-if="event"
+                :event="event"
+                grid-class="event"
+                :welcome="true"
+            />
         </div>
     </div>
 </template>
@@ -27,28 +31,67 @@
 <script lang="ts">
 
 import { Component, Vue } from "vue-property-decorator"
-import InfoBanner from "@/components/InfoBanner.vue"
+import WelcomeBanner from "@/components/WelcomeBanner.vue"
 import InfoCard from "@/components/InfoCard.vue"
 import EventCard from "@/components/EventCard.vue"
+import WelcomeInfo from "@/components/WelcomeInfo.vue"
+import WelcomeProfile from "@/components/WelcomeProfile.vue"
+import InfoCardMini from "@/components/InfoCardMini.vue"
+import { getNearestEvent } from "@/api/events"
 
 @Component({
     components: {
-        InfoBanner,
+        WelcomeBanner,
         InfoCard,
         EventCard,
+        WelcomeInfo,
+        WelcomeProfile,
+        InfoCardMini,
     },
 })
 export default class WelcomeView extends Vue {
 
+    event = null
+
+    async mounted(): Promise<void> {
+        const res = await getNearestEvent()
+        if (res.status === 200) {
+            this.event = res.data
+            return
+        }
+        console.warn("Нет ближайших мероприятий")
+    }
 }
 </script>
 
 <style lang="scss">
     .welcome {
-        &-wrapper {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
+        &-grid {
+            display: grid;
+            grid-template-columns: 486px 257px 257px 410px;
+            grid-gap: 30px;
+            grid-auto-rows: minmax(165px, auto);
+            .info {
+                grid-column: 1 / 4;
+                grid-row: 1;
+            }
+            .profile {
+                padding: 24px 30px 24px 40px;
+                grid-column: 1 / 2;
+                grid-row: 2;
+            }
+            .questions {
+                grid-column: 2 / 3;
+                grid-row: 2;
+            }
+            .classes {
+                grid-column: 3 / 4;
+                grid-row: 2;
+            }
+            .event {
+                grid-column: 4 / 5;
+                grid-row: 1 / 3;
+            }
         }
     }
 </style>

@@ -6,8 +6,8 @@ const paths = {
     LkLayout:           "/lk",
     ProfileView:        "/lk/profile",
     RulesView:          "/lk/rules",
-    InformationView:    "/lk/information",
-    EventsView:         "/lk/events",
+    AboutView:          "/lk/about",
+    ClassesView:        "/lk/classes",
     StorageView:        "/lk/storage",
     StudentsView:       "/lk/students",
 } as const

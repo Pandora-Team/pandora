@@ -1,6 +1,6 @@
 <template>
     <div class="profile">
-        <h1>Профиль</h1>
+        <h1>Страница находится в разработке!</h1>
     </div>
 </template>
 

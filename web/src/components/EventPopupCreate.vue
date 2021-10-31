@@ -1,13 +1,6 @@
 <template>
-    <div class="event-popup">
-        <div
-            v-on-clickaway="closePopup"
-            class="event-popup__body"
-        >
-            <div
-                class="event-popup__exit"
-                @click="closePopup"
-            />
+    <main-popup @close="closePopup">
+        <div class="event-create">
             <h3>Создание занятия</h3>
             <main-form
                 submit-text="Создать"
@@ -45,13 +38,12 @@
                 </template>
             </main-form>
         </div>
-    </div>
+    </main-popup>
 </template>
 
 <script lang="ts">
 
-import { Component, Vue, Watch } from "vue-property-decorator"
-import { directive as onClickaway } from "vue-clickaway"
+import { Component, Vue } from "vue-property-decorator"
 import MainForm from "@/components/MainForm.vue"
 import MainFormItem from "@/components/MainFormItem.vue"
 import MainBtn from "@/components/MainBtn.vue"
@@ -60,11 +52,9 @@ import EventFile from "@/components/EventFile.vue"
 import EventSelectAddress from "@/components/EventSelectAddress.vue"
 import EventDate from "@/components/EventDate.vue"
 import { createEvent } from "@/api/events"
+import MainPopup from "@/components/MainPopup.vue"
 
 @Component({
-    directives: {
-        onClickaway: onClickaway,
-    },
     components: {
         MainForm,
         MainFormItem,
@@ -73,15 +63,13 @@ import { createEvent } from "@/api/events"
         EventFile,
         EventSelectAddress,
         EventDate,
+        MainPopup,
     },
 })
-export default class EventPopup extends Vue {
+export default class EventPopupCreate extends Vue {
 
-    state: {[index: string]:any} = {}
-
-    @Watch("$mainStore.events.createdState", { deep: true, immediate: true })
-    updateState(): void {
-        this.state = this.$mainStore.events.createdState
+    get state(): {[index: string]:any} {
+        return this.$mainStore.events.createdState
     }
 
     beforeDestroy(): void {
@@ -97,8 +85,7 @@ export default class EventPopup extends Vue {
     }
 
     closePopup(): void {
-        this.$mainStore.events.changePopup(false)
-        this.$mainStore.app.setDisabled(false)
+        this.$mainStore.events.changeCreatePopup(false)
     }
 
     async submitForm(): Promise<void> {
@@ -121,42 +108,19 @@ export default class EventPopup extends Vue {
 </script>
 
 <style lang="scss">
-    .event-popup {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.5);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 3;
-        &__exit {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            cursor: pointer;
-            width: 23px;
-            height: 23px;
-            background: url("../assets/images/exit.png") center no-repeat;
-            background-size: contain;
-            filter: invert(1);
-        }
-        &__body {
-            margin: 40px;
-            position: relative;
-            max-width: 800px;
-            width: 100%;
-            height: 80%;
-            border-radius: 25px;
-            background: black;
-            padding: 40px;
-            h3 {
-                color: white;
-                text-align: center;
-                margin-bottom: 40px;
-            }
+    .event-create {
+        position: relative;
+        max-width: 800px;
+        width: 100%;
+        height: 80%;
+        border-radius: 25px;
+        background: $color-black;
+        padding: 40px;
+        box-sizing: border-box;
+        h3 {
+            color: white;
+            text-align: center;
+            margin-bottom: 40px;
         }
     }
 </style>
