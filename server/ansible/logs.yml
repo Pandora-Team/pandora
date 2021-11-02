@@ -87,11 +87,15 @@
                   # ports: [ "9080:9080" ]
                   volumes:
                     - promtail-config:/etc/promtail
+                    - promtail-positions:/var/promtail
                     - /var/log:/var/log
                   restart: unless-stopped
               volumes:
                 promtail-config:
                   name: promtail-config
+                  external: true
+                promtail-positions:
+                  name: promtail-positions
                   external: true
               networks:
                 default:
