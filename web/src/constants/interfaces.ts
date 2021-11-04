@@ -12,4 +12,12 @@ export interface EventData {
     status: string[]
     status_id: string
     payment?: string
+    users?: UserInfo[]
+}
+
+export interface UserInfo {
+    event_status: string
+    name: string
+    payment_status: string
+    status_id: string
 }

@@ -6,6 +6,8 @@ import {CreateEventDto} from "./create-event.dto";
 import {PlacesService} from "../places/places.service";
 import {FileType, FileService} from "../file/file.service";
 import {StatusesService} from "../statuses/statuses.service";
+import * as dayjs from 'dayjs'
+import {UsersService} from "../users/users.service";
 
 @Injectable()
 export class EventsService {
@@ -13,7 +15,8 @@ export class EventsService {
         @InjectModel(Events.name) private eventsModel: Model<EventsDocument>,
         private placesService: PlacesService,
         private fileService: FileService,
-        private statusesService: StatusesService
+        private statusesService: StatusesService,
+        private usersService: UsersService
     ) {}
 
     async createEvent(dto: CreateEventDto, cover): Promise<Events> {
@@ -36,6 +39,31 @@ export class EventsService {
         const events = await this.eventsModel.find({date: {$gte: new Date()}})
         const sortedEvents = this.sortArrayOnDate(events)
         return await this.getStatuses(sortedEvents, id)
+    }
+
+    async getAllEventsWithStudents(): Promise<Events[]> {
+        const date = dayjs().add(1, "day").format()
+        const events = await this.eventsModel.find({date: {$gte: new Date(date)}})
+        const sortedEvents = this.sortArrayOnDate(events)
+        return await this.getUserInfoForEvent(sortedEvents)
+    }
+
+    async getUserInfoForEvent(events: Events[]): Promise<Events[]>  {
+        return Promise.all(events.map( async event => {
+            for (const user of event.users_id) {
+                // @ts-ignore
+                const objStatuses = await this.statusesService.getStatuses(event._id, user)
+                const objUser = await this.usersService.getUserById(user)
+                if (objStatuses && objUser) {
+                    // @ts-ignore
+                    const { payment_status, event_status, _id } = objStatuses
+                    const { name, avatar } = objUser
+                    const newObj = { payment_status, event_status, status_id: _id, name, avatar }
+                    event.users.push(newObj)
+                }
+            }
+            return event
+        }))
     }
 
     async getOneEvent(id: ObjectId): Promise<Events>{
@@ -69,7 +97,6 @@ export class EventsService {
             if (index === 0) {
                 event.status.push("nearest")
             }
-            event.status_id = ""
             //@ts-ignore
             const objStatuses = await this.statusesService.getStatuses(event._id, userId)
             if (objStatuses) {

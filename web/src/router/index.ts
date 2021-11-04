@@ -15,6 +15,8 @@ import StorageView from "@/views/StorageView.vue"
 import StudentsView from "@/views/StudentsView.vue"
 import ClassesView from "@/views/ClassesView.vue"
 import AboutView from "@/views/AboutView.vue"
+import ListEventsView from "@/views/ListEventsView.vue"
+import ListStudentsView from "@/views/ListStudentsView.vue"
 
 Vue.use(VueRouter)
 
@@ -57,6 +59,18 @@ const routes: RouteConfig[] = [
                 path:      paths.StudentsView,
                 name:      names.StudentsView,
                 component: StudentsView,
+                children:  [
+                    {
+                        path:      "",
+                        name:      names.ListEventsView,
+                        component: ListEventsView,
+                    },
+                    {
+                        path:      paths.ListStudentsView,
+                        name:      names.ListStudentsView,
+                        component: ListStudentsView,
+                    },
+                ],
             },
         ],
     },

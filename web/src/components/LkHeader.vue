@@ -1,11 +1,7 @@
 <template>
     <div class="header">
         <div class="header-wrapper">
-            <img
-                class="header__avatar"
-                src="@/assets/images/not-avatar.png"
-                alt="avatar"
-            >
+            <lk-avatar />
             <p class="header__name">
                 {{ name }}
             </p>
@@ -24,8 +20,13 @@
 <script lang="ts">
 
 import { Component, Vue, Watch } from "vue-property-decorator"
+import LkAvatar from "@/components/LkAvatar.vue"
 
-@Component({})
+@Component({
+    components: {
+        LkAvatar,
+    },
+})
 export default class LkHeader extends Vue {
 
     name = ""
@@ -49,7 +50,7 @@ export default class LkHeader extends Vue {
         }
     }
 
-    async logout(): Promise<any> {
+    async logout(): Promise<void> {
         await localStorage.removeItem("at")
         await this.$mainStore.user.clearUserInfo()
     }

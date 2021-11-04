@@ -154,7 +154,9 @@ export class Events {
         const newList = this.listEvents.map(event => {
             if (event._id === data.event_id) {
                 event.status.splice(0, event.status.length)
-                event.status.push(data.event_status, data.payment_status)
+                if (data.event_status && data.payment_status) {
+                    event.status.push(data.event_status, data.payment_status)
+                }
                 event.users_id?.push(this.$mainStore.user.id)
                 if (data._id) {
                     event.status_id = data._id

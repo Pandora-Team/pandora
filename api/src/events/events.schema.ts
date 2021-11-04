@@ -3,6 +3,12 @@ import {Document} from 'mongoose';
 
 export type EventsDocument = Events & Document;
 
+interface UserInfo {
+    name: string
+    payment_status: string
+    event_status: string
+}
+
 @Schema()
 export class Events {
 
@@ -38,6 +44,9 @@ export class Events {
 
     @Prop()
     users_id: string[];
+
+    @Prop()
+    users?: UserInfo[]
 
     @Prop()
     status?: string[] | undefined

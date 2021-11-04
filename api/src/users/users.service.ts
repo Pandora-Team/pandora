@@ -13,8 +13,8 @@ export class UsersService {
         return this.usersModel.findOne({"username": username})
     }
 
-    async getUserById(id: ObjectId): Promise<Users> {
-        return this.usersModel.findById(id)
+    async getUserById(id: string): Promise<Users> {
+        return this.usersModel.findOne({_id: id})
     }
 
     async getAllUsers(): Promise<Users[]>{

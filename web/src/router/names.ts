@@ -10,6 +10,8 @@ const names = {
     StorageView:        "storage",
     StudentsView:       "students",
     WelcomeView:        "welcome",
+    ListEventsView:     "list-events",
+    ListStudentsView:   "list-students",
 } as const
 
 export default names

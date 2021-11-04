@@ -23,11 +23,13 @@ export class StatusesController {
         return this.statusesService.createStatuses(req.user.id, dto)
     }
 
+    @UseGuards(JwtAuthGuard)
     @Put(':id')
     async updateStatuses(@Param('id') id: ObjectId, @Body() dto: CreateStatusDto) {
         return this.statusesService.updateStatuses(id, dto)
     }
 
+    @UseGuards(JwtAuthGuard)
     @Delete(':id')
     async clearStatuses(@Param('id') id: string) {
         return this.statusesService.clearStatuses(id)
