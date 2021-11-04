@@ -102,30 +102,3 @@
                   external: true
                   name: "{{ monitoring_network_name }}"
       tags: promtail-service
-
-
-    - name: docker log-driver
-      block:
-        # - name: ckeck plugins list
-        #   command: "docker plugin ls --format '{%raw%}{{ .Name }}{%endraw%}'"
-        #   register: docker_plugins
-
-        # - name: loki-docker-driver installed
-        #   command: "docker plugin install grafana/loki-docker-driver:latest --alias loki --grant-all-permissions"
-        #   when: "'loki:latest' not in docker_plugins.stdout_lines"
-      
-        - name: docker daemon config is up to date
-          template:
-            src: docker-daemon.json.j2
-            dest: /etc/docker/daemon.json
-          become: yes
-          notify: reload containerd
-      tags: docker-log-driver
-
-
-  handlers:
-    - name: reload containerd
-      service:
-        name: containerd
-        state: restarted
-      become: yes

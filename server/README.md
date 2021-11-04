@@ -8,51 +8,38 @@
 dot -Tsvg img/monitoring.dot -o img/monitoring.dot.svg
 ```
 
-## Установленные пакеты
+## Подготовка нового сервера
 
-1. `sudo`
-1. `docker`
-1. `nginx`
-1. `python3-pip`
-    1. `docker-compose`
-    1. `certbot`
-
-## Подготовка сервера
-
-Основные моменты делаются плэйбуком [init.yml](ansible\init.yml), но пока не всё:
-
-1. Сгенерировать ключевую пару для пользователя `ci`: `ssh-keygen -t ed25519`.
-1. [Добавить пользователей](https://gist.github.com/Himura2la/e4258e60fe1a644dabd19a9d96aa3a0d) `ci` и `admin`:
-    * Добавить им публичные части SSH-ключей.
-    * Добавить `ci` в группу `docker`, а `admin` в группу `sudo`.
-1. Положить приватную часть SSH-ключа в GitHub Secrets.
-1. `sudo passwd --delete root`.
-1. `/etc/ssh/sshd_config`:
-    * `Port <random>`
-    * `PasswordAuthentication no`
-    * `PermitRootLogin no`
-    * `ClientAliveInterval 120`
-    * `ClientAliveCountMax 3`
-1. `/etc/sudoers`:
-    * `%sudo ALL=(ALL:ALL) NOPASSWD: ALL`
-    * `ci    ALL=(root)    NOPASSWD: /usr/sbin/nginx`
-1. Положить файлик `.env` с секретами в папку `/home/ci`.
-1. Дать доступ юзеру `ci` к файлу `/etc/nginx/sites-enabled/pandora`:
+1. Соединиться с новым Debian-сервером по SSH и выполнить следующие действия:
+    1. На сервере в файле `/etc/ssh/sshd_config` поменять `Port 22` на рандомный высокий порт (`shuf -i 49152-65535`).
+    1. Выполнить `service sshd restart`. **НЕ ЗАКРЫВАТЬ SSH-сессию!**
+    1. Добавить **В СВОЙ ЛОКАЛЬНЫЙ** в `~/.ssh/config` следующую запись (пользователь `admin` будет создан далее). 
+        ```
+        Host pandora
+            HostName <ip>
+            Port <port>
+            User admin
+        ```
+    1. Убедиться, что команда `ssh root@pandora` работает, только потом закрыть первую SSH-сессию.
+1. Если у Вас локально нет файлов `~/.ssh/id_*`, сгенерировать себе ключевую пару: `ssh-keygen -t ed25519`
+1. Сгенерировать ключевую пару для пользователя `ci`: `ssh-keygen -t ed25519 -C ci -f ci@pandora_ed25519`:
+    1. Приватную часть SSH-ключа сохранить в GitHub Secrets в переменную `DEPLOY_TARGET_KEY`.
+    1. Уничтожить приватную часть ключа командой `shred -u ci@pandora_ed25519`.
+    1. Публичную часть SSH-ключа сохранить в переменную [ci_user_key](server/ansible/_inventory.yml).
+1. Запустить Ansible Playbook [common.yml](server/ansible/common.yml) от рута:
     ```
-    cd /etc/nginx/sites-enabled
-    rm *
-    touch pandora
-    chown ci:ci pandora
+    ansible-playbook -v -u root --become-method su -i ./server/ansible/_inventory.yml ./server/ansible/common.yml
     ```
-1. Создать docker-volume для базы и задепоить сайт.
-1. Получить SSL-сертификаты.
-1. [Настроить автообновление SSL-сертификатов](https://certbot.eff.org/docs/using.html?highlight=renew#setting-up-automated-renewal):
-    ```
-    SLEEPTIME=$(awk 'BEGIN{srand(); print int(rand()*(3600+1))}'); echo "0 0,12 * * * root sleep $SLEEPTIME && certbot renew -q" | sudo tee -a /etc/crontab > /dev/null
-    ```
-1. Настроить `nginx` запускаться после `docker` (так как `stub_status` должен биндиться на адрес интерфейса `docker0`, который не существвет до запуска докер-демона)
-    ```
-    sed '/^After=/ s/$/ docker.service/' /lib/systemd/system/nginx.service | sudo tee /etc/systemd/system/nginx.service
-    sudo systemctl daemon-reload
-    sudo service nginx status
-    ```
+1. Если плэйбук не заработает, починить. Автор этого документа, вероятно, может помочь.
+1. Добавить секреты в GitHub Secrets:
+    * `DEPLOY_TARGET_HOST`
+    * `DEPLOY_TARGET_PORT`
+    * `DEPLOY_TARGET_IDENTITY` (вывод команды `ssh-keyscan -p [port] -H [host]`)
+    * `DEPLOY_TARGET_KEY` (уже должен быть добавлен)
+    * `REGISTRY_HOST` (адрес container registry)
+    * `REGISTRY_PASSWORD` (токен доступа к container registry)
+1. Зайти на сервер командой `ssh pandora`:
+    1. Добавить секреты в файл `/home/ci/.env`: дополнить список переменных из [.env.example](./.env.example) переменной `PANDORA_IMAGES_PREFIX`.
+    1. Задеплоить приложение через GitHub Actions. Если что-то пошло не так, починить и дополнить инструкцию/плэйбук.
+    1. Получить SSL-сертификаты через `certbot`.
+    1. [Настроить автообновление SSL-сертификатов](https://certbot.eff.org/docs/using.html?highlight=renew#setting-up-automated-renewal)

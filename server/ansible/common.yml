@@ -1,38 +1,230 @@
 - hosts: pandora
   user: admin
   become_method: sudo
-
   tasks:
-    - name: docker volumes exist
-      docker_volume:
-        name: "{{ item }}"
-      with_items:
-        - grafana-config
-        - grafana-storage
-        - prometheus-config
-        - prometheus-storage
-        - loki-config
-        - loki-storage
-        - promtail-config
-        - promtail-positions
-      tags: docker
 
-    - name: monitoring network exist
-      docker_network:
-        name: "{{ monitoring_network_name }}"
-      tags: docker
+    - name: apt packages
+      block:
+        - name: all apt packages updated
+          apt:
+            name: "*"
+            state: latest
+            update_cache: yes
+            autoremove: yes
+          become: yes
+          register: apt_output
 
-    - name: all apt packages are updated
-      apt:
-        name: "*"
-        state: latest
-        update_cache: yes
-        autoremove: yes
+        - name: apt output printed
+          debug:
+            msg:
+              - "{{ apt_output.stdout_lines }}"
+              - "{{ apt_output.stderr_lines }}"
+          when: apt_output.stdout_lines is defined
+        
+        - name: required apt packages installed
+          apt:
+            name: "{{ apt_packages }}"
+          register: apt_output
       become: yes
-      register: apt_output
       tags: apt
 
-    - name: apt output printed
-      debug:
-        msg: "{{ apt_output }}"
-      tags: apt
+
+
+    - name: docker updated
+      block:
+        - name: docker gpg key downloaded
+          become: false
+          get_url:
+            url: "https://download.docker.com/linux/ubuntu/gpg"
+            checksum: "sha256:1500c1f56fa9e26b9b8f42452a553675796ade0807cdce11975eb98170b3a570"
+            dest: "/tmp/docker-key.gpg"
+          register: docker_key
+          delegate_to: localhost
+
+        - name: docker gpg key added to host keyrings
+          command:
+            cmd: gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+            stdin: "{{ lookup('file', docker_key.dest) }}"
+            creates: /usr/share/keyrings/docker-archive-keyring.gpg
+          when: not ansible_check_mode
+
+        - name: docker apt repository added
+          apt_repository:
+            repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/{{ ansible_system | lower }}/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable"
+            update_cache: yes
+
+        - name: docker-ce package installed
+          apt:
+            name: docker-ce
+
+        - name: docker daemon config is up to date
+          template:
+            src: docker-daemon.json.j2
+            dest: /etc/docker/daemon.json
+          notify: restart docker
+      
+        - name: ensure that nginx unit is defined in /etc
+          copy:
+            remote_src: yes
+            src: /lib/systemd/system/nginx.service
+            dest: /etc/systemd/system/nginx.service
+            force: no
+
+          # stub_status должен биндиться на адрес интерфейса docker0,
+          # который не существвет до запуска докер-демона
+        - name: ensure that nginx starts after docker
+          lineinfile:
+            path: /etc/systemd/system/nginx.service
+            regex: '^(After=.*)(?<!docker\.service)$'
+            backrefs: yes
+            line: '\1 docker.service'
+          notify: restart nginx
+      become: yes
+      tags: docker
+
+
+
+
+    - name: pip packages
+      block:
+        - name: pip is up to date
+          pip:
+            name: pip
+            state: latest
+          register: pip_output
+
+        - name: pip output printed
+          debug:
+            msg:
+              - "{{ pip_output.stdout_lines }}"
+              - "{{ pip_output.stderr_lines }}"
+          when: pip_output.stdout_lines is defined
+
+        - name: required pip packages are up to date
+          pip:
+            name: "{{ pip_packages }}"
+            state: latest
+          register: pip_output
+
+        - name: pip output printed
+          debug:
+            msg:
+              - "{{ pip_output.stdout_lines }}"
+              - "{{ pip_output.stderr_lines }}"
+          when: pip_output.stdout_lines is defined
+      become: yes
+      tags: pip
+
+
+
+
+    - name: host initialization
+      block:
+        - name: Users exist and added to required groups
+          user:
+            name: '{{ item.user }}'
+            groups: '{{ item.groups }}'
+          with_items:
+            - user: "{{ admin_user_name }}"
+              groups: sudo,docker
+            - user: "{{ ci_user_name }}"
+              groups: docker
+          register: user_groups
+
+        - name: user groups change applied
+          meta: reset_connection
+
+        - name: Passwordless sudo enabled
+          lineinfile:
+            path: /etc/sudoers
+            state: present
+            regex: '^%sudo'
+            line: '%sudo	ALL=(ALL:ALL) NOPASSWD: ALL'
+            validate: /usr/sbin/visudo -cf %s
+
+        - name: Authorized keys are added to users
+          authorized_key:
+            user: '{{ item.user }}'
+            state: present
+            key: '{{ item.public_key }}'
+          with_items:
+            - user: "{{ ci_user_name }}"
+              public_key: "{{ ci_user_key }}"
+            - user: "{{ admin_user_name }}"
+              public_key: "{{ lookup('file', admin_user_key) }}"
+
+        - name: User passwords are locked
+          user:
+            name: '{{ item }}'
+            password: ''
+            password_lock: yes
+          with_items:
+            - "{{ ci_user_name }}"
+            - "{{ admin_user_name }}"
+            - root
+
+        - name: SSHd configured
+          lineinfile:
+            path: /etc/ssh/sshd_config
+            regex: '^(#)?{{ item.key }}'
+            line: '{{ item.key }} {{ item.value }}'
+          loop:
+            - { key: 'PermitRootLogin', value: 'no' }
+            - { key: 'PasswordAuthentication', value: 'no' }
+            - { key: 'ClientAliveInterval', value: '120' }
+            - { key: 'ClientAliveCountMax', value: '3' }
+          notify:
+            - restart sshd
+      become: yes
+      tags: init
+
+
+    - name: pandora resources
+      block:
+        - name: docker volumes exist
+          docker_volume:
+            name: "{{ item }}"
+          with_items: "{{ docker_volumes }}"
+
+        - name: monitoring network exist
+          docker_network:
+            name: "{{ monitoring_network_name }}"
+
+        - name: pandora nginx site config is writeble for
+          file:
+            path: "/etc/nginx/sites-enabled/pandora"
+            owner: "{{ ci_user_name }}"
+            group: "{{ ci_user_name }}"
+            mode: "0644"
+        
+        - name: secrets file has correct permissions
+          file:
+            path: "/home/ci/.env"
+            owner: "root"
+            group: "{{ ci_user_name }}"
+            mode: "0640"
+      become: yes
+      tags: pandora
+
+
+
+  handlers:
+    - name: restart sshd
+      become: yes
+      service:
+        name: sshd
+        state: restarted
+
+    - name: restart docker
+      become: yes
+      service:
+        name: docker
+        state: restarted
+        daemon_reload: yes
+
+    - name: restart nginx
+      become: yes
+      service:
+        name: nginx
+        state: restarted
+        daemon_reload: yes

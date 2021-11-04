@@ -2,4 +2,33 @@ all:
   hosts:
     pandora:  # defiend in ~/.ssh/config
       ansible_python_interpreter: /usr/bin/python3
+
+      ci_user_name: ci
+      ci_user_key: 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPoEb8YFv4G9wCM5BHLowzCrI1R3x0RMV0tibjb+uUlz ci@pandora-kpop'
+
+      admin_user_name: admin
+      admin_user_key: "{{ lookup('fileglob', lookup('env','HOME') + '/.ssh/id_*.pub') }}"
+
+      apt_packages:
+        - sudo
+        - bash-completion
+        - ca-certificates
+        - software-properties-common
+        - python3-pip
+        - nginx
+
+      pip_packages:
+        - docker-compose
+        - certbot
+
+      docker_volumes:
+        - grafana-config
+        - grafana-storage
+        - prometheus-config
+        - prometheus-storage
+        - loki-config
+        - loki-storage
+        - promtail-config
+        - promtail-positions
+
       monitoring_network_name: monitoring
