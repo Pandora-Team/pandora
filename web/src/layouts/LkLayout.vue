@@ -8,9 +8,9 @@
             <lk-header />
             <lk-body />
         </div>
-        <event-popup-record v-if="$mainStore.events.activeRecordPopup" />
-        <event-popup-create v-if="$mainStore.events.activeCreatePopup" />
-        <event-popup-cancel v-if="$mainStore.events.activeCancelPopup" />
+        <event-popup-record v-if="$mainStore.popup.activeRecordPopup" />
+        <event-popup-create v-if="$mainStore.popup.activeCreatePopup" />
+        <event-popup-cancel v-if="$mainStore.popup.activeCancelPopup" />
     </div>
 </template>
 

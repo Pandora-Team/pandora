@@ -63,15 +63,15 @@ export default class EventDate extends Vue {
             .second(0)
             .toString()
         const newDate = new Date(needDate)
-        this.$mainStore.events.changeDate(newDate)
+        this.$mainStore.popup.changeDate(newDate)
     }
     
     updateEndTimeInStore(value: string): void {
-        this.$mainStore.events.changeEndTime(value)
+        this.$mainStore.popup.changeEndTime(value)
     }
     
     updateDate(value: Date): void {
-        this.$mainStore.events.changeDate(value)
+        this.$mainStore.popup.changeDate(value)
     }
 
     @Watch("date", { deep: true, immediate: true })
@@ -80,7 +80,7 @@ export default class EventDate extends Vue {
         const selectedTime = dayjs(this.date)
         const needEndTime = selectedTime.add(2, "hour").add(30, "minute")
         const endTime = `${needEndTime.format("HH:mm")}`
-        this.$mainStore.events.changeEndTime(endTime)
+        this.$mainStore.popup.changeEndTime(endTime)
     }
 
 }

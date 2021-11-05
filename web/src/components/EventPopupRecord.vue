@@ -23,11 +23,11 @@ import EventCard from "@/components/EventCard.vue"
 export default class EventPopupRecord extends Vue {
 
     get event(): EventData {
-        return this.$mainStore.events.recordedState
+        return this.$mainStore.popup.recordedState
     }
 
     closePopup(): void {
-        this.$mainStore.events.closeEventPopup()
+        this.$mainStore.popup.changeActiveRecordPopup(false)
     }
 }
 </script>

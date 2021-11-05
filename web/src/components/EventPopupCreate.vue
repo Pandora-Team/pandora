@@ -68,24 +68,20 @@ import MainPopup from "@/components/MainPopup.vue"
 })
 export default class EventPopupCreate extends Vue {
 
-    get state(): {[index: string]:any} {
-        return this.$mainStore.events.createdState
-    }
-
-    beforeDestroy(): void {
-        this.$mainStore.events.resetCreatedState()
+    get state(): any {
+        return this.$mainStore.popup.createdState
     }
 
     updateName(value: string): void {
-        this.$mainStore.events.changeName(value)
+        this.$mainStore.popup.changeName(value)
     }
 
     updatePrice(value: string): void {
-        this.$mainStore.events.changePrice(value)
+        this.$mainStore.popup.changePrice(value)
     }
 
     closePopup(): void {
-        this.$mainStore.events.changeCreatePopup(false)
+        this.$mainStore.popup.changeActiveCreatePopup(false)
     }
 
     async submitForm(): Promise<void> {
@@ -96,11 +92,12 @@ export default class EventPopupCreate extends Vue {
                 formData.append(key, data[key])
             }
         }
-        const res = await createEvent(formData)
-        if (res?.status === 201) {
+        try {
+            const res = await createEvent(formData)
             this.$mainStore.events.addEventToList(res?.data)
             this.closePopup()
-            return
+        } catch (e) {
+            console.log(e)
         }
     }
 

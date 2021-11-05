@@ -13,7 +13,7 @@ import { Component, Vue } from "vue-property-decorator"
 export default class EventCardCreate extends Vue {
 
     onClick():void {
-        this.$mainStore.events.changeCreatePopup(true)
+        this.$mainStore.popup.changeActiveCreatePopup(true)
     }
 }
 </script>

@@ -196,9 +196,8 @@ export default class EventCard extends Vue {
 
     async onClick(): Promise<void> {
         if (!this.record) {
-            this.$mainStore.events.changeRecordedState(this.event)
-            this.$mainStore.events.changeActiveRecordPopup(true)
-            this.$mainStore.app.setDisabled(true)
+            this.$mainStore.popup.changeRecordedState(this.event)
+            this.$mainStore.popup.changeActiveRecordPopup(true)
         } else {
             this.$v.$touch()
             if (this.$v.$invalid) return
@@ -207,19 +206,20 @@ export default class EventCard extends Vue {
                 payment_status: this.payment,
                 event_status:   this.typesStatuses.go.name,
             }
-            const res = await createStatuses(params)
-            if (res.status === 201) {
+            try {
+                const res = await createStatuses(params)
                 this.$mainStore.events.updateStatuses(res.data)
-                this.$mainStore.events.closeEventPopup()
-                return
+                this.$mainStore.popup.changeActiveRecordPopup(false)
+            } catch (e) {
+                console.log(e)
             }
-            console.warn("failure")
         }
     }
 
+    //открытие попапа отмены
     onCancel(): void {
-        this.$mainStore.events.changeCanceledState(this.event)
-        this.$mainStore.events.changeActiveCancelPopup(true)
+        this.$mainStore.popup.changeCanceledState(this.event)
+        this.$mainStore.popup.changeActiveCancelPopup(true)
     }
 }
 </script>

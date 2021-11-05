@@ -3,6 +3,7 @@ import { App } from "./modules/app"
 import { Events } from "./modules/events"
 import { User } from "./modules/user"
 import { Students } from "./modules/students"
+import { Popup } from "./modules/popup"
 
 export class Store {
     @Module()
@@ -16,4 +17,7 @@ export class Store {
 
     @Module()
     public students = new Students()
+
+    @Module()
+    public popup = new Popup(this)
 }

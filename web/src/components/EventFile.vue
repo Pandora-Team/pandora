@@ -44,7 +44,7 @@ export default class EventFile extends Vue {
         const files = this.fileInput.files
         if (files) {
             this.nameFile = files[0]?.name
-            this.$mainStore.events.changeCover(files[0])
+            this.$mainStore.popup.changeCover(files[0])
         }
     }
 
