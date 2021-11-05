@@ -1,30 +1,48 @@
 <template>
-    <transition-fade>
-        <div
-            class="login-block"
+    <div>
+        <transition
+            appear
+            mode="out-in"
+            name="logo-trans"
         >
-            <div class="login-title">
-                <h3>Привет и добро пожаловать в PANDORA!</h3>
-            </div>
-            <div class="login-subtitle">
-                <h6>Выбирай подходящее поле</h6>
-            </div>
-            <div class="login-action">
-                <main-btn
-                    type="link"
-                    :url="$mainPaths.AuthenticationView"
+            <div
+                class="logo"
+            >
+                <img
+                    src="@a/svg/logo.svg"
+                    alt="Logo"
                 >
-                    Авторизация
-                </main-btn>
-                <main-btn
-                    type="link"
-                    :url="$mainPaths.RegistrationView"
-                >
-                    Регистрация
-                </main-btn>
             </div>
-        </div>
-    </transition-fade>
+        </transition>
+        <transition-fade>
+            <div
+                class="login-block"
+            >
+                <div class="login-title">
+                    <h3>Привет и добро пожаловать в PANDORA!</h3>
+                </div>
+                <div class="login-subtitle">
+                    <h6>Выбирай подходящее поле</h6>
+                </div>
+                <div class="login-action">
+                    <main-btn
+                        type="link"
+                        :url="$mainPaths.AuthenticationView"
+                    >
+                        Авторизация
+                    </main-btn>
+                    <main-btn
+                        :gradient="true"
+                        view="without-bg"
+                        type="link"
+                        :url="$mainPaths.RegistrationView"
+                    >
+                        Регистрация
+                    </main-btn>
+                </div>
+            </div>
+        </transition-fade>
+    </div>
 </template>
 
 <script lang="ts">
@@ -50,6 +68,14 @@ export default class LoginView extends Vue {
 </script>
 
 <style lang="scss">
+    .logo {
+        max-width: 124px;
+        max-height: 127px;
+        margin: 100px auto 115px;
+        img {
+            width: 100%;
+        }
+    }
     .login-block {
         width: 100%;
     }
@@ -67,6 +93,7 @@ export default class LoginView extends Vue {
         text-align: center;
         h6 {
             color: white;
+            font-weight: 300;
         }
     }
     .login-action {
@@ -75,5 +102,17 @@ export default class LoginView extends Vue {
         align-items: center;
         position: relative;
         z-index: 1;
+    }
+
+    .logo-trans {
+        &-enter-active,
+        &-leave-active {
+            transition: all .5s;
+        }
+        &-enter,
+        &-leave-to {
+            opacity: 0;
+            transform: translateY(-100px);
+        }
     }
 </style>

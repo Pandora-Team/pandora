@@ -4,20 +4,6 @@
             class="login-body"
             :style="positionLeft"
         >
-            <transition
-                appear
-                mode="out-in"
-                name="logo-trans"
-            >
-                <div
-                    class="logo"
-                >
-                    <img
-                        src="@a/svg/logo.svg"
-                        alt="Logo"
-                    >
-                </div>
-            </transition>
             <div class="login-content">
                 <router-view />
             </div>
@@ -95,14 +81,6 @@ export default class LoginLayout extends Vue {
         flex-direction: column;
         align-items: center;
         padding: 0 40px;
-        .logo {
-            max-width: 124px;
-            max-height: 160px;
-            margin: 40px auto 50px;
-            img {
-                width: 100%;
-            }
-        }
     }
     &-content {
         transition: 1s;
@@ -119,16 +97,4 @@ export default class LoginLayout extends Vue {
         z-index: 0;
     }
 }
-.logo-trans {
-    &-enter-active,
-    &-leave-active {
-        transition: all .5s;
-    }
-    &-enter,
-    &-leave-to {
-        opacity: 0;
-        transform: translateY(-100px);
-    }
-}
-
 </style>
