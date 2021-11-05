@@ -1,4 +1,5 @@
-import { State, Mutation } from "vuex-simple"
+import { State, Mutation, Action } from "vuex-simple"
+import { getUser } from "@/api/users"
 
 export class User {
 
@@ -9,13 +10,54 @@ export class User {
     name = ""
 
     @State()
+    surname = ""
+
+    @State()
     role = ""
 
+    @State()
+    birthday = ""
+
+    @State()
+    avatar = ""
+
+    @Action()
+    async getUserInfo(): Promise<void> {
+        try {
+            const res = await getUser(this.id)
+            const { data } = res
+            this.updateUserInfo(data)
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    @Action()
+    logout(): void {
+        localStorage.removeItem("at")
+        this.clearUserInfo()
+    }
+
     @Mutation()
-    public updateUserInfo(user: {name: string, role: string, id: string}): void {
-        this.id = user.id
-        this.name = user.name
-        this.role = user.role
+    public setUserId(id: string): void {
+        this.id = id
+    }
+
+    @Mutation()
+    public updateUserInfo(
+        obj:{
+            name: string
+            role: string
+            surname: string
+            birthday: string
+            avatar: string
+        },
+    ): void {
+        this.name = obj.name || ""
+        this.role = obj.role || ""
+        this.surname = obj.surname || ""
+        this.birthday = obj.birthday || ""
+        this.avatar = obj.avatar || ""
     }
 
     @Mutation()
@@ -23,6 +65,9 @@ export class User {
         this.id = ""
         this.name = ""
         this.role = ""
+        this.surname = ""
+        this.birthday = ""
+        this.avatar = ""
     }
 
 }

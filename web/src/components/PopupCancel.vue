@@ -43,24 +43,25 @@ import { clearStatuses } from "@/api/statuses"
         MainBtn,
     },
 })
-export default class EventPopupCancel extends Vue {
+export default class PopupCancel extends Vue {
 
     get event(): EventData {
-        return this.$mainStore.events.canceledState
+        return this.$mainStore.popup.canceledState
     }
 
     closePopup(): void {
-        this.$mainStore.events.closeEventPopup()
+        this.$mainStore.popup.changeActiveCancelPopup(false)
     }
 
     async onClick(): Promise<void> {
-        const res = await clearStatuses(this.event.status_id)
-        if (res.status === 200) {
+        try {
+            await clearStatuses(this.event.status_id)
             this.$mainStore.events.clearStatuses(this.event._id)
             this.closePopup()
-            return
+        } catch (e) {
+            console.warn("Очистка статусов не прошла")
+            console.log(e)
         }
-        console.warn("Очистка статусов не прошла")
     }
 }
 </script>

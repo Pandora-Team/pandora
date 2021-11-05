@@ -1,6 +1,7 @@
 <template>
     <div
         class="form"
+        :class="inlineClass"
         :style="{maxWidth: widthForm, margin: marginForm}"
     >
         <form
@@ -70,12 +71,19 @@ export default class BaseForm extends Vue {
     @Prop({ type: String, default: "0 auto" })
     readonly marginForm!: string
 
+    @Prop({ type: String, default: "default" })
+    readonly classForm!: string
+
     submit(): void {
         this.$emit("submit")
     }
 
     cancel(): void {
         this.$emit("cancel")
+    }
+
+    get inlineClass(): string {
+        return `form--${this.classForm}`
     }
 
 }
@@ -87,6 +95,11 @@ export default class BaseForm extends Vue {
     position: relative;
     transition: 1s;
     margin-bottom: 30px;
+    &--create {
+        .form-action {
+            margin-bottom: 0;
+        }
+    }
     &-row {
         display: flex;
         justify-content: space-between;

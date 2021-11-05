@@ -1,5 +1,5 @@
 <template>
-    <transition-fade>
+    <transition-to-top>
         <div class="auth">
             <div class="auth-title">
                 <h3>Авторизация</h3>
@@ -13,16 +13,18 @@
                     <main-form-item
                         id="phone"
                         v-model="$v.phone.$model"
-                        label="Телефон*"
+                        label="Телефон *"
                         type="text"
                         :error="errorPhoneInput"
+                        placeholder="+79999999999"
                     />
                     <main-form-item
                         id="password"
                         v-model="$v.password.$model"
-                        label="Пароль*"
+                        label="Пароль *"
                         type="password"
                         :error="errorPasswordInput"
+                        placeholder="Пароль"
                     />
                 </template>
                 <template #cancel>
@@ -30,32 +32,30 @@
                 </template>
             </main-form>
         </div>
-    </transition-fade>
+    </transition-to-top>
 </template>
 
 <script lang="ts">
 
 import { Component, Vue } from "vue-property-decorator"
 import { auth } from "@/api/auth"
-import { required, minLength, maxLength, numeric } from "vuelidate/lib/validators"
+import { required, minLength } from "vuelidate/lib/validators"
 import MainFormItem from "@/components/MainFormItem.vue"
 import MainForm from "@/components/MainForm.vue"
-import TransitionFade from "@/components/transition/TransitionFade.vue"
 import paths from "@/router/paths"
+import TransitionToTop from "@/components/transition/TransitionToTop.vue"
 
 
 @Component({
     components: {
         MainForm,
         MainFormItem,
-        TransitionFade,
+        TransitionToTop,
     },
     validations: {
         phone: {
             required,
-            numeric,
             minLength: minLength(11),
-            maxLength: maxLength(11),
         },
         password: {
             required,
@@ -68,38 +68,12 @@ export default class AuthenticationView extends Vue {
     password = ""
     loading = false
 
-    async submitForm() : Promise<void> {
-        if (!this.$v.$invalid) {
-
-            const { data } = await auth({
-                phone: this.phone,
-                pass:  this.password,
-            })
-
-            if (data?.error) {
-                await this.$router.push({ path: this.$mainPaths.LoginLayout })
-                return
-            }
-
-            const { access_token, name, role, _id } = data
-            localStorage.setItem("at", access_token)
-            await this.$mainStore.user.updateUserInfo({ name, role, id: _id })
-            await this.$router.push({ path: this.$mainPaths.LkLayout })
-        }
-    }
-
     get errorPhoneInput(): string {
         if(this.$v.phone.$dirty && !this.$v.phone.required) {
             return "Обязательно для заполнения"
         }
-        if(this.$v.phone.$dirty && !this.$v.phone.numeric) {
-            return "В поле должны быть только цифры"
-        }
         if(this.$v.phone.$dirty && !this.$v.phone.minLength) {
             return `В поле должно быть не менее ${this.$v.phone.$params.minLength.min} символов`
-        }
-        if(this.$v.phone.$dirty && !this.$v.phone.maxLength) {
-            return `В поле должно быть не более ${this.$v.phone.$params.maxLength.max} символов`
         }
         return ""
     }
@@ -114,6 +88,32 @@ export default class AuthenticationView extends Vue {
         return ""
     }
 
+    async submitForm() : Promise<void> {
+        this.$v.$touch()
+        if (!this.$v.$invalid) {
+            try {
+                const res = await auth({
+                    phone: this.phone,
+                    pass:  this.password,
+                })
+
+                if (res.data?.error) {
+                    await this.$router.push({ path: this.$mainPaths.LoginLayout })
+                    return
+                }
+
+                const { access_token, _id } = res.data
+                localStorage.setItem("at", access_token)
+                await this.$mainStore.user.setUserId(_id)
+                this.$mainStore.popup.changeActiveWelcomePopup(true)
+                await this.$router.push({ path: this.$mainPaths.LkLayout })
+            } catch (e) {
+                console.log(e)
+                await this.$router.push({ path: this.$mainPaths.LoginLayout })
+            }
+        }
+    }
+
     goToReg(): void {
         this.$router.push(paths.RegistrationView)
     }
@@ -122,14 +122,18 @@ export default class AuthenticationView extends Vue {
 
 <style lang="scss">
     .auth {
-        max-width: 600px;
+        width: 600px;
         padding: 0 2px;
+        position: absolute;
         &-title {
             text-align: center;
             margin: 0 auto 70px;
             h3 {
                 color: white;
             }
+        }
+        .form {
+            padding: 0 2px;
         }
     }
 </style>

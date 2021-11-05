@@ -3,12 +3,13 @@
         class="form__item"
         @click="openPopupFile"
     >
-        <label>Выбрать обложку *</label>
+        <label>Обложка МК *</label>
         <main-input
             id="file"
             :value="nameFile"
             :disabled="true"
             type="text"
+            placeholder="Загрузить фото"
         />
         <input
             ref="fileInput"
@@ -44,7 +45,7 @@ export default class EventFile extends Vue {
         const files = this.fileInput.files
         if (files) {
             this.nameFile = files[0]?.name
-            this.$mainStore.events.changeCover(files[0])
+            this.$mainStore.popup.changeCover(files[0])
         }
     }
 

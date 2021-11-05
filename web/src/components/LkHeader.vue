@@ -1,17 +1,22 @@
 <template>
     <div class="header">
         <div class="header-wrapper">
-            <lk-avatar />
-            <p class="header__name">
-                {{ name }}
-            </p>
-            <div @click="logout">
-                <simple-svg
-                    :src="iconPath"
-                    width="32px"
-                    height="32px"
-                    custom-class-name="header__logout"
-                />
+            <div class="header-item">
+                <lk-social />
+            </div>
+            <div class="header-item">
+                <lk-avatar />
+                <p class="header__name">
+                    {{ fullName }}
+                </p>
+                <div @click="logout">
+                    <simple-svg
+                        :src="iconPath"
+                        width="32px"
+                        height="32px"
+                        custom-class-name="header__logout"
+                    />
+                </div>
             </div>
         </div>
     </div>
@@ -19,40 +24,44 @@
 
 <script lang="ts">
 
-import { Component, Vue, Watch } from "vue-property-decorator"
+import { Component, Vue } from "vue-property-decorator"
 import LkAvatar from "@/components/LkAvatar.vue"
+import paths from "@/router/paths"
+import LkSocial from "@/components/LkSocial.vue"
 
 @Component({
     components: {
         LkAvatar,
+        LkSocial,
     },
 })
 export default class LkHeader extends Vue {
-
-    name = ""
 
     get iconPath(): string {
         return require("@/assets/svg/logout.svg")
     }
 
-    @Watch("$mainStore.user.name", { immediate: true })
-    updateName(): void {
-        const fullName = this.$mainStore.user.name
-        const arrName:string[] = fullName.split(" ")
-        const secondName = arrName[0]
-        const firstName = arrName[1]
-        if (firstName) {
-            const firstNameArr = firstName.split("")
+    get name(): string {
+        return this.$mainStore.user.name
+    }
+
+    get surname(): string {
+        return this.$mainStore.user.surname
+    }
+
+    get fullName(): string {
+        if (this.name && this.surname) {
+            const firstNameArr = this.name.split("")
             const firstLetter = firstNameArr[0]
-            this.name = `${secondName} ${firstLetter}.`
+            return `${this.surname} ${firstLetter}.`
         } else {
-            this.name = fullName
+            return ""
         }
     }
 
-    async logout(): Promise<void> {
-        await localStorage.removeItem("at")
-        await this.$mainStore.user.clearUserInfo()
+    logout(): void {
+        this.$mainStore.user.logout()
+        this.$router.push({ path: paths.LoginLayout })
     }
 
 
@@ -66,7 +75,11 @@ export default class LkHeader extends Vue {
         min-height: 50px;
         &-wrapper {
             display: flex;
-            justify-content: right;
+            justify-content: space-between;
+            align-items: center;
+        }
+        &-item {
+            display: flex;
             align-items: center;
         }
         &__avatar {

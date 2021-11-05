@@ -22,7 +22,10 @@ export default class TransitionToTop extends Vue {}
     &-leave-active {
         transition: all .5s;
     }
-    &-enter,
+    &-enter {
+        opacity: 0;
+        transform: translateY(-100%);
+    }
     &-leave-to {
         opacity: 0;
         transform: translateY(100%);

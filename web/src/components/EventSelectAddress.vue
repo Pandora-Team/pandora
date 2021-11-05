@@ -3,12 +3,12 @@
         class="form__item address-popup"
         @click="changePopupAddress"
     >
-        <label>Выбрать адрес *</label>
+        <label>Адрес проведения МК *</label>
         <main-input
             id="place"
             :value="selectedAddress.address"
             type="text"
-            placeholder="ул. Жуковского, д. 27, 2 этаж"
+            placeholder="ул. Жуковского, д. 27"
             @input="updateAddress"
         />
         <div
@@ -54,12 +54,12 @@ export default class EventSelectAddress extends Vue {
         if (data?.length) {
             this.places = data
             this.selectedAddress = data[0]
-            this.$mainStore.events.changePlaceId(data[0]._id)
+            this.$mainStore.popup.changePlaceId(data[0]._id)
         }
     }
 
     updateAddress(value: string): void {
-        this.$mainStore.events.changeAddress(value)
+        this.$mainStore.popup.changeAddress(value)
     }
 
     changePopupAddress(): void {
@@ -72,7 +72,7 @@ export default class EventSelectAddress extends Vue {
         const address = target?.textContent
         if (_id && address) {
             this.selectedAddress = { _id, address }
-            this.$mainStore.events.changePlaceId(_id)
+            this.$mainStore.popup.changePlaceId(_id)
         }
     }
 
