@@ -1,13 +1,13 @@
 <template>
     <main-popup @close="closePopup">
         <div class="event-create">
-            <h3>Создание занятия</h3>
+            <h3>Создать мероприятие</h3>
             <main-form
-                submit-text="Создать"
-                cancel-text="Отменить"
-                width-form="600px"
+                class-form="create"
+                submit-text="Создать МК"
+                width-form="560px"
+                :cancel-button="false"
                 @submit="submitForm"
-                @cancel="closePopup"
             >
                 <template #top>
                     <main-form-item
@@ -20,7 +20,7 @@
                     <main-form-item
                         id="price"
                         :value="state.price"
-                        label="Стоимость ( рублей ) *"
+                        label="Стоимость (руб.) *"
                         type="text"
                         @input="updatePrice"
                     />
@@ -107,14 +107,15 @@ export default class PopupCreate extends Vue {
 <style lang="scss">
     .event-create {
         position: relative;
-        max-width: 800px;
+        max-width: 683px;
         width: 100%;
-        height: 80%;
+        height: auto;
         border-radius: 25px;
-        background: $color-black;
-        padding: 40px;
+        background: $bg-input;
+        padding: 60px;
         box-sizing: border-box;
         h3 {
+            text-transform: uppercase;
             color: white;
             text-align: center;
             margin-bottom: 40px;

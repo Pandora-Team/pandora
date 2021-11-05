@@ -3,12 +3,13 @@
         class="form__item"
         @click="openPopupFile"
     >
-        <label>Выбрать обложку *</label>
+        <label>Обложка МК *</label>
         <main-input
             id="file"
             :value="nameFile"
             :disabled="true"
             type="text"
+            placeholder="Загрузить фото"
         />
         <input
             ref="fileInput"

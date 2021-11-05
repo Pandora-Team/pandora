@@ -3,12 +3,12 @@
         class="form__item address-popup"
         @click="changePopupAddress"
     >
-        <label>Выбрать адрес *</label>
+        <label>Адрес проведения МК *</label>
         <main-input
             id="place"
             :value="selectedAddress.address"
             type="text"
-            placeholder="ул. Жуковского, д. 27, 2 этаж"
+            placeholder="ул. Жуковского, д. 27"
             @input="updateAddress"
         />
         <div

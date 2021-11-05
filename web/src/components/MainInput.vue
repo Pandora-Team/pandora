@@ -1,5 +1,8 @@
 <template>
-    <div class="input-wrapper">
+    <div
+        class="input-wrapper"
+        :class="inlineClass"
+    >
         <input
             :id="id"
             class="input input--main"
@@ -15,6 +18,10 @@
             class="eye"
             :class="{'eye--visible': visiblePassword}"
             @click="changeVisiblePassword"
+        />
+        <div
+            v-if="id === 'file'"
+            class="file"
         />
     </div>
 </template>
@@ -50,11 +57,17 @@ export default class MainInput extends Vue {
         return this.type
     }
 
+    get inlineClass(): any {
+        return {
+            "input-wrapper--file": this.id === "file",
+        }
+    }
+
 }
 </script>
 
 <style lang="scss">
-    input {
+    .input {
       display: block;
       border-radius: $border-radius-input;
       padding: 16px 40px;
@@ -78,6 +91,12 @@ export default class MainInput extends Vue {
             border-radius: $border-radius-input;
             z-index: 0;
             background: $gradient-btn;
+        }
+        &--file {
+            .input {
+                width: 150px;
+                padding: 16px 40px 16px 70px;
+            }
         }
         input {
             position: absolute;
@@ -105,5 +124,16 @@ export default class MainInput extends Vue {
         &--visible {
             background-image: url("../assets/svg/eye-open.svg");
         }
+    }
+    .file {
+        width: 20px;
+        height: 20px;
+        background-image: url("../assets/svg/icon-file.svg");
+        background-size: cover;
+        background-repeat: no-repeat;
+        position: absolute;
+        z-index: 1;
+        left: 40px;
+        top: calc(50% - 12px);
     }
 </style>

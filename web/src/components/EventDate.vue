@@ -12,7 +12,7 @@
                 @input="updateDate"
             >
                 <template v-slot="{ inputValue, inputEvents }">
-                    <label for="datepicker">Выбрать дату и время начала *</label>
+                    <label for="datepicker">Дата и время проведения МК *</label>
                     <div class="input-wrapper">
                         <input
                             id="datepicker"
@@ -27,7 +27,7 @@
         <main-form-item
             id="end_time"
             :value="endTime"
-            label="Выбрать время окончания *"
+            label="Время окончания МК *"
             type="text"
             @input="updateEndTimeInStore"
         />
