@@ -55,6 +55,8 @@ export default class WelcomeView extends Vue {
 
     event!: EventData
 
+    visibleNearestEvent = false
+
     async mounted(): Promise<void> {
         await this.getNearestEvent()
     }
@@ -62,15 +64,14 @@ export default class WelcomeView extends Vue {
     async getNearestEvent(): Promise<void> {
         try {
             const res = await getNearestEvent()
-            this.event = res.data
-            return
+            if (!isEmpty(res.data)) {
+                this.event = res.data
+                this.visibleNearestEvent = true
+            }
+
         } catch (e) {
             console.log(e)
         }
-    }
-
-    get visibleNearestEvent(): boolean {
-        return !isEmpty(this.event)
     }
 }
 </script>

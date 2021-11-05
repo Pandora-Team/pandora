@@ -238,7 +238,7 @@ export default class EventCard extends Vue {
            box-shadow: 0 60px 50px -30px rgba(95, 38, 205, 0.3);
        }
        &--welcome {
-           height: 373px!important;
+           height: 393px!important;
        }
        &--record {
            color: $color-black!important;
