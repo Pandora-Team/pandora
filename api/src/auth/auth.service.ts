@@ -14,15 +14,6 @@ export class AuthService {
         @InjectModel(Users.name) private usersModel: Model<UsersDocument>
     ) {}
 
-    async validateUser(name: string, pass: string): Promise<any> {
-        const user = await this.usersService.getUser(name)
-        if(user && user.pass === pass) {
-            const { pass, ...result } = user
-            return result
-        }
-        return null
-    }
-
     async login(dto: LoginDto) {
         const user = await this.usersModel.findOne({...dto})
 
@@ -32,8 +23,6 @@ export class AuthService {
 
         const payload = {
             _id: user._id,
-            name: user.name,
-            role: user.role
         }
         return {
             access_token: this.jwtService.sign(payload),
@@ -53,8 +42,6 @@ export class AuthService {
 
         const payload = {
             _id:  newUser._id,
-            name: newUser.name,
-            role: newUser.role
         }
         return {
             access_token: this.jwtService.sign(payload),

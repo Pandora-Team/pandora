@@ -1,5 +1,8 @@
 <template>
-    <div class="avatar">
+    <div
+        class="avatar"
+        :class="inlineClass"
+    >
         <img
             :src="iconPath"
             alt="avatar"
@@ -9,10 +12,17 @@
 
 <script lang="ts">
 
-import { Component, Vue } from "vue-property-decorator"
+import { Component, Vue, Prop } from "vue-property-decorator"
 
 @Component({})
 export default class LkAvatar extends Vue {
+
+    @Prop({ type: String, default: "min" })
+    readonly width!: string
+
+    get inlineClass(): any {
+        return [`avatar--${this.width}`]
+    }
 
     get iconPath(): string {
         return require("@/assets/images/not-avatar.png")
@@ -22,8 +32,16 @@ export default class LkAvatar extends Vue {
 
 <style lang="scss">
     .avatar {
-        img {
-            max-width: 50px;
+        &--min {
+            img {
+                max-width: 50px;
+            }
         }
+        &--max {
+            img {
+                max-width: 117px;
+            }
+        }
+
     }
 </style>

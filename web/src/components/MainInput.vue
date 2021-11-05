@@ -83,7 +83,7 @@ export default class MainInput extends Vue {
             position: absolute;
             z-index: 1;
             width: 180px;
-            background: $color-black;
+            background: $bg-input;
         }
     }
     .input--main {

@@ -5,4 +5,5 @@ export class CreateUserDto {
     role?: string;
     readonly birthday?: string;
     avatar?: string;
+    readonly surname: string
 }

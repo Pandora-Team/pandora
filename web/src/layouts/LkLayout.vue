@@ -16,12 +16,12 @@
 
 <script lang="ts">
 
-import { Component, Vue, Watch } from "vue-property-decorator"
+import { Component, Vue } from "vue-property-decorator"
 import LkLogo from "@/components/LkLogo.vue"
 import LkBody from "@/components/LkBody.vue"
 import LkNav from "@/components/LkNav.vue"
 import LkHeader from "@/components/LkHeader.vue"
-import { getUserInfo } from "@/api/auth"
+import { getUserId } from "@/api/auth"
 import EventPopupRecord from "@/components/EventPopupRecord.vue"
 import EventPopupCreate from "@/components/EventPopupCreate.vue"
 import EventPopupCancel from "@/components/EventPopupCancel.vue"
@@ -39,17 +39,22 @@ import EventPopupCancel from "@/components/EventPopupCancel.vue"
 })
 export default class LkLayout extends Vue {
 
-    @Watch("$mainStore.user.name", { immediate: true })
-    async updateUserInfo(): Promise<void> {
-        if(!this.$mainStore.user.name) {
-            try {
-                const res = await getUserInfo()
-                const { name, role, id } = res.data
-                this.$mainStore.user.updateUserInfo({ name, role, id })
-            } catch (e) {
-                console.log(e)
-                await this.$router.push({ path: this.$mainPaths.LoginLayout })
-            }
+    get userId(): string {
+        return this.$mainStore.user.id
+    }
+
+    async mounted(): Promise<void> {
+        if (this.userId) {
+            await this.$mainStore.user.getUserInfo()
+            return
+        }
+        try {
+            const res = await getUserId()
+            const { id } = res.data
+            this.$mainStore.user.setUserId(id)
+            await this.$mainStore.user.getUserInfo()
+        } catch (e) {
+            console.log(e)
         }
     }
 }

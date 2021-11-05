@@ -7,22 +7,22 @@ export type UsersDocument = Users & Document;
 export class Users {
 
     @Prop()
-    email: string;
-
-    @Prop()
-    pass: string;
+    pass?: string;
 
     @Prop()
     name: string;
 
     @Prop()
+    surname: string;
+
+    @Prop()
     phone: string;
 
     @Prop()
-    role: string;
+    role?: string;
 
     @Prop()
-    birthday: string;
+    birthday?: string;
 
     @Prop()
     avatar?: string;

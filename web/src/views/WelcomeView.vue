@@ -19,7 +19,7 @@
                 text="Все классы"
             />
             <event-card
-                v-if="event"
+                v-if="visibleNearestEvent"
                 :event="event"
                 grid-class="event"
                 :welcome="true"
@@ -38,6 +38,8 @@ import WelcomeInfo from "@/components/WelcomeInfo.vue"
 import WelcomeProfile from "@/components/WelcomeProfile.vue"
 import InfoCardMini from "@/components/InfoCardMini.vue"
 import { getNearestEvent } from "@/api/events"
+import { EventData } from "@/constants/interfaces"
+import { isEmpty } from "lodash"
 
 @Component({
     components: {
@@ -51,15 +53,24 @@ import { getNearestEvent } from "@/api/events"
 })
 export default class WelcomeView extends Vue {
 
-    event = null
+    event!: EventData
 
     async mounted(): Promise<void> {
-        const res = await getNearestEvent()
-        if (res.status === 200) {
+        await this.getNearestEvent()
+    }
+
+    async getNearestEvent(): Promise<void> {
+        try {
+            const res = await getNearestEvent()
             this.event = res.data
             return
+        } catch (e) {
+            console.log(e)
         }
-        console.warn("Нет ближайших мероприятий")
+    }
+
+    get visibleNearestEvent(): boolean {
+        return !isEmpty(this.event)
     }
 }
 </script>

@@ -2,6 +2,7 @@
     <div class="login">
         <div
             class="login-body"
+            :class="inlineClass"
             :style="positionLeft"
         >
             <div class="login-content">
@@ -43,6 +44,13 @@ export default class LoginLayout extends Vue {
         }
     }
 
+    get inlineClass(): string {
+        if(this.auth || this.reg) {
+            return "login-body--center"
+        }
+        return ""
+    }
+
     get positionLeft() : string {
         if(this.auth) {
             return "left: 0%;"
@@ -78,20 +86,30 @@ export default class LoginLayout extends Vue {
         overflow: hidden;
         height: 100vh;
         display: flex;
-        flex-direction: column;
-        align-items: center;
+        justify-content: center;
         padding: 0 40px;
+        &--center {
+            .login-content {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: relative;
+            }
+        }
     }
     &-content {
         transition: 1s;
         overflow: hidden;
+        max-width: 600px;
+        width: 100%;
+        height: 100%;
     }
     &-line {
         transition: .5s;
         position: absolute;
         bottom: 2%;
         width: 1920px;
-        height: 242px;
+        height: 258px;
         background: url("../assets/bg/line.png") no-repeat;
         background-size: cover;
         z-index: 0;

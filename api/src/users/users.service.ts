@@ -9,20 +9,16 @@ export class UsersService {
         @InjectModel(Users.name) private usersModel: Model<UsersDocument>
     ) {}
 
-    async getUser(username: string): Promise<Users | undefined> {
-        return this.usersModel.findOne({"username": username})
-    }
-
     async getUserById(id: string): Promise<Users> {
-        return this.usersModel.findOne({_id: id})
+        return this.usersModel.findOne({_id: id}, {pass: 0, phone: 0})
     }
 
     async getAllUsers(): Promise<Users[]>{
-        return this.usersModel.find()
+        return this.usersModel.find({}, {pass: 0})
     }
 
     async deleteUser(id: ObjectId): Promise<Users>{
-        return this.usersModel.findByIdAndDelete(id)
+        return this.usersModel.findByIdAndDelete({_id: id})
     }
 
 }

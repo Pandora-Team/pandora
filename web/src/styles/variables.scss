@@ -5,6 +5,7 @@ $line-height-big-text: 22px;
 //Color
 $gradient-radial: radial-gradient(81.66% 81.66% at 50.02% 49.98%, #AD00FF 0%, #3532DE 100%);
 $gradient-btn: linear-gradient(90deg,#4430fd,#e03dee,#4430fd,#e03dee);
+$gradient-btn-without-anim: linear-gradient(90deg,#4430fd,#e03dee);
 $gradient-error2: linear-gradient(278.56deg, #F9FD30 -47%, #EE3DA7 144.56%);
 $gradient-error: linear-gradient(90deg, rgba(249, 253, 48, 0.8), #EE3DA7, rgba(249, 253, 48, 0.8), #EE3DA7);
 $gradient-black: linear-gradient(277.61deg, #080332 -6.19%, #B04BFF 141.82%);
@@ -27,6 +28,7 @@ $color-hover: #5E2AC3;
 
 $bg-info: #F6F6FC;
 $bg-popup: rgba(33, 23, 52, 0.95);
+$bg-input: #151521;
 
 
 //Button

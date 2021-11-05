@@ -1,7 +1,7 @@
 <template>
     <div class="info-banner">
         <div class="info-banner__text">
-            <h1>Привет, {{ name }}!</h1>
+            <h1>Привет, {{ name }} !</h1>
             <p>
                 Добро пожаловать в PANDORA! Здесь ты можешь записаться на&nbsp;занятия,
                 узнать о будущих и прошедших событиях.
@@ -13,19 +13,15 @@
 
 <script lang="ts">
 
-import { Component, Vue, Watch } from "vue-property-decorator"
+import { Component, Vue } from "vue-property-decorator"
 
 @Component({
     components: {},
 })
 export default class WelcomeBanner extends Vue {
 
-    name = ""
-
-    @Watch("$mainStore.user.name", { immediate: true })
-    updateName(): void {
-        const fullName = this.$mainStore.user.name
-        this.name = fullName.split(" ")[1]
+    get name(): string {
+        return this.$mainStore.user.name
     }
 
 }

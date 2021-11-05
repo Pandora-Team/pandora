@@ -1,5 +1,8 @@
 <template>
-    <div :class="wrapperClass">
+    <div
+        class="btn-wrapper"
+        :class="wrapperClass"
+    >
         <button
             class="btn"
             :class="inlineClass"
@@ -37,15 +40,18 @@ export default class MainBtn extends Vue {
     get inlineClass(): any {
         return [
             {
-                "btn--width": this.fullWidth,
                 "btn--auto":  this.autoWidth,
+                "btn--width": this.fullWidth,
             },
             `btn--${this.view}`,
         ]
     }
 
     get wrapperClass(): any {
-        return this.gradient ? "btn-wrapper btn-wrapper--gradient" : "btn-wrapper"
+        return {
+            "btn-wrapper--gradient": this.gradient,
+            "btn-wrapper--width":    this.fullWidth,
+        }
     }
 
     click(): void {
@@ -85,10 +91,13 @@ export default class MainBtn extends Vue {
                 right: -2px;
                 border-radius: $border-radius-input;
                 z-index: 0;
-                background: $gradient-btn;
+                background: $gradient-btn-without-anim;
                 width: 264px;
                 height: 56px;
             }
+        }
+        &--width {
+            width: 100%;
         }
     }
     &--main {
@@ -105,7 +114,7 @@ export default class MainBtn extends Vue {
 
     &--without-bg {
         min-width: 260px;
-        background: #151521;
+        background: $bg-input;
         position: absolute;
         z-index: 1;
     }

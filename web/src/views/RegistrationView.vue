@@ -1,5 +1,5 @@
 <template>
-    <transition-fade>
+    <transition-to-top>
         <div class="reg">
             <div class="reg-title">
                 <h3>Регистрация</h3>
@@ -13,32 +13,53 @@
                     <main-form-item
                         id="name"
                         v-model="$v.name.$model"
-                        label="Имя и фамилия*"
+                        label="Имя *"
                         type="text"
                         :error="errorNameInput"
+                        placeholder="Имя"
                     />
                     <main-form-item
-                        id="phone"
-                        v-model="$v.phone.$model"
-                        label="Телефон*"
+                        id="surname"
+                        v-model="$v.surname.$model"
+                        label="Фамилия *"
                         type="text"
-                        :error="errorPhoneInput"
+                        :error="errorSurnameInput"
+                        placeholder="Фамилия"
                     />
                 </template>
                 <template #center>
                     <main-form-item
+                        id="phone"
+                        v-model="$v.phone.$model"
+                        label="Телефон *"
+                        type="text"
+                        :error="errorPhoneInput"
+                        placeholder="+79999999999"
+                    />
+                    <main-form-item
+                        id="birthday"
+                        v-model="$v.birthday.$model"
+                        label="Дата рождения"
+                        type="text"
+                        placeholder="09.09.1999"
+                    />
+                </template>
+                <template #bottom>
+                    <main-form-item
                         id="password"
                         v-model="$v.password.$model"
-                        label="Пароль*"
+                        label="Пароль *"
                         type="password"
                         :error="errorPasswordInput"
+                        placeholder="Пароль"
                     />
                     <main-form-item
                         id="repeatPassword"
                         v-model="$v.repeatPassword.$model"
-                        label="Подтвердить пароль*"
+                        label="Подтвердить пароль *"
                         type="password"
                         :error="errorRepeatPasswordInput"
+                        placeholder="Пароль"
                     />
                 </template>
                 <template #privacy>
@@ -48,7 +69,7 @@
                             :href="$mainPaths.PolicyView"
                             target="_blank"
                         >
-                            Политикой конфиденциальности
+                            политикой конфиденциальности
                         </a>
                     </p>
                 </template>
@@ -57,16 +78,16 @@
                 </template>
             </main-form>
         </div>
-    </transition-fade>
+    </transition-to-top>
 </template>
 
 <script lang="ts">
 
 import { Component, Vue } from "vue-property-decorator"
-import { maxLength, minLength, required, sameAs, numeric } from "vuelidate/lib/validators"
+import { minLength, required, sameAs } from "vuelidate/lib/validators"
 import MainFormItem from "@/components/MainFormItem.vue"
 import MainForm from "@/components/MainForm.vue"
-import TransitionFade from "@/components/transition/TransitionFade.vue"
+import TransitionToTop from "@/components/transition/TransitionToTop.vue"
 import paths from "@/router/paths"
 import { reg } from "@/api/auth"
 
@@ -74,17 +95,21 @@ import { reg } from "@/api/auth"
     components: {
         MainForm,
         MainFormItem,
-        TransitionFade,
+        TransitionToTop,
     },
     validations: {
         name: {
             required,
         },
+        surname: {
+            required,
+        },
+        birthday: {
+
+        },
         phone: {
             required,
-            numeric,
             minLength: minLength(11),
-            maxLength: maxLength(11),
         },
         password: {
             required,
@@ -102,30 +127,18 @@ export default class RegistrationView extends Vue {
     phone = ""
     password = ""
     repeatPassword = ""
-
-    async submitForm(): Promise<void> {
-        if(!this.$v.$invalid) {
-
-            const { data } = await reg({
-                pass:  this.password,
-                name:  this.name,
-                phone: this.phone,
-            })
-
-            if (data?.error) {
-                await this.$router.push({ path: this.$mainPaths.LoginLayout })
-                return
-            }
-
-            const { access_token, name, role, _id } = data
-            localStorage.setItem("at", access_token)
-            await this.$mainStore.user.updateUserInfo({ name, role, id: _id })
-            await this.$router.push({ path: this.$mainPaths.LkLayout })
-        }
-    }
+    surname = ""
+    birthday = ""
 
     get errorNameInput(): string {
         if(this.$v.name.$dirty && !this.$v.name.required) {
+            return "Обязательно для заполнения"
+        }
+        return ""
+    }
+
+    get errorSurnameInput(): string {
+        if(this.$v.surname.$dirty && !this.$v.surname.required) {
             return "Обязательно для заполнения"
         }
         return ""
@@ -135,14 +148,8 @@ export default class RegistrationView extends Vue {
         if(this.$v.phone.$dirty && !this.$v.phone.required) {
             return "Обязательно для заполнения"
         }
-        if(this.$v.phone.$dirty && !this.$v.phone.numeric) {
-            return "В поле должны быть только цифры"
-        }
         if(this.$v.phone.$dirty && !this.$v.phone.minLength) {
             return `В поле должно быть не менее ${this.$v.phone.$params.minLength.min} символов`
-        }
-        if(this.$v.phone.$dirty && !this.$v.phone.maxLength) {
-            return `В поле должно быть не более ${this.$v.phone.$params.maxLength.max} символов`
         }
         return ""
     }
@@ -167,6 +174,35 @@ export default class RegistrationView extends Vue {
         return ""
     }
 
+    async submitForm(): Promise<void> {
+        this.$v.$touch()
+        if(!this.$v.$invalid) {
+
+            try {
+                const res = await reg({
+                    pass:     this.password,
+                    name:     this.name,
+                    phone:    this.phone,
+                    surname:  this.surname,
+                    birthday: this.birthday,
+                })
+
+                if (res.data?.error) {
+                    await this.$router.push({ path: this.$mainPaths.LoginLayout })
+                    return
+                }
+
+                const { access_token, _id } = res.data
+                localStorage.setItem("at", access_token)
+                await this.$mainStore.user.setUserId(_id)
+                await this.$router.push({ path: this.$mainPaths.LkLayout })
+            } catch (e) {
+                console.log(e)
+                await this.$router.push({ path: this.$mainPaths.LoginLayout })
+            }
+        }
+    }
+
     goToAuth(): void {
         this.$router.push(paths.AuthenticationView)
     }
@@ -175,7 +211,9 @@ export default class RegistrationView extends Vue {
 
 <style lang="scss">
     .reg {
+        width: 600px;
         padding: 0 2px;
+        position: absolute;
         &-title {
             text-align: center;
             margin-bottom: 70px;
@@ -183,9 +221,13 @@ export default class RegistrationView extends Vue {
                 color: white;
             }
         }
+        .form {
+            padding: 0 2px;
+        }
     }
     .privacy {
-        font-size: 14px;
+        text-align: center;
+        font-size: 16px;
         max-width: 560px;
         position: relative;
         z-index: 2;
@@ -194,6 +236,8 @@ export default class RegistrationView extends Vue {
         line-height: 1.5;
         margin-bottom: 40px;
         a {
+            text-decoration: underline;
+            font-size: 16px;
             color: #AD00FF;
         }
     }
