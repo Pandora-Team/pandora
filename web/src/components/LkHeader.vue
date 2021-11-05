@@ -1,17 +1,22 @@
 <template>
     <div class="header">
         <div class="header-wrapper">
-            <lk-avatar />
-            <p class="header__name">
-                {{ fullName }}
-            </p>
-            <div @click="logout">
-                <simple-svg
-                    :src="iconPath"
-                    width="32px"
-                    height="32px"
-                    custom-class-name="header__logout"
-                />
+            <div class="header-item">
+                <lk-social />
+            </div>
+            <div class="header-item">
+                <lk-avatar />
+                <p class="header__name">
+                    {{ fullName }}
+                </p>
+                <div @click="logout">
+                    <simple-svg
+                        :src="iconPath"
+                        width="32px"
+                        height="32px"
+                        custom-class-name="header__logout"
+                    />
+                </div>
             </div>
         </div>
     </div>
@@ -22,10 +27,12 @@
 import { Component, Vue } from "vue-property-decorator"
 import LkAvatar from "@/components/LkAvatar.vue"
 import paths from "@/router/paths"
+import LkSocial from "@/components/LkSocial.vue"
 
 @Component({
     components: {
         LkAvatar,
+        LkSocial,
     },
 })
 export default class LkHeader extends Vue {
@@ -68,7 +75,11 @@ export default class LkHeader extends Vue {
         min-height: 50px;
         &-wrapper {
             display: flex;
-            justify-content: right;
+            justify-content: space-between;
+            align-items: center;
+        }
+        &-item {
+            display: flex;
             align-items: center;
         }
         &__avatar {
