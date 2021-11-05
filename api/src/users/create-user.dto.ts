@@ -4,4 +4,5 @@ export class CreateUserDto {
     readonly phone: string;
     role?: string;
     readonly birthday?: string;
+    avatar?: string;
 }

@@ -54,8 +54,8 @@ export default class EventPopupCancel extends Vue {
     }
 
     async onClick(): Promise<void> {
-        const res = await clearStatuses(this.event._id)
-        if (res.status === 201) {
+        const res = await clearStatuses(this.event.status_id)
+        if (res.status === 200) {
             this.$mainStore.events.clearStatuses(this.event._id)
             this.closePopup()
             return

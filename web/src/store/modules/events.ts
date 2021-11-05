@@ -6,16 +6,17 @@ import { statusData } from "@/constants/typeStatus"
 import { cloneDeep } from "lodash"
 
 const initCreateState = () => ({
-    _id:      "",
-    date:     new Date(),
-    end_time: "",
-    name:     "",
-    price:    "500",
-    place_id: "",
-    address:  "",
-    cover:    undefined,
-    payment:  "",
-    status:   [],
+    _id:       "",
+    date:      new Date(),
+    end_time:  "",
+    name:      "",
+    price:     "500",
+    place_id:  "",
+    address:   "",
+    cover:     undefined,
+    payment:   "",
+    status:    [],
+    status_id: "",
 })
 
 export class Events {
@@ -153,7 +154,13 @@ export class Events {
         const newList = this.listEvents.map(event => {
             if (event._id === data.event_id) {
                 event.status.splice(0, event.status.length)
-                event.status.push(data.event_status, data.payment_status)
+                if (data.event_status && data.payment_status) {
+                    event.status.push(data.event_status, data.payment_status)
+                }
+                event.users_id?.push(this.$mainStore.user.id)
+                if (data._id) {
+                    event.status_id = data._id
+                }
             }
             return event
         })
@@ -165,6 +172,8 @@ export class Events {
         const newList = this.listEvents.map(event => {
             if (event._id === _id) {
                 event.status.splice(0, event.status.length)
+                event.status_id = ""
+                event.users_id = event.users_id?.filter(user => user !== this.$mainStore.user.id)
             }
             return event
         })

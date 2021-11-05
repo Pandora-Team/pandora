@@ -14,7 +14,7 @@
             v-if="isAdmin"
             name="Участники"
             path="/lk/students"
-            icon="master"
+            icon="students"
         />
         <lk-nav-link
             name="Профиль"

@@ -211,10 +211,9 @@ export default class EventCard extends Vue {
             if (res.status === 201) {
                 this.$mainStore.events.updateStatuses(res.data)
                 this.$mainStore.events.closeEventPopup()
-                console.log("success")
                 return
             }
-            console.log("failure")
+            console.warn("failure")
         }
     }
 

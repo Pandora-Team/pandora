@@ -30,16 +30,24 @@ export class EventsController {
     }
 
     @UseGuards(JwtAuthGuard)
-    @Get("/nearest")
+    @Get("list")
+    async getEventsWithStudents(){
+        return this.eventsService.getAllEventsWithStudents()
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Get("nearest")
     async getNearestEvent(@Request() req){
         return this.eventsService.getNearestEvent(req.user.id)
     }
 
+    @UseGuards(JwtAuthGuard)
     @Get(':id')
     async getEvent(@Param('id') id: ObjectId){
         return this.eventsService.getOneEvent(id)
     }
 
+    @UseGuards(JwtAuthGuard)
     @Post()
     @UseInterceptors(FileFieldsInterceptor([
         { name: 'cover', maxCount: 1 }
@@ -49,11 +57,13 @@ export class EventsController {
         return this.eventsService.createEvent(dto, cover[0])
     }
 
+    @UseGuards(JwtAuthGuard)
     @Put(':id')
     async updateEvent(@Param('id') id: ObjectId, @Body() dto: CreateEventDto) {
         return this.eventsService.updateEvent(id, dto)
     }
 
+    @UseGuards(JwtAuthGuard)
     @Delete(':id')
     delete(@Param('id') id: ObjectId){
         return this.eventsService.deleteEvent(id)
