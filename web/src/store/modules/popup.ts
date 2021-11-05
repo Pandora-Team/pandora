@@ -38,6 +38,39 @@ export class Popup {
     @State()
     canceledState: EventData = initCreateState()
 
+    @State()
+    activeWelcomePopup = false
+
+    @State()
+    activePaymentPopup = false
+
+    @State()
+    typePayment = ""
+
+    // попап оплаты
+
+    @Mutation()
+    public changeActivePaymentPopup(state: boolean): void {
+        this.activePaymentPopup = state
+        this.$mainStore.app.setDisabled(state)
+        if (!state) {
+            this.setTypePayment("")
+        }
+    }
+
+    @Mutation()
+    public setTypePayment(type: string): void {
+        this.typePayment = type
+    }
+
+    // попап приветствие
+
+    @Mutation()
+    public changeActiveWelcomePopup(state: boolean): void {
+        this.activeWelcomePopup = state
+        this.$mainStore.app.setDisabled(state)
+    }
+
     // попап отмены
 
     @Mutation()

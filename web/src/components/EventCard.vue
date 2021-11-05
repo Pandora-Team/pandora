@@ -210,6 +210,8 @@ export default class EventCard extends Vue {
                 const res = await createStatuses(params)
                 this.$mainStore.events.updateStatuses(res.data)
                 this.$mainStore.popup.changeActiveRecordPopup(false)
+                this.$mainStore.popup.setTypePayment(this.payment)
+                this.$mainStore.popup.changeActivePaymentPopup(true)
             } catch (e) {
                 console.log(e)
             }

@@ -43,7 +43,7 @@ import { clearStatuses } from "@/api/statuses"
         MainBtn,
     },
 })
-export default class EventPopupCancel extends Vue {
+export default class PopupCancel extends Vue {
 
     get event(): EventData {
         return this.$mainStore.popup.canceledState

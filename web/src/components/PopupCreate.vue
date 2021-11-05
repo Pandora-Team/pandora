@@ -66,7 +66,7 @@ import MainPopup from "@/components/MainPopup.vue"
         MainPopup,
     },
 })
-export default class EventPopupCreate extends Vue {
+export default class PopupCreate extends Vue {
 
     get state(): any {
         return this.$mainStore.popup.createdState

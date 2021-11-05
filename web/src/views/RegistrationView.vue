@@ -195,7 +195,9 @@ export default class RegistrationView extends Vue {
                 const { access_token, _id } = res.data
                 localStorage.setItem("at", access_token)
                 await this.$mainStore.user.setUserId(_id)
+                this.$mainStore.popup.changeActiveWelcomePopup(true)
                 await this.$router.push({ path: this.$mainPaths.LkLayout })
+
             } catch (e) {
                 console.log(e)
                 await this.$router.push({ path: this.$mainPaths.LoginLayout })
