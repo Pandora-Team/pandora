@@ -8,10 +8,12 @@
             <div
                 class="logo"
             >
-                <img
-                    src="@a/svg/logo.svg"
-                    alt="Logo"
-                >
+                <simple-svg
+                    :src="iconPath"
+                    width="124px"
+                    height="127px"
+                    custom-class-name="login-logo"
+                />
             </div>
         </transition>
         <transition-fade>
@@ -64,6 +66,10 @@ export default class LoginView extends Vue {
         }
     }
 
+    get iconPath(): string {
+        return require("@a/svg/logo.svg")
+    }
+
 }
 </script>
 
@@ -72,9 +78,6 @@ export default class LoginView extends Vue {
         max-width: 124px;
         max-height: 127px;
         margin: 100px auto 115px;
-        img {
-            width: 100%;
-        }
     }
     .login-block {
         width: 100%;
