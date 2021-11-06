@@ -3,8 +3,8 @@ digraph pandora_monitoring {
     subgraph cluster_host_network {
         label="host network"
         nginx_grafana_proxy [shape=hexagon]
-        nginx_stub_status
-        node_exporter
+        nginx_grafana_proxy -> node_exporter [style=invis]
+        node_exporter -> nginx_stub_status [style=invis]
     }
     
     subgraph cluster_docker_network {
