@@ -25,8 +25,8 @@ dot -Tsvg img/monitoring.dot -o img/monitoring.dot.svg
 1. Сгенерировать ключевую пару для пользователя `ci`: `ssh-keygen -t ed25519 -C ci -f ci@pandora_ed25519`:
     1. Приватную часть SSH-ключа сохранить в GitHub Secrets в переменную `DEPLOY_TARGET_KEY`.
     1. Уничтожить приватную часть ключа командой `shred -u ci@pandora_ed25519`.
-    1. Публичную часть SSH-ключа сохранить в переменную [ci_user_key](server/ansible/_inventory.yml).
-1. Запустить Ansible Playbook [common.yml](server/ansible/common.yml) от рута:
+    1. Публичную часть SSH-ключа сохранить в переменную [ci_user_key](./ansible/_inventory.yml).
+1. Запустить Ansible Playbook [common.yml](./ansible/common.yml) от рута:
     ```
     ansible-playbook -v -u root --become-method su -i ./server/ansible/_inventory.yml ./server/ansible/common.yml
     ```
@@ -39,7 +39,7 @@ dot -Tsvg img/monitoring.dot -o img/monitoring.dot.svg
     * `REGISTRY_HOST` (адрес container registry)
     * `REGISTRY_PASSWORD` (токен доступа к container registry)
 1. Зайти на сервер командой `ssh pandora`:
-    1. Добавить секреты в файл `/home/ci/.env`: дополнить список переменных из [.env.example](./.env.example) переменной `PANDORA_IMAGES_PREFIX`.
+    1. Добавить секреты в файл `/home/ci/.env`: дополнить список переменных из [.env.example](../.env.example) переменной `PANDORA_IMAGES_PREFIX`.
     1. Задеплоить приложение через GitHub Actions. Если что-то пошло не так, починить и дополнить инструкцию/плэйбук.
     1. Получить SSL-сертификаты через `certbot`.
     1. [Настроить автообновление SSL-сертификатов](https://certbot.eff.org/docs/using.html?highlight=renew#setting-up-automated-renewal)
