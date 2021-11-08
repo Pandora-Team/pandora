@@ -71,7 +71,7 @@ export default class LkHeader extends Vue {
 <style lang="scss">
     .header {
         padding: 15px 44px;
-        border-bottom: 1px solid rgba(151, 146, 153, 0.4);
+        box-shadow: 0 4px 10px rgba(94, 42, 195, 0.06);
         min-height: 50px;
         &-wrapper {
             display: flex;

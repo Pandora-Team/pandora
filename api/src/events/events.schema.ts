@@ -28,7 +28,7 @@ export class Events {
     message?: string;
 
     @Prop()
-    price: number;
+    price: string;
 
     @Prop()
     price_last?: number;

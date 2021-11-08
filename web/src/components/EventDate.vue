@@ -55,7 +55,11 @@ export default class EventDate extends Vue {
     @Prop({ type: String, default: "" })
     readonly endTime!: string
 
+    @Prop({ type: Boolean, default: false })
+    readonly update!: boolean
+
     mounted(): void {
+        if (this.update) return
         const needDate = dayjs(this.date)
             .weekday(7)
             .hour(16)
@@ -77,6 +81,7 @@ export default class EventDate extends Vue {
     @Watch("date", { deep: true, immediate: true })
     updateEndTime(): void {
         if (!this.date) return
+        if (this.update) return
         const selectedTime = dayjs(this.date)
         const needEndTime = selectedTime.add(2, "hour").add(30, "minute")
         const endTime = `${needEndTime.format("HH:mm")}`

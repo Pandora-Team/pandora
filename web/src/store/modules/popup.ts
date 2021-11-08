@@ -1,6 +1,7 @@
 import { State, Mutation } from "vuex-simple"
 import { EventData } from "@/constants/interfaces"
 import { Store } from "@/store/store"
+import { cloneDeep } from "lodash"
 
 const initCreateState = () => ({
     _id:       "",
@@ -46,6 +47,9 @@ export class Popup {
 
     @State()
     typePayment = ""
+
+    @State()
+    updatePopup = false
 
     // попап оплаты
 
@@ -125,8 +129,15 @@ export class Popup {
     }
 
     @Mutation()
+    public changeCreatedState(state: EventData): void {
+        this.updatePopup = true
+        this.createdState = cloneDeep(state)
+    }
+
+    @Mutation()
     public clearCreatedState(): void {
         this.createdState = initCreateState()
+        this.updatePopup = false
     }
 
     @Mutation()

@@ -17,17 +17,43 @@ export class Events {
         this.listEvents.push(event)
     }
 
+    @Mutation()
+    public updateEventIntoList(updatedEvent: EventData): void {
+        const newListEvents = this.listEvents.map(event => {
+            if (event._id === updatedEvent._id) {
+                event.date = updatedEvent.date
+                event.price = updatedEvent.price
+                event.name = updatedEvent.name
+                event.end_time = updatedEvent.end_time
+                event.address = updatedEvent.address
+                event.place_id = updatedEvent.place_id
+                event.cover = updatedEvent.cover
+            }
+            return event
+        })
+        this.updateListEvent(newListEvents)
+    }
+
     @Action()
     public async getListEvents(): Promise<void> {
-        const { data } = await getAllEvent()
-        if (data?.length) {
-            this.updateListEvent(data)
+        try {
+            const res = await getAllEvent()
+            const events: EventData[] = res.data
+            if (events?.length) {
+                const updateData = events.map(event => {
+                    event.date = new Date(event.date)
+                    return event
+                })
+                this.updateListEvent(updateData)
+            }
+        } catch (e) {
+            console.log(e)
         }
     }
 
     @Mutation()
     private updateListEvent(list: EventData[]): void {
-        this.listEvents = list
+        this.listEvents = cloneDeep(list)
     }
 
     @Mutation()
@@ -45,7 +71,7 @@ export class Events {
             }
             return event
         })
-        this.listEvents = cloneDeep(newList)
+        this.updateListEvent(newList)
     }
 
     @Mutation()
@@ -59,6 +85,12 @@ export class Events {
             return event
         })
         this.listEvents = cloneDeep(newList)
+    }
+
+    @Mutation()
+    public removeEvent(id: string): void {
+        const newListEvents = this.listEvents.filter(event => event._id !== id)
+        this.updateListEvent(newListEvents)
     }
 
 }

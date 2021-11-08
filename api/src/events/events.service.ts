@@ -79,7 +79,7 @@ export class EventsService {
         return this.eventsModel.updateOne({_id: id}, {...dto})
     }
 
-    async deleteEvent(id: ObjectId): Promise<Events>{
+    async deleteEvent(id: ObjectId): Promise<Events> {
         return this.eventsModel.findByIdAndDelete({_id: id})
     }
 

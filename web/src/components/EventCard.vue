@@ -6,6 +6,11 @@
     >
         <div class="event-card__wrapper">
             <div
+                v-if="isAdmin"
+                class="event-card__edit"
+                @click="onEdit"
+            />
+            <div
                 v-if="statuses.length"
                 class="event-card__statuses"
             >
@@ -64,19 +69,27 @@
                     </transition>
                 </div>
                 <main-btn
-                    v-if="!signedUp"
+                    v-if="!signedUp && !isAdmin"
                     :full-width="true"
                     @click="onClick"
                 >
                     Записаться
                 </main-btn>
                 <main-btn
-                    v-if="signedUp"
+                    v-if="signedUp && !isAdmin"
                     :full-width="true"
                     view="error"
                     @click="onCancel"
                 >
                     Отменить запись
+                </main-btn>
+                <main-btn
+                    v-if="isAdmin"
+                    :full-width="true"
+                    view="error"
+                    @click="onRemove"
+                >
+                    Отменить занятие
                 </main-btn>
             </div>
         </div>
@@ -93,6 +106,7 @@ import dayjs from "dayjs"
 import { listStatuses, statusData, typesStatus, typeStatus } from "@/constants/typeStatus"
 import MainRadio from "@/components/MainRadio.vue"
 import { createStatuses } from "@/api/statuses"
+import { deleteEvent } from "@/api/events"
 
 @Component({
     components: {
@@ -171,6 +185,10 @@ export default class EventCard extends Vue {
         return ""
     }
 
+    get isAdmin(): boolean {
+        return this.$mainStore.user.isAdmin
+    }
+
     updateStatuses(): void {
         this.statuses.splice(0, this.statuses.length)
         this.signedUp = false
@@ -222,6 +240,22 @@ export default class EventCard extends Vue {
     onCancel(): void {
         this.$mainStore.popup.changeCanceledState(this.event)
         this.$mainStore.popup.changeActiveCancelPopup(true)
+    }
+
+    //удаление занятия
+    async onRemove(): Promise<void> {
+        try {
+            const res = await deleteEvent(this.event._id)
+            const { _id } = res.data
+            this.$mainStore.events.removeEvent(_id)
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    onEdit(): void {
+        this.$mainStore.popup.changeCreatedState(this.event)
+        this.$mainStore.popup.changeActiveCreatePopup(true)
     }
 }
 </script>
@@ -329,6 +363,17 @@ export default class EventCard extends Vue {
            font-size: 12px;
            position: absolute;
            color: #C03221;
+       }
+       &__edit {
+           cursor: pointer;
+           position: absolute;
+           top: -30px;
+           right: -30px;
+           width: 54px;
+           height: 55px;
+           background: $color-gray url("../assets/svg/icon-edit.svg") center no-repeat;
+           background-size: 29px;
+           border-radius: 0 20px 0 20px;
        }
    }
 </style>
