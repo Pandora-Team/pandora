@@ -27,7 +27,6 @@ export class Events {
                 event.end_time = updatedEvent.end_time
                 event.address = updatedEvent.address
                 event.place_id = updatedEvent.place_id
-                event.cover = updatedEvent.cover
             }
             return event
         })

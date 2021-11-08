@@ -35,7 +35,7 @@
                         :address="state.address"
                         :place-id="state.place_id"
                     />
-                    <event-file />
+                    <event-file v-if="!isUpdatePopup" />
                 </template>
             </main-form>
         </div>
@@ -123,11 +123,10 @@ export default class PopupCreate extends Vue {
         const params = { ...this.state }
         try {
             await updateEvent(this.state._id, params)
+            this.$mainStore.events.updateEventIntoList(this.state)
             this.closePopup()
-            return
         } catch (e) {
             console.log(e)
-            return
         }
 
     }
