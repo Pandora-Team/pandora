@@ -1,4 +1,4 @@
-import { State, Mutation, Action } from "vuex-simple"
+import { State, Mutation, Action, Getter } from "vuex-simple"
 import { getUser } from "@/api/users"
 
 export class User {
@@ -68,6 +68,11 @@ export class User {
         this.surname = ""
         this.birthday = ""
         this.avatar = ""
+    }
+
+    @Getter()
+    public get isAdmin(): boolean {
+        return this.role === "admin"
     }
 
 }

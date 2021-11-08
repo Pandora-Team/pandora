@@ -38,7 +38,7 @@ export default class ClassesView extends Vue {
     }
 
     get isAdmin(): boolean {
-        return this.$mainStore.user.role === "admin"
+        return this.$mainStore.user.isAdmin
     }
 
 }
@@ -47,9 +47,8 @@ export default class ClassesView extends Vue {
 <style lang="scss">
     .events {
         h1 {
-            color: $color-hover;
+            color: $color-black;
             margin-bottom: 30px;
-            text-align: center;
         }
         &__body {
             display: flex;

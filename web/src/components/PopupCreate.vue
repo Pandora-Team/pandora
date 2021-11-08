@@ -1,10 +1,10 @@
 <template>
     <main-popup @close="closePopup">
         <div class="event-create">
-            <h3>Создать мероприятие</h3>
+            <h3>{{ titlePopup }}</h3>
             <main-form
                 class-form="create"
-                submit-text="Создать МК"
+                :submit-text="textBtnSubmit"
                 width-form="560px"
                 :cancel-button="false"
                 @submit="submitForm"
@@ -25,6 +25,7 @@
                         @input="updatePrice"
                     />
                     <event-date
+                        :update="isUpdatePopup"
                         :date="state.date"
                         :end-time="state.end_time"
                     />
@@ -34,7 +35,7 @@
                         :address="state.address"
                         :place-id="state.place_id"
                     />
-                    <event-file />
+                    <event-file v-if="!isUpdatePopup" />
                 </template>
             </main-form>
         </div>
@@ -51,7 +52,7 @@ import MainInput from "@/components/MainInput.vue"
 import EventFile from "@/components/EventFile.vue"
 import EventSelectAddress from "@/components/EventSelectAddress.vue"
 import EventDate from "@/components/EventDate.vue"
-import { createEvent } from "@/api/events"
+import { createEvent, updateEvent } from "@/api/events"
 import MainPopup from "@/components/MainPopup.vue"
 
 @Component({
@@ -68,8 +69,24 @@ import MainPopup from "@/components/MainPopup.vue"
 })
 export default class PopupCreate extends Vue {
 
+    get isUpdatePopup(): boolean {
+        return this.$mainStore.popup.updatePopup
+    }
+
     get state(): any {
         return this.$mainStore.popup.createdState
+    }
+
+    get textBtnSubmit(): string {
+        if (this.isUpdatePopup) {
+            return "Обновить МК"
+        }
+        return "Создать МК"
+    }
+
+    get titlePopup(): string {
+        if (this.isUpdatePopup) return "Редактировать мероприятие"
+        return "Создать мероприятие"
     }
 
     updateName(value: string): void {
@@ -85,20 +102,33 @@ export default class PopupCreate extends Vue {
     }
 
     async submitForm(): Promise<void> {
-        const formData = new FormData()
-        const data = this.state
-        for (const key in data) {
-            if (data.hasOwnProperty(key) && data[key]) {
-                formData.append(key, data[key])
+        if (!this.isUpdatePopup) {
+            const formData = new FormData()
+            const data = this.state
+            for (const key in data) {
+                if (data.hasOwnProperty(key) && data[key]) {
+                    formData.append(key, data[key])
+                }
+            }
+            try {
+                const res = await createEvent(formData)
+                this.$mainStore.events.addEventToList(res?.data)
+                this.closePopup()
+                return
+            } catch (e) {
+                console.log(e)
+                return
             }
         }
+        const params = { ...this.state }
         try {
-            const res = await createEvent(formData)
-            this.$mainStore.events.addEventToList(res?.data)
+            await updateEvent(this.state._id, params)
+            this.$mainStore.events.updateEventIntoList(this.state)
             this.closePopup()
         } catch (e) {
             console.log(e)
         }
+
     }
 
 }

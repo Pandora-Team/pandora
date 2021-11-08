@@ -4,7 +4,7 @@ export class CreateEventDto {
     readonly name: string;
     readonly cover?: string;
     readonly message?: string;
-    readonly price: number;
+    readonly price: string;
     readonly price_last?: number;
     readonly place_id?: string;
     readonly address?: string;

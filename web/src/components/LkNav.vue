@@ -51,7 +51,7 @@ import LkNavLink from "@/components/LkNavLink.vue"
 })
 export default class LkNav extends Vue {
     get isAdmin(): boolean {
-        return this.$mainStore.user.role === "admin"
+        return this.$mainStore.user.isAdmin
     }
 }
 </script>
