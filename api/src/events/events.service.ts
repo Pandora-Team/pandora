@@ -8,6 +8,8 @@ import {FileType, FileService} from "../file/file.service";
 import {StatusesService} from "../statuses/statuses.service";
 import * as dayjs from 'dayjs'
 import {UsersService} from "../users/users.service";
+import { InjectBot } from 'nestjs-telegraf';
+import { Telegraf, Context } from 'telegraf';
 
 @Injectable()
 export class EventsService {
@@ -16,7 +18,8 @@ export class EventsService {
         private placesService: PlacesService,
         private fileService: FileService,
         private statusesService: StatusesService,
-        private usersService: UsersService
+        private usersService: UsersService,
+        @InjectBot() private bot: Telegraf<Context>,
     ) {}
 
     async createEvent(dto: CreateEventDto, cover): Promise<Events> {
@@ -32,6 +35,7 @@ export class EventsService {
             newAddress = place.address
         }
         const coverPath = this.fileService.createFile(FileType.IMAGE, cover, nameFolder)
+        await this.bot.telegram.sendMessage("@evsikov145", "Создано занятие")
         return this.eventsModel.create({...result, address: newAddress, cover: coverPath})
     }
 
