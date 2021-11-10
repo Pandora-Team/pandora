@@ -10,6 +10,8 @@ import {AuthModule} from "./auth/auth.module";
 import {JwtModule} from "@nestjs/jwt";
 import {PlacesModule} from "./places/places.module";
 import {FileModule} from "./file/file.module";
+import { TelegrafModule } from 'nestjs-telegraf';
+import {AppUpdate} from "./app.update";
 
 @Module({
   imports: [
@@ -19,6 +21,9 @@ import {FileModule} from "./file/file.module";
     }),
     ServeStaticModule.forRoot({
       rootPath: path.resolve(__dirname, 'static'),
+    }),
+    TelegrafModule.forRoot({
+      token: `${process.env.PANDORA_BOT_TOKEN}`,
     }),
     MongooseModule.forRoot(process.env.DB_URI),
     AuthModule,
@@ -32,5 +37,6 @@ import {FileModule} from "./file/file.module";
       signOptions: {expiresIn: `${process.env.JWT_EXPIRES_IN}`}
     }),
   ],
+  providers: [ AppUpdate ],
 })
 export class AppModule {}

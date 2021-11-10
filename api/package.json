@@ -1,8 +1,8 @@
 {
-  "name": "wp-nest",
+  "name": "pandora",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "This project is about dance kpop studio Pandora",
+  "author": "Evsikov Oleg",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
