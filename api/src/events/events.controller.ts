@@ -52,8 +52,7 @@ export class EventsController {
     @UseInterceptors(FileFieldsInterceptor([
         { name: 'cover', maxCount: 1 }
     ]))
-    async createEvent(@UploadedFiles() files, @Body() dto: CreateEventDto ){
-        console.log("create")
+    async createEvent(@UploadedFiles() files, @Body() dto: CreateEventDto ) {
         const {cover} = files
         return this.eventsService.createEvent(dto, cover[0])
     }

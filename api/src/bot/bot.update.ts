@@ -22,7 +22,7 @@ export class BotUpdate {
 
     @On('sticker')
     async on(@Ctx() ctx: Context) {
-        await ctx.reply('👍');
+        await ctx.reply('😘');
     }
 
     @Hears('hi')

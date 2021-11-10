@@ -35,8 +35,17 @@ export class EventsService {
             newAddress = place.address
         }
         const coverPath = this.fileService.createFile(FileType.IMAGE, cover, nameFolder)
-        await this.bot.telegram.sendMessage("@evsikov145", "Создано занятие")
-        return this.eventsModel.create({...result, address: newAddress, cover: coverPath})
+
+        const newEvent = await this.eventsModel.create({...result, address: newAddress, cover: coverPath})
+        const textForBot = `
+        Создано новое занятие 💃 : Имя - ${newEvent.name}.
+        Стоимость - ${newEvent.price} рублей.
+        Дата - ${dayjs(newEvent.date).format("DD.MM.YYYY")}.
+        Старт в ${dayjs(newEvent.date).format("HH:mm")}.
+        Конец в ${newEvent.end_time}.
+        Удачи ❤️`
+        await this.bot.telegram.sendMessage(`${process.env.TELEGRAM_CHAT_ID}`, textForBot)
+        return newEvent
     }
 
     async getAllEvents(id: string): Promise<Events[]>{
