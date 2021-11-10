@@ -9,10 +9,10 @@ import {
 import { Context } from "telegraf"
 
 @Update()
-export class AppUpdate {
+export class BotUpdate {
     @Start()
     async start(@Ctx() ctx: Context) {
-        await ctx.reply('Welcome');
+        await ctx.reply('Welcome Men');
     }
 
     @Help()

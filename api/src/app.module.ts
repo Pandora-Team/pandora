@@ -11,7 +11,7 @@ import {JwtModule} from "@nestjs/jwt";
 import {PlacesModule} from "./places/places.module";
 import {FileModule} from "./file/file.module";
 import { TelegrafModule } from 'nestjs-telegraf';
-import {AppUpdate} from "./app.update";
+import {BotModule} from "./bot/bot.module";
 
 @Module({
   imports: [
@@ -36,7 +36,7 @@ import {AppUpdate} from "./app.update";
       secret: `${process.env.JWT_SECRET}`,
       signOptions: {expiresIn: `${process.env.JWT_EXPIRES_IN}`}
     }),
+    BotModule,
   ],
-  providers: [ AppUpdate ],
 })
 export class AppModule {}
