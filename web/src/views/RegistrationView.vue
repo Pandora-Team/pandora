@@ -201,6 +201,7 @@ export default class RegistrationView extends Vue {
             } catch (e) {
                 console.log(e)
                 await this.$router.push({ path: this.$mainPaths.LoginLayout })
+                throw new Error(`Error Registration - ${e}`)
             }
         }
     }

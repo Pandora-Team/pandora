@@ -108,8 +108,8 @@ export default class AuthenticationView extends Vue {
                 this.$mainStore.popup.changeActiveWelcomePopup(true)
                 await this.$router.push({ path: this.$mainPaths.LkLayout })
             } catch (e) {
-                console.log(e)
                 await this.$router.push({ path: this.$mainPaths.LoginLayout })
+                throw new Error(`Error Authentication - ${e}`)
             }
         }
     }
