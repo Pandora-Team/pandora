@@ -1,5 +1,8 @@
 <template>
-    <div class="info-card__wrapper info-card__wrapper--about">
+    <div
+        class="info-card__wrapper info-card__wrapper--about"
+        @click="onClick"
+    >
         <div class="info-card__pic">
             <img
                 src="@/assets/images/welcome-info.png"
@@ -24,16 +27,26 @@
 
 <script lang="ts">
 
-import { Component, Vue } from "vue-property-decorator"
+import {Component, Prop, Vue} from "vue-property-decorator"
 
 @Component({
     components: {},
 })
 export default class WelcomeInfo extends Vue {
 
+    @Prop({ type: String, default: "" })
+    readonly path!: string
+
+    onClick(): void {
+        if (this.path) {
+            this.$router.push({ path: this.path })
+        }
+    }
 }
 </script>
 
 <style lang="scss">
-
+    .info-card__wrapper--about {
+        cursor: pointer;
+    }
 </style>

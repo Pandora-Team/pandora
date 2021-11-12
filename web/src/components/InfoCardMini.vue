@@ -1,5 +1,8 @@
 <template>
-    <div :class="`info-card-mini ${gridClass}`">
+    <div
+        :class="`info-card-mini ${gridClass}`"
+        @click="onClick"
+    >
         <img
             :src="inlinePath"
             alt="background"
@@ -18,16 +21,25 @@ import { Component, Vue, Prop } from "vue-property-decorator"
 export default class InfoCard extends Vue {
 
     @Prop({ type: String, default: "" })
-    gridClass!: string
+    readonly gridClass!: string
 
     @Prop({ type: String, default: "" })
-    bg!: string
+    readonly bg!: string
 
     @Prop({ type: String, default: "" })
-    text!: string
+    readonly text!: string
+
+    @Prop({ type: String, default: "" })
+    readonly path!: string
 
     get inlinePath(): string {
         return require(`@/assets/bg/welcome-${this.bg}.png`)
+    }
+
+    onClick(): void {
+        if (this.path) {
+            this.$router.push({ path: this.path })
+        }
     }
 
 }
