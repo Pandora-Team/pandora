@@ -2,38 +2,39 @@
     <div class="nav">
         <lk-nav-link
             name="Главная"
-            path="/lk"
+            :path="$mainPaths.LkLayout"
             icon="home"
         />
         <lk-nav-link
             name="Классы"
-            path="/lk/classes"
+            :path="$mainPaths.ClassesView"
             icon="master"
         />
         <lk-nav-link
             v-if="isAdmin"
             name="Участники"
-            path="/lk/students"
+            :path="$mainPaths.ListEventsView"
+            :inner-path="$mainPaths.ListStudentsView"
             icon="students"
         />
         <lk-nav-link
             name="Профиль"
-            path="/lk/profile"
+            :path="$mainPaths.ProfileView"
             icon="profile"
         />
         <lk-nav-link
             name="О нас"
-            path="/lk/about"
+            :path="$mainPaths.AboutView"
             icon="about"
         />
         <lk-nav-link
             name="Правила"
-            path="/lk/rules"
+            :path="$mainPaths.RulesView"
             icon="rule"
         />
         <lk-nav-link
             name="События"
-            path="/lk/storage"
+            :path="$mainPaths.StorageView"
             icon="events"
         />
     </div>
