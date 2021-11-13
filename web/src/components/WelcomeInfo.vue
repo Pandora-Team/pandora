@@ -15,27 +15,35 @@
                 Наша цель - создать творческое k-pop комьюнити<br> для таких классных ребят,
                 как ты. Здесь тебе будет<br> комфортно уже после первого занятия.
             </p>
-            <ul>
-                <li>Мы ставим топовые k-pop хоряги</li>
-                <li>Учимся как правильно вести себя на камеру</li>
-                <li>Практикуемся в командной работе</li>
-                <li>Весело и с пользой проводим вместе время</li>
-            </ul>
+            <info-list
+                :active="true"
+                :text="listText"
+            />
         </div>
     </div>
 </template>
 
 <script lang="ts">
 
-import {Component, Prop, Vue} from "vue-property-decorator"
+import { Component, Prop, Vue } from "vue-property-decorator"
+import InfoList from "@/components/InfoList.vue"
 
 @Component({
-    components: {},
+    components: {
+        InfoList,
+    },
 })
 export default class WelcomeInfo extends Vue {
 
     @Prop({ type: String, default: "" })
     readonly path!: string
+
+    listText = [
+        "Мы ставим топовые k-pop хоряги",
+        "Учимся как правильно вести себя на камеру",
+        "Практикуемся в командной работе",
+        "Весело и с пользой проводим вместе время",
+    ]
 
     onClick(): void {
         if (this.path) {
