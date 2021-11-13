@@ -30,6 +30,9 @@ export default class LkNavLink extends Vue {
     path!: string
 
     @Prop({ type: String, default: "" })
+    innerPath!: string
+
+    @Prop({ type: String, default: "" })
     name!: string
 
     @Prop({ type: String, default: "" })
@@ -40,7 +43,7 @@ export default class LkNavLink extends Vue {
 
     @Watch("$route.path", { immediate: true, deep: true })
     changeActive(route: string): void {
-        this.active = route === this.path
+        this.active = route === this.path || route === this.innerPath
         this.active ? this.fillColor = "#8A54F2" : this.fillColor = "#FFFFFF"
     }
 

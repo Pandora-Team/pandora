@@ -1,7 +1,9 @@
 <template>
     <div class="info-card__wrapper info-card__wrapper--profile">
         <div class="info-card__content">
-            <h3>Мой профиль</h3>
+            <h3 @click="onClick">
+                Мой профиль
+            </h3>
             <h4>{{ fullName }}</h4>
             <p
                 v-if="birthday"
@@ -18,7 +20,7 @@
 
 <script lang="ts">
 
-import { Component, Vue } from "vue-property-decorator"
+import { Component, Prop, Vue } from "vue-property-decorator"
 import LkAvatar from "@/components/LkAvatar.vue"
 
 @Component({
@@ -27,6 +29,9 @@ import LkAvatar from "@/components/LkAvatar.vue"
     },
 })
 export default class WelcomeProfile extends Vue {
+
+    @Prop({ type: String, default: "" })
+    readonly path!: string
 
     get name(): string {
         return this.$mainStore.user.name
@@ -44,9 +49,19 @@ export default class WelcomeProfile extends Vue {
         return this.$mainStore.user.birthday
     }
 
+    onClick(): void {
+        if (this.path) {
+            this.$router.push({ path: this.path })
+        }
+    }
+
 }
 </script>
 
 <style lang="scss">
-
+    .info-card__content {
+        h3 {
+            cursor: pointer;
+        }
+    }
 </style>

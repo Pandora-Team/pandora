@@ -3,20 +3,22 @@
         <welcome-banner />
         <div class="welcome-grid">
             <info-card grid-class="info">
-                <welcome-info />
+                <welcome-info :path="$mainPaths.AboutView" />
             </info-card>
             <info-card grid-class="profile">
-                <welcome-profile />
+                <welcome-profile :path="$mainPaths.ProfileView" />
             </info-card>
             <info-card-mini
                 grid-class="questions"
                 bg="questions"
                 text="Вопрос - ответ"
+                :path="$mainPaths.RulesView"
             />
             <info-card-mini
                 grid-class="classes"
                 bg="classes"
                 text="Все классы"
+                :path="$mainPaths.ClassesView"
             />
             <event-card
                 v-if="visibleNearestEvent"
