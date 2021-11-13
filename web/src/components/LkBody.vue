@@ -24,8 +24,9 @@ export default class LkBody extends Vue {
 <style lang="scss">
     .lk-body__wrapper {
         padding: 30px 40px;
-      h1 {
-        color: $color-hover;
-      }
+        h1 {
+            color: $color-black;
+            margin-bottom: 30px;
+        }
     }
 </style>
