@@ -8,9 +8,8 @@
             <li
                 v-for="(item, index) in text"
                 :key="index"
-            >
-                {{ item }}
-            </li>
+                v-html="item"
+            />
         </ul>
     </transition>
 </template>
@@ -49,6 +48,10 @@ export default class InfoList extends Vue {
             color: $color-dark;
             margin-bottom: 2px;
             white-space: break-spaces;
+            span {
+                font-weight: 700;
+                color: $color-hover;
+            }
             &::before {
                 content: "";
                 position: absolute;

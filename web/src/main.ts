@@ -15,8 +15,12 @@ import DatePicker from "v-calendar/lib/components/date-picker.umd"
 import { SimpleSVG } from "vue-simple-svg"
 import * as Sentry from "@sentry/vue"
 import { Integrations } from "@sentry/tracing"
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import VueYoutube from "vue-youtube"
 
 Vue.use(Vuelidate)
+Vue.use(VueYoutube)
 
 Vue.component("simple-svg", SimpleSVG)
 Vue.component("date-picker", DatePicker)
