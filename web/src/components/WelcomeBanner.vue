@@ -1,6 +1,6 @@
 <template>
-    <div class="info-banner">
-        <div class="info-banner__text">
+    <div class="welcome-banner">
+        <div class="welcome-banner__text">
             <h1>Привет, {{ name }} !</h1>
             <p>
                 Добро пожаловать в PANDORA! Здесь ты можешь записаться на&nbsp;занятия,
@@ -28,7 +28,7 @@ export default class WelcomeBanner extends Vue {
 </script>
 
 <style lang="scss">
-    .info-banner {
+    .welcome-banner {
         margin-bottom: 30px;
         border-radius: 30px;
         padding: 45px 40px;
