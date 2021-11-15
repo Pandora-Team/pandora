@@ -1,14 +1,20 @@
 <template>
     <div class="information">
-        <h1>Страница находится в разаработке!</h1>
+        <h1>О классах PANDORA</h1>
+        <info-banner bg-class="somi" />
     </div>
 </template>
 
 <script lang="ts">
 
 import { Component, Vue } from "vue-property-decorator"
+import InfoBanner from "@/components/InfoBanner.vue"
 
-@Component({})
+@Component({
+    components: {
+        InfoBanner,
+    },
+})
 export default class AboutView extends Vue {
 
 }

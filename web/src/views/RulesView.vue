@@ -142,8 +142,10 @@ export default class RulesView extends Vue {
         &-body {
             margin-bottom: 30px;
         }
-        &>p {
+        p {
             color:$color-black;
+        }
+        &>p {
             margin-bottom: 30px;
             &:nth-last-of-type(1) {
                 margin-bottom: 15px;
