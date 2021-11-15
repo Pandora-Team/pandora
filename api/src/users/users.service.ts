@@ -13,8 +13,12 @@ export class UsersService {
         return this.usersModel.findOne({_id: id}, {pass: 0, phone: 0})
     }
 
-    async getAllUsers(): Promise<Users[]>{
+    async getAllUsers(): Promise<Users[]> {
         return this.usersModel.find({}, {pass: 0})
+    }
+
+    async getAllStudents(): Promise<Users[]> {
+        return this.usersModel.find({role: "dancer"}, {pass: 0})
     }
 
     async deleteUser(id: ObjectId): Promise<Users>{

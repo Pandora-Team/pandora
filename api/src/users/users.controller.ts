@@ -7,12 +7,16 @@ export class UsersController {
 
     constructor(
         private usersService: UsersService,
-    ) {
-    }
+    ) {}
 
     @Get()
-    async getUsers(){
+    async getUsers() {
         return this.usersService.getAllUsers()
+    }
+
+    @Get("students")
+    async getStudents() {
+        return this.usersService.getAllStudents()
     }
 
     @Get(':id')
