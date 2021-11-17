@@ -42,6 +42,10 @@ export default class LkAvatar extends Vue {
                 max-width: 117px;
             }
         }
-
+        &--full {
+            img {
+                max-width: 238px;
+            }
+        }
     }
 </style>
