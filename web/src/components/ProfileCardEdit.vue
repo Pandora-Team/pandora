@@ -1,11 +1,15 @@
 <template>
     <div class="profile-card">
-        <div @click="changeEdit">
+        <div
+            class="profile-card__edit"
+            @click="changeEdit"
+        >
+            Сохранить
             <simple-svg
                 :src="iconPath"
                 width="29px"
                 height="29px"
-                custom-class-name="profile-card__edit"
+                custom-class-name="profile-card__edit-icon"
             />
         </div>
         <div class="profile-avatar">
@@ -38,7 +42,7 @@ import LkSocialItem from "@/components/LkSocialItem.vue"
         LkSocialItem,
     },
 })
-export default class ProfileCard extends Vue {
+export default class ProfileCardEdit extends Vue {
 
     socialData = [
         { id: 1, path: "https://vk.com/pandoradancetula", icon: "vk" },
@@ -47,11 +51,11 @@ export default class ProfileCard extends Vue {
     ]
 
     get iconPath(): string {
-        return require("@/assets/svg/edit-profile.svg")
+        return require("@/assets/svg/save-profile.svg")
     }
 
     changeEdit(): void {
-        this.$emit("edit", true)
+        this.$emit("edit", false)
     }
 
 
@@ -65,10 +69,17 @@ export default class ProfileCard extends Vue {
             display: flex;
             position: relative;
             &__edit {
+                font-weight: 500;
+                display: flex;
+                align-items: center;
+                color: $color-green;
                 cursor: pointer;
                 position: absolute;
                 top: 0;
                 right: 0;
+                &-icon {
+                    margin-left: 12px;
+                }
             }
         }
         &-avatar {
@@ -86,18 +97,6 @@ export default class ProfileCard extends Vue {
             }
             span {
                 color: $color-black;
-            }
-        }
-        &-social {
-            display: flex;
-            &__item {
-                cursor: pointer;
-                width: 40px;
-                height: 40px;
-                margin-right: 20px;
-                &:nth-last-of-type(1) {
-                    margin-right: 0;
-                }
             }
         }
     }
