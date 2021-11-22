@@ -16,16 +16,55 @@
             <lk-avatar width="full" />
         </div>
         <div class="profile-desc">
-            <h3>Настя Евсикова</h3>
-            <p>День Рождения: <span>28.03.1996</span></p>
-            <p>Телефон: <span>89190732198</span></p>
-            <div class="profile-social">
-                <lk-social-item
-                    v-for="social in socialData"
-                    :key="social.id"
-                    :social="social"
-                />
-            </div>
+            <main-form-item
+                id="name"
+                v-model="name"
+                label="Имя *"
+                type="text"
+                placeholder="Имя"
+            />
+            <main-form-item
+                id="surname"
+                v-model="surname"
+                label="Фамилия *"
+                type="text"
+                placeholder="Фамилия"
+            />
+            <main-form-item
+                id="phone"
+                v-model="phone"
+                label="Телефон *"
+                type="text"
+                placeholder="+79999999999"
+            />
+            <main-form-item
+                id="birthday"
+                v-model="birthday"
+                label="Дата рождения"
+                type="text"
+                placeholder="09.09.1999"
+            />
+            <main-form-item
+                id="vk"
+                v-model="vk"
+                label="Вконтакте *"
+                type="text"
+                placeholder="Вконтакте"
+            />
+            <main-form-item
+                id="insta"
+                v-model="instagram"
+                label="Инстаграм *"
+                type="text"
+                placeholder="Инстаграм"
+            />
+            <main-form-item
+                id="tg"
+                v-model="telegram"
+                label="Телеграм *"
+                type="text"
+                placeholder="Телеграм"
+            />
         </div>
     </div>
 </template>
@@ -35,20 +74,31 @@
 import { Component, Vue } from "vue-property-decorator"
 import LkAvatar from "@/components/LkAvatar.vue"
 import LkSocialItem from "@/components/LkSocialItem.vue"
+import MainFormItem from "@/components/MainFormItem.vue"
 
 @Component({
     components: {
         LkAvatar,
         LkSocialItem,
+        MainFormItem,
     },
 })
 export default class ProfileCardEdit extends Vue {
 
-    socialData = [
-        { id: 1, path: "https://vk.com/pandoradancetula", icon: "vk" },
-        { id: 2, path: "https://www.youtube.com/channel/UC34aTu0MKa6bNHwg91BqFPg", icon: "telegram" },
-        { id: 3, path: "https://www.instagram.com/pandora.kpop.dance/", icon: "inst" },
-    ]
+    name = ""
+
+    surname = ""
+
+    birthday = ""
+
+    phone = ""
+
+    vk = ""
+
+    telegram = ""
+
+    instagram = ""
+
 
     get iconPath(): string {
         return require("@/assets/svg/save-profile.svg")
