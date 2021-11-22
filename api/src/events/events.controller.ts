@@ -53,7 +53,6 @@ export class EventsController {
         { name: 'cover', maxCount: 1 }
     ]))
     async createEvent(@UploadedFiles() files, @Body() dto: CreateEventDto ){
-        console.log("create")
         const {cover} = files
         return this.eventsService.createEvent(dto, cover[0])
     }
