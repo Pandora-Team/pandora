@@ -244,4 +244,18 @@ export default class RegistrationView extends Vue {
             color: #AD00FF;
         }
     }
+
+    @media all and (max-width: 1400px) {
+        .reg {
+            width: 100%;
+        }
+    }
+
+    @media all and (max-width: 768px) {
+        .reg {
+            left: 0;
+            top: 0;
+            padding: 40px 0;
+        }
+    }
 </style>

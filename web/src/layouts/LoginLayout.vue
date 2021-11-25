@@ -3,14 +3,13 @@
         <div
             class="login-body"
             :class="inlineClass"
-            :style="positionLeft"
         >
             <div class="login-content">
                 <router-view />
             </div>
             <div
                 class="login-line"
-                :style="positionLeftForLine"
+                :class="classForLine"
             />
         </div>
     </div>
@@ -45,30 +44,23 @@ export default class LoginLayout extends Vue {
     }
 
     get inlineClass(): string {
-        if(this.auth || this.reg) {
-            return "login-body--center"
+        if(this.auth) {
+            return "login-body--left login-body--center"
+        }
+        if(this.reg) {
+            return "login-body--right login-body--center"
         }
         return ""
     }
 
-    get positionLeft() : string {
+    get classForLine(): string {
         if(this.auth) {
-            return "left: 0%;"
+            return "login-line--auth"
         }
         if(this.reg) {
-            return "left: calc(100% - 50%);"
+            return "login-line--reg"
         }
-        return "left: calc(50% - 25%);"
-    }
-
-    get positionLeftForLine(): string {
-        if(this.auth) {
-            return "left: 0%;"
-        }
-        if(this.reg) {
-            return "left: -100%;"
-        }
-        return "left: -50%;"
+        return ""
     }
 }
 </script>
@@ -88,6 +80,7 @@ export default class LoginLayout extends Vue {
         display: flex;
         justify-content: center;
         padding: 0 40px;
+        left: 25%;
         &--center {
             .login-content {
                 display: flex;
@@ -96,6 +89,12 @@ export default class LoginLayout extends Vue {
                 position: relative;
             }
         }
+        &--left {
+            left: 0;
+        }
+        &--right {
+            left: 50%;
+        }
     }
     &-content {
         transition: 1s;
@@ -103,6 +102,8 @@ export default class LoginLayout extends Vue {
         max-width: 600px;
         width: 100%;
         height: 100%;
+        position: relative;
+        z-index: 2;
     }
     &-line {
         transition: .5s;
@@ -113,6 +114,71 @@ export default class LoginLayout extends Vue {
         background: url("../assets/bg/line.png") no-repeat;
         background-size: cover;
         z-index: 0;
+        left: -50%;
+
+        &--auth {
+            left: 0;
+        }
+
+        &--reg {
+            left: -100%;
+        }
+    }
+}
+
+@media all and (max-width: 1400px) {
+    .login {
+        &-body {
+            min-width: 562px;
+            left: 50%;
+            transform: translateX(-50%);
+
+            &--right {
+                left: 100%;
+                transform: translateX(-100%);
+            }
+
+            &--left {
+                left: 0;
+                transform: translateX(0);
+            }
+        }
+        &-content {
+            max-width: 100%;
+        }
+
+        &-line {
+            &--reg {
+                left: -165%;
+            }
+            &--auth {
+                left: -75%;
+            }
+        }
+    }
+}
+
+@media all and (max-width: 768px) {
+    .login {
+        &-body {
+            width: calc(100% - 80px);
+            min-width: auto;
+            overflow-y: auto;
+            height: auto;
+            min-height: 100vh;
+            left: auto;
+            transform: none;
+        }
+
+        &-content {
+            height: auto;
+            overflow: visible;
+            padding: 40px 0;
+        }
+
+        &-line {
+            position: fixed;
+        }
     }
 }
 </style>
