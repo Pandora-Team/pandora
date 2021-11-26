@@ -136,4 +136,22 @@ export default class AuthenticationView extends Vue {
             padding: 0 2px;
         }
     }
+
+    @media all and (max-width: 1400px) {
+        .auth {
+            width: 100%;
+        }
+    }
+
+    @media all and (max-width: 768px) {
+        .auth {
+            padding: 40px 0;
+            left: 0;
+            top: 0;
+            height: calc(100% - 80px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+    }
 </style>

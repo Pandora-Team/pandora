@@ -136,4 +136,14 @@ export default class MainInput extends Vue {
         left: 40px;
         top: calc(50% - 12px);
     }
+
+    @media all and (max-width: 1400px) {
+        .input-wrapper {
+            width: 100%;
+
+            input {
+                width: calc(100% - 80px);
+            }
+        }
+    }
 </style>

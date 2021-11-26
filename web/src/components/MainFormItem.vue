@@ -94,4 +94,17 @@ export default class BaseFormItem extends Vue {
     .error-leave-to {
         opacity: 0;
     }
+
+    @media all and (max-width: 1400px) {
+        .form__item {
+            width: calc(50% - 20px);
+        }
+    }
+
+    @media all and (max-width: 500px) {
+        .form__item {
+            width: 100%;
+            margin: 0 0 30px;
+        }
+    }
 </style>

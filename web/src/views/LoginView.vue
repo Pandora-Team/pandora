@@ -118,4 +118,28 @@ export default class LoginView extends Vue {
             transform: translateY(-100px);
         }
     }
+
+    @media all and (max-width: 768px) {
+        .login {
+            &-action {
+                flex-wrap: wrap;
+
+                .btn-wrapper {
+                    width: 100%;
+                    margin: 0;
+                    display: flex;
+                    justify-content: center;
+
+                    &--gradient:before {
+                        left: 50%;
+                        transform: translateX(-50%);
+                    }
+
+                    + .btn-wrapper {
+                        margin-top: 30px;
+                    }
+                }
+            }
+        }
+    }
 </style>
