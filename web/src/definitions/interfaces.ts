@@ -28,3 +28,12 @@ export interface SocialData {
     path: string
     icon: string
 }
+
+export interface UpdateUserData {
+    vk?: string
+    telegram?: string
+    instagram?: string
+    name?: string
+    surname?: string
+    birthday?: string
+}

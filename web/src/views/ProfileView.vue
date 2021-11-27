@@ -14,7 +14,7 @@
                     />
                 </transition-fade>
             </info-card>
-            <profile-events />
+            <!--<profile-events />-->
         </div>
     </div>
 </template>

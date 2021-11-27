@@ -8,21 +8,23 @@
                 custom-class-name="profile-card__edit"
             />
         </div>
-        <div class="profile-avatar">
-            <lk-avatar width="full" />
-        </div>
-        <div class="profile-desc">
-            <h3>{{ fullName }}</h3>
-            <p>День Рождения: <span>{{ birthday }}</span></p>
-            <div
-                v-if="socialLink.length"
-                class="profile-social"
-            >
-                <lk-social-item
-                    v-for="social in socialLink"
-                    :key="social.id"
-                    :social="social"
-                />
+        <div class="profile-row">
+            <div class="profile-avatar">
+                <lk-avatar width="full" />
+            </div>
+            <div class="profile-desc">
+                <h3>{{ fullName }}</h3>
+                <p>День Рождения: <span>{{ birthday }}</span></p>
+                <div
+                    v-if="socialLink.length"
+                    class="profile-social"
+                >
+                    <lk-social-item
+                        v-for="social in socialLink"
+                        :key="social.id"
+                        :social="social"
+                    />
+                </div>
             </div>
         </div>
     </div>
@@ -71,7 +73,6 @@ export default class ProfileCard extends Vue {
     .profile {
         &-card {
             color: $color-dark;
-            display: flex;
             position: relative;
             &__edit {
                 cursor: pointer;

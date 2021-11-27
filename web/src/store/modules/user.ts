@@ -56,14 +56,14 @@ export class User {
     @Mutation()
     public updateUserInfo(
         obj:{
-            name: string
-            role: string
-            surname: string
-            birthday: string
-            avatar: string
-            vk: string
-            instagram: string
-            telegram: string
+            name?: string
+            role?: string
+            surname?: string
+            birthday?: string
+            avatar?: string
+            vk?: string
+            instagram?: string
+            telegram?: string
         },
     ): void {
         this.name = obj.name || ""
@@ -87,6 +87,36 @@ export class User {
         this.vk = ""
         this.instagram = ""
         this.telegram = ""
+    }
+
+    @Mutation()
+    public setName(name: string): void {
+        this.name = name
+    }
+
+    @Mutation()
+    public setSurname(surname: string): void {
+        this.surname = surname
+    }
+
+    @Mutation()
+    public setBirthday(birthday: string): void {
+        this.birthday = birthday
+    }
+
+    @Mutation()
+    public setVk(vk: string): void {
+        this.vk = vk
+    }
+
+    @Mutation()
+    public setTelegram(telegram: string): void {
+        this.telegram = telegram
+    }
+
+    @Mutation()
+    public setInstagram(instagram: string): void {
+        this.instagram = instagram
     }
 
     @Getter()

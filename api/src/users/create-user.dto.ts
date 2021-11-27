@@ -14,5 +14,5 @@ export class UpdateUserDto {
     readonly instagram?: string
     readonly name?: string
     readonly surname?: string
-    readonly birthday?: string;
+    readonly birthday?: string
 }
