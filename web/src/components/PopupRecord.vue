@@ -10,7 +10,7 @@
 <script lang="ts">
 
 import { Component, Vue } from "vue-property-decorator"
-import { EventData } from "@/constants/interfaces"
+import { EventData } from "@/definitions/interfaces"
 import MainPopup from "@/components/MainPopup.vue"
 import EventCard from "@/components/EventCard.vue"
 

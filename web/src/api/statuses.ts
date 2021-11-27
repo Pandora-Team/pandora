@@ -1,5 +1,5 @@
 import api from "./index"
-import { statusData } from "@/constants/typeStatus"
+import { statusData } from "@/definitions/typeStatus"
 import { AxiosResponse } from "axios"
 
 const BASE_URL = "statuses"

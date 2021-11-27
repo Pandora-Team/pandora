@@ -12,12 +12,14 @@
             <lk-avatar width="full" />
         </div>
         <div class="profile-desc">
-            <h3>Настя Евсикова</h3>
-            <p>День Рождения: <span>28.03.1996</span></p>
-            <p>Телефон: <span>89190732198</span></p>
-            <div class="profile-social">
+            <h3>{{ fullName }}</h3>
+            <p>День Рождения: <span>{{ birthday }}</span></p>
+            <div
+                v-if="socialLink.length"
+                class="profile-social"
+            >
                 <lk-social-item
-                    v-for="social in socialData"
+                    v-for="social in socialLink"
                     :key="social.id"
                     :social="social"
                 />
@@ -31,6 +33,7 @@
 import { Component, Vue } from "vue-property-decorator"
 import LkAvatar from "@/components/LkAvatar.vue"
 import LkSocialItem from "@/components/LkSocialItem.vue"
+import { SocialData } from "@/definitions/interfaces"
 
 @Component({
     components: {
@@ -40,11 +43,17 @@ import LkSocialItem from "@/components/LkSocialItem.vue"
 })
 export default class ProfileCard extends Vue {
 
-    socialData = [
-        { id: 1, path: "https://vk.com/pandoradancetula", icon: "vk" },
-        { id: 2, path: "https://www.youtube.com/channel/UC34aTu0MKa6bNHwg91BqFPg", icon: "telegram" },
-        { id: 3, path: "https://www.instagram.com/pandora.kpop.dance/", icon: "inst" },
-    ]
+    get socialLink(): SocialData[] {
+        return this.$mainStore.user.socialLink
+    }
+
+    get fullName(): string {
+        return this.$mainStore.user.fullName
+    }
+
+    get birthday(): string {
+        return this.$mainStore.user.birthday
+    }
 
     get iconPath(): string {
         return require("@/assets/svg/edit-profile.svg")
@@ -68,7 +77,7 @@ export default class ProfileCard extends Vue {
                 cursor: pointer;
                 position: absolute;
                 top: 0;
-                right: 0;
+                right: -30px;
             }
         }
         &-avatar {
@@ -86,6 +95,7 @@ export default class ProfileCard extends Vue {
             }
             span {
                 color: $color-black;
+                margin-left: 5px;
             }
         }
         &-social {

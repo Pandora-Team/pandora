@@ -19,7 +19,7 @@
 import { Component, Vue } from "vue-property-decorator"
 import EventCard from "@/components/EventCard.vue"
 import EventCardCreate from "@/components/EventCardCreate.vue"
-import { EventData } from "@/constants/interfaces"
+import { EventData } from "@/definitions/interfaces"
 
 @Component({
     components: {

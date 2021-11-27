@@ -99,7 +99,7 @@ export default class InfoCard extends Vue {
             }
         }
         &.profile {
-            padding: 30px 40px;
+            padding: 30px 50px 30px 40px;
         }
     }
 </style>

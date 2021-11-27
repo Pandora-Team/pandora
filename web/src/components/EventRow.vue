@@ -32,7 +32,7 @@
 
 import { Component, Prop, Vue } from "vue-property-decorator"
 import EventRowStudent from "@/components/EventRowStudent.vue"
-import { EventData } from "@/constants/interfaces"
+import { EventData } from "@/definitions/interfaces"
 import dayjs from "dayjs"
 
 @Component({

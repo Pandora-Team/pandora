@@ -3,6 +3,7 @@ import {InjectModel} from "@nestjs/mongoose";
 import {Users, UsersDocument} from "./users.schema";
 import {Model, ObjectId} from "mongoose";
 import {FileService, FileType} from "../file/file.service";
+import {UpdateUserDto} from "./create-user.dto";
 
 @Injectable()
 export class UsersService {
@@ -21,6 +22,10 @@ export class UsersService {
 
     async getAllStudents(): Promise<Users[]> {
         return this.usersModel.find({role: "dancer"}, {pass: 0})
+    }
+
+    async updateUser(id: string, dto: UpdateUserDto): Promise<any> {
+        return this.usersModel.updateOne({_id: id}, {$set: {...dto}})
     }
 
     async setAvatar(avatar, id): Promise<any> {

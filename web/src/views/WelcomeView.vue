@@ -40,7 +40,7 @@ import WelcomeInfo from "@/components/WelcomeInfo.vue"
 import WelcomeProfile from "@/components/WelcomeProfile.vue"
 import InfoCardMini from "@/components/InfoCardMini.vue"
 import { getNearestEvent } from "@/api/events"
-import { EventData } from "@/constants/interfaces"
+import { EventData } from "@/definitions/interfaces"
 import { isEmpty } from "lodash"
 
 @Component({

@@ -1,5 +1,6 @@
 import { State, Mutation, Action, Getter } from "vuex-simple"
 import { getUser } from "@/api/users"
+import { SocialData } from "@/definitions/interfaces"
 
 export class User {
 
@@ -21,6 +22,15 @@ export class User {
     @State()
     avatar = ""
 
+    @State()
+    vk = ""
+
+    @State()
+    instagram = ""
+
+    @State()
+    telegram = ""
+
     @Action()
     async getUserInfo(): Promise<void> {
         try {
@@ -28,7 +38,7 @@ export class User {
             const { data } = res
             this.updateUserInfo(data)
         } catch (e) {
-            console.log(e)
+            throw new Error(`Error get User Info - ${e}`)
         }
     }
 
@@ -51,6 +61,9 @@ export class User {
             surname: string
             birthday: string
             avatar: string
+            vk: string
+            instagram: string
+            telegram: string
         },
     ): void {
         this.name = obj.name || ""
@@ -58,6 +71,9 @@ export class User {
         this.surname = obj.surname || ""
         this.birthday = obj.birthday || ""
         this.avatar = obj.avatar || ""
+        this.vk = obj.vk || ""
+        this.instagram = obj.instagram || ""
+        this.telegram = obj.telegram || ""
     }
 
     @Mutation()
@@ -68,11 +84,37 @@ export class User {
         this.surname = ""
         this.birthday = ""
         this.avatar = ""
+        this.vk = ""
+        this.instagram = ""
+        this.telegram = ""
     }
 
     @Getter()
     public get isAdmin(): boolean {
         return this.role === "admin"
+    }
+
+    @Getter()
+    public get fullName(): string {
+        return `${this.name} ${this.surname}`
+    }
+
+    @Getter()
+    public get socialLink(): SocialData[] {
+        const data = []
+        let id = 1
+        if (this.vk) {
+            data.push({ id: id, path: this.vk, icon: "vk" })
+            id++
+        }
+        if (this.instagram) {
+            data.push({ id: id, path: this.instagram, icon: "inst" })
+            id++
+        }
+        if (this.telegram) {
+            data.push({ id: id, path: this.telegram, icon: "telegram" })
+        }
+        return data
     }
 
 }

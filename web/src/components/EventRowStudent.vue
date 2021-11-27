@@ -46,10 +46,10 @@
 
 import { Component, Prop, Vue } from "vue-property-decorator"
 import BtnStatus from "@/components/BtnStatus.vue"
-import { typesStatus, listStatuses } from "@/constants/typeStatus"
+import { typesStatus, listStatuses } from "@/definitions/typeStatus"
 import LkAvatar from "@/components/LkAvatar.vue"
 import { updateStatuses } from "@/api/statuses"
-import { UserInfo } from "@/constants/interfaces"
+import { UserInfo } from "@/definitions/interfaces"
 
 @Component({
     components: {

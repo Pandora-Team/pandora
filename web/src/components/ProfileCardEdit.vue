@@ -126,7 +126,7 @@ export default class ProfileCardEdit extends Vue {
                 cursor: pointer;
                 position: absolute;
                 top: 0;
-                right: 0;
+                right: -30px;
                 &-icon {
                     margin-left: 12px;
                 }

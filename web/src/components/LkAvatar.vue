@@ -24,7 +24,7 @@ export default class LkAvatar extends Vue {
         return this.$mainStore.user.avatar
     }
 
-    get inlineClass(): any {
+    get inlineClass(): string[] {
         return [`avatar--${this.width}`]
     }
 

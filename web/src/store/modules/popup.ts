@@ -1,5 +1,5 @@
 import { State, Mutation } from "vuex-simple"
-import { EventData } from "@/constants/interfaces"
+import { EventData } from "@/definitions/interfaces"
 import { Store } from "@/store/store"
 import { cloneDeep } from "lodash"
 

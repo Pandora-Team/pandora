@@ -21,3 +21,10 @@ export interface UserInfo {
     payment_status: string
     status_id: string
 }
+
+
+export interface SocialData {
+    id: number
+    path: string
+    icon: string
+}
