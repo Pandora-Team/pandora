@@ -13,8 +13,17 @@
             />
         </div>
         <div class="profile-row">
-            <div class="profile-avatar">
+            <div
+                class="profile-avatar profile-avatar--edit"
+                @click="changeAvatar"
+            >
                 <lk-avatar width="full" />
+                <input
+                    ref="fileInput"
+                    class="file-input"
+                    type="file"
+                    @change="changeFile"
+                >
             </div>
             <div class="profile-column">
                 <main-form-item
@@ -76,11 +85,11 @@
 
 <script lang="ts">
 
-import { Component, Vue } from "vue-property-decorator"
+import { Component, Ref, Vue } from "vue-property-decorator"
 import LkAvatar from "@/components/LkAvatar.vue"
 import LkSocialItem from "@/components/LkSocialItem.vue"
 import MainFormItem from "@/components/MainFormItem.vue"
-import { updateUser } from "@/api/users"
+import { setAvatar, updateUser } from "@/api/users"
 import { UpdateUserData } from "@/definitions/interfaces"
 
 @Component({
@@ -92,17 +101,20 @@ import { UpdateUserData } from "@/definitions/interfaces"
 })
 export default class ProfileCardEdit extends Vue {
 
-    name = ""
+    @Ref("fileInput")
+    readonly fileInput!: HTMLInputElement
 
-    surname = ""
+    name = this.$mainStore.user.name
 
-    birthday = ""
+    surname = this.$mainStore.user.surname
 
-    vk = ""
+    birthday = this.$mainStore.user.birthday
 
-    telegram = ""
+    vk = this.$mainStore.user.vk
 
-    instagram = ""
+    telegram = this.$mainStore.user.telegram
+
+    instagram = this.$mainStore.user.instagram
 
     get iconPath(): string {
         return require("@/assets/svg/save-profile.svg")
@@ -144,15 +156,30 @@ export default class ProfileCardEdit extends Vue {
         this.$emit("edit", false)
     }
 
+    changeAvatar(): void {
+        this.fileInput.click()
+    }
 
+    async changeFile(): Promise<void> {
+        const files = this.fileInput.files
+        if (files) {
+            try {
+                const formData = new FormData()
+                formData.append("avatar", files[0])
+                const res = await setAvatar(formData)
+                const { data } = res
+                this.$mainStore.user.setAvatar(data)
+            } catch (e) {
+                throw new Error(`Set Avatar Error - ${e}`)
+            }
+        }
+    }
 }
 </script>
 
 <style lang="scss">
     .profile {
         &-card {
-            color: $color-dark;
-            position: relative;
             &__btn {
                 font-weight: 500;
                 display: flex;
@@ -187,20 +214,23 @@ export default class ProfileCardEdit extends Vue {
             }
         }
         &-avatar {
-            max-width: 238px;
-            margin-right: 60px;
-        }
-        &-desc {
-            h3 {
-                color: inherit;
-                margin-bottom: 40px;
-            }
-            p {
-                color: $color-gray;
-                margin-bottom: 30px;
-            }
-            span {
-                color: $color-black;
+            &--edit {
+                cursor: pointer;
+                position: relative;
+                &::after {
+                    content: "";
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    background-color: $bg-avatar;
+                    background-image: url("../assets/svg/edit-photo.svg");
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    background-size: 60px 52px;
+                    width: 238px;
+                    height: 238px;
+                    border-radius: 40px;
+                }
             }
         }
     }

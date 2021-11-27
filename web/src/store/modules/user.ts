@@ -119,6 +119,11 @@ export class User {
         this.instagram = instagram
     }
 
+    @Mutation()
+    public setAvatar(avatar: string): void {
+        this.avatar = avatar
+    }
+
     @Getter()
     public get isAdmin(): boolean {
         return this.role === "admin"
