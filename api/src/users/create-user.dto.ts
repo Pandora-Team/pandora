@@ -7,3 +7,12 @@ export class CreateUserDto {
     avatar?: string;
     readonly surname: string
 }
+
+export class UpdateUserDto {
+    readonly vk?: string
+    readonly telegram?: string
+    readonly instagram?: string
+    readonly name?: string
+    readonly surname?: string
+    readonly birthday?: string
+}

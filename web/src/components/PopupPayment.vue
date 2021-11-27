@@ -39,7 +39,7 @@ import { Component, Vue } from "vue-property-decorator"
 import MainPopup from "@/components/MainPopup.vue"
 import EventCard from "@/components/EventCard.vue"
 import MainBtn from "@/components/MainBtn.vue"
-import { typesStatus } from "@/constants/typeStatus"
+import { typesStatus } from "@/definitions/typeStatus"
 
 @Component({
     components: {

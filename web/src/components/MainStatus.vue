@@ -10,7 +10,7 @@
 <script lang="ts">
 
 import { Component, Vue, Prop } from "vue-property-decorator"
-import { typeStatus } from "@/constants/typeStatus"
+import { typeStatus } from "@/definitions/typeStatus"
 @Component({})
 export default class MainStatus extends Vue {
 

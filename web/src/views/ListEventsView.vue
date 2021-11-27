@@ -14,7 +14,7 @@
 
 import { Component, Vue } from "vue-property-decorator"
 import EventRow from "@/components/EventRow.vue"
-import { EventData } from "@/constants/interfaces"
+import { EventData } from "@/definitions/interfaces"
 
 @Component({
     components: {

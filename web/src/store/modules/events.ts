@@ -1,8 +1,8 @@
 import { State, Mutation, Action } from "vuex-simple"
-import { EventData } from "@/constants/interfaces"
+import { EventData } from "@/definitions/interfaces"
 import { getAllEvent } from "@/api/events"
 import { Store } from "@/store/store"
-import { statusData } from "@/constants/typeStatus"
+import { statusData } from "@/definitions/typeStatus"
 import { cloneDeep } from "lodash"
 
 export class Events {

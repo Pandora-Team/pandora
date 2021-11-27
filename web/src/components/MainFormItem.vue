@@ -1,7 +1,7 @@
 <template>
     <div
         class="form__item"
-        :class="{ 'form__item--pb' : error }"
+        :class="secondClasses"
     >
         <label :for="id">{{ label }}</label>
         <main-input
@@ -55,8 +55,18 @@ export default class BaseFormItem extends Vue {
     @Prop({ type: String, default: "" })
     readonly placeholder!: string
 
+    @Prop({ type: String, default: "" })
+    readonly inlineClass!: string
+
     changeValue(value: string): void {
         this.$emit("input", value)
+    }
+    
+    get secondClasses(): any {
+        return [
+            { "form__item--pb": this.error },
+            this.inlineClass,
+        ]
     }
 
 }
@@ -82,6 +92,20 @@ export default class BaseFormItem extends Vue {
                 padding-top: 10px;
                 position: absolute;
                 color: #C03221;
+            }
+        }
+        &__item.profile {
+            label {
+                color: $color-black;
+            }
+            .input-wrapper {
+                &::before {
+                    background: $color-gray;
+                }
+                input {
+                    color: $color-black;
+                    background: $bg-info;
+                }
             }
         }
     }

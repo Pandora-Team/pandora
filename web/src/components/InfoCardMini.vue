@@ -1,6 +1,6 @@
 <template>
     <div
-        :class="`info-card-mini ${gridClass}`"
+        :class="`info-card-mini ${inlineClass}`"
         @click="onClick"
     >
         <img
@@ -21,7 +21,7 @@ import { Component, Vue, Prop } from "vue-property-decorator"
 export default class InfoCard extends Vue {
 
     @Prop({ type: String, default: "" })
-    readonly gridClass!: string
+    readonly inlineClass!: string
 
     @Prop({ type: String, default: "" })
     readonly bg!: string

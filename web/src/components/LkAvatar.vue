@@ -20,11 +20,18 @@ export default class LkAvatar extends Vue {
     @Prop({ type: String, default: "min" })
     readonly width!: string
 
-    get inlineClass(): any {
+    get avatar(): string {
+        return this.$mainStore.user.avatar
+    }
+
+    get inlineClass(): string[] {
         return [`avatar--${this.width}`]
     }
 
     get iconPath(): string {
+        if (this.avatar) {
+            return `${process.env.VUE_APP_API_URL}users/${this.avatar}`
+        }
         return require("@/assets/images/not-avatar.png")
     }
 }
@@ -42,6 +49,10 @@ export default class LkAvatar extends Vue {
                 max-width: 117px;
             }
         }
-
+        &--full {
+            img {
+                max-width: 238px;
+            }
+        }
     }
 </style>

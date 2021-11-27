@@ -1,6 +1,6 @@
 import { State, Mutation, Action } from "vuex-simple"
 import { getEventsWithUsers } from "@/api/events"
-import { EventData } from "@/constants/interfaces"
+import { EventData } from "@/definitions/interfaces"
 import { cloneDeep } from "lodash"
 
 export class Students {

@@ -24,7 +24,7 @@
 import { Component, Vue } from "vue-property-decorator"
 import BtnStatus from "@/components/BtnStatus.vue"
 import paths from "@/router/paths"
-import { typesStatus } from "@/constants/typeStatus"
+import { typesStatus } from "@/definitions/typeStatus"
 
 @Component({
     components: {

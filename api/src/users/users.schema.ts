@@ -27,6 +27,15 @@ export class Users {
     @Prop()
     avatar?: string;
 
+    @Prop()
+    vk?: string
+
+    @Prop()
+    instagram?: string
+
+    @Prop()
+    telegram?: string
+
 }
 
 export const UsersSchema = SchemaFactory.createForClass(Users);

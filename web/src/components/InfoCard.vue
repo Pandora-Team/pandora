@@ -1,6 +1,6 @@
 <template>
     <div
-        :class="`info-card ${gridClass}`"
+        :class="`info-card ${inlineClass}`"
     >
         <slot />
     </div>
@@ -16,7 +16,7 @@ import { Component, Vue, Prop } from "vue-property-decorator"
 export default class InfoCard extends Vue {
 
     @Prop({ type: String, default: "" })
-    gridClass!: string
+    inlineClass!: string
 
 }
 </script>
@@ -97,6 +97,9 @@ export default class InfoCard extends Vue {
                     margin-bottom: 0;
                 }
             }
+        }
+        &.profile {
+            padding: 30px 50px 30px 40px;
         }
     }
 </style>

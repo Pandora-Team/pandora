@@ -2,11 +2,14 @@ import {Injectable} from "@nestjs/common";
 import {InjectModel} from "@nestjs/mongoose";
 import {Users, UsersDocument} from "./users.schema";
 import {Model, ObjectId} from "mongoose";
+import {FileService, FileType} from "../file/file.service";
+import {UpdateUserDto} from "./create-user.dto";
 
 @Injectable()
 export class UsersService {
     constructor(
-        @InjectModel(Users.name) private usersModel: Model<UsersDocument>
+        @InjectModel(Users.name) private usersModel: Model<UsersDocument>,
+        private fileService: FileService,
     ) {}
 
     async getUserById(id: string): Promise<Users> {
@@ -19,6 +22,17 @@ export class UsersService {
 
     async getAllStudents(): Promise<Users[]> {
         return this.usersModel.find({role: "dancer"}, {pass: 0})
+    }
+
+    async updateUser(id: string, dto: UpdateUserDto): Promise<any> {
+        return this.usersModel.updateOne({_id: id}, {$set: {...dto}})
+    }
+
+    async setAvatar(avatar, id): Promise<any> {
+        const nameFolder = "users"
+        const avatarPath = this.fileService.createFile(FileType.IMAGE, avatar, nameFolder)
+        await this.usersModel.updateOne({_id: id}, {avatar: avatarPath})
+        return avatarPath
     }
 
     async deleteUser(id: ObjectId): Promise<Users>{
