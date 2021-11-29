@@ -268,8 +268,21 @@ export default class EventCard extends Vue {
        border-radius: 30px;
        padding: 30px;
        color: $color-white;
+       background-position: center;
+       background-size: cover;
+       position: relative;
        &:hover {
            box-shadow: 0 60px 50px -30px rgba(95, 38, 205, 0.3);
+       }
+       &:before {
+           content: '';
+           width: 100%;
+           height: 100%;
+           background: linear-gradient(360deg, #14082C -13.75%, rgba(94, 42, 195, 0) 100%);
+           position: absolute;
+           left: 0;
+           top: 0;
+           border-radius: 30px;
        }
        &--welcome {
            height: 393px!important;
