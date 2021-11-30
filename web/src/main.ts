@@ -20,14 +20,15 @@ import { Integrations } from "@sentry/tracing"
 import VueYoutube from "vue-youtube"
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import InstagramCropper from "vue-instagram-cropper"
+import Croppa from "vue-croppa"
+import "vue-croppa/dist/vue-croppa.css"
 
 Vue.use(Vuelidate)
 Vue.use(VueYoutube)
+Vue.use(Croppa)
 
 Vue.component("simple-svg", SimpleSVG)
 Vue.component("date-picker", DatePicker)
-Vue.component("instagram-cropper", InstagramCropper)
 
 Vue.prototype.$mainStore = useStore(store)
 Vue.prototype.$mainPaths = paths

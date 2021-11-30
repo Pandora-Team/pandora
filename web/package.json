@@ -20,7 +20,7 @@
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",
     "vue-clickaway": "^2.2.2",
-    "vue-instagram-cropper": "^1.1.5",
+    "vue-croppa": "^1.3.8",
     "vue-progress-path": "0.0.2",
     "vue-property-decorator": "^9.1.2",
     "vue-router": "^3.2.0",
