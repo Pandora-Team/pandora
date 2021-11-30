@@ -78,12 +78,13 @@ export default class ProfileCard extends Vue {
                 cursor: pointer;
                 position: absolute;
                 top: 0;
-                right: -30px;
+                right: 0;
             }
         }
         &-avatar {
             max-width: 238px;
             margin-right: 60px;
+            width: 100%;
         }
         &-desc {
             h3 {

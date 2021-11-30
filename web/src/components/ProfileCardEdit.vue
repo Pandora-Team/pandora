@@ -208,6 +208,7 @@ export default class ProfileCardEdit extends Vue {
             margin-top: 28px;
             .form__item.profile {
                 margin-bottom: 30px;
+                margin-right: 0;
                 &:nth-last-of-type(1) {
                     margin-bottom: 0;
                 }
