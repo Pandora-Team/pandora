@@ -157,7 +157,8 @@ export default class ProfileCardEdit extends Vue {
     }
 
     changeAvatar(): void {
-        this.fileInput.click()
+        this.$mainStore.popup.changeActiveCropPopup(true)
+        //this.fileInput.click()
     }
 
     async changeFile(): Promise<void> {

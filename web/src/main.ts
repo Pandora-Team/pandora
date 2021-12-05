@@ -25,10 +25,10 @@ import "vue-croppa/dist/vue-croppa.css"
 
 Vue.use(Vuelidate)
 Vue.use(VueYoutube)
-Vue.use(Croppa)
 
 Vue.component("simple-svg", SimpleSVG)
 Vue.component("date-picker", DatePicker)
+Vue.component("croppa", Croppa.component)
 
 Vue.prototype.$mainStore = useStore(store)
 Vue.prototype.$mainPaths = paths

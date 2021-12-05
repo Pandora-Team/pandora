@@ -13,7 +13,7 @@
         <popup-cancel v-if="$mainStore.popup.activeCancelPopup" />
         <popup-welcome v-if="$mainStore.popup.activeWelcomePopup" />
         <popup-payment v-if="$mainStore.popup.activePaymentPopup" />
-        <popup-crop v-if="true" />
+        <popup-crop v-if="$mainStore.popup.activeCropPopup" />
     </div>
 </template>
 

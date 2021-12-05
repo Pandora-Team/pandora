@@ -51,6 +51,17 @@ export class Popup {
     @State()
     updatePopup = false
 
+    @State()
+    activeCropPopup = false
+
+    // попап загрузки аватара
+
+    @Mutation()
+    public changeActiveCropPopup(state: boolean): void {
+        this.activeCropPopup = state
+        this.$mainStore.app.setDisabled(state)
+    }
+
     // попап оплаты
 
     @Mutation()
