@@ -30,6 +30,12 @@ export class UsersService {
 
     async setAvatar(avatar, id): Promise<any> {
         const nameFolder = "users"
+        const user = await this.getUserById(id)
+        console.log(user.avatar)
+        if (user.avatar) {
+            const fileName = user.avatar.replace("image/", "")
+            this.fileService.removeFile(FileType.IMAGE, fileName, nameFolder)
+        }
         const avatarPath = this.fileService.createFile(FileType.IMAGE, avatar, nameFolder)
         await this.usersModel.updateOne({_id: id}, {avatar: avatarPath})
         return avatarPath
