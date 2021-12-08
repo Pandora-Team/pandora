@@ -11,7 +11,7 @@ export enum FileType {
 @Injectable()
 export class FileService {
 
-    createFile(type: FileType, file, nameFolder): string{
+    createFile(type: FileType, file, nameFolder: string): string{
         try {
             const fileExtension = file.originalname.split('.').pop()
             const fileName = uuid.v4() +'.'+ fileExtension
@@ -26,7 +26,14 @@ export class FileService {
         }
     }
 
-    removeFile(fileName: string){
-        console.log(fileName)
+    removeFile(fileName: string, nameFolder: string) {
+        try {
+            const filePath = path.resolve(__dirname, '..', `static/${nameFolder}`, fileName)
+            if (fs.existsSync(filePath)) {
+                fs.unlinkSync(filePath)
+            }
+        } catch (e) {
+            throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR)
+        }
     }
 }
