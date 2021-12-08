@@ -6,19 +6,31 @@
         <img
             :src="iconPath"
             alt="avatar"
+            @error="loadError"
         >
     </div>
 </template>
 
 <script lang="ts">
 
-import { Component, Vue, Prop } from "vue-property-decorator"
+import { Component, Vue, Prop, Watch } from "vue-property-decorator"
 
 @Component({})
 export default class LkAvatar extends Vue {
 
+    @Watch("$mainStore.user.avatar", { immediate: true, deep: true })
+    changeAvatar(): void {
+        if (this.avatar) {
+            this.iconPath = `${process.env.VUE_APP_API_URL}users/${this.avatar}`
+            return
+        }
+        this.iconPath = require("@/assets/images/not-avatar.png")
+    }
+
     @Prop({ type: String, default: "min" })
     readonly width!: string
+
+    iconPath = ""
 
     get avatar(): string {
         return this.$mainStore.user.avatar
@@ -28,17 +40,17 @@ export default class LkAvatar extends Vue {
         return [`avatar--${this.width}`]
     }
 
-    get iconPath(): string {
-        if (this.avatar) {
-            return `${process.env.VUE_APP_API_URL}users/${this.avatar}`
-        }
-        return require("@/assets/images/not-avatar.png")
+    loadError(): void {
+        this.iconPath = require("@/assets/images/not-avatar.png")
     }
 }
 </script>
 
 <style lang="scss">
     .avatar {
+        img {
+            border-radius: 40px;
+        }
         &--min {
             img {
                 max-width: 50px;

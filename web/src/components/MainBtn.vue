@@ -99,6 +99,11 @@ export default class MainBtn extends Vue {
         &--width {
             width: 100%;
         }
+        .btn--auto {
+            &:nth-last-of-type(1) {
+                margin-right: 0;
+            }
+        }
     }
     &--main {
         min-width: 260px;

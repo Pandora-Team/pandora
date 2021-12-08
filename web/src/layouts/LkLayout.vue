@@ -13,6 +13,7 @@
         <popup-cancel v-if="$mainStore.popup.activeCancelPopup" />
         <popup-welcome v-if="$mainStore.popup.activeWelcomePopup" />
         <popup-payment v-if="$mainStore.popup.activePaymentPopup" />
+        <popup-crop v-if="$mainStore.popup.activeCropPopup" />
     </div>
 </template>
 
@@ -29,6 +30,7 @@ import PopupCreate from "@/components/PopupCreate.vue"
 import PopupCancel from "@/components/PopupCancel.vue"
 import PopupWelcome from "@/components/PopupWelcome.vue"
 import PopupPayment from "@/components/PopupPayment.vue"
+import PopupCrop from "@/components/PopupCrop.vue"
 
 @Component({
     components: {
@@ -41,6 +43,7 @@ import PopupPayment from "@/components/PopupPayment.vue"
         PopupCancel,
         PopupWelcome,
         PopupPayment,
+        PopupCrop,
     },
 })
 export default class LkLayout extends Vue {

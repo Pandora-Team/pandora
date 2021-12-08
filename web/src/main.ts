@@ -18,23 +18,28 @@ import { Integrations } from "@sentry/tracing"
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import VueYoutube from "vue-youtube"
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import Croppa from "vue-croppa"
+import "vue-croppa/dist/vue-croppa.css"
 
 Vue.use(Vuelidate)
 Vue.use(VueYoutube)
 
 Vue.component("simple-svg", SimpleSVG)
 Vue.component("date-picker", DatePicker)
+Vue.component("croppa", Croppa.component)
 
 Vue.prototype.$mainStore = useStore(store)
 Vue.prototype.$mainPaths = paths
 
 Sentry.init({
     Vue,
-    dsn: "https://d35c5df097054211a4af0f0ae380a149@o1065035.ingest.sentry.io/6056280",
+    dsn:          "https://d35c5df097054211a4af0f0ae380a149@o1065035.ingest.sentry.io/6056280",
     integrations: [
         new Integrations.BrowserTracing({
             routingInstrumentation: Sentry.vueRouterInstrumentation(router),
-            tracingOrigins: ["localhost", "my-site-url.com", /^\//],
+            tracingOrigins:         ["localhost", "my-site-url.com", /^\//],
         }),
     ],
     tracesSampleRate: 1.0,

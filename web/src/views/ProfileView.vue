@@ -52,7 +52,7 @@ export default class ProfileView extends Vue {
     .profile {
         &-block {
             display: grid;
-            grid-template-columns: 620px 666px;
+            grid-template-columns: 700px 666px;
             grid-gap: 40px;
             grid-auto-rows: auto;
         }
