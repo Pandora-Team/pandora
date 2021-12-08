@@ -14,7 +14,7 @@ export class Students {
             const res = await getEventsWithUsers()
             this.changeListEvents(res.data)
         } catch (e) {
-            console.log(e)
+            throw new Error(`Error Get Event With Users - ${e}`)
         }
     }
 

@@ -59,8 +59,7 @@ export default class PopupCancel extends Vue {
             this.$mainStore.events.clearStatuses(this.event._id)
             this.closePopup()
         } catch (e) {
-            console.warn("Очистка статусов не прошла")
-            console.log(e)
+            throw new Error(`Error clear Statuses - ${e}`)
         }
     }
 }
