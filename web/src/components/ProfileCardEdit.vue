@@ -18,12 +18,6 @@
                 @click="changeAvatar"
             >
                 <lk-avatar width="full" />
-                <input
-                    ref="fileInput"
-                    class="file-input"
-                    type="file"
-                    @change="changeFile"
-                >
             </div>
             <div class="profile-column">
                 <main-form-item
@@ -85,11 +79,11 @@
 
 <script lang="ts">
 
-import { Component, Ref, Vue } from "vue-property-decorator"
+import { Component, Vue } from "vue-property-decorator"
 import LkAvatar from "@/components/LkAvatar.vue"
 import LkSocialItem from "@/components/LkSocialItem.vue"
 import MainFormItem from "@/components/MainFormItem.vue"
-import { setAvatar, updateUser } from "@/api/users"
+import { updateUser } from "@/api/users"
 import { UpdateUserData } from "@/definitions/interfaces"
 
 @Component({
@@ -100,9 +94,6 @@ import { UpdateUserData } from "@/definitions/interfaces"
     },
 })
 export default class ProfileCardEdit extends Vue {
-
-    @Ref("fileInput")
-    readonly fileInput!: HTMLInputElement
 
     name = this.$mainStore.user.name
 
@@ -158,22 +149,6 @@ export default class ProfileCardEdit extends Vue {
 
     changeAvatar(): void {
         this.$mainStore.popup.changeActiveCropPopup(true)
-        //this.fileInput.click()
-    }
-
-    async changeFile(): Promise<void> {
-        const files = this.fileInput.files
-        if (files) {
-            try {
-                const formData = new FormData()
-                formData.append("avatar", files[0])
-                const res = await setAvatar(formData)
-                const { data } = res
-                this.$mainStore.user.setAvatar(data)
-            } catch (e) {
-                throw new Error(`Set Avatar Error - ${e}`)
-            }
-        }
     }
 }
 </script>

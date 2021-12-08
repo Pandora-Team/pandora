@@ -11,20 +11,26 @@
                     :placeholder-font-size="16"
                     :quality="1"
                     :prevent-white-space="true"
-                    :image-border-radius="40"
                     @file-choose="chooseFile"
                 />
             </div>
-            <div class="profile-crop__action">
-                <button @click="generateImage">
-                    Сохранить
-                </button>
-                <button
-                    v-if="hasImage"
+            <div
+                v-if="hasImage"
+                class="profile-crop__action"
+            >
+                <main-btn
+                    view="error"
+                    :auto-width="true"
                     @click="removeImage"
                 >
                     Удалить
-                </button>
+                </main-btn>
+                <main-btn
+                    :auto-width="true"
+                    @click="generateImage"
+                >
+                    Сохранить
+                </main-btn>
             </div>
         </div>
     </main-popup>
@@ -39,6 +45,7 @@ import MainBtn from "@/components/MainBtn.vue"
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import Croppa from "vue-croppa"
+import { setAvatar } from "@/api/users"
 
 @Component({
     components: {
@@ -61,15 +68,24 @@ export default class PopupCrop extends Vue {
     }
 
     async generateImage(): Promise<void> {
-        if (!this.hasImage) {
-            return
+        const blob = await this.croppa.promisedBlob("image/jpeg", 1)
+        try {
+            const formData = new FormData()
+            formData.append("avatar", blob, "filename.jpg")
+            const res = await setAvatar(formData)
+            const { data } = res
+            this.$mainStore.user.setAvatar(data)
+            this.$mainStore.popup.changeActiveCropPopup(false)
+        } catch (e) {
+            throw new Error(`Set Avatar Error - ${e}`)
         }
-        const blob = await this.croppa.promisedBlob()
-        console.log(blob)
     }
 
     removeImage(): void {
-        if (this.hasImage) this.croppa.remove()
+        if (this.hasImage) {
+            this.croppa.remove()
+            this.hasImage = false
+        }
     }
 
     closePopup(): void {
@@ -84,16 +100,22 @@ export default class PopupCrop extends Vue {
         padding: 60px;
         box-sizing: border-box;
         max-width: 683px;
+        min-width: 476px;
         width: 100%;
         height: auto;
         border-radius: 25px;
         &__choose {
             margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
         }
         &__action {
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
+            .btn-wrapper {
+
+            }
         }
     }
 </style>

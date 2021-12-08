@@ -13,12 +13,13 @@
 
 <script lang="ts">
 
-import { Component, Vue, Prop } from "vue-property-decorator"
+import { Component, Vue, Prop, Watch } from "vue-property-decorator"
 
 @Component({})
 export default class LkAvatar extends Vue {
 
-    mounted(): void {
+    @Watch("$mainStore.user.avatar", { immediate: true, deep: true })
+    changeAvatar(): void {
         if (this.avatar) {
             this.iconPath = `${process.env.VUE_APP_API_URL}users/${this.avatar}`
             return
@@ -47,6 +48,9 @@ export default class LkAvatar extends Vue {
 
 <style lang="scss">
     .avatar {
+        img {
+            border-radius: 40px;
+        }
         &--min {
             img {
                 max-width: 50px;
