@@ -122,7 +122,7 @@ export default class EventRowStudent extends Vue {
             }
             this.$mainStore.students.updateStatusPayment(paramsForStore)
         } catch (e) {
-            console.log(e)
+            throw new Error(`Error update Statuses - ${e}`)
         }
     }
 
@@ -139,7 +139,7 @@ export default class EventRowStudent extends Vue {
             }
             this.$mainStore.students.updateStatusEvent(paramsForStore)
         } catch (e) {
-            console.log(e)
+            throw new Error(`Error update Statuses - ${e}`)
         }
     }
 }

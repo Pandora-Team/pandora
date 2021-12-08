@@ -63,7 +63,7 @@ export default class LkLayout extends Vue {
             this.$mainStore.user.setUserId(id)
             await this.$mainStore.user.getUserInfo()
         } catch (e) {
-            console.log(e)
+            throw new Error(`Error Get User Id - ${e}`)
         }
     }
 }

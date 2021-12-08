@@ -116,8 +116,7 @@ export default class PopupCreate extends Vue {
                 this.closePopup()
                 return
             } catch (e) {
-                console.log(e)
-                return
+                throw new Error(`Error create Event - ${e}`)
             }
         }
         const params = { ...this.state }
@@ -126,7 +125,7 @@ export default class PopupCreate extends Vue {
             this.$mainStore.events.updateEventIntoList(this.state)
             this.closePopup()
         } catch (e) {
-            console.log(e)
+            throw new Error(`Error update Event - ${e}`)
         }
 
     }

@@ -231,7 +231,7 @@ export default class EventCard extends Vue {
                 this.$mainStore.popup.setTypePayment(this.payment)
                 this.$mainStore.popup.changeActivePaymentPopup(true)
             } catch (e) {
-                console.log(e)
+                throw new Error(`Error create Statuses - ${e}`)
             }
         }
     }
@@ -249,7 +249,7 @@ export default class EventCard extends Vue {
             const { _id } = res.data
             this.$mainStore.events.removeEvent(_id)
         } catch (e) {
-            console.log(e)
+            throw new Error(`Error delete Event - ${e}`)
         }
     }
 

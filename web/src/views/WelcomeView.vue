@@ -70,9 +70,8 @@ export default class WelcomeView extends Vue {
                 this.event = res.data
                 this.visibleNearestEvent = true
             }
-
         } catch (e) {
-            console.log(e)
+            throw new Error(`Error Get Nearest Event - ${e}`)
         }
     }
 }

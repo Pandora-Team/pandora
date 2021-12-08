@@ -46,7 +46,7 @@ export class Events {
                 this.updateListEvent(updateData)
             }
         } catch (e) {
-            console.log(e)
+            throw new Error(`Error Get All Event - ${e}`)
         }
     }
 
