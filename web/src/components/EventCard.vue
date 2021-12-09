@@ -248,6 +248,9 @@ export default class EventCard extends Vue {
             const res = await deleteEvent(this.event._id)
             const { _id } = res.data
             this.$mainStore.events.removeEvent(_id)
+            if (this.welcome) {
+                this.$emit("remove")
+            }
         } catch (e) {
             throw new Error(`Error delete Event - ${e}`)
         }

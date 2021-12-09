@@ -25,6 +25,7 @@
                 :event="event"
                 grid-class="event"
                 :welcome="true"
+                @remove="updateNearestEvent"
             />
             <event-card-empty
                 v-else
@@ -79,6 +80,10 @@ export default class WelcomeView extends Vue {
         } catch (e) {
             throw new Error(`Error Get Nearest Event - ${e}`)
         }
+    }
+
+    async updateNearestEvent(): Promise<void> {
+        this.visibleNearestEvent = false
     }
 }
 </script>
