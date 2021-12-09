@@ -61,7 +61,7 @@ const routes: RouteConfig[] = [
                 component: StudentsView,
                 children:  [
                     {
-                        path:      "",
+                        path:      paths.ListEventsView,
                         name:      names.ListEventsView,
                         component: ListEventsView,
                     },

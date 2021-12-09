@@ -10,7 +10,7 @@ const paths = {
     ClassesView:        "/lk/classes",
     StorageView:        "/lk/storage",
     StudentsView:       "/lk/students",
-    ListEventsView:     "/lk/students",
+    ListEventsView:     "/lk/students/list-events",
     ListStudentsView:   "/lk/students/list-students",
 } as const
 
