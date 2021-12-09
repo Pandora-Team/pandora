@@ -104,6 +104,7 @@ export class EventsService {
                 event.status_id = objStatuses._id
                 event.status.push(objStatuses.event_status, objStatuses.payment_status)
             }
+            event.status = event.status.filter(e => e.length > 0)
             return event
         }))
     }
