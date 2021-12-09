@@ -36,6 +36,12 @@ export class Users {
     @Prop()
     telegram?: string
 
+    @Prop()
+    reg_date?: string
+
+    @Prop()
+    visit_date?: string
+
 }
 
 export const UsersSchema = SchemaFactory.createForClass(Users);

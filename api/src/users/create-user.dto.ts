@@ -6,6 +6,8 @@ export class CreateUserDto {
     readonly birthday?: string;
     avatar?: string;
     readonly surname: string
+    readonly reg_date?: string
+    readonly visit_date?: string
 }
 
 export class UpdateUserDto {

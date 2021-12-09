@@ -5,6 +5,7 @@ import {Users, UsersDocument} from "../users/users.schema";
 import {Model} from "mongoose";
 import {UsersService} from "../users/users.service";
 import {LoginDto, RegisterDto} from "./dto";
+import * as dayjs from 'dayjs'
 
 @Injectable()
 export class AuthService {
@@ -18,8 +19,11 @@ export class AuthService {
         const user = await this.usersModel.findOne({...dto})
 
         if (!user) {
-            return { error: true }
+            throw new Error("Error User Login")
         }
+
+        const date = dayjs().format()
+        await this.usersModel.updateOne({_id: user._id}, {"visit_date": date})
 
         const payload = {
             _id: user._id,
@@ -34,10 +38,14 @@ export class AuthService {
         if(!dto.role){
             dto.role = "dancer"
         }
+        const date = dayjs().format()
+        dto.reg_date = date
+        dto.visit_date = date
+
         const newUser = await this.usersModel.create({...dto})
 
         if (!newUser) {
-            return { error: true }
+            throw new Error("Error User Register")
         }
 
         const payload = {
@@ -47,5 +55,11 @@ export class AuthService {
             access_token: this.jwtService.sign(payload),
             ...payload
         }
+    }
+
+    async getProfile(req) {
+        const date = dayjs().format()
+        await this.usersModel.updateOne({_id: req.user.id}, {"visit_date": date})
+        return req.user;
     }
 }
