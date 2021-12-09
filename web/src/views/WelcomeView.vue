@@ -26,6 +26,10 @@
                 grid-class="event"
                 :welcome="true"
             />
+            <event-card-empty
+                v-else
+                grid-class="event"
+            />
         </div>
     </div>
 </template>
@@ -42,6 +46,7 @@ import InfoCardMini from "@/components/InfoCardMini.vue"
 import { getNearestEvent } from "@/api/events"
 import { EventData } from "@/definitions/interfaces"
 import { isEmpty } from "lodash"
+import EventCardEmpty from "@/components/EventCardEmpty.vue"
 
 @Component({
     components: {
@@ -51,6 +56,7 @@ import { isEmpty } from "lodash"
         WelcomeInfo,
         WelcomeProfile,
         InfoCardMini,
+        EventCardEmpty,
     },
 })
 export default class WelcomeView extends Vue {
