@@ -4,6 +4,7 @@ import { getAllEvent } from "@/api/events"
 import { Store } from "@/store/store"
 import { statusData } from "@/definitions/typeStatus"
 import { cloneDeep } from "lodash"
+import notification from "@/definitions/notification"
 
 export class Events {
 
@@ -46,6 +47,7 @@ export class Events {
                 this.updateListEvent(updateData)
             }
         } catch (e) {
+            this.$mainStore.notification.changeNotification(true, notification.error)
             throw new Error(`Error Get All Event - ${e}`)
         }
     }

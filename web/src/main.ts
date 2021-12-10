@@ -7,6 +7,7 @@ import { useStore } from "vuex-simple"
 import Vuelidate from "vuelidate"
 import "./styles/main.scss"
 import paths from "@/router/paths"
+import notification from "@/definitions/notification"
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import DatePicker from "v-calendar/lib/components/date-picker.umd"
@@ -32,6 +33,7 @@ Vue.component("croppa", Croppa.component)
 
 Vue.prototype.$mainStore = useStore(store)
 Vue.prototype.$mainPaths = paths
+Vue.prototype.$mainNotification = notification
 
 Sentry.init({
     Vue,

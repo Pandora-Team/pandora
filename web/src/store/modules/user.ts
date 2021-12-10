@@ -1,8 +1,12 @@
 import { State, Mutation, Action, Getter } from "vuex-simple"
 import { getUser } from "@/api/users"
 import { SocialData } from "@/definitions/interfaces"
+import { Store } from "@/store/store"
+import notification from "@/definitions/notification"
 
 export class User {
+
+    constructor(private $mainStore: Store) {}
 
     @State()
     id = ""
@@ -38,6 +42,7 @@ export class User {
             const { data } = res
             this.updateUserInfo(data)
         } catch (e) {
+            this.$mainStore.notification.changeNotification(true, notification.error)
             throw new Error(`Error get User Info - ${e}`)
         }
     }

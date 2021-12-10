@@ -4,14 +4,20 @@
         class="app"
     >
         <router-view />
+        <notification />
     </div>
 </template>
 
 <script lang="ts">
 
 import { Component, Vue, Watch } from "vue-property-decorator"
+import Notification from "@/components/Notification.vue"
 
-@Component({})
+@Component({
+    components: {
+        Notification,
+    },
+})
 export default class App extends Vue {
     @Watch("$mainStore.app.disable")
     changeDisable(): void {
@@ -27,7 +33,8 @@ export default class App extends Vue {
 
 <style lang="scss">
     .app {
-
+        overflow: hidden;
+        position: relative;
     }
 </style>
 

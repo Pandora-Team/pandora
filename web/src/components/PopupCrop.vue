@@ -76,7 +76,9 @@ export default class PopupCrop extends Vue {
             const { data } = res
             this.$mainStore.user.setAvatar(data)
             this.$mainStore.popup.changeActiveCropPopup(false)
+            this.$mainStore.notification.changeNotification(true, this.$mainNotification.successAvatarUpdate)
         } catch (e) {
+            this.$mainStore.notification.changeNotification(true, this.$mainNotification.failedAvatarUpdate)
             throw new Error(`Set Avatar Error - ${e}`)
         }
     }
