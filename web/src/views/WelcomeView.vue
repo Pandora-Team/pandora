@@ -78,7 +78,7 @@ export default class WelcomeView extends Vue {
                 this.visibleNearestEvent = true
             }
         } catch (e) {
-            this.$mainStore.notification.changeNotification(true, this.$mainNotification.error)
+            this.$mainStore.notification.changeNotification({ state: true, ...this.$mainNotification.error })
             throw new Error(`Error Get Nearest Event - ${e}`)
         }
     }

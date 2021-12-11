@@ -47,7 +47,7 @@ export class Events {
                 this.updateListEvent(updateData)
             }
         } catch (e) {
-            this.$mainStore.notification.changeNotification(true, notification.error)
+            this.$mainStore.notification.changeNotification({ state: true, ...notification.error })
             throw new Error(`Error Get All Event - ${e}`)
         }
     }

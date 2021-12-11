@@ -32,7 +32,7 @@ export default class ListStudentsView extends Vue {
             const { data } = await getStudents()
             this.students = data
         } catch (e) {
-            this.$mainStore.notification.changeNotification(true, this.$mainNotification.error)
+            this.$mainStore.notification.changeNotification({ state: true, ...this.$mainNotification.error })
             throw new Error(`Get list students - ${e}`)
         }
     }

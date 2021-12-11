@@ -63,7 +63,7 @@ export default class LkLayout extends Vue {
             this.$mainStore.user.setUserId(id)
             await this.$mainStore.user.getUserInfo()
         } catch (e) {
-            this.$mainStore.notification.changeNotification(true, this.$mainNotification.error)
+            this.$mainStore.notification.changeNotification({ state: true, ...this.$mainNotification.error })
             throw new Error(`Error Get User Id - ${e}`)
         }
     }

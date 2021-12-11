@@ -230,9 +230,11 @@ export default class EventCard extends Vue {
                 this.$mainStore.popup.changeActiveRecordPopup(false)
                 this.$mainStore.popup.setTypePayment(this.payment)
                 this.$mainStore.popup.changeActivePaymentPopup(true)
-                this.$mainStore.notification.changeNotification(true, this.$mainNotification.successRecord)
+                this.$mainStore.notification.changeNotification(
+                    { state: true, ...this.$mainNotification.successRecord })
             } catch (e) {
-                this.$mainStore.notification.changeNotification(true, this.$mainNotification.failedRecord)
+                this.$mainStore.notification.changeNotification(
+                    { state: true, ...this.$mainNotification.failedRecord })
                 throw new Error(`Error create Statuses - ${e}`)
             }
         }
@@ -250,12 +252,12 @@ export default class EventCard extends Vue {
             const res = await deleteEvent(this.event._id)
             const { _id } = res.data
             this.$mainStore.events.removeEvent(_id)
-            this.$mainStore.notification.changeNotification(true, this.$mainNotification.successRemove)
+            this.$mainStore.notification.changeNotification({ state: true, ...this.$mainNotification.successRemove })
             if (this.welcome) {
                 this.$emit("remove")
             }
         } catch (e) {
-            this.$mainStore.notification.changeNotification(true, this.$mainNotification.failedRemove)
+            this.$mainStore.notification.changeNotification({ state: true, ...this.$mainNotification.failedRemove })
             throw new Error(`Error delete Event - ${e}`)
         }
     }

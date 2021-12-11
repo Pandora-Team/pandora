@@ -13,10 +13,11 @@ export class Notification {
     typeNotification = ""
 
     @Mutation()
-    public changeNotification(state: boolean, obj: NotificationData): void {
-        this.text = obj.text
-        this.typeNotification = obj.type
-        this.visible = state
+    public changeNotification(data: NotificationData): void {
+        if (!data) return
+        this.text = data.text
+        this.typeNotification = data.type
+        this.visible = data.state
     }
 
 }

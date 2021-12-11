@@ -39,6 +39,7 @@ export interface UpdateUserData {
 }
 
 export interface NotificationData {
+    state: boolean
     text: string
     type: string
 }

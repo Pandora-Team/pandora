@@ -18,7 +18,7 @@ export class Students {
             const res = await getEventsWithUsers()
             this.changeListEvents(res.data)
         } catch (e) {
-            this.$mainStore.notification.changeNotification(true, notification.error)
+            this.$mainStore.notification.changeNotification({ state: true, ...notification.error })
             throw new Error(`Error Get Event With Users - ${e}`)
         }
     }

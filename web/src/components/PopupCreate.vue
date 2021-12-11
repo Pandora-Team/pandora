@@ -113,11 +113,13 @@ export default class PopupCreate extends Vue {
             try {
                 const res = await createEvent(formData)
                 this.$mainStore.events.addEventToList(res?.data)
+                this.$mainStore.notification.changeNotification(
+                    { state: true, ...this.$mainNotification.successCreate })
                 this.closePopup()
-                this.$mainStore.notification.changeNotification(true, this.$mainNotification.successCreate)
                 return
             } catch (e) {
-                this.$mainStore.notification.changeNotification(true, this.$mainNotification.failedCreate)
+                this.$mainStore.notification.changeNotification(
+                    { state: true, ...this.$mainNotification.failedCreate })
                 throw new Error(`Error create Event - ${e}`)
             }
         }
@@ -127,7 +129,7 @@ export default class PopupCreate extends Vue {
             this.$mainStore.events.updateEventIntoList(this.state)
             this.closePopup()
         } catch (e) {
-            this.$mainStore.notification.changeNotification(true, this.$mainNotification.error)
+            this.$mainStore.notification.changeNotification({ state: true, ...this.$mainNotification.error })
             throw new Error(`Error update Event - ${e}`)
         }
 

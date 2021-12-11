@@ -141,9 +141,11 @@ export default class ProfileCardEdit extends Vue {
             }
 
             await updateUser(userId, params)
-            this.$mainStore.notification.changeNotification(true, this.$mainNotification.successProfileUpdate)
+            this.$mainStore.notification.changeNotification(
+                { state: true, ...this.$mainNotification.successProfileUpdate })
         } catch (e) {
-            this.$mainStore.notification.changeNotification(true, this.$mainNotification.failedProfileUpdate)
+            this.$mainStore.notification.changeNotification(
+                { state: true, ...this.$mainNotification.failedProfileUpdate })
             throw new Error(`Update User Info - ${e}`)
         }
         this.$emit("edit", false)

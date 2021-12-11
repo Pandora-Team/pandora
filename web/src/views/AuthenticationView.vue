@@ -97,7 +97,7 @@ export default class AuthenticationView extends Vue {
                     pass:  this.password,
                 })
 
-                this.$mainStore.notification.changeNotification(true, this.$mainNotification.successAuth)
+                this.$mainStore.notification.changeNotification({ state: true, ...this.$mainNotification.successAuth })
 
                 const { access_token, _id } = res.data
                 localStorage.setItem("at", access_token)
@@ -105,7 +105,7 @@ export default class AuthenticationView extends Vue {
                 this.$mainStore.popup.changeActiveWelcomePopup(true)
                 await this.$router.push({ path: this.$mainPaths.LkLayout })
             } catch (e) {
-                this.$mainStore.notification.changeNotification(true, this.$mainNotification.failedAuth)
+                this.$mainStore.notification.changeNotification({ state: true, ...this.$mainNotification.failedAuth })
                 await this.$router.push({ path: this.$mainPaths.LoginLayout })
                 throw new Error(`Error Authentication - ${e}`)
             }

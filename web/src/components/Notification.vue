@@ -26,7 +26,7 @@ export default class Notification extends Vue {
     closeNotification(): void {
         if (this.visible) {
             setTimeout(() => {
-                this.$mainStore.notification.changeNotification(false, { text: "", type: "" })
+                this.$mainStore.notification.changeNotification({ state: false, text: "", type: "" })
             }, 2000)
         }
     }
@@ -55,6 +55,7 @@ export default class Notification extends Vue {
 <style lang="scss">
     .notification {
         position: absolute;
+        z-index: 100;
         bottom: 20px;
         right: 20px;
         border-radius: 20px;

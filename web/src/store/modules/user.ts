@@ -42,7 +42,7 @@ export class User {
             const { data } = res
             this.updateUserInfo(data)
         } catch (e) {
-            this.$mainStore.notification.changeNotification(true, notification.error)
+            this.$mainStore.notification.changeNotification({ state: true, ...notification.error })
             throw new Error(`Error get User Info - ${e}`)
         }
     }
