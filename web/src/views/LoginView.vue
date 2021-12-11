@@ -62,6 +62,7 @@ export default class LoginView extends Vue {
     mounted(): void {
         const token = localStorage.getItem("at")
         if (token) {
+            this.$mainStore.app.setLoading(true)
             this.$router.push({ path: this.$mainPaths.LkLayout })
         }
     }

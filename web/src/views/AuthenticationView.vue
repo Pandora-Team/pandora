@@ -103,6 +103,7 @@ export default class AuthenticationView extends Vue {
                 localStorage.setItem("at", access_token)
                 await this.$mainStore.user.setUserId(_id)
                 this.$mainStore.popup.changeActiveWelcomePopup(true)
+                this.$mainStore.app.setLoading(true)
                 await this.$router.push({ path: this.$mainPaths.LkLayout })
             } catch (e) {
                 this.$mainStore.notification.changeNotification({ state: true, ...this.$mainNotification.failedAuth })
