@@ -2,8 +2,12 @@ import { State, Mutation, Action } from "vuex-simple"
 import { getEventsWithUsers } from "@/api/events"
 import { EventData } from "@/definitions/interfaces"
 import { cloneDeep } from "lodash"
+import { Store } from "@/store/store"
+import notification from "@/definitions/notification"
 
 export class Students {
+
+    constructor(private $mainStore: Store) {}
 
     @State()
     listEvents: EventData[] = []
@@ -14,6 +18,7 @@ export class Students {
             const res = await getEventsWithUsers()
             this.changeListEvents(res.data)
         } catch (e) {
+            this.$mainStore.notification.changeNotification({ state: true, ...notification.error })
             throw new Error(`Error Get Event With Users - ${e}`)
         }
     }

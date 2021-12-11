@@ -122,6 +122,7 @@ export default class EventRowStudent extends Vue {
             }
             this.$mainStore.students.updateStatusPayment(paramsForStore)
         } catch (e) {
+            this.$mainStore.notification.changeNotification({ state: true, ...this.$mainNotification.error })
             throw new Error(`Error update Statuses - ${e}`)
         }
     }
@@ -139,6 +140,7 @@ export default class EventRowStudent extends Vue {
             }
             this.$mainStore.students.updateStatusEvent(paramsForStore)
         } catch (e) {
+            this.$mainStore.notification.changeNotification({ state: true, ...this.$mainNotification.error })
             throw new Error(`Error update Statuses - ${e}`)
         }
     }

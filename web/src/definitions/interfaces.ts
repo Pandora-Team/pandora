@@ -37,3 +37,9 @@ export interface UpdateUserData {
     surname?: string
     birthday?: string
 }
+
+export interface NotificationData {
+    state: boolean
+    text: string
+    type: string
+}

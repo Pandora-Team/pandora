@@ -187,10 +187,7 @@ export default class RegistrationView extends Vue {
                     birthday: this.birthday,
                 })
 
-                if (res.data?.error) {
-                    await this.$router.push({ path: this.$mainPaths.LoginLayout })
-                    return
-                }
+                this.$mainStore.notification.changeNotification({ state: true, ...this.$mainNotification.successReg })
 
                 const { access_token, _id } = res.data
                 localStorage.setItem("at", access_token)
@@ -199,6 +196,7 @@ export default class RegistrationView extends Vue {
                 await this.$router.push({ path: this.$mainPaths.LkLayout })
 
             } catch (e) {
+                this.$mainStore.notification.changeNotification({ state: true, ...this.$mainNotification.failedReg })
                 await this.$router.push({ path: this.$mainPaths.LoginLayout })
                 throw new Error(`Error Registration - ${e}`)
             }

@@ -1,4 +1,5 @@
 import paths from "@/router/paths"
+import notification from "@/definitions/notification"
 import { instance } from "@/store/index.ts"
 
 declare module "vue/types/vue" {
@@ -6,6 +7,7 @@ declare module "vue/types/vue" {
         $super: (method: string, ...params: unknown[]) => unknown
         $mainPaths: typeof paths
         $mainStore: typeof instance
+        $mainNotification: typeof notification
         beforeCreate?(): void
         created?(): void
         beforeMount?(): void

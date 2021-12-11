@@ -4,6 +4,7 @@ import { Events } from "./modules/events"
 import { User } from "./modules/user"
 import { Students } from "./modules/students"
 import { Popup } from "./modules/popup"
+import { Notification } from "./modules/notification"
 
 export class Store {
     @Module()
@@ -13,11 +14,14 @@ export class Store {
     public events = new Events(this)
 
     @Module()
-    public user = new User()
+    public user = new User(this)
 
     @Module()
-    public students = new Students()
+    public students = new Students(this)
 
     @Module()
     public popup = new Popup(this)
+
+    @Module()
+    public notification = new Notification()
 }
