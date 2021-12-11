@@ -3,7 +3,8 @@
         id="app"
         class="app"
     >
-        <router-view />
+        <loading-view v-if="loading" />
+        <router-view v-else />
         <notification />
     </div>
 </template>
@@ -12,10 +13,12 @@
 
 import { Component, Vue, Watch } from "vue-property-decorator"
 import Notification from "@/components/Notification.vue"
+import LoadingView from "@/components/LoadingView.vue"
 
 @Component({
     components: {
         Notification,
+        LoadingView,
     },
 })
 export default class App extends Vue {
@@ -27,6 +30,20 @@ export default class App extends Vue {
         } else {
             body!.style.overflow = "auto"
         }
+    }
+
+    @Watch("$mainStore.app.loading")
+    changeLoading(): void {
+        if (this.loading) {
+            this.$mainStore.app.setIsMobile(window.innerWidth < 768)
+            setTimeout(() => {
+                this.$mainStore.app.setLoading(false)
+            }, 3000)
+        }
+    }
+
+    get loading(): boolean {
+        return this.$mainStore.app.loading
     }
 }
 </script>
