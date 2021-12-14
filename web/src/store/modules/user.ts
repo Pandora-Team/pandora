@@ -3,6 +3,7 @@ import { getUser } from "@/api/users"
 import { SocialData } from "@/definitions/interfaces"
 import { Store } from "@/store/store"
 import notification from "@/definitions/notification"
+import * as Sentry from "@sentry/vue"
 
 export class User {
 
@@ -79,6 +80,10 @@ export class User {
         this.vk = obj.vk || ""
         this.instagram = obj.instagram || ""
         this.telegram = obj.telegram || ""
+        Sentry.setUser({
+            username: this.name,
+            isAdmin:  this.isAdmin,
+        })
     }
 
     @Mutation()
