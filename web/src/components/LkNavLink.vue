@@ -4,17 +4,17 @@
             class="nav-link"
             :class="{'nav-link--active': active}"
         >
-            <div class="nav-link__wrapper">
+            <router-link :to="path" class="nav-link__wrapper">
                 <simple-svg
                     :src="iconPath"
                     width="35"
                     height="35"
                     custom-class-name="nav-link__icon"
                 />
-                <router-link :to="path">
+                <span>
                     {{ name }}
-                </router-link>
-            </div>
+                </span>
+            </router-link>
         </div>
     </transition>
 </template>
@@ -117,8 +117,33 @@ export default class LkNavLink extends Vue {
               fill: $color-hover-text;
             }
           }
-            a {
+            span {
               color: $color-hover-text;
+            }
+        }
+    }
+
+    @media all and (max-width: 1366px) {
+        .nav-link {
+            &__wrapper {
+                padding-left: 30px;
+
+                span {
+                    font-size: 16px;
+                    line-height: 20px;
+                }
+            }
+        }
+    }
+
+    @media all and (max-width: 1000px) {
+        .nav-link {
+            &__wrapper {
+                padding-left: 25px;
+
+                span {
+                    display: none;
+                }
             }
         }
     }

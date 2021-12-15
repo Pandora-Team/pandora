@@ -104,4 +104,22 @@ export default class LkHeader extends Vue {
             }
         }
     }
+
+    @media all and (max-width: 1366px) {
+        .header {
+            padding: 8px 15px;
+        }
+    }
+
+    @media all and (max-width: 1366px) {
+        .header {
+            &__name {
+                display: none;
+            }
+
+            .avatar {
+                margin-right: 20px;
+            }
+        }
+    }
 </style>

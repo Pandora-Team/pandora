@@ -14,7 +14,7 @@
             </div>
             <div class="profile-desc">
                 <h3>{{ fullName }}</h3>
-                <p>День Рождения: <span>{{ birthday }}</span></p>
+                <p>День Рождения:&nbsp;<span>{{ birthday }}</span></p>
                 <div
                     v-if="socialLink.length"
                     class="profile-social"
@@ -112,5 +112,9 @@ export default class ProfileCard extends Vue {
                 }
             }
         }
+    }
+
+    @media all and (max-width: 1366px) {
+
     }
 </style>
