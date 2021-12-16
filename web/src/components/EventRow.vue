@@ -7,7 +7,10 @@
                 <h4>Время:<span>{{ time }}</span></h4>
             </div>
         </div>
-        <div class="event-row__more">
+        <div
+            v-if="event.users.length"
+            class="event-row__more"
+        >
             <div
                 class="event-row__more-btn"
                 :class="{'event-row__more-btn--active': open}"
@@ -15,7 +18,7 @@
             >
                 {{ textBtn }}
             </div>
-            <template v-if="open && event.users.length">
+            <template v-if="open">
                 <event-row-student
                     v-for="(user, index) in event.users"
                     :key="user.status_id"

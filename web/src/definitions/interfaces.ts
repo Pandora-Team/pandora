@@ -43,3 +43,20 @@ export interface NotificationData {
     text: string
     type: string
 }
+
+export interface SocialData {
+    id: number
+    path: string
+    icon: string
+}
+
+export interface UserData {
+    name: string
+    phone: string
+    birthday: string
+    avatar?: string
+    surname: string
+    vk?: string
+    instagram?: string
+    telegram?: string
+}
