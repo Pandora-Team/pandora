@@ -13,12 +13,7 @@
 <script lang="ts">
 
 import { Component, Prop, Vue } from "vue-property-decorator"
-
-interface SocialData {
-    id: number
-    path: string
-    icon: string
-}
+import { SocialData } from "@/definitions/interfaces"
 
 @Component({
     components: {},
