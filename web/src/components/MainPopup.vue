@@ -1,21 +1,28 @@
 <template>
-    <div class="main-popup">
-        <div class="main-popup__wrapper">
-            <div
-                class="main-popup__close"
-                @click="closePopup"
-            />
-            <slot />
+    <transition-fade>
+        <div class="main-popup">
+            <div class="main-popup__wrapper">
+                <div
+                    class="main-popup__close"
+                    @click="closePopup"
+                />
+                <slot />
+            </div>
         </div>
-    </div>
+    </transition-fade>
 </template>
 
 <script lang="ts">
 
 import { Component, Vue } from "vue-property-decorator"
+import TransitionFade from "@/components/transition/TransitionFade.vue"
 
 
-@Component({})
+@Component({
+    components: {
+        TransitionFade,
+    },
+})
 export default class MainPopup extends Vue {
 
     closePopup(): void {
