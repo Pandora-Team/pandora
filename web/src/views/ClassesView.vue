@@ -2,14 +2,18 @@
     <div class="events">
         <h1>Доступные для записи МК</h1>
         <div class="events__body">
-            <template v-if="!!events.length">
+            <flicking
+                :options="flickingOptions"
+                :viewport-tag="'div'"
+                :camera-tag="'div'"
+            >
                 <event-card
                     v-for="event in events"
                     :key="event._id"
                     :event="event"
                 />
-            </template>
-            <event-card-create v-if="isAdmin" />
+                <event-card-create v-if="isAdmin" />
+            </flicking>
         </div>
     </div>
 </template>
@@ -21,16 +25,35 @@ import EventCard from "@/components/EventCard.vue"
 import EventCardCreate from "@/components/EventCardCreate.vue"
 import { EventData } from "@/definitions/interfaces"
 
+import { Flicking } from "@egjs/vue-flicking"
+import "@egjs/vue-flicking/dist/flicking.css"
+
 @Component({
     components: {
         EventCard,
         EventCardCreate,
+        Flicking,
     },
 })
 export default class ClassesView extends Vue {
 
     mounted(): void {
         this.$mainStore.events.getListEvents()
+    }
+
+    get flickingOptions(): any {
+        return {
+            align:                "prev",
+            noPanelStyleOverride: true,
+            disableOnInit:        this.disableFlicking,
+            autoInit:             true,
+            autoResize:           true,
+        }
+    }
+
+    get disableFlicking(): boolean {
+        //return this.events.length < 3
+        return false
     }
 
     get events(): EventData[] {
