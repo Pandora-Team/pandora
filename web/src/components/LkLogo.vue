@@ -27,5 +27,8 @@ export default class LkLogo extends Vue {
         align-items: center;
         width: 100%;
         margin: 50px auto 60px;
+        @media all and (max-width: 1000px) {
+            width: 70px;
+        }
     }
 </style>

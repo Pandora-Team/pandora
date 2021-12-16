@@ -1,12 +1,16 @@
 <template>
     <div class="lk">
-        <div class="lk-aside">
+        <div
+            v-if="!isMobile"
+            class="lk-aside"
+        >
             <lk-logo />
             <lk-nav />
         </div>
+        <mobile-menu v-else />
         <div class="lk-body">
-            <lk-header />
-            <lk-body />
+            <lk-header v-if="!isMobile" />
+            <lk-body :mobile="isMobile" />
         </div>
         <popup-record v-if="$mainStore.popup.activeRecordPopup" />
         <popup-create v-if="$mainStore.popup.activeCreatePopup" />
@@ -31,6 +35,7 @@ import PopupCancel from "@/components/PopupCancel.vue"
 import PopupWelcome from "@/components/PopupWelcome.vue"
 import PopupPayment from "@/components/PopupPayment.vue"
 import PopupCrop from "@/components/PopupCrop.vue"
+import MobileMenu from "@/components/MobileMenu.vue"
 
 @Component({
     components: {
@@ -44,12 +49,17 @@ import PopupCrop from "@/components/PopupCrop.vue"
         PopupWelcome,
         PopupPayment,
         PopupCrop,
+        MobileMenu,
     },
 })
 export default class LkLayout extends Vue {
 
     get userId(): string {
         return this.$mainStore.user.id
+    }
+
+    get isMobile(): boolean {
+        return this.$mainStore.app.isMobile
     }
 
     async mounted(): Promise<void> {
@@ -115,6 +125,14 @@ export default class LkLayout extends Vue {
 
             &-aside {
                 min-width: 84px;
+            }
+        }
+    }
+
+    @media all and (max-width: 800px) {
+        .lk {
+            &-body {
+                margin: 0;
             }
         }
     }

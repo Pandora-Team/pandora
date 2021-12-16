@@ -32,10 +32,14 @@ export default class App extends Vue {
         }
     }
 
+    @Watch("$route.path", { immediate: true, deep: true })
+    changeMobileView(): void {
+        this.$mainStore.app.setIsMobile(window.innerWidth < 768)
+    }
+
     @Watch("$mainStore.app.loading")
     changeLoading(): void {
         if (this.loading) {
-            this.$mainStore.app.setIsMobile(window.innerWidth < 768)
             setTimeout(() => {
                 this.$mainStore.app.setLoading(false)
             }, 3000)
