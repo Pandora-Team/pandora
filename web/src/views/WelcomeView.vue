@@ -93,9 +93,10 @@ export default class WelcomeView extends Vue {
     .welcome {
         &-grid {
             display: grid;
-            grid-template-columns: 486px 257px 257px 410px;
+            grid-template-columns: 32.4% 17.1% 17.1% 26%;
             grid-gap: 30px;
             grid-auto-rows: minmax(165px, auto);
+
             .info {
                 grid-column: 1 / 4;
                 grid-row: 1;
@@ -116,6 +117,55 @@ export default class WelcomeView extends Vue {
             .event {
                 grid-column: 4 / 5;
                 grid-row: 1 / 3;
+            }
+        }
+    }
+
+    @media all and (max-width: 1366px) {
+        .welcome {
+            &-grid {
+                grid-template-columns: 44.8% 12.5% 10.1% 20.9%;
+                grid-gap: 20px;
+                //grid-auto-rows: minmax(165px, auto);
+            }
+
+            .info {
+                grid-column: 1/3;
+            }
+            .event {
+                grid-column: 3/6;
+                grid-row: 1/2;
+            }
+            .questions {
+                grid-column: 2/4;
+            }
+            .classes {
+                grid-column: 4/6;
+            }
+        }
+    }
+
+    @media all and (max-width: 1000px) {
+        .welcome {
+            &-grid {
+                grid-template-columns: 50.9% 21.1% 21.1%;
+            }
+            .info {
+                grid-column: 1/2;
+            }
+            .event {
+                grid-column: 2/4;
+                //grid-row: 1/2;
+            }
+            .profile {
+                grid-column: 1/2;
+                padding: 25px;
+            }
+            .questions {
+                grid-column: 2/3;
+            }
+            .classes {
+                grid-column: 3/4;
             }
         }
     }

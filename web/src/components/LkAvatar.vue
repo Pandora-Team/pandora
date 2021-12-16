@@ -54,16 +54,38 @@ export default class LkAvatar extends Vue {
         &--min {
             img {
                 max-width: 50px;
+                border-radius: 10px;
             }
         }
         &--max {
             img {
                 max-width: 117px;
+                border-radius: 30px;
             }
         }
         &--full {
             img {
                 max-width: 238px;
+            }
+        }
+    }
+
+    @media all and (max-width: 1366px) {
+        .avatar {
+            &--min {
+                img {
+                    border-right: 20px;
+                }
+            }
+        }
+    }
+
+    @media all and (max-width: 1000px) {
+        .avatar {
+            &--min {
+                img {
+                    border-right: 20px;
+                }
             }
         }
     }

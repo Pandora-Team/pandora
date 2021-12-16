@@ -5,8 +5,6 @@
     >
         <simple-svg
             :src="iconPath"
-            width="40px"
-            height="40px"
             custom-class-name="social-item__icon"
         />
     </div>
@@ -50,6 +48,9 @@ export default class LkSocialItem extends Vue {
             margin-right: 0;
         }
         &__icon {
+            width: 40px;
+            height: 40px;
+
             path {
                 transition: .5s;
             }
@@ -57,6 +58,17 @@ export default class LkSocialItem extends Vue {
                 path:nth-of-type(1) {
                     fill: $color-lilac;
                 }
+            }
+        }
+    }
+
+    @media all and (max-width: 1366px) {
+        .social-item {
+            height: 35px;
+
+            &__icon {
+                width: 35px!important;
+                height: 35px!important;;
             }
         }
     }

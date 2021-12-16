@@ -89,4 +89,33 @@ export default class LkLayout extends Vue {
           border-radius: 40px;
         }
     }
+
+    @media all and (max-width: 1366px) {
+        .lk {
+            background-image: none;
+
+            &-body {
+                margin: 10px 10px 10px 0;
+                border-radius: 0 0 40px 40px;
+            }
+
+            &-aside {
+                min-width: 200px;
+            }
+        }
+    }
+
+    @media all and (max-width: 1000px) {
+        .lk {
+            &-body {
+                &__wrapper {
+                    padding: 20px 30px 50px;
+                }
+            }
+
+            &-aside {
+                min-width: 84px;
+            }
+        }
+    }
 </style>

@@ -41,4 +41,12 @@ export default class LkSocial extends Vue {
             margin-right: 20px;
         }
     }
+
+    @media all and (max-width: 1366px) {
+        .social {
+            &__text {
+                display: none;
+            }
+        }
+    }
 </style>

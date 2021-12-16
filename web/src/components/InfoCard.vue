@@ -61,7 +61,7 @@ export default class InfoCard extends Vue {
                     color: $color-gray;
                     span {
                         display: inline-block;
-                        margin-left: 16px;
+                        //margin-left: 16px;
                         color: $color-black;
                     }
                 }
@@ -100,6 +100,71 @@ export default class InfoCard extends Vue {
         }
         &.profile {
             padding: 30px 50px 30px 40px;
+        }
+    }
+
+    @media all and (max-width: 1366px) {
+        .info-card {
+            padding: 23px 19px;
+
+            &__content {
+                h3 {
+                    font-size: 22px;
+                    line-height: 27px;
+                }
+            }
+
+            &__wrapper {
+                &--about {
+                    flex-direction: column;
+
+                    .info-card__pic {
+                        max-width: none;
+                        max-height: none;
+                        width: 100%;
+                        margin-right: 0;
+                        margin-bottom: 30px;
+                    }
+
+                    p {
+                        font-size: 14px;
+                        line-height: 18px;
+                    }
+
+                    ul {
+                        display: none;
+                    }
+                }
+
+                &--prfole {
+                    h3 {
+                        margin-bottom: 20px;
+                    }
+                }
+            }
+        }
+    }
+
+    @media all and (max-width: 1000px) {
+        .info-card {
+            &__wrapper {
+                &--profile {
+                    align-items: flex-end;
+
+                    .info-card__content {
+                        margin-right: 10px;
+                    }
+
+                    .info-card__pic {
+                        max-width: 101px;
+                        max-height: 101px;
+                    }
+
+                    .birthday {
+                        margin-bottom: 0;
+                    }
+                }
+            }
         }
     }
 </style>

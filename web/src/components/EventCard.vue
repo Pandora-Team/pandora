@@ -26,8 +26,8 @@
                     class="event-card__date"
                     :class="{'event-card__date--mb': welcome}"
                 >
-                    <p>Дата: <span>{{ date }}</span></p>
-                    <p>Время: <span>{{ time }}</span></p>
+                    <p>Дата:&nbsp;<span>{{ date }}</span></p>
+                    <p>Время:&nbsp;<span>{{ time }}</span></p>
                 </div>
 
                 <p v-if="!welcome">
@@ -294,7 +294,14 @@ export default class EventCard extends Vue {
            border-radius: 30px;
        }
        &--welcome {
-           height: 393px!important;
+           //height: 393px!important;
+           height: 100%;
+           width: auto;
+           box-sizing: border-box;
+
+           .btn {
+               min-width: auto;
+           }
        }
        &--record {
            color: $color-black!important;
@@ -344,7 +351,7 @@ export default class EventCard extends Vue {
                span {
                    color: inherit;
                    display: inline-block;
-                   margin-left: 10px;
+                   //margin-left: 10px;
                    font-weight: 400;
                    font-size: $font-size-big-text;
                    line-height: $line-height-big-text;
@@ -398,4 +405,15 @@ export default class EventCard extends Vue {
            border-radius: 0 20px 0 20px;
        }
    }
+
+    @media all and(max-width: 1366px) {
+        .event-card {
+            &__content {
+                h2 {
+                    font-size: 22px;
+                    line-height: 27px;
+                }
+            }
+        }
+    }
 </style>

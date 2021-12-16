@@ -54,4 +54,38 @@ export default class WelcomeBanner extends Vue {
             }
         }
     }
+
+    @media all and (max-width: 1366px) {
+        .welcome-banner {
+            background-image: url("../assets/banner/welcome-banner-2.png"), $gradient-black;
+            padding: 42px 30px;
+            margin-bottom: 20px;
+
+            &__text {
+                max-width: calc(100% - 300px);
+
+                h1 {
+                    font-size: 24px;
+                    line-height: 29px;
+                    margin-bottom: 26px;
+                }
+
+                p {
+                    font-size: 16px;
+                    line-height: 20px;
+                }
+            }
+        }
+    }
+
+    @media all and (max-width: 1000px) {
+        .welcome-banner {
+            padding: 32px 30px;
+            background-image: url("../assets/banner/welcome-banner-3.png"), $gradient-black;
+
+            &__text {
+                max-width: 320px;
+            }
+        }
+    }
 </style>
