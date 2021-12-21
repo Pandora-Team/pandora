@@ -1,27 +1,25 @@
 <template>
     <div
         class="hamburger"
-        :class="{'hamburger--open': show}"
+        :class="{'hamburger--open': visible}"
         @click="onClick"
     >
-        <span />
-        <span />
-        <span />
+        <div />
     </div>
 </template>
 
 <script lang="ts">
 
-import { Component, Vue } from "vue-property-decorator"
+import { Component, Vue, Prop } from "vue-property-decorator"
 
 @Component({})
 export default class HamburgerIcon extends Vue {
 
-    show = false
+    @Prop({ type: Boolean, default: false })
+    visible!: boolean
 
     onClick(): void {
-        this.show = !this.show
-        this.$emit("show", this.show)
+        this.$emit("show", !this.visible)
     }
 }
 </script>
@@ -29,37 +27,27 @@ export default class HamburgerIcon extends Vue {
 <style lang="scss">
     .hamburger {
         width: 29px;
-        height: 23px;
-        position: relative;
         cursor: pointer;
-        span {
-            transition: 1s;
-            position: absolute;
-            border-radius: 37px;
+        &:before,
+        &:after,
+        div {
             background: $color-white;
+            content: "";
+            display: block;
             height: 3px;
-            width: 29px;
-            &:first-of-type {
-                top: 0;
-            }
-            &:nth-last-of-type(1) {
-                top: calc(100% - 3px);
-            }
-            &:nth-of-type(2) {
-                top: calc(50% - 1.5px);
-            }
+            border-radius: 37px;
+            margin: 7px 0;
+            transition: 0.5s;
         }
         &--open {
-            span {
-                &:first-of-type {
-                    top: calc(50% - 1.5px);
-                }
-                &:nth-of-type(2) {
-                    height: 0;
-                }
-                &:nth-last-of-type(1) {
-                    top: calc(50% - 1.5px);
-                }
+            &:before {
+                transform: translateY(10px) rotate(135deg);
+            }
+            &:after {
+                transform: translateY(-10px) rotate(-135deg);
+            }
+            div {
+                transform: scale(0);
             }
         }
     }

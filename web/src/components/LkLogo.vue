@@ -30,5 +30,8 @@ export default class LkLogo extends Vue {
         @media all and (max-width: 1000px) {
             width: 70px;
         }
+        @media all and (max-width: 800px) {
+            width: 94px;
+        }
     }
 </style>

@@ -7,7 +7,6 @@
             <lk-logo />
             <lk-nav />
         </div>
-        <mobile-menu v-else />
         <div class="lk-body">
             <lk-header v-if="!isMobile" />
             <lk-body :mobile="isMobile" />
@@ -89,6 +88,9 @@ export default class LkLayout extends Vue {
         background-repeat: no-repeat;
         background-position: left bottom;
         background-size: 265px 193px;
+        @media all and (max-width: 800px) {
+            background-color: $color-white;
+        }
         &-aside {
             min-width: 300px;
         }
@@ -131,8 +133,12 @@ export default class LkLayout extends Vue {
 
     @media all and (max-width: 800px) {
         .lk {
+            padding: 20px;
             &-body {
                 margin: 0;
+                &__wrapper {
+                    padding: 0;
+                }
             }
         }
     }

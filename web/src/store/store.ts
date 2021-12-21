@@ -5,6 +5,7 @@ import { User } from "./modules/user"
 import { Students } from "./modules/students"
 import { Popup } from "./modules/popup"
 import { Notification } from "./modules/notification"
+import { Mobile } from "@/store/modules/mobile"
 
 export class Store {
     @Module()
@@ -24,4 +25,7 @@ export class Store {
 
     @Module()
     public notification = new Notification()
+
+    @Module()
+    public mobile = new Mobile(this)
 }

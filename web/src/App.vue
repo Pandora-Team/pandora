@@ -3,6 +3,7 @@
         id="app"
         class="app"
     >
+        <mobile-menu v-if="isMobile" />
         <loading-view v-if="loading" />
         <router-view v-else />
         <notification />
@@ -14,11 +15,13 @@
 import { Component, Vue, Watch } from "vue-property-decorator"
 import Notification from "@/components/Notification.vue"
 import LoadingView from "@/components/LoadingView.vue"
+import MobileMenu from "@/components/MobileMenu.vue"
 
 @Component({
     components: {
         Notification,
         LoadingView,
+        MobileMenu,
     },
 })
 export default class App extends Vue {
@@ -33,8 +36,11 @@ export default class App extends Vue {
     }
 
     @Watch("$route.path", { immediate: true, deep: true })
-    changeMobileView(): void {
-        this.$mainStore.app.setIsMobile(window.innerWidth < 768)
+    changeApp(): void {
+        this.$mainStore.app.setIsMobile(window.innerWidth <= 800)
+        if (this.$mainStore.mobile.visibleMobileMenu) {
+            this.$mainStore.mobile.setVisibleMobileMenu(false)
+        }
     }
 
     @Watch("$mainStore.app.loading")
@@ -48,6 +54,10 @@ export default class App extends Vue {
 
     get loading(): boolean {
         return this.$mainStore.app.loading
+    }
+
+    get isMobile(): boolean {
+        return this.$mainStore.app.isMobile
     }
 }
 </script>
