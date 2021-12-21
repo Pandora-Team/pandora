@@ -89,4 +89,11 @@ export default class InfoCard extends Vue {
             }
         }
     }
+
+    @media all and (max-width: 800px) {
+        .info-card-mini {
+            height: 104px;
+        }
+    }
+
 </style>

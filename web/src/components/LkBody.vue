@@ -1,5 +1,8 @@
 <template>
-    <div class="lk-body__wrapper">
+    <div
+        class="lk-body__wrapper"
+        :class="{'lk-body__wrapper--mt': mobile}"
+    >
         <transition-fade>
             <router-view />
         </transition-fade>
@@ -8,7 +11,7 @@
 
 <script lang="ts">
 
-import { Component, Vue } from "vue-property-decorator"
+import { Component, Prop, Vue } from "vue-property-decorator"
 import TransitionFade from "@/components/transition/TransitionFade.vue"
 
 @Component({
@@ -17,6 +20,9 @@ import TransitionFade from "@/components/transition/TransitionFade.vue"
     },
 })
 export default class LkBody extends Vue {
+
+    @Prop({ type: Boolean, default: false })
+    mobile!: boolean
 
 }
 </script>
@@ -27,6 +33,9 @@ export default class LkBody extends Vue {
         h1 {
             color: $color-black;
             margin-bottom: 30px;
+        }
+        &--mt {
+            margin-top: 60px;
         }
     }
 </style>

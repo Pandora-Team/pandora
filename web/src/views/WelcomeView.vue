@@ -169,4 +169,42 @@ export default class WelcomeView extends Vue {
             }
         }
     }
+
+    @media all and (max-width: 800px) {
+        .welcome {
+            max-width: 440px;
+            margin: 0 auto;
+            &-grid {
+                grid-template-columns: 1fr;
+                grid-auto-rows: auto;
+                grid-gap: 20px;
+            }
+            .info {
+                grid-row: 2/3;
+                grid-column: 1/2;
+                box-shadow: $shadow-block;
+            }
+            .event {
+                grid-row: 1/2;
+                grid-column: 1/2;
+                height: 360px;
+                box-shadow: $shadow-block;
+            }
+            .profile {
+                grid-row: 3/4;
+                grid-column: 1/2;
+                box-shadow: $shadow-block;
+            }
+            .questions {
+                grid-row: 4/5;
+                grid-column: 1/2;
+                box-shadow: $shadow-block;
+            }
+            .classes {
+                grid-row: 5/6;
+                grid-column: 1/2;
+                box-shadow: $shadow-block;
+            }
+        }
+    }
 </style>

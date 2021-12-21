@@ -1,12 +1,14 @@
 <template>
-    <div class="welcome-banner">
-        <div class="welcome-banner__text">
-            <h1>Привет, {{ name }} !</h1>
-            <p>
-                Добро пожаловать в PANDORA! Здесь ты можешь записаться на&nbsp;занятия,
-                узнать о будущих и прошедших событиях.
-            </p>
-            <p>Будь в курсе k-pop движухи в Туле.</p>
+    <div class="welcome-banner-wrapper">
+        <div class="welcome-banner">
+            <div class="welcome-banner__text">
+                <h1>Привет, {{ name }} !</h1>
+                <p>
+                    Добро пожаловать в PANDORA! Здесь ты можешь записаться на&nbsp;занятия,
+                    узнать о будущих и прошедших событиях.
+                </p>
+                <p>Будь в курсе k-pop движухи в Туле.</p>
+            </div>
         </div>
     </div>
 </template>
@@ -85,6 +87,35 @@ export default class WelcomeBanner extends Vue {
 
             &__text {
                 max-width: 320px;
+            }
+        }
+    }
+
+    @media all and (max-width: 800px) {
+        .welcome-banner-wrapper {
+            position: relative;
+            margin: 0 -20px 20px;
+        }
+        .welcome-banner {
+            height: 470px;
+            background-image: url("../assets/banner/welcome-banner-min.png"), $gradient-black;
+            background-position: bottom right;
+            background-size: auto;
+            position: relative;
+            z-index: 3;
+        }
+    }
+
+    @media all and (max-width: 496px) {
+        .welcome-banner-wrapper {
+            &:before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 30px;
+                width: 100%;
+                background: $color-black;
             }
         }
     }

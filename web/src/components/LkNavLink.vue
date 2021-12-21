@@ -4,7 +4,10 @@
             class="nav-link"
             :class="{'nav-link--active': active}"
         >
-            <router-link :to="path" class="nav-link__wrapper">
+            <router-link
+                :to="path"
+                class="nav-link__wrapper"
+            >
                 <simple-svg
                     :src="iconPath"
                     width="35"
@@ -62,32 +65,6 @@ export default class LkNavLink extends Vue {
         align-items: center;
         position: relative;
         outline: none;
-        &::before {
-            transition: left .5s;
-            content: "";
-            width: 10px;
-            height: 90px;
-            background: $color-hover;
-            position: absolute;
-            z-index: 2;
-            top: -9px;
-            left: -10px;
-            border-radius: 0 20px 20px 0;
-        }
-        &::after {
-          content: "";
-          transition: background-position 1s;
-          position: absolute;
-          top: 0;
-          left: 0;
-          height: 74px;
-          width: 100%;
-          z-index: 0;
-          opacity: 0.2;
-          background: $gradient-active-link;
-          background-size: 500% 100%;
-          background-position: -130% 0;
-        }
         &__wrapper {
           transition: .5s;
           padding-left: 40px;
@@ -105,20 +82,51 @@ export default class LkNavLink extends Vue {
             fill: $color-white;
           }
         }
-        &--active {
+    }
+
+    @media all and (min-width: 801px) {
+        .nav-link {
             &::before {
-                left: 0;
+                transition: left .5s;
+                content: "";
+                width: 10px;
+                height: 90px;
+                background: $color-hover;
+                position: absolute;
+                z-index: 2;
+                top: -9px;
+                left: -10px;
+                border-radius: 0 20px 20px 0;
             }
             &::after {
-                background-position: -50% 0;
+                content: "";
+                transition: background-position 1s;
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 74px;
+                width: 100%;
+                z-index: 0;
+                opacity: 0.2;
+                background: $gradient-active-link;
+                background-size: 500% 100%;
+                background-position: -130% 0;
             }
-          .nav-link__icon {
-            path {
-              fill: $color-hover-text;
-            }
-          }
-            span {
-              color: $color-hover-text;
+            &--active {
+                &::before {
+                    left: 0;
+                }
+                &::after {
+                    background-position: -50% 0;
+                }
+                .nav-link__icon {
+                    path {
+                        fill: $color-hover-text;
+                    }
+                }
+                span {
+                    color: $color-hover-text;
+                }
             }
         }
     }
@@ -143,6 +151,18 @@ export default class LkNavLink extends Vue {
 
                 span {
                     display: none;
+                }
+            }
+        }
+    }
+
+    @media all and (max-width: 800px) {
+        .nav-link {
+            &__wrapper {
+                padding-left: 25px;
+
+                span {
+                    display: block;
                 }
             }
         }
