@@ -10,7 +10,7 @@
         </div>
         <div class="profile-row">
             <div class="profile-avatar">
-                <lk-avatar width="full" />
+                <lk-avatar :width="widthAvatar" />
             </div>
             <div class="profile-desc">
                 <h3>{{ fullName }}</h3>
@@ -61,6 +61,11 @@ export default class ProfileCard extends Vue {
         return require("@/assets/svg/edit-profile.svg")
     }
 
+    get widthAvatar(): string {
+        if (window.innerWidth < 420) return "max"
+        return "full"
+    }
+
     changeEdit(): void {
         this.$emit("edit", true)
     }
@@ -79,6 +84,15 @@ export default class ProfileCard extends Vue {
                 position: absolute;
                 top: 0;
                 right: 0;
+            }
+            @media all and (max-width: 800px) {
+                .profile-row {
+                    flex-direction: column;
+                }
+                .profile-avatar {
+                    margin-bottom: 20px;
+                    margin-right: 0;
+                }
             }
         }
         &-avatar {
@@ -112,9 +126,5 @@ export default class ProfileCard extends Vue {
                 }
             }
         }
-    }
-
-    @media all and (max-width: 1366px) {
-
     }
 </style>

@@ -55,6 +55,13 @@ export default class ProfileView extends Vue {
             grid-template-columns: 700px 666px;
             grid-gap: 40px;
             grid-auto-rows: auto;
+            @media all and (max-width: 800px) {
+                grid-template-columns: auto;
+                justify-content: center;
+                .info-card.profile {
+                    max-width: 400px;
+                }
+            }
         }
     }
 </style>

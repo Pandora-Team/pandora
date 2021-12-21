@@ -1,6 +1,7 @@
 <template>
     <div class="profile-card edit">
         <div
+            v-if="!isMobile"
             class="profile-card__btn"
             @click="saveEdit"
         >
@@ -74,6 +75,13 @@
                 inline-class="profile"
             />
         </div>
+        <main-btn
+            v-if="isMobile"
+            :full-width="true"
+            @click="saveEdit"
+        >
+            Сохранить
+        </main-btn>
     </div>
 </template>
 
@@ -85,12 +93,14 @@ import LkSocialItem from "@/components/LkSocialItem.vue"
 import MainFormItem from "@/components/MainFormItem.vue"
 import { updateUser } from "@/api/users"
 import { UpdateUserData } from "@/definitions/interfaces"
+import MainBtn from "@/components/MainBtn.vue"
 
 @Component({
     components: {
         LkAvatar,
         LkSocialItem,
         MainFormItem,
+        MainBtn,
     },
 })
 export default class ProfileCardEdit extends Vue {
@@ -109,6 +119,10 @@ export default class ProfileCardEdit extends Vue {
 
     get iconPath(): string {
         return require("@/assets/svg/save-profile.svg")
+    }
+
+    get isMobile(): boolean {
+        return this.$mainStore.app.isMobile
     }
 
     async saveEdit(): Promise<void> {
@@ -179,6 +193,14 @@ export default class ProfileCardEdit extends Vue {
             margin-bottom: 30px;
             .form__item.profile {
                 margin-bottom: 0;
+                @media all and (max-width: 800px) {
+                    width: 100%;
+                    max-width: 285px;
+                    margin-bottom: 20px;
+                    &:nth-last-of-type(1) {
+                        margin-bottom: 0;
+                    }
+                }
             }
             &:nth-last-of-type(1) {
                 margin-bottom: 0;
@@ -186,7 +208,10 @@ export default class ProfileCardEdit extends Vue {
         }
         &-column {
             margin-top: 28px;
+            width: 100%;
+            max-width: 285px;
             .form__item.profile {
+                width: 100%;
                 margin-bottom: 30px;
                 margin-right: 0;
                 &:nth-last-of-type(1) {
@@ -198,6 +223,7 @@ export default class ProfileCardEdit extends Vue {
             &--edit {
                 cursor: pointer;
                 position: relative;
+                margin-right: 85px;
                 &::after {
                     content: "";
                     position: absolute;
