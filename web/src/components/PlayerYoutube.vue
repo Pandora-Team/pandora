@@ -40,6 +40,9 @@ export default class PlayerYoutube extends Vue {
         width: 100%;
         &:nth-last-of-type(1) {
             margin-left: 30px;
+            @media all and (max-width: 800px) {
+                margin-left: 0;
+            }
         }
         iframe {
             width: 100%;

@@ -58,6 +58,9 @@ export default class InfoText extends Vue {
     .info-text {
         color: $color-black;
         margin-bottom: 30px;
+        &:nth-last-of-type(1) {
+            margin-bottom: 0;
+        }
         &__list {
             margin-bottom: 15px;
         }
