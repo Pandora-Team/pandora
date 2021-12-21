@@ -47,11 +47,11 @@
                     :path="$mainPaths.RulesView"
                     icon="rule"
                 />
-                <lk-nav-link
+                <!--<lk-nav-link
                     name="События"
                     :path="$mainPaths.StorageView"
                     icon="events"
-                />
+                />-->
             </div>
         </transition-fade>
         <transition-fade>
