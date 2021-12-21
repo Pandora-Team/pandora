@@ -7,19 +7,23 @@
                 <info-text :data="dataFirst" />
                 <info-text :data="dataSecond" />
             </div>
-            <img
-                class="information__img"
-                src="@/assets/images/about-img2.png"
-                alt="image"
-            >
+            <div class="information-item">
+                <img
+                    class="information__img"
+                    src="@/assets/images/about-img2.png"
+                    alt="image"
+                >
+            </div>
         </div>
         <info-text :data="dataThird" />
         <div class="information-block">
-            <img
-                class="information__img"
-                src="@/assets/images/about-img.png"
-                alt="image"
-            >
+            <div class="information-item">
+                <img
+                    class="information__img"
+                    src="@/assets/images/about-img.png"
+                    alt="image"
+                >
+            </div>
             <div class="information-item information-item--ml">
                 <info-text :data="dataFourth" />
             </div>
@@ -101,7 +105,7 @@ export default class AboutView extends Vue {
     dataFourth = {
         title:     "Кто ведёт занятия?",
         textFirst: [
-            "Руководитель, создатель, тренер, постановщик в PANDORA - Nastya+ (или просто Настя). Если кратко:"
+            "Руководитель, создатель, тренер, постановщик в PANDORA - Nastya+ (или просто Настя). Если кратко:",
         ],
         list: [
             "Уже более 10 лет увлекается k-pop индустрией",
@@ -132,17 +136,30 @@ export default class AboutView extends Vue {
             display: flex;
             align-items: flex-start;
             margin-bottom: 30px;
+            @media all and (max-width: 1600px) {
+                flex-direction: column;
+            }
         }
         &-item {
+            margin-bottom: 20px;
+            &:nth-last-of-type(1) {
+                margin-bottom: 0;
+            }
             &--mr {
                 margin-right: 30px;
+                @media all and (max-width: 1600px) {
+                    margin-right: 0;
+                }
             }
             &--ml {
                 margin-left: 30px;
+                @media all and (max-width: 1600px) {
+                    margin-left: 0;
+                }
             }
         }
         &__img {
-            width: 100%;
+            max-width: 100%;
         }
         &-example {
             h4 {
@@ -150,6 +167,9 @@ export default class AboutView extends Vue {
             }
             &__content {
                 display: flex;
+                @media all and (max-width: 800px) {
+                    flex-direction: column;
+                }
             }
         }
     }

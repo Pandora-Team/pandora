@@ -35,7 +35,7 @@ export default class LkBody extends Vue {
             margin-bottom: 30px;
         }
         &--mt {
-            margin-top: 60px;
+            margin-top: 70px;
         }
     }
 </style>

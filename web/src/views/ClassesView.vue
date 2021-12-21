@@ -79,6 +79,36 @@ export default class ClassesView extends Vue {
         }
         .event-card {
             margin: 0 40px 40px 0;
+            @media all and (max-width: 470px) {
+                width: 300px;
+                &__date {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    p {
+                        margin-bottom: 10px;
+                        &:nth-last-of-type(1) {
+                            margin-bottom: 0;
+                        }
+                    }
+                }
+                &__statuses {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    div {
+                        margin-bottom: 10px;
+                        &:nth-last-of-type(1) {
+                            margin-bottom: 0;
+                        }
+                    }
+                }
+            }
+            @media all and (max-width: 420px) {
+                width: 260px;
+            }
         }
+    }
+    .flicking-viewport {
+        padding-bottom: 50px;
     }
 </style>

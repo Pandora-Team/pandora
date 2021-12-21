@@ -111,9 +111,9 @@ export default class WelcomeBanner extends Vue {
             &:before {
                 content: "";
                 position: absolute;
-                top: 0;
+                top: -10px;
                 left: 0;
-                height: 30px;
+                height: 40px;
                 width: 100%;
                 background: $color-black;
             }

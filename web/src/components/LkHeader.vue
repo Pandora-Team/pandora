@@ -9,14 +9,7 @@
                 <p class="header__name">
                     {{ fullName }}
                 </p>
-                <div @click="logout">
-                    <simple-svg
-                        :src="iconPath"
-                        width="32px"
-                        height="32px"
-                        custom-class-name="header__logout"
-                    />
-                </div>
+                <lk-logout />
             </div>
         </div>
     </div>
@@ -26,20 +19,17 @@
 
 import { Component, Vue } from "vue-property-decorator"
 import LkAvatar from "@/components/LkAvatar.vue"
-import paths from "@/router/paths"
 import LkSocial from "@/components/LkSocial.vue"
+import LkLogout from "@/components/LkLogout.vue"
 
 @Component({
     components: {
         LkAvatar,
         LkSocial,
+        LkLogout,
     },
 })
 export default class LkHeader extends Vue {
-
-    get iconPath(): string {
-        return require("@/assets/svg/logout.svg")
-    }
 
     get name(): string {
         return this.$mainStore.user.name
@@ -58,12 +48,6 @@ export default class LkHeader extends Vue {
             return ""
         }
     }
-
-    logout(): void {
-        this.$mainStore.user.logout()
-        this.$router.push({ path: paths.LoginLayout })
-    }
-
 
 }
 </script>
@@ -88,20 +72,6 @@ export default class LkHeader extends Vue {
         &__name {
             margin: 0 40px 0 16px;
             color: $color-black;
-        }
-        &__logout {
-            transition: .5s;
-            cursor: pointer;
-            opacity: 0.5;
-            path {
-              transition: .5s;
-            }
-            &:hover {
-              opacity: 1;
-              path {
-                fill: $color-purple;
-              }
-            }
         }
     }
 
