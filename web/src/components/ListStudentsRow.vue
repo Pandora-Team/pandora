@@ -1,6 +1,6 @@
 <template>
     <div class="list-students-row">
-        <div class="list-students-row__item">
+        <div class="list-students-row__item list-students-row__info">
             <div class="list-students-row__number">
                 {{ number }}
             </div>
@@ -11,13 +11,13 @@
                 {{ `${user.name} ${user.surname}` }}
             </div>
         </div>
-        <div class="list-students-row__birthday">
+        <div class="list-students-row__item list-students-row__birthday">
             Дата рождения: <b>{{ user.birthday }}</b>
         </div>
-        <div class="list-students-row__phone">
+        <div class="list-students-row__item list-students-row__phone">
             Телефон: <b>{{ user.phone }}</b>
         </div>
-        <div class="list-students-row__social">
+        <div class="list-students-row__item list-students-row__social">
             <lk-social-item
                 v-for="social in socialLink"
                 :key="social.id"
@@ -79,9 +79,47 @@ export default class ListStudentsRow extends Vue {
         padding: 16px 30px;
         background: $color-white;
         border-radius: 30px;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+        &:nth-last-of-type(1) {
+            margin-bottom: 0;
+        }
         &__item {
             display: flex;
             align-items: center;
+            @media all and (max-width: 1400px) {
+                width: 50%;
+                &.list-students-row__info {
+                    margin-bottom: 20px;
+                }
+                &.list-students-row__birthday {
+                    margin-bottom: 20px;
+                }
+            }
+            @media all and (max-width: 800px) {
+                width: 100%;
+                &.list-students-row__phone {
+                    margin-bottom: 20px;
+                }
+            }
+            @media all and (max-width: 420px) {
+                &.list-students-row__info {
+                    flex-wrap: wrap;
+                }
+                .list-students-row__name {
+                    margin-top: 10px;
+                    width: 100%;
+                }
+                &.list-students-row__birthday,
+                &.list-students-row__phone {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    b {
+                        margin-top: 10px;
+                    }
+                }
+            }
         }
         &__number {
             margin-right: 40px;
@@ -90,7 +128,7 @@ export default class ListStudentsRow extends Vue {
             margin-right: 20px;
         }
         &__social {
-            display: flex;
+
         }
     }
 </style>

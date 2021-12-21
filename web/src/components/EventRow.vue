@@ -90,6 +90,13 @@ export default class EventRow extends Vue {
                color: inherit;
                text-transform: uppercase;
            }
+           @media all and (max-width: 1000px) {
+               flex-direction: column;
+               align-items: flex-start;
+               h2 {
+                   margin-bottom: 20px;
+               }
+           }
        }
        &__date {
            color: inherit;
@@ -105,6 +112,16 @@ export default class EventRow extends Vue {
                    color: inherit;
                    font-size: $font-size-big-text;
                    font-weight: 400;
+               }
+           }
+           @media all and (max-width: 500px) {
+               flex-direction: column;
+               h4 {
+                   margin-right: 0;
+                   margin-bottom: 20px;
+                   &:nth-last-of-type(1) {
+                       margin-bottom: 0;
+                   }
                }
            }
        }
