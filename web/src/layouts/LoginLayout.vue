@@ -181,4 +181,19 @@ export default class LoginLayout extends Vue {
         }
     }
 }
+
+@media all and (max-width: 500px) {
+    .login {
+        &-body {
+            width: calc(100% - 40px);
+            padding: 0 20px;
+        }
+        &-content {
+            padding: 0;
+        }
+        &-line {
+            opacity: 0.2;
+        }
+    }
+}
 </style>

@@ -3,7 +3,7 @@
         id="app"
         class="app"
     >
-        <mobile-menu v-if="isMobile" />
+        <mobile-menu v-if="visibleMenu" />
         <loading-view v-if="loading" />
         <router-view v-else />
         <notification />
@@ -16,6 +16,8 @@ import { Component, Vue, Watch } from "vue-property-decorator"
 import Notification from "@/components/Notification.vue"
 import LoadingView from "@/components/LoadingView.vue"
 import MobileMenu from "@/components/MobileMenu.vue"
+import { Route } from "vue-router"
+import names from "@/router/names"
 
 @Component({
     components: {
@@ -50,6 +52,28 @@ export default class App extends Vue {
                 this.$mainStore.app.setLoading(false)
             }, 3000)
         }
+    }
+
+    @Watch("$route", { immediate: true, deep: true })
+    onRouteChange(route: Route): void {
+        this.visibleMobileMenu = !(route.name === names.LoginView ||
+            route.name === names.AuthenticationView ||
+            route.name === names.RegistrationView ||
+            route.name === names.PolicyView)
+        if (
+            route.name === names.AboutView ||
+            route.name === names.RulesView
+        ) {
+            this.$mainStore.app.setNeedScrollIntoBody(true)
+        } else {
+            this.$mainStore.app.setNeedScrollIntoBody(false)
+        }
+    }
+
+    visibleMobileMenu = false
+
+    get visibleMenu(): boolean {
+        return this.visibleMobileMenu && this.isMobile
     }
 
     get loading(): boolean {

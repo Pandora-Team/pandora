@@ -53,9 +53,11 @@ export default class InfoDropDown extends Vue {
         justify-content: center;
         padding: 30px 40px;
         cursor: pointer;
+        @media all and (max-width: 500px) {
+            padding: 20px 30px;
+        }
         &__title {
             margin-bottom: 0;
-            transition: margin-bottom .5s;
             color: $color-black;
             font-weight: 700;
             position: relative;
@@ -71,6 +73,9 @@ export default class InfoDropDown extends Vue {
                 border-style: solid;
                 border-width: 5.41px 5px 0 5px;
                 border-color: $color-black transparent transparent transparent;
+            }
+            @media all and (max-width: 500px) {
+                width: 100%;
             }
         }
         &--active {

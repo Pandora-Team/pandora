@@ -1,24 +1,15 @@
 <template>
     <div class="profile-card edit">
         <div
-            v-if="!isMobile"
-            class="profile-card__btn"
-            @click="saveEdit"
-        >
-            Сохранить
-            <simple-svg
-                :src="iconPath"
-                width="29px"
-                height="29px"
-                custom-class-name="profile-card__btn-icon"
-            />
-        </div>
+            class="profile-card__close"
+            @click="back"
+        />
         <div class="profile-row">
             <div
                 class="profile-avatar profile-avatar--edit"
                 @click="changeAvatar"
             >
-                <lk-avatar width="full" />
+                <lk-avatar :width="widthAvatar" />
             </div>
             <div class="profile-column">
                 <main-form-item
@@ -45,15 +36,15 @@
                 v-model="birthday"
                 label="Дата рождения *"
                 type="text"
-                placeholder="09.09.1999"
+                placeholder="дд.мм.гггг"
                 inline-class="profile"
             />
             <main-form-item
                 id="vk"
                 v-model="vk"
-                label="Вконтакте *"
+                label="ВКонтакте *"
                 type="text"
-                placeholder="Вконтакте"
+                placeholder="Ссылка"
                 inline-class="profile"
             />
         </div>
@@ -63,7 +54,7 @@
                 v-model="instagram"
                 label="Инстаграм *"
                 type="text"
-                placeholder="Инстаграм"
+                placeholder="Ссылка"
                 inline-class="profile"
             />
             <main-form-item
@@ -71,12 +62,11 @@
                 v-model="telegram"
                 label="Телеграм *"
                 type="text"
-                placeholder="Телеграм"
+                placeholder="Ссылка"
                 inline-class="profile"
             />
         </div>
         <main-btn
-            v-if="isMobile"
             :full-width="true"
             @click="saveEdit"
         >
@@ -125,6 +115,11 @@ export default class ProfileCardEdit extends Vue {
         return this.$mainStore.app.isMobile
     }
 
+    get widthAvatar(): string {
+        if (window.innerWidth < 500) return "max"
+        return "full"
+    }
+
     async saveEdit(): Promise<void> {
         try {
             const userId = this.$mainStore.user.id
@@ -168,6 +163,10 @@ export default class ProfileCardEdit extends Vue {
     changeAvatar(): void {
         this.$mainStore.popup.changeActiveCropPopup(true)
     }
+
+    back(): void {
+        this.$emit("edit", false)
+    }
 }
 </script>
 
@@ -187,6 +186,17 @@ export default class ProfileCardEdit extends Vue {
                     margin-left: 12px;
                 }
             }
+            &__close {
+                cursor: pointer;
+                position: absolute;
+                z-index: 2;
+                top: -10px;
+                right: -10px;
+                width: 44px;
+                height: 44px;
+                background: url("../assets/svg/close-red.svg") center no-repeat;
+                background-size: contain;
+            }
         }
         &-row {
             display: flex;
@@ -205,6 +215,12 @@ export default class ProfileCardEdit extends Vue {
             &:nth-last-of-type(1) {
                 margin-bottom: 0;
             }
+            @media all and (max-width: 800px) {
+                margin-bottom: 20px;
+                &:nth-last-of-type(2) {
+                    margin-bottom: 30px;
+                }
+            }
         }
         &-column {
             margin-top: 28px;
@@ -216,6 +232,9 @@ export default class ProfileCardEdit extends Vue {
                 margin-right: 0;
                 &:nth-last-of-type(1) {
                     margin-bottom: 0;
+                }
+                @media all and (max-width: 800px) {
+                    margin-bottom: 20px;
                 }
             }
         }
@@ -237,6 +256,14 @@ export default class ProfileCardEdit extends Vue {
                     width: 238px;
                     height: 238px;
                     border-radius: 40px;
+                }
+                @media all and (max-width: 500px) {
+                    &::after {
+                        width: 117px;
+                        height: 117px;
+                        border-radius: 30px;
+                        background-size: 40px;
+                    }
                 }
             }
         }

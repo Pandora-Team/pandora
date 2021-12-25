@@ -1,17 +1,15 @@
 <template>
-    <transition name="dropdown">
-        <ul
-            v-if="active"
-            class="info-list"
-            :class="inlineClass"
-        >
-            <li
-                v-for="(item, index) in text"
-                :key="index"
-                v-html="item"
-            />
-        </ul>
-    </transition>
+    <ul
+        v-show="active"
+        class="info-list"
+        :class="inlineClass"
+    >
+        <li
+            v-for="(item, index) in text"
+            :key="index"
+            v-html="item"
+        />
+    </ul>
 </template>
 
 <script lang="ts">
@@ -71,12 +69,5 @@ export default class InfoList extends Vue {
                 margin-bottom: 15px;
             }
         }
-    }
-    .dropdown-enter-active, .dropdown-leave-active {
-        transition: all .5s ease;
-    }
-    .dropdown-enter, .dropdown-leave-to {
-        transform: translateY(10px);
-        opacity: 0;
     }
 </style>

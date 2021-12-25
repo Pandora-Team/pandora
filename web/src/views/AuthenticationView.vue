@@ -16,7 +16,7 @@
                         label="Телефон *"
                         type="text"
                         :error="errorPhoneInput"
-                        placeholder="+79999999999"
+                        placeholder="+7__________"
                     />
                     <main-form-item
                         id="password"
@@ -28,7 +28,9 @@
                     />
                 </template>
                 <template #cancel>
-                    <p>Забыл зарегистрироваться? Тебе <span @click="goToReg">сюда</span></p>
+                    <p class="redirect">
+                        Забыл зарегистрироваться? Тебе <span @click="goToReg">сюда</span>
+                    </p>
                 </template>
             </main-form>
         </div>

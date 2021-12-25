@@ -118,5 +118,8 @@ export default class WelcomeBanner extends Vue {
                 background: $color-black;
             }
         }
+        .welcome-banner {
+            box-shadow: $shadow-banner;
+        }
     }
 </style>

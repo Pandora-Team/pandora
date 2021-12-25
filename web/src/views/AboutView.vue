@@ -7,7 +7,7 @@
                 <info-text :data="dataFirst" />
                 <info-text :data="dataSecond" />
             </div>
-            <div class="information-item">
+            <div class="information-item information-item--img">
                 <img
                     class="information__img"
                     src="@/assets/images/about-img2.png"
@@ -17,7 +17,7 @@
         </div>
         <info-text :data="dataThird" />
         <div class="information-block">
-            <div class="information-item">
+            <div class="information-item information-item--img">
                 <img
                     class="information__img"
                     src="@/assets/images/about-img.png"
@@ -156,6 +156,9 @@ export default class AboutView extends Vue {
                 @media all and (max-width: 1600px) {
                     margin-left: 0;
                 }
+            }
+            &--img {
+                flex-shrink: 0;
             }
         }
         &__img {

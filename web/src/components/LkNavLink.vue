@@ -158,6 +158,7 @@ export default class LkNavLink extends Vue {
 
     @media all and (max-width: 800px) {
         .nav-link {
+            min-height: 60px;
             &__wrapper {
                 padding-left: 25px;
 

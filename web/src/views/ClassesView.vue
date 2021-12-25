@@ -79,8 +79,10 @@ export default class ClassesView extends Vue {
         }
         .event-card {
             margin: 0 40px 40px 0;
-            @media all and (max-width: 470px) {
+            @media all and (max-width: 500px) {
+                margin: 0 20px 0 0;
                 width: 300px;
+                height: 380px;
                 &__date {
                     flex-direction: column;
                     align-items: flex-start;
@@ -110,5 +112,8 @@ export default class ClassesView extends Vue {
     }
     .flicking-viewport {
         padding-bottom: 50px;
+        @media all and (max-width: 500px) {
+            padding-bottom: 0;
+        }
     }
 </style>

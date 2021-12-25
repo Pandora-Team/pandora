@@ -62,7 +62,7 @@ export default class ProfileCard extends Vue {
     }
 
     get widthAvatar(): string {
-        if (window.innerWidth < 420) return "max"
+        if (window.innerWidth < 500) return "max"
         return "full"
     }
 
@@ -104,6 +104,7 @@ export default class ProfileCard extends Vue {
             h3 {
                 color: inherit;
                 margin-bottom: 40px;
+                padding-right: 30px;
             }
             p {
                 color: $color-gray;

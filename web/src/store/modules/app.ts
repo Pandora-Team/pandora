@@ -11,6 +11,14 @@ export class App {
     @State()
     isMobile = false
 
+    @State()
+    needScrollIntoBody = false
+
+    @Mutation()
+    public setNeedScrollIntoBody(state: boolean): void {
+        this.needScrollIntoBody = state
+    }
+
     @Mutation()
     public setDisabled(status: boolean): void {
         this.disable = status
