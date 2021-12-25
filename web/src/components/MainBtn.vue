@@ -145,5 +145,8 @@ export default class MainBtn extends Vue {
         min-width: auto;
         margin-right: 15px;
     }
+    @media all and (max-width: 500px) {
+        white-space: nowrap;
+    }
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <div class="logo">
+    <div class="logo-lk">
         <simple-svg
             :src="iconPath"
             width="94px"
@@ -21,7 +21,7 @@ export default class LkLogo extends Vue {
 </script>
 
 <style lang="scss">
-    .logo {
+    .logo-lk {
         display: flex;
         justify-content: center;
         align-items: center;

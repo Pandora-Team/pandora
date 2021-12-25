@@ -173,7 +173,7 @@ export default class WelcomeView extends Vue {
     @media all and (max-width: 800px) {
         .welcome {
             max-width: 440px;
-            margin: 0 auto;
+            margin: -30px auto 0;
             &-grid {
                 grid-template-columns: 1fr;
                 grid-auto-rows: auto;

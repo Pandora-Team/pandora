@@ -60,6 +60,7 @@ export default class MainInput extends Vue {
     get inlineClass(): any {
         return {
             "input-wrapper--file": this.id === "file",
+            "input-wrapper--password": this.type === "password",
         }
     }
 
@@ -84,10 +85,10 @@ export default class MainInput extends Vue {
         &::before {
             content: "";
             position: absolute;
-            top: -2px;
-            bottom: -2px;
-            left: -2px;
-            right: -2px;
+            top: -1px;
+            bottom: -1px;
+            left: -1px;
+            right: -1px;
             border-radius: $border-radius-input;
             z-index: 0;
             background: $gradient-btn;
@@ -96,6 +97,12 @@ export default class MainInput extends Vue {
             .input {
                 width: 150px;
                 padding: 16px 40px 16px 70px;
+            }
+        }
+        &--password {
+            .input {
+                width: calc(100% - 110px);
+                padding: 16px 70px 16px 40px;
             }
         }
         input {
@@ -143,6 +150,20 @@ export default class MainInput extends Vue {
 
             input {
                 width: calc(100% - 80px);
+            }
+        }
+    }
+    @media all and (max-width: 500px) {
+        .input-wrapper {
+            input {
+                width: calc(100% - 40px);
+                padding: 16px 20px;
+            }
+            &--password {
+                .input {
+                    width: calc(100% - 90px);
+                    padding: 16px 70px 16px 20px;
+                }
             }
         }
     }

@@ -1,7 +1,7 @@
 <template>
     <div
         class="lk-body__wrapper"
-        :class="{'lk-body__wrapper--mt': mobile}"
+        :class="inlineClass"
     >
         <transition-fade>
             <router-view />
@@ -24,6 +24,17 @@ export default class LkBody extends Vue {
     @Prop({ type: Boolean, default: false })
     mobile!: boolean
 
+    get inlineClass(): any {
+        return {
+            "lk-body__wrapper--mt":     this.mobile,
+            "lk-body__wrapper--scroll": this.needScroll,
+        }
+    }
+
+    get needScroll(): boolean {
+        return this.$mainStore.app.needScrollIntoBody
+    }
+
 }
 </script>
 
@@ -35,7 +46,7 @@ export default class LkBody extends Vue {
             margin-bottom: 30px;
         }
         &--mt {
-            margin-top: 70px;
+            margin-top: 100px;
         }
     }
 </style>

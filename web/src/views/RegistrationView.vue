@@ -34,14 +34,14 @@
                         label="Телефон *"
                         type="text"
                         :error="errorPhoneInput"
-                        placeholder="+79999999999"
+                        placeholder="+7__________"
                     />
                     <main-form-item
                         id="birthday"
                         v-model="$v.birthday.$model"
                         label="Дата рождения"
                         type="text"
-                        placeholder="09.09.1999"
+                        placeholder="дд.мм.гггг"
                     />
                 </template>
                 <template #bottom>
@@ -74,7 +74,9 @@
                     </p>
                 </template>
                 <template #cancel>
-                    <p>Уже был здесь? Тогда тебе <span @click="goToAuth">сюда</span></p>
+                    <p class="redirect">
+                        Уже был здесь? Тогда тебе <span @click="goToAuth">сюда</span>
+                    </p>
                 </template>
             </main-form>
         </div>
@@ -228,7 +230,7 @@ export default class RegistrationView extends Vue {
     }
     .privacy {
         text-align: center;
-        font-size: 16px;
+        font-size: 14px;
         max-width: 560px;
         position: relative;
         z-index: 2;
@@ -238,8 +240,17 @@ export default class RegistrationView extends Vue {
         margin-bottom: 40px;
         a {
             text-decoration: underline;
-            font-size: 16px;
+            font-size: 14px;
             color: #AD00FF;
+        }
+    }
+    .redirect {
+        span {
+            transition: .5s;
+            &:hover {
+                outline: none;
+                color: $color-hover-text;
+            }
         }
     }
 

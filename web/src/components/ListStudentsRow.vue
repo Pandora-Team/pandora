@@ -11,12 +11,13 @@
                 {{ `${user.name} ${user.surname}` }}
             </div>
         </div>
-        <div class="list-students-row__item list-students-row__birthday">
-            Дата рождения: <b>{{ user.birthday }}</b>
-        </div>
         <div class="list-students-row__item list-students-row__phone">
             Телефон: <b>{{ user.phone }}</b>
         </div>
+        <div
+            class="list-students-row__item list-students-row__birthday"
+            v-html="birthdayText"
+        />
         <div class="list-students-row__item list-students-row__social">
             <lk-social-item
                 v-for="social in socialLink"
@@ -50,6 +51,11 @@ export default class ListStudentsRow extends Vue {
 
     get number(): number {
         return this.index + 1
+    }
+
+    get birthdayText(): string {
+        if (this.user.birthday) return `Дата рождения: <b>${this.user.birthday}</b>`
+        return `Дата рождения: <b>&#8212;</b>`
     }
 
     get socialLink(): SocialData[] {
@@ -86,7 +92,12 @@ export default class ListStudentsRow extends Vue {
         }
         &__item {
             display: flex;
+            justify-content: center;
             align-items: center;
+            width: 25%;
+            b {
+                margin-left: 10px;
+            }
             @media all and (max-width: 1400px) {
                 width: 50%;
                 &.list-students-row__info {

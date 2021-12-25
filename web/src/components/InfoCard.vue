@@ -33,6 +33,7 @@ export default class InfoCard extends Vue {
                     max-width: 408px;
                     max-height: 210px;
                     margin-right: 42px;
+                    width: 100%;
                 }
                 h4 {
                     color: $color-hover;
@@ -149,8 +150,6 @@ export default class InfoCard extends Vue {
         .info-card {
             &__wrapper {
                 &--profile {
-                    align-items: flex-end;
-
                     .info-card__content {
                         margin-right: 10px;
                     }

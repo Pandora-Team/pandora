@@ -42,6 +42,9 @@ export default class InfoBanner extends Vue {
         @media all and (max-width: 1600px) {
             height: 460px;
         }
+        @media all and (max-width: 500px) {
+            height: 400px;
+        }
         &__wrapper {
             width: 100%;
             display: flex;
@@ -74,6 +77,10 @@ export default class InfoBanner extends Vue {
             color: $color-white;
             font-weight: 700;
             margin-bottom: 0;
+            @media all and (max-width: 500px) {
+                font-size: 24px;
+                line-height: 30px;
+            }
         }
         &--somi {
             &::after {
@@ -90,8 +97,8 @@ export default class InfoBanner extends Vue {
                     right: 0;
                     background: url("../assets/banner/somi-min.png") no-repeat;
                 }
-                @media all and (max-width: 430px) {
-                    width: 300px;
+                @media all and (max-width: 500px) {
+                    width: 299px;
                     height: 270px;
                     background-size: contain;
                 }

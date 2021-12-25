@@ -7,7 +7,10 @@
             <lk-logo />
             <lk-nav />
         </div>
-        <div class="lk-body">
+        <div
+            class="lk-body"
+            :class="inlineClass"
+        >
             <lk-header v-if="!isMobile" />
             <lk-body :mobile="isMobile" />
         </div>
@@ -61,6 +64,16 @@ export default class LkLayout extends Vue {
         return this.$mainStore.app.isMobile
     }
 
+    get inlineClass(): any {
+        return {
+            "lk-body--scroll": this.needScroll,
+        }
+    }
+
+    get needScroll(): boolean {
+        return this.$mainStore.app.needScrollIntoBody
+    }
+
     async mounted(): Promise<void> {
         if (this.userId) {
             await this.$mainStore.user.getUserInfo()
@@ -80,66 +93,93 @@ export default class LkLayout extends Vue {
 </script>
 
 <style lang="scss">
-    .lk {
-        display: flex;
-        min-height: 100vh;
-        background-color: $color-black;
-        background-image: url("../assets/bg/lk-line.png");
-        background-repeat: no-repeat;
-        background-position: left bottom;
-        background-size: 265px 193px;
-        @media all and (max-width: 800px) {
-            background-color: $color-white;
-        }
-        &-aside {
-            min-width: 300px;
-        }
-        &-body {
-          width: 100%;
-          margin: 40px 40px 40px 0;
-          background: $color-white;
-          border-radius: 40px;
-        }
-    }
-
-    @media all and (max-width: 1366px) {
-        .lk {
-            background-image: none;
-
-            &-body {
-                margin: 10px 10px 10px 0;
-                border-radius: 0 0 40px 40px;
-            }
-
-            &-aside {
-                min-width: 200px;
-            }
-        }
-    }
-
-    @media all and (max-width: 1000px) {
-        .lk {
-            &-body {
-                &__wrapper {
-                    padding: 20px 30px 50px;
-                }
-            }
-
-            &-aside {
-                min-width: 84px;
-            }
-        }
-    }
-
+.lk {
+    display: flex;
+    min-height: 100vh;
+    background-color: $color-black;
+    background-image: url("../assets/bg/lk-line.png");
+    background-repeat: no-repeat;
+    background-position: left bottom;
+    background-size: 265px 193px;
     @media all and (max-width: 800px) {
-        .lk {
-            padding: 20px;
-            &-body {
-                margin: 0;
-                &__wrapper {
-                    padding: 0;
+        background-color: $color-white;
+    }
+
+    &-aside {
+        min-width: 300px;
+    }
+
+    &-body {
+        width: 100%;
+        margin: 40px 40px 40px 0;
+        background: $color-white;
+        border-radius: 40px;
+        position: relative;
+
+        &--scroll {
+            .lk-body__wrapper {
+                max-height: 717px;
+                overflow-y: scroll;
+                scrollbar-width: none;
+                &::-webkit-scrollbar {
+                    width: 0;
+                    height: 0;
                 }
+            }
+            &::after {
+                content: "";
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                height: 65px;
+                width: 100%;
+                background: linear-gradient(360deg, rgba(94, 42, 195, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
+            }
+        }
+
+    }
+}
+
+@media all and (max-width: 1366px) {
+    .lk {
+        background-image: none;
+
+        &-body {
+            margin: 10px 10px 10px 0;
+            border-radius: 0 0 40px 40px;
+        }
+
+        &-aside {
+            min-width: 200px;
+        }
+    }
+}
+
+@media all and (max-width: 1000px) {
+    .lk {
+        &-body {
+            &__wrapper {
+                padding: 20px 30px 50px;
+            }
+        }
+
+        &-aside {
+            min-width: 84px;
+        }
+    }
+}
+
+@media all and (max-width: 800px) {
+    .lk {
+        padding: 20px;
+
+        &-body {
+            margin: 0;
+
+            &__wrapper {
+                padding: 0;
             }
         }
     }
+}
 </style>
