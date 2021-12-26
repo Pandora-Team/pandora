@@ -6,6 +6,12 @@
         <mobile-menu v-if="visibleMenu" />
         <loading-view v-if="loading" />
         <router-view v-else />
+        <popup-record v-if="$mainStore.popup.activeRecordPopup" />
+        <popup-create v-if="$mainStore.popup.activeCreatePopup" />
+        <popup-cancel v-if="$mainStore.popup.activeCancelPopup" />
+        <popup-welcome v-if="$mainStore.popup.activeWelcomePopup" />
+        <popup-payment v-if="$mainStore.popup.activePaymentPopup" />
+        <popup-crop v-if="$mainStore.popup.activeCropPopup" />
         <notification />
     </div>
 </template>
@@ -18,12 +24,24 @@ import LoadingView from "@/components/LoadingView.vue"
 import MobileMenu from "@/components/MobileMenu.vue"
 import { Route } from "vue-router"
 import names from "@/router/names"
+import PopupRecord from "@/components/PopupRecord.vue"
+import PopupCreate from "@/components/PopupCreate.vue"
+import PopupCancel from "@/components/PopupCancel.vue"
+import PopupWelcome from "@/components/PopupWelcome.vue"
+import PopupPayment from "@/components/PopupPayment.vue"
+import PopupCrop from "@/components/PopupCrop.vue"
 
 @Component({
     components: {
         Notification,
         LoadingView,
         MobileMenu,
+        PopupRecord,
+        PopupCreate,
+        PopupCancel,
+        PopupWelcome,
+        PopupPayment,
+        PopupCrop,
     },
 })
 export default class App extends Vue {
