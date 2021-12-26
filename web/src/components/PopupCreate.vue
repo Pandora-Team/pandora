@@ -1,5 +1,8 @@
 <template>
-    <main-popup @close="closePopup">
+    <main-popup
+        color-icon-close="white"
+        @close="closePopup"
+    >
         <div class="event-create">
             <h3>{{ titlePopup }}</h3>
             <main-form
@@ -148,11 +151,21 @@ export default class PopupCreate extends Vue {
         background: $bg-input;
         padding: 60px;
         box-sizing: border-box;
+        @media all and (max-width: 500px) {
+            padding: 20px;
+            overflow-y: scroll;
+            height: 600px;
+        }
         h3 {
             text-transform: uppercase;
             color: white;
             text-align: center;
             margin-bottom: 40px;
+            line-height: 30px;
+            @media all and (max-width: 500px) {
+                padding-right: 30px;
+                text-align: left;
+            }
         }
     }
 </style>

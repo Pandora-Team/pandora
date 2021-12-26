@@ -97,6 +97,9 @@ export default class MainInput extends Vue {
             .input {
                 width: 150px;
                 padding: 16px 40px 16px 70px;
+                @media all and (max-width: 500px) {
+                    width: calc(100% - 110px);
+                }
             }
         }
         &--password {
