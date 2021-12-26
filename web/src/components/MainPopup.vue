@@ -3,7 +3,7 @@
         <div class="main-popup">
             <div class="main-popup__wrapper">
                 <icon-close
-                    :color="colorIconClose"
+                    :color="dynamicColorIconClose"
                     class="main-popup__close"
                     @close="closePopup"
                 />
@@ -15,7 +15,7 @@
 
 <script lang="ts">
 
-import { Component, Vue } from "vue-property-decorator"
+import { Component, Vue, Prop } from "vue-property-decorator"
 import TransitionFade from "@/components/transition/TransitionFade.vue"
 import IconClose from "@/components/IconClose.vue"
 
@@ -28,6 +28,9 @@ import IconClose from "@/components/IconClose.vue"
 })
 export default class MainPopup extends Vue {
 
+    @Prop({ type: String })
+    colorIconClose!: string
+
     closePopup(): void {
         this.$emit("close")
     }
@@ -36,7 +39,8 @@ export default class MainPopup extends Vue {
         return this.$mainStore.app.isMobile
     }
 
-    get colorIconClose(): string {
+    get dynamicColorIconClose(): string {
+        if (this.colorIconClose) return this.colorIconClose
         if (this.isMobile) return "black"
         return "white"
     }

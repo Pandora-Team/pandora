@@ -1,5 +1,8 @@
 <template>
-    <main-popup @close="closePopup">
+    <main-popup
+        color-icon-close="white"
+        @close="closePopup"
+    >
         <div class="profile-crop">
             <div class="profile-crop__choose">
                 <croppa
@@ -19,17 +22,17 @@
                 class="profile-crop__action"
             >
                 <main-btn
+                    :auto-width="true"
+                    @click="generateImage"
+                >
+                    Сохранить
+                </main-btn>
+                <main-btn
                     view="error"
                     :auto-width="true"
                     @click="removeImage"
                 >
                     Удалить
-                </main-btn>
-                <main-btn
-                    :auto-width="true"
-                    @click="generateImage"
-                >
-                    Сохранить
                 </main-btn>
             </div>
         </div>
@@ -108,17 +111,31 @@ export default class PopupCrop extends Vue {
         width: 100%;
         height: auto;
         border-radius: 25px;
+        @media all and (max-width: 500px) {
+            min-width: auto;
+            padding: 60px 40px 40px 40px;
+        }
         &__choose {
             margin-bottom: 30px;
             display: flex;
             justify-content: center;
+            @media all and (max-width: 500px) {
+                justify-content: flex-start;
+            }
         }
         &__action {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            .btn-wrapper {
-
+            @media all and (max-width: 500px) {
+                flex-direction: column;
+                align-items: flex-start;
+                .btn-wrapper {
+                    margin-right: 0;
+                    &:nth-last-of-type(1) {
+                        margin-top: 20px;
+                    }
+                }
             }
         }
     }

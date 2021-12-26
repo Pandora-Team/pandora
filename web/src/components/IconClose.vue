@@ -32,7 +32,8 @@ export default class IconClose extends Vue {
         return [{
             "icon-close--white": this.color === "white",
             "icon-close--black": this.color === "black",
-        }, 
+            "icon-close--red":   this.color === "red",
+        },
         this.class,
         ]
     }
@@ -54,6 +55,11 @@ export default class IconClose extends Vue {
        &--black {
            path {
                fill: $color-black;
+           }
+       }
+       &--red {
+           path {
+               fill: $color-red;
            }
        }
    }
