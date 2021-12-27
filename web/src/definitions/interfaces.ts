@@ -22,13 +22,6 @@ export interface UserInfo {
     status_id: string
 }
 
-
-export interface SocialData {
-    id: number
-    path: string
-    icon: string
-}
-
 export interface UpdateUserData {
     vk?: string
     telegram?: string
@@ -48,6 +41,7 @@ export interface SocialData {
     id: number
     path: string
     icon: string
+    active: boolean
 }
 
 export interface UserData {
@@ -56,7 +50,7 @@ export interface UserData {
     birthday: string
     avatar?: string
     surname: string
-    vk?: string
-    instagram?: string
-    telegram?: string
+    vk: string
+    instagram: string
+    telegram: string
 }

@@ -155,12 +155,23 @@ export default class EventRowStudent extends Vue {
        padding: 16px 30px;
        background: $color-white;
        border-radius: 30px;
+       @media all and (max-width: 500px) {
+           flex-direction: column;
+           align-items: flex-start;
+           padding: 16px 20px;
+       }
        &--variants {
            padding-bottom: 56px;
+           @media all and (max-width: 500px) {
+               padding-bottom: 16px;
+           }
        }
        &-block {
            display: flex;
            align-items: center;
+           @media all and (max-width: 500px) {
+               margin: 0 auto 20px;
+           }
        }
        &-number {
            margin-right: 36px;
@@ -179,6 +190,16 @@ export default class EventRowStudent extends Vue {
                    margin-left: 20px;
                }
            }
+           @media all and (max-width: 500px) {
+               margin-bottom: 20px;
+               p {
+                   line-height: 24px;
+                   margin-bottom: 10px;
+                   b {
+                       margin-left: 0;
+                   }
+               }
+           }
        }
        &-visit {
            position: relative;
@@ -188,11 +209,33 @@ export default class EventRowStudent extends Vue {
                    margin-left: 20px;
                }
            }
+           @media all and (max-width: 500px) {
+               p {
+                   line-height: 24px;
+                   margin-bottom: 10px;
+                   b {
+                       margin-left: 0;
+                   }
+               }
+           }
        }
        &-action {
            position: absolute;
            right: 0;
            top: 35px;
+           @media all and (max-width: 500px) {
+               position: relative;
+               top: 0;
+               display: flex;
+               flex-direction: column;
+               .btn-status {
+                   text-align: center;
+                   &:nth-of-type(1) {
+                       margin-right: 0;
+                       margin-bottom: 10px;
+                   }
+               }
+           }
        }
    }
 </style>

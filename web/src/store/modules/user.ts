@@ -146,20 +146,17 @@ export class User {
 
     @Getter()
     public get socialLink(): SocialData[] {
-        const data = []
-        let id = 1
-        if (this.vk) {
-            data.push({ id: id, path: this.vk, icon: "vk" })
-            id++
-        }
-        if (this.instagram) {
-            data.push({ id: id, path: this.instagram, icon: "inst" })
-            id++
-        }
-        if (this.telegram) {
-            data.push({ id: id, path: this.telegram, icon: "telegram" })
-        }
-        return data
+        return [
+            {
+                id: 1, path: this.vk, icon: "vk", active: Boolean(this.vk),
+            },
+            {
+                id: 2, path: this.instagram, icon: "inst", active: Boolean(this.instagram),
+            },
+            {
+                id: 3, path: this.telegram, icon: "telegram", active: Boolean(this.telegram),
+            },
+        ]
     }
 
 }

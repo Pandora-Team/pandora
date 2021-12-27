@@ -1,6 +1,7 @@
 <template>
     <div
         class="social-item"
+        :class="{'social-item--non_active': !social.active}"
         @click="onClick"
     >
         <simple-svg
@@ -28,6 +29,7 @@ export default class LkSocialItem extends Vue {
     }
 
     onClick(): void {
+        if (!this.social.path) return
         window.open(`${this.social.path}`, "_blank")
     }
 
@@ -52,6 +54,17 @@ export default class LkSocialItem extends Vue {
             &:hover {
                 path:nth-of-type(1) {
                     fill: $color-lilac;
+                }
+            }
+        }
+        &--non_active {
+            cursor: auto;
+            path:nth-of-type(1) {
+                fill: $color-gray;
+            }
+            .social-item__icon:hover {
+                path:nth-of-type(1) {
+                    fill: $color-gray;
                 }
             }
         }
