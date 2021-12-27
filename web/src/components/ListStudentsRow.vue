@@ -1,9 +1,9 @@
 <template>
     <div class="list-students-row">
         <div class="list-students-row__item list-students-row__info">
-            <div class="list-students-row__number">
+<!--            <div class="list-students-row__number">
                 {{ number }}
-            </div>
+            </div>-->
             <div class="list-students-row__avatar">
                 <lk-avatar />
             </div>
@@ -49,9 +49,9 @@ export default class ListStudentsRow extends Vue {
     @Prop({ type: Number })
     readonly index!: number
 
-    get number(): number {
+    /*get number(): number {
         return this.index + 1
-    }
+    }*/
 
     get birthdayText(): string {
         if (this.user.birthday) return `Дата рождения: <b>${this.user.birthday}</b>`
@@ -59,20 +59,17 @@ export default class ListStudentsRow extends Vue {
     }
 
     get socialLink(): SocialData[] {
-        const data = []
-        let id = 1
-        if (this.user.vk) {
-            data.push({ id: id, path: this.user.vk, icon: "vk" })
-            id++
-        }
-        if (this.user.instagram) {
-            data.push({ id: id, path: this.user.instagram, icon: "inst" })
-            id++
-        }
-        if (this.user.telegram) {
-            data.push({ id: id, path: this.user.telegram, icon: "telegram" })
-        }
-        return data
+        return [
+            {
+                id: 1, path: this.user.vk, icon: "vk", active: Boolean(this.user.vk),
+            },
+            {
+                id: 2, path: this.user.instagram, icon: "inst", active: Boolean(this.user.instagram),
+            },
+            {
+                id: 3, path: this.user.telegram, icon: "telegram", active: Boolean(this.user.telegram),
+            },
+        ]
     }
 }
 </script>
@@ -100,6 +97,9 @@ export default class ListStudentsRow extends Vue {
             }
             @media all and (max-width: 1400px) {
                 width: 50%;
+                b {
+                    margin-left: 0;
+                }
                 &.list-students-row__info {
                     margin-bottom: 20px;
                 }
@@ -137,6 +137,9 @@ export default class ListStudentsRow extends Vue {
         }
         &__avatar {
             margin-right: 20px;
+            @media all and (max-width: 500px) {
+                margin-right: 0;
+            }
         }
         &__social {
 

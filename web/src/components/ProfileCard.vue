@@ -15,10 +15,7 @@
             <div class="profile-desc">
                 <h3>{{ fullName }}</h3>
                 <p>День Рождения:&nbsp;<span>{{ birthday }}</span></p>
-                <div
-                    v-if="socialLink.length"
-                    class="profile-social"
-                >
+                <div class="profile-social">
                     <lk-social-item
                         v-for="social in socialLink"
                         :key="social.id"

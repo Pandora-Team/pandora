@@ -7,6 +7,9 @@ export class RegisterDto {
     readonly surname?: string
     reg_date?: string
     visit_date?: string
+    vk?: string
+    telegram?: string
+    instagram?: string
 }
 
 export class LoginDto {

@@ -8,6 +8,9 @@ export class CreateUserDto {
     readonly surname: string
     readonly reg_date?: string
     readonly visit_date?: string
+    vk?: string
+    telegram?: string
+    instagram?: string
 }
 
 export class UpdateUserDto {
