@@ -82,6 +82,9 @@ export default class PopupCancel extends Vue {
                 width: 410px;
                 height: 545px;
                 border-radius: 30px;
+                @media all and (max-width: 500px) {
+                    width: 100%;
+                }
             }
             &:hover {
                 box-shadow: none!important;
@@ -95,6 +98,13 @@ export default class PopupCancel extends Vue {
             justify-content: space-between;
             align-items: center;
             margin-bottom: 30px;
+            @media all and (max-width: 500px) {
+                flex-direction: column;
+                align-items: flex-start;
+                .btn-wrapper:nth-of-type(1) {
+                    margin-bottom: 20px;
+                }
+            }
         }
     }
 </style>

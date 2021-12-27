@@ -4,7 +4,7 @@
             <div class="main-popup__wrapper">
                 <icon-close
                     :color="dynamicColorIconClose"
-                    class="main-popup__close"
+                    classes="main-popup__close"
                     @close="closePopup"
                 />
                 <slot />

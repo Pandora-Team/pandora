@@ -2,7 +2,7 @@
     <div class="profile-card edit">
         <icon-close
             color="red"
-            class="profile-card__close"
+            classes="profile-card__close"
             @close="back"
         />
         <div class="profile-row">

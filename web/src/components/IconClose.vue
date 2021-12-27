@@ -22,7 +22,7 @@ export default class IconClose extends Vue {
     color!: string
 
     @Prop({ type: String, default: "" })
-    class!: string
+    classes!: string
 
     get iconPath(): string {
         return require("@/assets/svg/close.svg")
@@ -34,7 +34,7 @@ export default class IconClose extends Vue {
             "icon-close--black": this.color === "black",
             "icon-close--red":   this.color === "red",
         },
-        this.class,
+        this.classes,
         ]
     }
 
