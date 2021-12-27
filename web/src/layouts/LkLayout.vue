@@ -14,12 +14,6 @@
             <lk-header v-if="!isMobile" />
             <lk-body :mobile="isMobile" />
         </div>
-        <popup-record v-if="$mainStore.popup.activeRecordPopup" />
-        <popup-create v-if="$mainStore.popup.activeCreatePopup" />
-        <popup-cancel v-if="$mainStore.popup.activeCancelPopup" />
-        <popup-welcome v-if="$mainStore.popup.activeWelcomePopup" />
-        <popup-payment v-if="$mainStore.popup.activePaymentPopup" />
-        <popup-crop v-if="$mainStore.popup.activeCropPopup" />
     </div>
 </template>
 
@@ -31,13 +25,6 @@ import LkBody from "@/components/LkBody.vue"
 import LkNav from "@/components/LkNav.vue"
 import LkHeader from "@/components/LkHeader.vue"
 import { getUserId } from "@/api/auth"
-import PopupRecord from "@/components/PopupRecord.vue"
-import PopupCreate from "@/components/PopupCreate.vue"
-import PopupCancel from "@/components/PopupCancel.vue"
-import PopupWelcome from "@/components/PopupWelcome.vue"
-import PopupPayment from "@/components/PopupPayment.vue"
-import PopupCrop from "@/components/PopupCrop.vue"
-import MobileMenu from "@/components/MobileMenu.vue"
 
 @Component({
     components: {
@@ -45,13 +32,6 @@ import MobileMenu from "@/components/MobileMenu.vue"
         LkBody,
         LkNav,
         LkHeader,
-        PopupRecord,
-        PopupCreate,
-        PopupCancel,
-        PopupWelcome,
-        PopupPayment,
-        PopupCrop,
-        MobileMenu,
     },
 })
 export default class LkLayout extends Vue {

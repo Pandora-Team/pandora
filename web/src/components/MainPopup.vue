@@ -2,9 +2,10 @@
     <transition-fade>
         <div class="main-popup">
             <div class="main-popup__wrapper">
-                <div
-                    class="main-popup__close"
-                    @click="closePopup"
+                <icon-close
+                    :color="dynamicColorIconClose"
+                    classes="main-popup__close"
+                    @close="closePopup"
                 />
                 <slot />
             </div>
@@ -14,19 +15,34 @@
 
 <script lang="ts">
 
-import { Component, Vue } from "vue-property-decorator"
+import { Component, Vue, Prop } from "vue-property-decorator"
 import TransitionFade from "@/components/transition/TransitionFade.vue"
+import IconClose from "@/components/IconClose.vue"
 
 
 @Component({
     components: {
         TransitionFade,
+        IconClose,
     },
 })
 export default class MainPopup extends Vue {
 
+    @Prop({ type: String })
+    colorIconClose!: string
+
     closePopup(): void {
         this.$emit("close")
+    }
+
+    get isMobile(): boolean {
+        return this.$mainStore.app.isMobile
+    }
+
+    get dynamicColorIconClose(): string {
+        if (this.colorIconClose) return this.colorIconClose
+        if (this.isMobile) return "black"
+        return "white"
     }
 }
 </script>
@@ -37,7 +53,8 @@ export default class MainPopup extends Vue {
         height: 100%;
         background: $bg-popup;
         position: fixed;
-        z-index: 4;
+        top: 0;
+        z-index: 101;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -45,6 +62,11 @@ export default class MainPopup extends Vue {
             position: relative;
             box-shadow: 0 0 60px rgba(255, 255, 255, 0.25);
             border-radius: 30px;
+            @media all and (max-width: 500px) {
+                width: calc(100% - 40px);
+                display: flex;
+                justify-content: center;
+            }
         }
         &__close {
             cursor: pointer;
@@ -54,8 +76,10 @@ export default class MainPopup extends Vue {
             right: -59px;
             width: 44px;
             height: 44px;
-            background: url("../assets/svg/close.svg") center no-repeat;
-            background-size: contain;
+            @media all and (max-width: 500px) {
+                top: 10px;
+                right: 10px;
+            }
         }
     }
 </style>

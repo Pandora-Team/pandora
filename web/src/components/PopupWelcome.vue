@@ -67,6 +67,9 @@ export default class PopupWelcome extends Vue {
                 width: 410px;
                 height: 545px;
                 border-radius: 30px;
+                @media all and (max-width: 410px) {
+                    width: 100%;
+                }
             }
             &:hover {
                 box-shadow: none!important;
@@ -81,6 +84,9 @@ export default class PopupWelcome extends Vue {
             }
             .event-card__action {
                 margin-bottom: 0;
+            }
+            @media all and (max-width: 500px) {
+                width: calc(100% - 60px);
             }
         }
 

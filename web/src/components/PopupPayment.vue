@@ -81,6 +81,9 @@ export default class PopupPayment extends Vue {
                 width: 410px;
                 height: 545px;
                 border-radius: 30px;
+                @media all and (max-width: 500px) {
+                    width: 100%;
+                }
             }
             &:hover {
                 box-shadow: none!important;

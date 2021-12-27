@@ -1,8 +1,9 @@
 <template>
     <div class="profile-card edit">
-        <div
-            class="profile-card__close"
-            @click="back"
+        <icon-close
+            color="red"
+            classes="profile-card__close"
+            @close="back"
         />
         <div class="profile-row">
             <div
@@ -84,6 +85,7 @@ import MainFormItem from "@/components/MainFormItem.vue"
 import { updateUser } from "@/api/users"
 import { UpdateUserData } from "@/definitions/interfaces"
 import MainBtn from "@/components/MainBtn.vue"
+import IconClose from "@/components/IconClose.vue"
 
 @Component({
     components: {
@@ -91,6 +93,7 @@ import MainBtn from "@/components/MainBtn.vue"
         LkSocialItem,
         MainFormItem,
         MainBtn,
+        IconClose,
     },
 })
 export default class ProfileCardEdit extends Vue {
@@ -194,8 +197,6 @@ export default class ProfileCardEdit extends Vue {
                 right: -10px;
                 width: 44px;
                 height: 44px;
-                background: url("../assets/svg/close-red.svg") center no-repeat;
-                background-size: contain;
             }
         }
         &-row {

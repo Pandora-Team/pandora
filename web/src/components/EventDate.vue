@@ -96,5 +96,8 @@ export default class EventDate extends Vue {
         display: flex;
         width: 100%;
         justify-content: space-between;
+        @media all and (max-width: 500px) {
+            flex-direction: column;
+        }
     }
 </style>
