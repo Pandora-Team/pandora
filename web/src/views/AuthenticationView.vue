@@ -57,7 +57,7 @@ import TransitionToTop from "@/components/transition/TransitionToTop.vue"
     validations: {
         phone: {
             required,
-            minLength: minLength(11),
+            minLength: minLength(16),
         },
         password: {
             required,
@@ -95,7 +95,7 @@ export default class AuthenticationView extends Vue {
         if (!this.$v.$invalid) {
             try {
                 const res = await auth({
-                    phone: this.phone,
+                    phone: this.phone.replaceAll("-", ""),
                     pass:  this.password,
                 })
 

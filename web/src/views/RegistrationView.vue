@@ -111,7 +111,7 @@ import { reg } from "@/api/auth"
         },
         phone: {
             required,
-            minLength: minLength(11),
+            minLength: minLength(16),
         },
         password: {
             required,
@@ -184,7 +184,7 @@ export default class RegistrationView extends Vue {
                 const res = await reg({
                     pass:     this.password,
                     name:     this.name,
-                    phone:    this.phone,
+                    phone:    this.phone.replaceAll("-", ""),
                     surname:  this.surname,
                     birthday: this.birthday,
                 })
