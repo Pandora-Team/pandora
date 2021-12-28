@@ -5,6 +5,7 @@
     >
         <input
             :id="id"
+            v-mask="mask"
             class="input input--main"
             :value="value"
             :type="typeInput"
@@ -12,6 +13,7 @@
             :placeholder="placeholder"
             autocomplete="off"
             @input="$emit('input', $event.target.value)"
+            @focus="focusOnInput"
         >
         <div
             v-if="type === 'password'"
@@ -57,10 +59,26 @@ export default class MainInput extends Vue {
         return this.type
     }
 
-    get inlineClass(): any {
+    get mask(): string {
+        if (this.id === "phone") return "+7-###-###-##-##"
+        if (this.id === "birthday") return "##.##.####"
+        return ""
+    }
+
+    get inlineClass(): {[key: string]: boolean} {
         return {
-            "input-wrapper--file": this.id === "file",
+            "input-wrapper--file":     this.id === "file",
             "input-wrapper--password": this.type === "password",
+        }
+    }
+
+    focusOnInput(event: {target: HTMLInputElement}): void {
+        if (this.id === "phone") {
+            if (!this.value) {
+                this.$emit("input", "+7-")
+            } else {
+                this.$emit("input", event.target.value)
+            }
         }
     }
 

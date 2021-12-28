@@ -18,6 +18,7 @@
     "lodash": "^4.17.15",
     "sanitize-html": "^1.27.0",
     "v-calendar": "^2.3.4",
+    "v-mask": "^2.3.0",
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",
     "vue-clickaway": "^2.2.2",
