@@ -31,14 +31,21 @@ const openRoutes:string[] = [paths.PolicyView, paths.AuthenticationView, paths.R
 router.beforeEach(async (to, from, next) => {
     const $mainStore: Store = Vue.prototype.$mainStore
 
-    if (openRoutes.includes(to.path)) {
-        return next()
-    }
-
     $mainStore.app.setIsMobile(window.innerWidth <= 800)
     if ($mainStore.mobile.openMobileMenu) {
         $mainStore.mobile.setOpenMobileMenu(false)
     }
+
+    if (!openRoutes.includes(to.path)) {
+        $mainStore.mobile.setVisibleMobileMenu(true)
+    } else {
+        $mainStore.mobile.setVisibleMobileMenu(false)
+    }
+
+    if (openRoutes.includes(to.path)) {
+        return next()
+    }
+
     if (
         to.name === names.AboutView ||
         to.name === names.RulesView
@@ -46,11 +53,6 @@ router.beforeEach(async (to, from, next) => {
         $mainStore.app.setNeedScrollIntoBody(true)
     } else {
         $mainStore.app.setNeedScrollIntoBody(false)
-    }
-    if (!openRoutes.includes(to.path)) {
-        $mainStore.mobile.setVisibleMobileMenu(true)
-    } else {
-        $mainStore.mobile.setVisibleMobileMenu(false)
     }
 
     if ($mainStore.user.id) {
