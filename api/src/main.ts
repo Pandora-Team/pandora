@@ -1,5 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import * as cookieParser from 'cookie-parser';
 
 const start = async () => {
 
@@ -10,6 +11,7 @@ const start = async () => {
         origin: ["http://localhost:8080", "https://pandora-kpop.ru"],
         credentials: true,
     })
+    app.use(cookieParser("1qaz2wsx3edc5tgb4rfv"));
     await app.listen(PORT, () => console.log(`server started on PORT ${PORT}`))
   } catch (e) {
     console.log(e)

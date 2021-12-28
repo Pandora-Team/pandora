@@ -1,7 +1,8 @@
-import {Body, Controller, Post, Get, Request, UseGuards} from "@nestjs/common";
+import {Body, Controller, Post, Get, Request, UseGuards, Res} from "@nestjs/common";
 import {AuthService} from "./auth.service";
 import {LoginDto, RegisterDto} from "./dto";
-import {JwtAuthGuard} from "./jwt-auth.guard";
+import {Response} from "express";
+import {CookieAuthGuard} from "./cookie-auth.guard";
 
 @Controller()
 export class AuthController {
@@ -12,16 +13,20 @@ export class AuthController {
     }
 
     @Post('authorization')
-    async login(@Body() dto: LoginDto) {
-        return this.authService.login(dto)
+    async login(@Body() dto: LoginDto, @Res({ passthrough: true }) response: Response) {
+        const res = await this.authService.login(dto)
+        response.cookie('at', res.access_token, {httpOnly: true})
+        return res._id
     }
 
     @Post('registration')
-    async register(@Body() dto: RegisterDto) {
-        return this.authService.register(dto)
+    async register(@Body() dto: RegisterDto, @Res({ passthrough: true }) response: Response) {
+        const res = await this.authService.register(dto)
+        response.cookie('at', res.access_token, {httpOnly: true})
+        return res._id
     }
 
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(CookieAuthGuard)
     @Get('profile')
     getProfile(@Request() req) {
         return this.authService.getProfile(req)

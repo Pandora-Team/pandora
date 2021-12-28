@@ -59,13 +59,13 @@ import MainBtn from "@/components/MainBtn.vue"
 })
 export default class LoginView extends Vue {
 
-    mounted(): void {
+    /*mounted(): void {
         const token = localStorage.getItem("at")
         if (token) {
             this.$mainStore.app.setLoading(true)
             this.$router.push({ path: this.$mainPaths.LkLayout })
         }
-    }
+    }*/
 
     get iconPath(): string {
         return require("@a/svg/logo.svg")

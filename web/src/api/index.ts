@@ -9,15 +9,10 @@ const cache : ISetupCache = setupCache({
     },
 })
 
-const token = localStorage.getItem("at")
-
 const api = axios.create({
     baseURL:         process.env.VUE_APP_API_URL,
     withCredentials: true,
     adapter:         cache.adapter,
-    headers:         {
-        Authorization: `Bearer ${token}`,
-    },
 })
 
 export default api
