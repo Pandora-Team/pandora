@@ -24,7 +24,6 @@ import LkLogo from "@/components/LkLogo.vue"
 import LkBody from "@/components/LkBody.vue"
 import LkNav from "@/components/LkNav.vue"
 import LkHeader from "@/components/LkHeader.vue"
-import { getUserId } from "@/api/auth"
 
 @Component({
     components: {
@@ -36,15 +35,11 @@ import { getUserId } from "@/api/auth"
 })
 export default class LkLayout extends Vue {
 
-    get userId(): string {
-        return this.$mainStore.user.id
-    }
-
     get isMobile(): boolean {
         return this.$mainStore.app.isMobile
     }
 
-    get inlineClass(): any {
+    get inlineClass(): {[key: string]: boolean} {
         return {
             "lk-body--scroll": this.needScroll,
         }
@@ -52,22 +47,6 @@ export default class LkLayout extends Vue {
 
     get needScroll(): boolean {
         return this.$mainStore.app.needScrollIntoBody
-    }
-
-    async mounted(): Promise<void> {
-        if (this.userId) {
-            await this.$mainStore.user.getUserInfo()
-            return
-        }
-        try {
-            const res = await getUserId()
-            const { id } = res.data
-            this.$mainStore.user.setUserId(id)
-            await this.$mainStore.user.getUserInfo()
-        } catch (e) {
-            this.$mainStore.notification.changeNotification({ state: true, ...this.$mainNotification.error })
-            throw new Error(`Error Get User Id - ${e}`)
-        }
     }
 }
 </script>

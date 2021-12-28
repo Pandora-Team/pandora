@@ -1,6 +1,7 @@
 body {
   font-family: $font;
   color: $color-white;
+  overscroll-behavior: none;
 }
 
 h1 {
