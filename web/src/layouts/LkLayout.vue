@@ -139,7 +139,7 @@ export default class LkLayout extends Vue {
     .lk {
         &-body {
             &__wrapper {
-                padding: 20px 30px 50px;
+                padding: 20px 30px;
             }
         }
 

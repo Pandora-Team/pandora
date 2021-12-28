@@ -10,13 +10,11 @@
             </info-card>
             <info-card-mini
                 inline-class="questions"
-                bg="questions"
                 text="Вопрос - ответ"
                 :path="$mainPaths.RulesView"
             />
             <info-card-mini
                 inline-class="classes"
-                bg="classes"
                 text="Все классы"
                 :path="$mainPaths.ClassesView"
             />

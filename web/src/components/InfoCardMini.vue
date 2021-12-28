@@ -3,10 +3,6 @@
         :class="`info-card-mini ${inlineClass}`"
         @click="onClick"
     >
-        <img
-            :src="inlinePath"
-            alt="background"
-        >
         <h3>{{ text }}</h3>
     </div>
 </template>
@@ -24,17 +20,10 @@ export default class InfoCard extends Vue {
     readonly inlineClass!: string
 
     @Prop({ type: String, default: "" })
-    readonly bg!: string
-
-    @Prop({ type: String, default: "" })
     readonly text!: string
 
     @Prop({ type: String, default: "" })
     readonly path!: string
-
-    get inlinePath(): string {
-        return require(`@/assets/bg/welcome-${this.bg}.png`)
-    }
 
     onClick(): void {
         if (this.path) {
@@ -57,13 +46,19 @@ export default class InfoCard extends Vue {
         overflow: hidden;
         cursor: pointer;
         padding: 10px 10px 0 10px;
-        img {
-            transition: .5s;
-            position: absolute;
-            opacity: 0.85;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        &.questions {
+            background: url("../assets/bg/welcome-questions.jpg") center no-repeat;
+            background-size: cover;
+            @media all and (max-width: 500px) {
+                background-position: 0 15%;
+            }
+        }
+        &.classes {
+            background: url("../assets/bg/welcome-classes.jpg") center no-repeat;
+            background-size: cover;
+            @media all and (max-width: 500px) {
+                background-position: 0 15%;
+            }
         }
         h3 {
             position: relative;
@@ -71,11 +66,6 @@ export default class InfoCard extends Vue {
             color: $color-white;
             letter-spacing: 0.01em;
             margin-bottom: 30px;
-        }
-        &:hover {
-            img {
-                opacity: 1;
-            }
         }
     }
 
