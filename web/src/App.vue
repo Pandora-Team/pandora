@@ -22,8 +22,6 @@ import { Component, Vue, Watch } from "vue-property-decorator"
 import Notification from "@/components/Notification.vue"
 import LoadingView from "@/components/LoadingView.vue"
 import MobileMenu from "@/components/MobileMenu.vue"
-import { Route } from "vue-router"
-import names from "@/router/names"
 import PopupRecord from "@/components/PopupRecord.vue"
 import PopupCreate from "@/components/PopupCreate.vue"
 import PopupCancel from "@/components/PopupCancel.vue"
@@ -55,14 +53,6 @@ export default class App extends Vue {
         }
     }
 
-    @Watch("$route.path", { immediate: true, deep: true })
-    changeApp(): void {
-        this.$mainStore.app.setIsMobile(window.innerWidth <= 800)
-        if (this.$mainStore.mobile.visibleMobileMenu) {
-            this.$mainStore.mobile.setVisibleMobileMenu(false)
-        }
-    }
-
     @Watch("$mainStore.app.loading")
     changeLoading(): void {
         if (this.loading) {
@@ -72,26 +62,8 @@ export default class App extends Vue {
         }
     }
 
-    @Watch("$route", { immediate: true, deep: true })
-    onRouteChange(route: Route): void {
-        this.visibleMobileMenu = !(route.name === names.LoginView ||
-            route.name === names.AuthenticationView ||
-            route.name === names.RegistrationView ||
-            route.name === names.PolicyView)
-        if (
-            route.name === names.AboutView ||
-            route.name === names.RulesView
-        ) {
-            this.$mainStore.app.setNeedScrollIntoBody(true)
-        } else {
-            this.$mainStore.app.setNeedScrollIntoBody(false)
-        }
-    }
-
-    visibleMobileMenu = false
-
     get visibleMenu(): boolean {
-        return this.visibleMobileMenu && this.isMobile
+        return this.$mainStore.mobile.visibleMenu
     }
 
     get loading(): boolean {
