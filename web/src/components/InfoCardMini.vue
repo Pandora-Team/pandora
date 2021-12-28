@@ -47,7 +47,7 @@ export default class InfoCard extends Vue {
         cursor: pointer;
         padding: 10px 10px 0 10px;
         &.questions {
-            background: url("../assets/bg/welcome-questions.jpg") center no-repeat;
+            background: url("../assets/bg/welcome-questions-2x.jpg") center no-repeat;
             background-size: cover;
             @media all and (max-width: 500px) {
                 background-position: 0 15%;
