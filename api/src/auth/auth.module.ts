@@ -7,14 +7,15 @@ import {MongooseModule} from "@nestjs/mongoose";
 import {Users, UsersSchema} from "../users/users.schema";
 import {JwtStrategy} from "./jwt.strategy";
 import {UsersModule} from "../users/users.module";
+import {jwtConstants} from "./constants";
 
 @Module({
     imports: [
         UsersModule,
         PassportModule,
         JwtModule.register({
-            secret: `${process.env.JWT_SECRET}`,
-            signOptions: {expiresIn: 36000}
+            secret: jwtConstants.secret,
+            signOptions: {expiresIn: 60}
         }),
         MongooseModule.forFeature([{name: Users.name, schema: UsersSchema}])
     ],
