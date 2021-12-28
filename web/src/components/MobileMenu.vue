@@ -1,18 +1,18 @@
 <template>
     <div
         class="mobile-menu"
-        :class="{'mobile-menu--active': showMobileMenu}"
+        :class="{'mobile-menu--active': openMobileMenu}"
     >
         <div class="mobile-menu__top">
             <lk-social />
             <hamburger-icon
-                :visible="showMobileMenu"
-                @show="showMenu"
+                :visible="openMobileMenu"
+                @show="openMenu"
             />
         </div>
         <transition-fade>
             <div
-                v-show="showMobileMenu"
+                v-show="openMobileMenu"
                 class="mobile-menu__center"
             >
                 <lk-nav-link
@@ -85,12 +85,12 @@ import LkLogout from "@/components/LkLogout.vue"
 })
 export default class MobileMenu extends Vue {
 
-    get showMobileMenu(): boolean {
-        return this.$mainStore.mobile.visibleMobileMenu
+    get openMobileMenu(): boolean {
+        return this.$mainStore.mobile.openMobileMenu
     }
 
-    showMenu(state: boolean): void {
-        this.$mainStore.mobile.setVisibleMobileMenu(state)
+    openMenu(state: boolean): void {
+        this.$mainStore.mobile.setOpenMobileMenu(state)
     }
 
     get isAdmin(): boolean {
