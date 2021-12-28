@@ -2,7 +2,7 @@ import {Body, Controller, Post, Get, Request, UseGuards, Res} from "@nestjs/comm
 import {AuthService} from "./auth.service";
 import {LoginDto, RegisterDto} from "./dto";
 import {Response} from "express";
-import {CookieAuthGuard} from "./cookie-auth.guard";
+import {JwtAuthGuard} from "./jwt-auth.guard";
 
 @Controller()
 export class AuthController {
@@ -26,7 +26,7 @@ export class AuthController {
         return res._id
     }
 
-    @UseGuards(CookieAuthGuard)
+    @UseGuards(JwtAuthGuard)
     @Get('profile')
     getProfile(@Request() req) {
         return this.authService.getProfile(req)

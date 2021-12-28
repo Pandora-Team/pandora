@@ -13,8 +13,8 @@ import {UsersModule} from "../users/users.module";
         UsersModule,
         PassportModule,
         JwtModule.register({
-            secret: `${process.env.S_KEY}`,
-            signOptions: {expiresIn: '60s'}
+            secret: `${process.env.JWT_SECRET}`,
+            signOptions: {expiresIn: 36000}
         }),
         MongooseModule.forFeature([{name: Users.name, schema: UsersSchema}])
     ],
