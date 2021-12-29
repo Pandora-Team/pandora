@@ -1,6 +1,6 @@
 export interface EventData {
     _id: string
-    date: Date
+    date: Date | string
     start_time?: string
     end_time: string
     name: string

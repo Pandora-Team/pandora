@@ -59,6 +59,7 @@ export default class EventDate extends Vue {
     readonly update!: boolean
 
     mounted(): void {
+      console.log(this.date)
         if (this.update) return
         const needDate = dayjs(this.date)
             .weekday(7)
