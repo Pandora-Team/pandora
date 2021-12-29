@@ -26,12 +26,12 @@ export default class EventCardCreate extends Vue {
            cursor: pointer;
            &::before {
                content: "";
-               width: 64px;
-               height: 2px;
-               background: $color-gray;
+               width: 64px!important;
+               height: 2px!important;
+               background: $color-gray!important;
                position: absolute;
-               top: calc( 50% - 1px );
-               left: calc( 50% - 32px );
+               top: calc( 50% - 1px )!important;
+               left: calc( 50% - 32px )!important;
            }
            &::after {
                content: "";
