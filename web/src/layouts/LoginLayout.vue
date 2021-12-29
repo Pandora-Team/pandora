@@ -20,9 +20,19 @@
 import { Component, Vue, Watch } from "vue-property-decorator"
 import { Route } from "vue-router"
 import names from "@/router/names"
+import { checkUser } from "@/api/auth"
 
 @Component({})
 export default class LoginLayout extends Vue {
+
+    async mounted(): Promise<void> {
+        const { data } = await checkUser()
+        if (!data) return
+        this.$mainStore.app.setLoading(true)
+        this.$mainStore.user.setUserId(data)
+        await this.$mainStore.user.getUserInfo()
+        this.$router.push({ path: this.$mainPaths.LkLayout })
+    }
 
     auth = false
     reg = false

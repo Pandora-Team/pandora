@@ -4,6 +4,7 @@ import { SocialData } from "@/definitions/interfaces"
 import { Store } from "@/store/store"
 import notification from "@/definitions/notification"
 import * as Sentry from "@sentry/vue"
+import { logout } from "@/api/auth"
 
 export class User {
 
@@ -36,6 +37,9 @@ export class User {
     @State()
     telegram = ""
 
+    @State()
+    dataReceived = false
+
     @Action()
     async getUserInfo(): Promise<void> {
         try {
@@ -49,8 +53,8 @@ export class User {
     }
 
     @Action()
-    logout(): void {
-        localStorage.removeItem("at")
+    async logout(): Promise<void> {
+        await logout()
         this.clearUserInfo()
     }
 
@@ -84,6 +88,7 @@ export class User {
             username: this.name,
             isAdmin:  this.isAdmin,
         })
+        this.dataReceived = true
     }
 
     @Mutation()

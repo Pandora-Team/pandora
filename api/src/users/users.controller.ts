@@ -23,21 +23,25 @@ export class UsersController {
         private usersService: UsersService,
     ) {}
 
+    @UseGuards(JwtAuthGuard)
     @Get()
     async getUsers() {
         return this.usersService.getAllUsers()
     }
 
+    @UseGuards(JwtAuthGuard)
     @Get("students")
     async getStudents() {
         return this.usersService.getAllStudents()
     }
 
+    @UseGuards(JwtAuthGuard)
     @Get(':id')
     async getUser(@Param('id') id: string) {
         return this.usersService.getUserById(id)
     }
 
+    @UseGuards(JwtAuthGuard)
     @Put(':id')
     async updateUser(@Param('id') id: string, @Body() dto: UpdateUserDto) {
         return this.usersService.updateUser(id, dto)
@@ -53,6 +57,7 @@ export class UsersController {
         return this.usersService.setAvatar(avatar[0], req.user.id)
     }
 
+    @UseGuards(JwtAuthGuard)
     @Delete(':id')
     delete(@Param('id') id: ObjectId){
         return this.usersService.deleteUser(id)

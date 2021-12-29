@@ -191,8 +191,7 @@ export default class RegistrationView extends Vue {
 
                 this.$mainStore.notification.changeNotification({ state: true, ...this.$mainNotification.successReg })
 
-                const { access_token, _id } = res.data
-                localStorage.setItem("at", access_token)
+                const { _id } = res.data
                 await this.$mainStore.user.setUserId(_id)
                 this.$mainStore.popup.changeActiveWelcomePopup(true)
                 this.$mainStore.app.setLoading(true)

@@ -7,7 +7,6 @@ import {UsersModule} from "./users/users.module";
 import {EventsModule} from "./events/events.module";
 import {StatusesModule} from "./statuses/statuses.module";
 import {AuthModule} from "./auth/auth.module";
-import {JwtModule} from "@nestjs/jwt";
 import {PlacesModule} from "./places/places.module";
 import {FileModule} from "./file/file.module";
 
@@ -27,10 +26,6 @@ import {FileModule} from "./file/file.module";
     EventsModule,
     StatusesModule,
     FileModule,
-    JwtModule.register({
-      secret: `${process.env.JWT_SECRET}`,
-      signOptions: {expiresIn: `${process.env.JWT_EXPIRES_IN}`}
-    }),
   ],
 })
 export class AppModule {}
