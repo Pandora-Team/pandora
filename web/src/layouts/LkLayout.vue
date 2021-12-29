@@ -24,6 +24,7 @@ import LkLogo from "@/components/LkLogo.vue"
 import LkBody from "@/components/LkBody.vue"
 import LkNav from "@/components/LkNav.vue"
 import LkHeader from "@/components/LkHeader.vue"
+import { getUserId } from "@/api/auth"
 
 @Component({
     components: {
@@ -47,6 +48,20 @@ export default class LkLayout extends Vue {
 
     get needScroll(): boolean {
         return this.$mainStore.app.needScrollIntoBody
+    }
+
+    async mounted(): Promise<void> {
+        if (!this.$mainStore.user.dataReceived) {
+
+            if (this.$mainStore.user.id) {
+                await this.$mainStore.user.getUserInfo()
+                return
+            }
+
+            const { data: { id } } = await getUserId()
+            this.$mainStore.user.setUserId(id)
+            await this.$mainStore.user.getUserInfo()
+        }
     }
 }
 </script>

@@ -1,11 +1,11 @@
 import {PassportStrategy} from "@nestjs/passport";
 import { Strategy } from "passport-jwt";
 import { Injectable } from '@nestjs/common';
-import {jwtConstants} from "./constants";
+import {ConfigService} from "@nestjs/config";
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-    constructor() {
+    constructor(private configService: ConfigService) {
         super({
             jwtFromRequest: function(req) {
                 var token = null;
@@ -13,16 +13,14 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
                 {
                     token = req.cookies['at'];
                 }
-                console.log("[token] - ", token)
                 return token;
             },
             ignoreExpiration: false,
-            secretOrKey: jwtConstants.secret,
+            secretOrKey: configService.get<string>('JWT_SECRET'),
         });
     }
 
     async validate(payload: any) {
-        console.log("[payload] - ", payload)
         return {
             id:   payload._id,
         }

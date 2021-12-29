@@ -27,7 +27,7 @@ export default class EventCardEmpty extends Vue {
        &--empty {
            height: auto;
            background-image: url("../assets/bg/not_mk.jpg");
-           width: auto;
+           width: auto!important;
        }
    }
 </style>

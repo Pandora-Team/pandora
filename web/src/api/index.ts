@@ -1,8 +1,10 @@
 import axios from "axios"
 import router from "@/router"
+import Vue from "vue"
 
 import { setupCache, ISetupCache } from "axios-cache-adapter"
-import names from "@/router/names"
+import { Store } from "@/store/store"
+import paths from "@/router/paths"
 
 const cache : ISetupCache = setupCache({
     maxAge:  60 * 1000,
@@ -19,7 +21,11 @@ const api = axios.create({
 
 api.interceptors.response.use(undefined, error => {
     if (error.response && error.response.status === 401) {
-        router.replace({ name: names.LoginView })
+        const $mainStore: Store = Vue.prototype.$mainStore
+        $mainStore.mobile.setVisibleMobileMenu(false)
+        if (router.currentRoute.path !== paths.LoginLayout) {
+            router.push({ path: paths.LoginLayout })
+        }
     }
     return Promise.reject(error.response.data)
 })

@@ -62,4 +62,15 @@ export class AuthService {
         await this.usersModel.updateOne({_id: req.user.id}, {"visit_date": date})
         return req.user;
     }
+
+    async checkUser(req) {
+        const jwt = req.cookies.at
+        if (!jwt) return false
+        try {
+            const check = this.jwtService.verify(jwt)
+            return check._id
+        } catch (e) {
+            return false
+        }
+    }
 }
