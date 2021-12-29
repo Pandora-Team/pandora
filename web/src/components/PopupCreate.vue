@@ -29,7 +29,7 @@
                     />
                     <event-date
                         :update="isUpdatePopup"
-                        :date="state.date"
+                        :date="stateDate"
                         :end-time="state.end_time"
                     />
                 </template>
@@ -78,6 +78,13 @@ export default class PopupCreate extends Vue {
 
     get state(): any {
         return this.$mainStore.popup.createdState
+    }
+    
+    get stateDate(): Date {
+        if(typeof (this.$mainStore.popup.createdState.date) === "string") {
+            return new Date(this.$mainStore.popup.createdState.date)
+        }
+        return this.$mainStore.popup.createdState.date
     }
 
     get textBtnSubmit(): string {
