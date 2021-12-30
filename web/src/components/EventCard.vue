@@ -104,6 +104,11 @@ export default class EventCard extends Vue {
         this.updateStatuses()
     }
 
+    @Watch("$mainStore.events.nearestEvent", { deep: true })
+    updateNearestEvent(): void {
+        this.updateStatuses()
+    }
+
     mounted(): void {
         this.updateStatuses()
     }
@@ -174,7 +179,7 @@ export default class EventCard extends Vue {
             this.$mainStore.events.removeEvent(_id)
             this.$mainStore.notification.changeNotification({ state: true, ...this.$mainNotification.successRemove })
             if (this.welcome) {
-                this.$emit("remove")
+                this.$mainStore.events.removeNearestEvent()
             }
         } catch (e) {
             this.$mainStore.notification.changeNotification({ state: true, ...this.$mainNotification.failedRemove })

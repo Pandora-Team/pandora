@@ -70,9 +70,9 @@ export class EventsService {
         return this.eventsModel.findById({_id: id})
     }
 
-    async getNearestEvent(id: string): Promise<Events> {
+    async getNearestEvent(id: string): Promise<string> {
         const sortedEvents = await this.getAllEvents(id)
-        return sortedEvents[0]
+        return sortedEvents[0]._id
     }
 
     async updateEvent(id: ObjectId, dto: CreateEventDto): Promise<any> {
