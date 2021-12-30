@@ -36,38 +36,6 @@
                 <p v-if="!welcome">
                     Стоимость: <span>{{ event.price }} р.</span>
                 </p>
-                <div
-                    v-if="record"
-                    class="event-card__payment"
-                    :class="{'event-card__payment--mb': $v.$error}"
-                >
-                    <p>Оплата:</p>
-                    <main-radio
-                        id="cash"
-                        name="payment"
-                        text="Наличными"
-                        :value="payment"
-                        @change-value="changePayment"
-                    />
-                    <main-radio
-                        id="card"
-                        name="payment"
-                        text="Переводом на карту"
-                        :value="payment"
-                        @change-value="changePayment"
-                    />
-                    <transition
-                        name="error"
-                        mode="out-in"
-                    >
-                        <div
-                            v-if="errorPayment"
-                            class="event-card__error"
-                        >
-                            {{ errorPayment }}
-                        </div>
-                    </transition>
-                </div>
                 <main-btn
                     v-if="!signedUp && !isAdmin"
                     :full-width="true"
@@ -103,9 +71,8 @@ import MainStatus from "@/components/MainStatus.vue"
 import MainBtn from "@/components/MainBtn.vue"
 import { EventData } from "@/definitions/interfaces"
 import dayjs from "dayjs"
-import { listStatuses, statusData, typesStatus, typeStatus } from "@/definitions/typeStatus"
+import { listStatuses, typesStatus, typeStatus } from "@/definitions/typeStatus"
 import MainRadio from "@/components/MainRadio.vue"
-import { createStatuses } from "@/api/statuses"
 import { deleteEvent } from "@/api/events"
 
 @Component({
@@ -113,13 +80,6 @@ import { deleteEvent } from "@/api/events"
         MainStatus,
         MainBtn,
         MainRadio,
-    },
-    validations: {
-        payment: {
-            required(value, vm) {
-                return vm.record
-            },
-        },
     },
 })
 export default class EventCard extends Vue {
@@ -133,14 +93,9 @@ export default class EventCard extends Vue {
     @Prop({ type: Boolean, default: false })
     welcome!: boolean
 
-    @Prop({ type: Boolean, default: false })
-    record!: boolean
-
     statuses: typeStatus[] = []
 
     signedUp = false
-
-    payment = ""
 
     typesStatuses = typesStatus
 
@@ -172,17 +127,9 @@ export default class EventCard extends Vue {
         return [
             {
                 "event-card--welcome": this.welcome,
-                "event-card--record":  this.record,
             },
             this.gridClass,
         ]
-    }
-
-    get errorPayment(): string {
-        if (this.$v.payment.$dirty && !this.$v.payment.required) {
-            return "Выбор оплаты обязателен"
-        }
-        return ""
     }
 
     get isAdmin(): boolean {
@@ -208,36 +155,9 @@ export default class EventCard extends Vue {
         }
     }
 
-    changePayment(value: string): void {
-        this.payment = value
-    }
-
     async onClick(): Promise<void> {
-        if (!this.record) {
-            this.$mainStore.popup.changeRecordedState(this.event)
-            this.$mainStore.popup.changeActiveRecordPopup(true)
-        } else {
-            this.$v.$touch()
-            if (this.$v.$invalid) return
-            const params: statusData = {
-                event_id:       this.event._id,
-                payment_status: this.payment,
-                event_status:   this.typesStatuses.go.name,
-            }
-            try {
-                const res = await createStatuses(params)
-                this.$mainStore.events.updateStatuses(res.data)
-                this.$mainStore.popup.changeActiveRecordPopup(false)
-                this.$mainStore.popup.setTypePayment(this.payment)
-                this.$mainStore.popup.changeActivePaymentPopup(true)
-                this.$mainStore.notification.changeNotification(
-                    { state: true, ...this.$mainNotification.successRecord })
-            } catch (e) {
-                this.$mainStore.notification.changeNotification(
-                    { state: true, ...this.$mainNotification.failedRecord })
-                throw new Error(`Error create Statuses - ${e}`)
-            }
-        }
+        this.$mainStore.popup.changeRecordedState(this.event)
+        this.$mainStore.popup.changeActiveRecordPopup(true)
     }
 
     //открытие попапа отмены
