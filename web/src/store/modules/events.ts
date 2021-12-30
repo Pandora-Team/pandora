@@ -1,9 +1,9 @@
-import { State, Mutation, Action } from "vuex-simple"
+import { State, Mutation, Action, Getter } from "vuex-simple"
 import { EventData } from "@/definitions/interfaces"
-import { getAllEvent } from "@/api/events"
+import { getAllEvent, getNearestEvent } from "@/api/events"
 import { Store } from "@/store/store"
 import { statusData } from "@/definitions/typeStatus"
-import { cloneDeep } from "lodash"
+import { cloneDeep, isEmpty } from "lodash"
 import notification from "@/definitions/notification"
 
 export class Events {
@@ -12,6 +12,9 @@ export class Events {
 
     @State()
     listEvents: EventData[] = []
+
+    @State()
+    nearestEvent: EventData | undefined
 
     @Mutation()
     public addEventToList(event: EventData): void {
@@ -40,11 +43,7 @@ export class Events {
             const res = await getAllEvent()
             const events: EventData[] = res.data
             if (events?.length) {
-                const updateData = events.map(event => {
-                    event.date = new Date(event.date)
-                    return event
-                })
-                this.updateListEvent(updateData)
+                this.updateListEvent(events)
             }
         } catch (e) {
             this.$mainStore.notification.changeNotification({ state: true, ...notification.error })
@@ -52,9 +51,41 @@ export class Events {
         }
     }
 
+    @Action()
+    public async getNearestEventId(): Promise<void> {
+        try {
+            const { data } = await getNearestEvent()
+            if (isEmpty(data)) return
+            this.setNearestEvent(data)
+        } catch (e) {
+            this.$mainStore.notification.changeNotification({ state: true, ...notification.error })
+            throw new Error(`Error Get Nearest Event - ${e}`)
+        }
+    }
+
+    @Mutation()
+    private setNearestEvent(id: string): void {
+        const nearestEvent = this.listEvents.find(event => event._id === id)
+        this.nearestEvent = cloneDeep(nearestEvent)
+    }
+
+    @Mutation()
+    private updateNearestEvent(): void {
+        if (this.nearestEvent?._id) {
+            const nearestEvent = this.listEvents.find(event => event._id === this.nearestEvent?._id)
+            this.nearestEvent = cloneDeep(nearestEvent)
+        }
+    }
+
+    @Getter()
+    public get hasNearestEvent(): boolean {
+        return Boolean(this.nearestEvent)
+    }
+
     @Mutation()
     private updateListEvent(list: EventData[]): void {
         this.listEvents = cloneDeep(list)
+        this.updateNearestEvent()
     }
 
     @Mutation()
@@ -85,7 +116,7 @@ export class Events {
             }
             return event
         })
-        this.listEvents = cloneDeep(newList)
+        this.updateListEvent(newList)
     }
 
     @Mutation()

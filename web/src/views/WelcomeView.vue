@@ -20,10 +20,9 @@
             />
             <event-card
                 v-if="visibleNearestEvent"
-                :event="event"
+                :event="nearestEvent"
                 grid-class="event"
                 :welcome="true"
-                @remove="removeNearestEvent"
             />
             <event-card-empty
                 v-else
@@ -42,9 +41,7 @@ import EventCard from "@/components/EventCard.vue"
 import WelcomeInfo from "@/components/WelcomeInfo.vue"
 import WelcomeProfile from "@/components/WelcomeProfile.vue"
 import InfoCardMini from "@/components/InfoCardMini.vue"
-import { getNearestEvent } from "@/api/events"
 import { EventData } from "@/definitions/interfaces"
-import { isEmpty } from "lodash"
 import EventCardEmpty from "@/components/EventCardEmpty.vue"
 
 @Component({
@@ -60,29 +57,17 @@ import EventCardEmpty from "@/components/EventCardEmpty.vue"
 })
 export default class WelcomeView extends Vue {
 
-    event!: EventData
+    get visibleNearestEvent(): boolean {
+        return this.$mainStore.events.hasNearestEvent
+    }
 
-    visibleNearestEvent = false
+    get nearestEvent(): EventData {
+        return this.$mainStore.events.nearestEvent
+    }
 
     async mounted(): Promise<void> {
-        await this.getNearestEvent()
-    }
-
-    async getNearestEvent(): Promise<void> {
-        try {
-            const res = await getNearestEvent()
-            if (!isEmpty(res.data)) {
-                this.event = res.data
-                this.visibleNearestEvent = true
-            }
-        } catch (e) {
-            this.$mainStore.notification.changeNotification({ state: true, ...this.$mainNotification.error })
-            throw new Error(`Error Get Nearest Event - ${e}`)
-        }
-    }
-
-    async removeNearestEvent(): Promise<void> {
-        this.visibleNearestEvent = false
+        await this.$mainStore.events.getListEvents()
+        await this.$mainStore.events.getNearestEventId()
     }
 }
 </script>
