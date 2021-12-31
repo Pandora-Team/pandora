@@ -56,7 +56,7 @@ export class Events {
         try {
             const { data } = await getNearestEvent()
             if (isEmpty(data)) return
-            this.setNearestEvent(data)
+            this.setNearestEvent(data._id)
         } catch (e) {
             this.$mainStore.notification.changeNotification({ state: true, ...notification.error })
             throw new Error(`Error Get Nearest Event - ${e}`)

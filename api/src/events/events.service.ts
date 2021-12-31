@@ -70,9 +70,9 @@ export class EventsService {
         return this.eventsModel.findById({_id: id})
     }
 
-    async getNearestEvent(id: string): Promise<string> {
+    async getNearestEvent(id: string): Promise<Events> {
         const sortedEvents = await this.getAllEvents(id)
-        return sortedEvents[0]._id
+        return sortedEvents[0]
     }
 
     async updateEvent(id: ObjectId, dto: CreateEventDto): Promise<any> {
@@ -80,6 +80,7 @@ export class EventsService {
     }
 
     async deleteEvent(id: ObjectId): Promise<Events> {
+        await this.statusesService.clearStatusesAllUsers(String(id))
         return this.eventsModel.findByIdAndDelete({_id: id})
     }
 

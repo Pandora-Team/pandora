@@ -13,9 +13,6 @@ interface UserInfo {
 export class Events {
 
     @Prop()
-    _id: string;
-
-    @Prop()
     date: Date;
 
     @Prop()
