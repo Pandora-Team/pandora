@@ -127,6 +127,10 @@ export default class MainBtn extends Vue {
         background-size: 300% 100%;
         background-position: 0 0;
 
+        @media all and (max-width: 500px) {
+            min-width: auto;
+        }
+
         &:hover {
             background-position: 50% 0;
         }

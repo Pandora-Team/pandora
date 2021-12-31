@@ -67,7 +67,7 @@ export default class PopupWelcome extends Vue {
                 width: 410px;
                 height: 545px;
                 border-radius: 30px;
-                @media all and (max-width: 410px) {
+                @media all and (max-width: 500px) {
                     width: 100%;
                 }
             }
