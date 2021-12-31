@@ -42,7 +42,8 @@ export default class MainStatus extends Vue {
             background: $bg-error-status;
        }
        @media all and (max-width: 500px) {
-           font-size: 14px;
+           padding: 8px;
+           font-size: 12px;
        }
    }
 </style>

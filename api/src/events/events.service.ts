@@ -6,7 +6,6 @@ import {CreateEventDto} from "./create-event.dto";
 import {PlacesService} from "../places/places.service";
 import {FileType, FileService} from "../file/file.service";
 import {StatusesService} from "../statuses/statuses.service";
-import * as dayjs from 'dayjs'
 import {UsersService} from "../users/users.service";
 
 @Injectable()
@@ -42,8 +41,7 @@ export class EventsService {
     }
 
     async getAllEventsWithStudents(): Promise<Events[]> {
-        const date = dayjs().add(1, "day").format()
-        const events = await this.eventsModel.find({date: {$gte: new Date(date)}})
+        const events = await this.eventsModel.find()
         const sortedEvents = this.sortArrayOnDate(events)
         return await this.getUserInfoForEvent(sortedEvents)
     }

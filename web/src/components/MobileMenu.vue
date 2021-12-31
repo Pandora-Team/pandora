@@ -10,50 +10,48 @@
                 @show="openMenu"
             />
         </div>
-        <transition-fade>
-            <div
-                v-show="openMobileMenu"
-                class="mobile-menu__center"
-            >
-                <lk-nav-link
-                    name="Главная"
-                    :path="$mainPaths.LkLayout"
-                    icon="home"
-                />
-                <lk-nav-link
-                    name="Классы"
-                    :path="$mainPaths.ClassesView"
-                    icon="master"
-                />
-                <lk-nav-link
-                    v-if="isAdmin"
-                    name="Участники"
-                    :path="$mainPaths.ListEventsView"
-                    :inner-path="$mainPaths.ListStudentsView"
-                    icon="students"
-                />
-                <lk-nav-link
-                    name="Профиль"
-                    :path="$mainPaths.ProfileView"
-                    icon="profile"
-                />
-                <lk-nav-link
-                    name="О нас"
-                    :path="$mainPaths.AboutView"
-                    icon="about"
-                />
-                <lk-nav-link
-                    name="Правила"
-                    :path="$mainPaths.RulesView"
-                    icon="rule"
-                />
-                <!--<lk-nav-link
-                        name="События"
-                        :path="$mainPaths.StorageView"
-                        icon="events"
-                    />-->
-            </div>
-        </transition-fade>
+        <div
+            v-show="openMobileMenu"
+            class="mobile-menu__center"
+        >
+            <lk-nav-link
+                name="Главная"
+                :path="$mainPaths.LkLayout"
+                icon="home"
+            />
+            <lk-nav-link
+                name="Классы"
+                :path="$mainPaths.ClassesView"
+                icon="master"
+            />
+            <lk-nav-link
+                v-if="isAdmin"
+                name="Участники"
+                :path="$mainPaths.ListEventsView"
+                :inner-path="$mainPaths.ListStudentsView"
+                icon="students"
+            />
+            <lk-nav-link
+                name="Профиль"
+                :path="$mainPaths.ProfileView"
+                icon="profile"
+            />
+            <lk-nav-link
+                name="О нас"
+                :path="$mainPaths.AboutView"
+                icon="about"
+            />
+            <lk-nav-link
+                name="Правила"
+                :path="$mainPaths.RulesView"
+                icon="rule"
+            />
+            <!--<lk-nav-link
+                    name="События"
+                    :path="$mainPaths.StorageView"
+                    icon="events"
+                />-->
+        </div>
         <div class="mobile-menu__bottom">
             <div class="mobile-menu__logout">
                 <lk-logout text="Выйти" />
@@ -108,12 +106,13 @@ export default class MobileMenu extends Vue {
         height: 40px;
         padding: 20px;
         background: $color-black;
-        transition: height .5s;
-        overflow: hidden;
+        transition: height .1s;
         display: flex;
         flex-direction: column;
+        overflow: hidden;
         &--active {
             height: 100vh;
+            overflow-y: scroll;
         }
         &__top {
             display: flex;
@@ -123,7 +122,6 @@ export default class MobileMenu extends Vue {
         }
         &__center {
             flex-grow: 1;
-            margin-bottom: 20px;
         }
         &__bottom {
             .logo {

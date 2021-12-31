@@ -75,9 +75,11 @@ a {
   color: $color-white;
   text-decoration: none;
   outline: none;
-  &:active, &:hover, &:focus {
-    outline: none;
-    color: $color-hover-text;
+  @media all and (min-width: 1000px) {
+    &:active, &:hover, &:focus {
+      outline: none;
+      color: $color-hover-text;
+    }
   }
 }
 

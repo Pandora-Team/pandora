@@ -171,6 +171,8 @@ export default class PopupCreate extends Vue {
             margin-bottom: 40px;
             line-height: 30px;
             @media all and (max-width: 500px) {
+                font-size: 20px;
+                line-height: 26px;
                 padding-right: 30px;
                 text-align: left;
             }

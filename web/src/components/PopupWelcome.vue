@@ -57,7 +57,7 @@ export default class PopupWelcome extends Vue {
         &--welcome_popup {
             color: $color-black;
             background: url("../assets/bg/popup-welcome.jpg") top no-repeat;
-            background-size: contain;
+            background-size: cover;
             &::after {
                 content: "";
                 position: absolute;

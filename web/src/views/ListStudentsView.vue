@@ -45,5 +45,8 @@ export default class ListStudentsView extends Vue {
         border-radius: 30px;
         padding: 30px 40px;
         color: $color-black;
+        @media all and (max-width: 500px) {
+            padding: 20px;
+        }
     }
 </style>

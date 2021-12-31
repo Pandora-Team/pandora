@@ -16,7 +16,7 @@
                         label="Телефон *"
                         type="text"
                         :error="errorPhoneInput"
-                        placeholder="+7__________"
+                        placeholder="+7-___-___-__-__"
                     />
                     <main-form-item
                         id="password"
