@@ -36,4 +36,16 @@ export class StatusesService {
         }
         return status
     }
+
+    async clearStatusesAllUsers(eventId: string): Promise<void> {
+        const statuses = await this.statusesModel.find({event_id: eventId})
+        console.log("[statuses] - ", statuses)
+        if (statuses.length) {
+            for (let i = 0; i < statuses.length; i++) {
+                const status = await this.statusesModel.findByIdAndDelete({_id: statuses[i]._id})
+                console.log("[status] - ", status)
+            }
+        }
+    }
+
 }
