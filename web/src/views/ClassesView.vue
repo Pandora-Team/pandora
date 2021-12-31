@@ -12,6 +12,7 @@
                     :key="event._id"
                     :event="event"
                 />
+                <event-card-empty v-if="events.length < 1" />
                 <event-card-create v-if="isAdmin" />
             </flicking>
         </div>
@@ -24,6 +25,7 @@ import { Component, Vue } from "vue-property-decorator"
 import EventCard from "@/components/EventCard.vue"
 import EventCardCreate from "@/components/EventCardCreate.vue"
 import { EventData, FlickingOptionData } from "@/definitions/interfaces"
+import EventCardEmpty from "@/components/EventCardEmpty.vue"
 
 import { Flicking } from "@egjs/vue-flicking"
 import "@egjs/vue-flicking/dist/flicking.css"
@@ -33,6 +35,7 @@ import "@egjs/vue-flicking/dist/flicking.css"
         EventCard,
         EventCardCreate,
         Flicking,
+        EventCardEmpty,
     },
 })
 export default class ClassesView extends Vue {
@@ -74,6 +77,12 @@ export default class ClassesView extends Vue {
         }
         .event-card {
             margin: 0 40px 40px 0;
+            &--empty {
+                width: 350px!important;
+                @media all and (max-width: 500px) {
+                    width: 300px;
+                }
+            }
             @media all and (max-width: 500px) {
                 margin: 0 20px 0 0;
                 width: 300px;
