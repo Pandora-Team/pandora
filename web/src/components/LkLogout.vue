@@ -21,7 +21,6 @@
 <script lang="ts">
 
 import { Component, Vue, Prop } from "vue-property-decorator"
-import paths from "@/router/paths"
 
 @Component({
     components: {},
@@ -37,7 +36,6 @@ export default class LkLogout extends Vue {
 
     logout(): void {
         this.$mainStore.user.logout()
-        this.$router.push({ path: paths.LoginLayout })
     }
 
 

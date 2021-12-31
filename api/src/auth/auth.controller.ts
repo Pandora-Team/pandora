@@ -42,7 +42,8 @@ export class AuthController {
 
     @Get('logout')
     logout(@Res({ passthrough: true }) response: Response) {
-        response.cookie("at", "", {maxAge: 0})
-        return "cookie at clear"
+        const date = dayjs().subtract(1, "day").format()
+        response.cookie("at", "", {maxAge: -1, expires: new Date(date)})
+        return true
     }
 }

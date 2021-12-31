@@ -5,6 +5,8 @@ import { Store } from "@/store/store"
 import notification from "@/definitions/notification"
 import * as Sentry from "@sentry/vue"
 import { logout } from "@/api/auth"
+import paths from "@/router/paths"
+import router from "@/router"
 
 export class User {
 
@@ -54,8 +56,11 @@ export class User {
 
     @Action()
     async logout(): Promise<void> {
-        await logout()
         this.clearUserInfo()
+        const { data } = await logout()
+        if (data) {
+            await router.push({ path: paths.LoginLayout })
+        }
     }
 
     @Mutation()
