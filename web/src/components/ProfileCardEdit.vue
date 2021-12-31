@@ -7,7 +7,8 @@
         />
         <div class="profile-row">
             <div
-                class="profile-avatar profile-avatar--edit"
+                class="profile-avatar"
+                :class="{'profile-avatar--edit': !isMobile}"
                 @click="changeAvatar"
             >
                 <lk-avatar :width="widthAvatar" />
@@ -160,6 +161,7 @@ export default class ProfileCardEdit extends Vue {
     }
 
     changeAvatar(): void {
+        if (this.isMobile) return
         this.$mainStore.popup.changeActiveCropPopup(true)
     }
 
