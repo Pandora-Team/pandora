@@ -52,4 +52,12 @@ router.beforeEach(async (to, from, next) => {
     return next()
 })
 
+router.beforeEach(async (to, from, next) => {
+    const $mainStore: Store = Vue.prototype.$mainStore
+    if (from.path === paths.RegistrationView && to.path === paths.LkLayout) {
+        $mainStore.popup.changeActiveWelcomePopup(true)
+    }
+    return next()
+})
+
 export default router

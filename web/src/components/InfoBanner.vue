@@ -59,8 +59,8 @@ export default class InfoBanner extends Vue {
                 background-image: none;
                 padding-top: 40px;
             }
-            @media all and (max-width: 490px) {
-                padding-top: 20px;
+            @media all and (max-width: 500px) {
+                padding-top: 40px;
             }
         }
         &__content {
@@ -78,8 +78,8 @@ export default class InfoBanner extends Vue {
             font-weight: 700;
             margin-bottom: 0;
             @media all and (max-width: 500px) {
-                font-size: 24px;
-                line-height: 30px;
+                font-size: 20px;
+                line-height: 26px;
             }
         }
         &--somi {

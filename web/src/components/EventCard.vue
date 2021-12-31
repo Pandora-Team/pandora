@@ -37,7 +37,7 @@
                     Стоимость: <span>{{ event.price }} р.</span>
                 </p>
                 <main-btn
-                    v-if="!signedUp && !isAdmin"
+                    v-if="visibleRecordBtn"
                     :full-width="true"
                     @click="onClick"
                 >
@@ -74,6 +74,7 @@ import dayjs from "dayjs"
 import { listStatuses, typesStatus, typeStatus } from "@/definitions/typeStatus"
 import MainRadio from "@/components/MainRadio.vue"
 import { deleteEvent } from "@/api/events"
+import { includes } from "lodash"
 
 @Component({
     components: {
@@ -111,6 +112,13 @@ export default class EventCard extends Vue {
 
     mounted(): void {
         this.updateStatuses()
+    }
+
+    get visibleRecordBtn(): boolean {
+        if (includes(this.statuses, typesStatus.visited)) {
+            return false
+        }
+        return !this.signedUp && !this.isAdmin
     }
 
     get date(): string {
@@ -202,8 +210,10 @@ export default class EventCard extends Vue {
        background-position: center;
        background-size: cover;
        position: relative;
-       &:hover {
-           box-shadow: 0 60px 50px -30px rgba(95, 38, 205, 0.3);
+       @media all and (min-width: 500px) {
+           &:hover {
+               box-shadow: 0 60px 50px -30px rgba(95, 38, 205, 0.3);
+           }
        }
        &:before {
            content: '';

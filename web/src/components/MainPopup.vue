@@ -63,9 +63,12 @@ export default class MainPopup extends Vue {
             box-shadow: 0 0 60px rgba(255, 255, 255, 0.25);
             border-radius: 30px;
             @media all and (max-width: 500px) {
-                width: calc(100% - 90px);
+                width: calc(100% - 40px);
                 display: flex;
                 justify-content: center;
+                .btn--main {
+                    min-width: auto;
+                }
             }
         }
         &__close {

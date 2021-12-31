@@ -17,18 +17,18 @@
                 <main-form-item
                     id="name"
                     v-model="name"
-                    label="Имя *"
+                    label="Имя"
                     type="text"
                     placeholder="Имя"
-                    inline-class="profile"
+                    inline-class="profile-item"
                 />
                 <main-form-item
                     id="surname"
                     v-model="surname"
-                    label="Фамилия *"
+                    label="Фамилия"
                     type="text"
                     placeholder="Фамилия"
-                    inline-class="profile"
+                    inline-class="profile-item"
                 />
             </div>
         </div>
@@ -36,36 +36,36 @@
             <main-form-item
                 id="birthday"
                 v-model="birthday"
-                label="Дата рождения *"
+                label="Дата рождения"
                 type="text"
                 placeholder="дд.мм.гггг"
-                inline-class="profile"
+                inline-class="profile-item"
             />
             <main-form-item
                 id="vk"
                 v-model="vk"
-                label="ВКонтакте *"
+                label="ВКонтакте"
                 type="text"
                 placeholder="Ссылка"
-                inline-class="profile"
+                inline-class="profile-item"
             />
         </div>
         <div class="profile-row">
             <main-form-item
                 id="insta"
                 v-model="instagram"
-                label="Инстаграм *"
+                label="Инстаграм"
                 type="text"
                 placeholder="Ссылка"
-                inline-class="profile"
+                inline-class="profile-item"
             />
             <main-form-item
                 id="tg"
                 v-model="telegram"
-                label="Телеграм *"
+                label="Телеграм"
                 type="text"
                 placeholder="Ссылка"
-                inline-class="profile"
+                inline-class="profile-item"
             />
         </div>
         <main-btn
@@ -200,7 +200,7 @@ export default class ProfileCardEdit extends Vue {
         &-row {
             display: flex;
             margin-bottom: 30px;
-            .form__item.profile {
+            .form__item.profile-item {
                 margin-bottom: 0;
                 @media all and (max-width: 800px) {
                     width: 100%;
@@ -225,7 +225,7 @@ export default class ProfileCardEdit extends Vue {
             margin-top: 28px;
             width: 100%;
             max-width: 285px;
-            .form__item.profile {
+            .form__item.profile-item {
                 width: 100%;
                 margin-bottom: 30px;
                 margin-right: 0;

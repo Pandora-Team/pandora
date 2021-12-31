@@ -21,7 +21,7 @@
                 class="login-block"
             >
                 <div class="login-title">
-                    <h3>Привет и добро пожаловать в PANDORA!</h3>
+                    <h3>Привет и добро пожаловать в&nbsp;PANDORA!</h3>
                 </div>
                 <div class="login-subtitle">
                     <h6>Выбирай подходящее поле</h6>
@@ -71,6 +71,9 @@ export default class LoginView extends Vue {
         max-width: 124px;
         max-height: 127px;
         margin: 100px auto 115px;
+        @media all and (max-width: 500px) {
+            margin: 60px auto 70px;
+        }
     }
     .login-block {
         width: 100%;
@@ -79,6 +82,9 @@ export default class LoginView extends Vue {
         max-width: 390px;
         margin: 0 auto 115px;
         text-align: center;
+        @media all and (max-width: 500px) {
+            margin: 0 auto 80px;
+        }
         h3 {
             line-height: 29px;
             color: white;

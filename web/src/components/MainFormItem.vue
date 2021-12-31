@@ -97,7 +97,7 @@ export default class BaseFormItem extends Vue {
                 color: #C03221;
             }
         }
-        &__item.profile {
+        &__item.profile-item {
             label {
                 color: $color-black;
             }

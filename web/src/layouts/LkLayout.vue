@@ -101,15 +101,6 @@ export default class LkLayout extends Vue {
                     height: 0;
                 }
             }
-            &::after {
-                content: "";
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                height: 65px;
-                width: 100%;
-                background: linear-gradient(360deg, rgba(94, 42, 195, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
-            }
         }
 
     }

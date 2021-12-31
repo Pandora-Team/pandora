@@ -1,13 +1,15 @@
 <template>
-    <div class="welcome-banner-wrapper">
-        <div class="welcome-banner">
-            <div class="welcome-banner__text">
-                <h1>Привет, {{ name }} !</h1>
-                <p>
-                    Добро пожаловать в PANDORA! Здесь ты можешь записаться на&nbsp;занятия,
-                    узнать о будущих и прошедших событиях.
-                </p>
-                <p>Будь в курсе k-pop движухи в Туле.</p>
+    <div class="welcome-banner-out">
+        <div class="welcome-banner-wrapper">
+            <div class="welcome-banner">
+                <div class="welcome-banner__text">
+                    <h1>Привет, {{ name }} !</h1>
+                    <p>
+                        Добро пожаловать в PANDORA! Здесь ты можешь записаться на&nbsp;занятия,
+                        узнать о будущих и прошедших событиях.
+                    </p>
+                    <p>Будь в курсе k-pop движухи в Туле.</p>
+                </div>
             </div>
         </div>
     </div>
@@ -30,14 +32,18 @@ export default class WelcomeBanner extends Vue {
 </script>
 
 <style lang="scss">
-    .welcome-banner {
+    .welcome-banner-wrapper {
+        background: $gradient-black;
         margin-bottom: 30px;
         border-radius: 30px;
+    }
+    .welcome-banner {
         padding: 45px 40px;
-        background-image: url("../assets/banner/welcome-banner.png"), $gradient-black;
-        background-size: contain;
+        background-image: url("../assets/banner/welcome-banner.png");
+        background-size: auto;
         background-repeat: no-repeat;
         background-position: right;
+        border-radius: 30px;
         &__text {
             max-width: 660px;
             h1 {
@@ -59,7 +65,7 @@ export default class WelcomeBanner extends Vue {
 
     @media all and (max-width: 1366px) {
         .welcome-banner {
-            background-image: url("../assets/banner/welcome-banner-2.png"), $gradient-black;
+            background-image: url("../assets/banner/welcome-banner-2.png");
             padding: 42px 30px;
             margin-bottom: 20px;
 
@@ -83,7 +89,7 @@ export default class WelcomeBanner extends Vue {
     @media all and (max-width: 1000px) {
         .welcome-banner {
             padding: 32px 30px;
-            background-image: url("../assets/banner/welcome-banner-3.png"), $gradient-black;
+            background-image: url("../assets/banner/welcome-banner-3.png");
 
             &__text {
                 max-width: 320px;
@@ -92,22 +98,22 @@ export default class WelcomeBanner extends Vue {
     }
 
     @media all and (max-width: 800px) {
-        .welcome-banner-wrapper {
+        .welcome-banner-out {
             position: relative;
             margin: 0 -20px 20px;
         }
         .welcome-banner {
             height: 470px;
-            background-image: url("../assets/banner/welcome-banner-min.png"), $gradient-black;
+            background-image: url("../assets/banner/welcome-banner-min.png");
             background-position: bottom right;
-            background-size: auto;
+            background-size: 338px 313px;
             position: relative;
             z-index: 3;
         }
     }
 
     @media all and (max-width: 496px) {
-        .welcome-banner-wrapper {
+        .welcome-banner-out {
             &:before {
                 content: "";
                 position: absolute;
@@ -117,6 +123,9 @@ export default class WelcomeBanner extends Vue {
                 width: 100%;
                 background: $color-black;
             }
+        }
+        .welcome-banner-wrapper {
+            position: relative;
         }
         .welcome-banner {
             box-shadow: $shadow-banner;

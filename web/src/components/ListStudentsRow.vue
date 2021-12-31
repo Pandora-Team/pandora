@@ -1,9 +1,9 @@
 <template>
     <div class="list-students-row">
         <div class="list-students-row__item list-students-row__info">
-<!--            <div class="list-students-row__number">
+            <div class="list-students-row__number">
                 {{ number }}
-            </div>-->
+            </div>
             <div class="list-students-row__avatar">
                 <lk-avatar />
             </div>
@@ -49,9 +49,9 @@ export default class ListStudentsRow extends Vue {
     @Prop({ type: Number })
     readonly index!: number
 
-    /*get number(): number {
+    get number(): number {
         return this.index + 1
-    }*/
+    }
 
     get birthdayText(): string {
         if (this.user.birthday) return `Дата рождения: <b>${this.user.birthday}</b>`
@@ -89,7 +89,6 @@ export default class ListStudentsRow extends Vue {
         }
         &__item {
             display: flex;
-            justify-content: center;
             align-items: center;
             width: 25%;
             b {
@@ -113,11 +112,15 @@ export default class ListStudentsRow extends Vue {
                     margin-bottom: 20px;
                 }
             }
-            @media all and (max-width: 420px) {
-                &.list-students-row__info {
-                    flex-wrap: wrap;
+            @media all and (max-width: 500px) {
+                .list-students-row__number {
+                    margin-right: 20px;
+                }
+                .list-students-row__avatar {
+                    margin-right: 20px;
                 }
                 .list-students-row__name {
+                    line-height: 1.5;
                     margin-top: 10px;
                     width: 100%;
                 }

@@ -139,6 +139,9 @@ export default class RulesView extends Vue {
 
 <style lang="scss">
     .rules {
+        @media all and (max-width: 500px) {
+            margin-top: 30px;
+        }
         &-body {
             margin-bottom: 30px;
         }

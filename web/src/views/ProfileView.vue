@@ -13,7 +13,7 @@
             </main-btn>
         </div>
         <div class="profile-block">
-            <info-card inline-class="profile">
+            <info-card inline-class="profile-card">
                 <transition-fade>
                     <profile-card
                         v-if="!edit"
@@ -72,6 +72,9 @@ export default class ProfileView extends Vue {
 
 <style lang="scss">
     .profile {
+        @media all and (max-width: 500px) {
+            margin-top: 90px;
+        }
         &__telegram {
             margin-bottom: 36px;
         }
@@ -83,13 +86,13 @@ export default class ProfileView extends Vue {
             @media all and (max-width: 800px) {
                 grid-template-columns: auto;
                 justify-content: center;
-                .info-card.profile {
+                .info-card.profile-card {
                     max-width: 400px;
                 }
             }
             @media all and (max-width: 500px) {
                 justify-content: inherit;
-                .info-card.profile {
+                .info-card.profile-card {
                     padding: 30px;
                 }
             }
