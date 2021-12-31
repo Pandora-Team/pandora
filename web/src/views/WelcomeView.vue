@@ -65,10 +65,6 @@ export default class WelcomeView extends Vue {
         return this.$mainStore.events.nearestEvent
     }
 
-    async mounted(): Promise<void> {
-        await this.$mainStore.events.getListEvents()
-        await this.$mainStore.events.getNearestEventId()
-    }
 }
 </script>
 

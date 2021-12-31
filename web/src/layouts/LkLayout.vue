@@ -62,6 +62,7 @@ export default class LkLayout extends Vue {
             this.$mainStore.user.setUserId(id)
             await this.$mainStore.user.getUserInfo()
         }
+        await this.$mainStore.events.getListEvents()
     }
 }
 </script>

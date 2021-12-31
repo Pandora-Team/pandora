@@ -37,10 +37,6 @@ import "@egjs/vue-flicking/dist/flicking.css"
 })
 export default class ClassesView extends Vue {
 
-    mounted(): void {
-        this.$mainStore.events.getListEvents()
-    }
-
     get flickingOptions(): FlickingOptionData {
         return {
             align:                "prev",

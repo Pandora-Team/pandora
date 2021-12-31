@@ -137,16 +137,6 @@ export default class EventCard extends Vue {
         ]
     }
 
-    /*get inlineClass(): (string | { [key: string]: boolean })[] {
-        const styleClass = []
-        const objClass :{[key: string]: boolean} = {
-            "event-card--welcome": this.welcome,
-        }
-        if (this.gridClass) styleClass.push(this.gridClass)
-        if (!isEmpty(objClass)) styleClass.push(objClass)
-        return styleClass
-    }*/
-
     get isAdmin(): boolean {
         return this.$mainStore.user.isAdmin
     }

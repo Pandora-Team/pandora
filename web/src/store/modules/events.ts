@@ -2,7 +2,7 @@ import { State, Mutation, Action, Getter } from "vuex-simple"
 import { EventData } from "@/definitions/interfaces"
 import { getAllEvent, getNearestEvent } from "@/api/events"
 import { Store } from "@/store/store"
-import { statusData } from "@/definitions/typeStatus"
+import { statusData, typesStatus } from "@/definitions/typeStatus"
 import { cloneDeep, isEmpty } from "lodash"
 import notification from "@/definitions/notification"
 
@@ -71,10 +71,8 @@ export class Events {
 
     @Mutation()
     private updateNearestEvent(): void {
-        if (this.nearestEvent?._id) {
-            const nearestEvent = this.listEvents.find(event => event._id === this.nearestEvent?._id)
-            this.nearestEvent = cloneDeep(nearestEvent)
-        }
+        const nearestEvent = this.listEvents.find(event => event._id === this.nearestEvent?._id)
+        this.nearestEvent = cloneDeep(nearestEvent)
     }
 
     @Getter()
@@ -85,7 +83,12 @@ export class Events {
     @Mutation()
     private updateListEvent(list: EventData[]): void {
         this.listEvents = cloneDeep(list)
-        this.updateNearestEvent()
+        if (this.nearestEvent?._id) {
+            this.updateNearestEvent()
+        } else {
+            this.getNearestEventId()
+        }
+
     }
 
     @Mutation()
@@ -113,6 +116,9 @@ export class Events {
                 event.status.splice(0, event.status.length)
                 event.status_id = ""
                 event.users_id = event.users_id?.filter(user => user !== this.$mainStore.user.id)
+                if (event._id === this.nearestEvent?._id) {
+                    event.status.push(typesStatus.nearest.name)
+                }
             }
             return event
         })
