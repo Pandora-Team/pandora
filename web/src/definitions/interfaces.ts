@@ -54,3 +54,15 @@ export interface UserData {
     instagram: string
     telegram: string
 }
+
+export type styleClass = (string | { [key: string]: boolean })[]
+
+export type styleClassObject = { [key: string]: boolean }
+
+export interface FlickingOptionData {
+    align:                string
+    noPanelStyleOverride: boolean
+    disableOnInit:        boolean
+    autoInit:             boolean
+    autoResize:           boolean
+}

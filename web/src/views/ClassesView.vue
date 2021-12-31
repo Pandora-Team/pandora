@@ -23,7 +23,7 @@
 import { Component, Vue } from "vue-property-decorator"
 import EventCard from "@/components/EventCard.vue"
 import EventCardCreate from "@/components/EventCardCreate.vue"
-import { EventData } from "@/definitions/interfaces"
+import { EventData, FlickingOptionData } from "@/definitions/interfaces"
 
 import { Flicking } from "@egjs/vue-flicking"
 import "@egjs/vue-flicking/dist/flicking.css"
@@ -41,7 +41,7 @@ export default class ClassesView extends Vue {
         this.$mainStore.events.getListEvents()
     }
 
-    get flickingOptions(): any {
+    get flickingOptions(): FlickingOptionData {
         return {
             align:                "prev",
             noPanelStyleOverride: true,

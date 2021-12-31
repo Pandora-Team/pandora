@@ -13,6 +13,7 @@
 
 import { Component, Prop, Vue } from "vue-property-decorator"
 import TransitionFade from "@/components/transition/TransitionFade.vue"
+import { styleClassObject } from "@/definitions/interfaces"
 
 @Component({
     components: {
@@ -24,7 +25,7 @@ export default class LkBody extends Vue {
     @Prop({ type: Boolean, default: false })
     mobile!: boolean
 
-    get inlineClass(): any {
+    get inlineClass(): styleClassObject {
         return {
             "lk-body__wrapper--mt":     this.mobile,
             "lk-body__wrapper--scroll": this.needScroll,

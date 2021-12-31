@@ -14,6 +14,7 @@
 
 import { Component, Vue, Watch } from "vue-property-decorator"
 import TransitionFromRight from "@/components/transition/TransitionFromRight.vue"
+import { styleClassObject } from "@/definitions/interfaces"
 
 @Component({
     components: {
@@ -43,7 +44,7 @@ export default class Notification extends Vue {
         return this.$mainStore.notification.typeNotification
     }
 
-    get inlineClass(): any {
+    get inlineClass(): styleClassObject {
         return {
             "notification--success": this.type === "success",
             "notification--failed":  this.type === "failed",

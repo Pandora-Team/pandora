@@ -61,7 +61,7 @@ export default class WelcomeView extends Vue {
         return this.$mainStore.events.hasNearestEvent
     }
 
-    get nearestEvent(): EventData {
+    get nearestEvent(): EventData | undefined {
         return this.$mainStore.events.nearestEvent
     }
 

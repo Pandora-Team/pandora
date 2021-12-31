@@ -3,7 +3,7 @@
         class="form__item"
         :class="secondClasses"
     >
-        <label :for="id">{{ label }}</label>
+        <label>{{ label }}</label>
         <main-input
             :id="id"
             :value="value"
@@ -29,6 +29,7 @@
 
 import { Component, Vue, Prop } from "vue-property-decorator"
 import MainInput from "@/components/MainInput.vue"
+import { styleClass } from "@/definitions/interfaces"
 
 @Component({
     components: {
@@ -62,9 +63,11 @@ export default class BaseFormItem extends Vue {
         this.$emit("input", value)
     }
     
-    get secondClasses(): any {
+    get secondClasses(): styleClass {
         return [
-            { "form__item--pb": this.error },
+            {
+                "form__item--pb": Boolean(this.error),
+            },
             this.inlineClass,
         ]
     }

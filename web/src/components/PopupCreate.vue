@@ -57,6 +57,7 @@ import EventSelectAddress from "@/components/EventSelectAddress.vue"
 import EventDate from "@/components/EventDate.vue"
 import { createEvent, updateEvent } from "@/api/events"
 import MainPopup from "@/components/MainPopup.vue"
+import { EventData } from "@/definitions/interfaces"
 
 @Component({
     components: {
@@ -76,7 +77,7 @@ export default class PopupCreate extends Vue {
         return this.$mainStore.popup.updatePopup
     }
 
-    get state(): any {
+    get state(): EventData | any {
         return this.$mainStore.popup.createdState
     }
     
@@ -114,7 +115,7 @@ export default class PopupCreate extends Vue {
     async submitForm(): Promise<void> {
         if (!this.isUpdatePopup) {
             const formData = new FormData()
-            const data = this.state
+            const data = { ...this.state }
             for (const key in data) {
                 if (data.hasOwnProperty(key) && data[key]) {
                     formData.append(key, data[key])

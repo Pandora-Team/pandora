@@ -69,7 +69,7 @@
 import { Component, Prop, Vue, Watch } from "vue-property-decorator"
 import MainStatus from "@/components/MainStatus.vue"
 import MainBtn from "@/components/MainBtn.vue"
-import { EventData } from "@/definitions/interfaces"
+import { EventData, styleClass } from "@/definitions/interfaces"
 import dayjs from "dayjs"
 import { listStatuses, typesStatus, typeStatus } from "@/definitions/typeStatus"
 import MainRadio from "@/components/MainRadio.vue"
@@ -128,7 +128,7 @@ export default class EventCard extends Vue {
         }
     }
 
-    get inlineClass(): any {
+    get inlineClass(): styleClass {
         return [
             {
                 "event-card--welcome": this.welcome,
@@ -136,6 +136,16 @@ export default class EventCard extends Vue {
             this.gridClass,
         ]
     }
+
+    /*get inlineClass(): (string | { [key: string]: boolean })[] {
+        const styleClass = []
+        const objClass :{[key: string]: boolean} = {
+            "event-card--welcome": this.welcome,
+        }
+        if (this.gridClass) styleClass.push(this.gridClass)
+        if (!isEmpty(objClass)) styleClass.push(objClass)
+        return styleClass
+    }*/
 
     get isAdmin(): boolean {
         return this.$mainStore.user.isAdmin
@@ -178,9 +188,6 @@ export default class EventCard extends Vue {
             const { _id } = res.data
             this.$mainStore.events.removeEvent(_id)
             this.$mainStore.notification.changeNotification({ state: true, ...this.$mainNotification.successRemove })
-            if (this.welcome) {
-                this.$mainStore.events.removeNearestEvent()
-            }
         } catch (e) {
             this.$mainStore.notification.changeNotification({ state: true, ...this.$mainNotification.failedRemove })
             throw new Error(`Error delete Event - ${e}`)
