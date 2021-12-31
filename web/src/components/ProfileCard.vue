@@ -14,7 +14,9 @@
             </div>
             <div class="profile-desc">
                 <h3>{{ fullName }}</h3>
-                <p>День Рождения:&nbsp;<span>{{ birthday }}</span></p>
+                <p v-if="Boolean(birthday)">
+                    День Рождения:&nbsp;<span>{{ birthday }}</span>
+                </p>
                 <div class="profile-social">
                     <lk-social-item
                         v-for="social in socialLink"
@@ -66,7 +68,6 @@ export default class ProfileCard extends Vue {
     changeEdit(): void {
         this.$emit("edit", true)
     }
-
 
 }
 </script>
