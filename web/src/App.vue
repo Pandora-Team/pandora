@@ -58,6 +58,7 @@ export default class App extends Vue {
         if (this.loading) {
             setTimeout(() => {
                 this.$mainStore.app.setLoading(false)
+                this.$mainStore.popup.changeActiveWelcomePopup(true)
             }, 3000)
         }
     }
