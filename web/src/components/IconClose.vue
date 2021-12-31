@@ -15,6 +15,7 @@
 <script lang="ts">
 
 import { Component, Vue, Prop } from "vue-property-decorator"
+import { styleClass } from "@/definitions/interfaces"
 @Component({})
 export default class IconClose extends Vue {
 
@@ -28,7 +29,7 @@ export default class IconClose extends Vue {
         return require("@/assets/svg/close.svg")
     }
 
-    get inlineClass(): any {
+    get inlineClass(): styleClass {
         return [{
             "icon-close--white": this.color === "white",
             "icon-close--black": this.color === "black",

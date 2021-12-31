@@ -15,6 +15,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator"
+import { styleClass, styleClassObject } from "@/definitions/interfaces"
 
 @Component({})
 export default class MainBtn extends Vue {
@@ -37,7 +38,7 @@ export default class MainBtn extends Vue {
     @Prop({ type: Boolean, default: false })
     gradient!: boolean
 
-    get inlineClass(): any {
+    get inlineClass(): styleClass {
         return [
             {
                 "btn--auto":  this.autoWidth,
@@ -47,7 +48,7 @@ export default class MainBtn extends Vue {
         ]
     }
 
-    get wrapperClass(): any {
+    get wrapperClass(): styleClassObject {
         return {
             "btn-wrapper--gradient": this.gradient,
             "btn-wrapper--width":    this.fullWidth,
