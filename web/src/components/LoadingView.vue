@@ -31,6 +31,8 @@ export default class LoadingView extends Vue {
 
 <style lang="scss">
     .loading-view {
+        position: relative;
+        z-index: 102;
         display: flex;
         justify-content: center;
         align-items: center;

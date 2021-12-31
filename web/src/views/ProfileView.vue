@@ -1,6 +1,16 @@
 <template>
     <div class="profile">
         <h1>Мой профиль</h1>
+        <div class="profile__telegram">
+            <main-btn
+                type="link"
+                url="https://t.me/+yInFhfRRC7FiMTIy"
+                :full-width="true"
+                icon="telegram"
+            >
+                {{ textBtnTg }}
+            </main-btn>
+        </div>
         <div class="profile-block">
             <info-card inline-class="profile">
                 <transition-fade>
@@ -27,6 +37,7 @@ import ProfileCard from "@/components/ProfileCard.vue"
 import ProfileEvents from "@/components/ProfileEvents.vue"
 import ProfileCardEdit from "@/components/ProfileCardEdit.vue"
 import TransitionFade from "@/components/transition/TransitionFade.vue"
+import MainBtn from "@/components/MainBtn.vue"
 
 @Component({
     components: {
@@ -35,6 +46,7 @@ import TransitionFade from "@/components/transition/TransitionFade.vue"
         ProfileEvents,
         ProfileCardEdit,
         TransitionFade,
+        MainBtn,
     },
 })
 export default class ProfileView extends Vue {
@@ -45,11 +57,23 @@ export default class ProfileView extends Vue {
         this.edit = active
     }
 
+    get textBtnTg(): string {
+        if (this.isMobile) return "Чат участников"
+        return "Присоединиться к закрытому чату участников"
+    }
+
+    get isMobile(): boolean {
+        return this.$mainStore.app.isMobile
+    }
+
 }
 </script>
 
 <style lang="scss">
     .profile {
+        &__telegram {
+            margin-bottom: 36px;
+        }
         &-block {
             display: grid;
             grid-template-columns: 1fr 1fr;

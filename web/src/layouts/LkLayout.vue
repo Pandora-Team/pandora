@@ -84,7 +84,7 @@ export default class LkLayout extends Vue {
     }
 
     &-body {
-        width: 100%;
+        width: calc(100% - 300px);
         margin: 40px 40px 40px 0;
         background: $color-white;
         border-radius: 40px;
@@ -121,6 +121,7 @@ export default class LkLayout extends Vue {
         &-body {
             margin: 10px 10px 10px 0;
             border-radius: 0 0 40px 40px;
+            width: calc(100% - 200px);
         }
 
         &-aside {
@@ -132,6 +133,7 @@ export default class LkLayout extends Vue {
 @media all and (max-width: 1000px) {
     .lk {
         &-body {
+            width: calc(100% - 84px);
             &__wrapper {
                 padding: 20px 30px;
             }
@@ -149,7 +151,7 @@ export default class LkLayout extends Vue {
 
         &-body {
             margin: 0;
-
+            width: 100%;
             &__wrapper {
                 padding: 0;
             }

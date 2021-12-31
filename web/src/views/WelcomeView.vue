@@ -170,7 +170,7 @@ export default class WelcomeView extends Vue {
             .event {
                 grid-row: 1/2;
                 grid-column: 1/2;
-                height: 360px;
+                height: 360px!important;
                 box-shadow: $shadow-block;
             }
             .profile {
