@@ -3,6 +3,10 @@
         color-icon-close="white"
         @close="closePopup"
     >
+        <div
+            class="profile-crop__rotate"
+            @click="rotateImage"
+        />
         <div class="profile-crop">
             <div class="profile-crop__choose">
                 <loader-mini v-if="loading" />
@@ -25,18 +29,17 @@
                 class="profile-crop__action"
             >
                 <main-btn
-                    :auto-width="true"
+                    :full-width="true"
                     @click="generateImage"
                 >
                     Сохранить
                 </main-btn>
-                <main-btn
-                    view="error"
-                    :auto-width="true"
+                <div
+                    class="profile-crop__action-remove"
                     @click="removeImage"
                 >
                     Удалить
-                </main-btn>
+                </div>
             </div>
         </div>
     </main-popup>
@@ -99,6 +102,10 @@ export default class PopupCrop extends Vue {
         }
     }
 
+    rotateImage(): void {
+        this.croppa.rotate(90)
+    }
+
     removeImage(): void {
         if (this.hasImage) {
             this.croppa.remove()
@@ -126,19 +133,39 @@ export default class PopupCrop extends Vue {
             min-width: auto;
             padding: 60px 40px 40px 40px;
         }
+        &__rotate {
+            cursor: pointer;
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            width: 40px;
+            height: 40px;
+            background: url("../assets/svg/rotate.svg");
+        }
         &__choose {
             margin-bottom: 30px;
             display: flex;
             justify-content: center;
             position: relative;
-            @media all and (max-width: 500px) {
-                justify-content: flex-start;
-            }
         }
         &__action {
             display: flex;
             align-items: center;
             justify-content: space-between;
+            &-remove {
+                margin-top: 10px;
+                transition: .5s;
+                height: 52px;
+                width: 100%;
+                cursor: pointer;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                color: $color-gray;
+                &:hover {
+                    color: $color-red;
+                }
+            }
             @media all and (max-width: 500px) {
                 flex-direction: column;
                 align-items: flex-start;

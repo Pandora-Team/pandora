@@ -7,6 +7,7 @@
                 url="https://t.me/+yInFhfRRC7FiMTIy"
                 :full-width="true"
                 icon="telegram"
+                :external-link="true"
             >
                 {{ textBtnTg }}
             </main-btn>
