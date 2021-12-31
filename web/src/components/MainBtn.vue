@@ -29,6 +29,9 @@ export default class MainBtn extends Vue {
     @Prop({ type: String, default: "" })
     url!: string
 
+    @Prop({ type: Boolean, default: false })
+    externalLink!: boolean
+
     @Prop({ type: String, default: "main" })
     view!: string
 
@@ -64,7 +67,11 @@ export default class MainBtn extends Vue {
 
     click(): void {
         if (this.type === "link") {
-            window.open(`${this.url}`, "_blank")
+            if (this.externalLink) {
+                window.open(`${this.url}`, "_blank")
+            } else {
+                this.$router.push({ path: this.url })
+            }
         }
         if (this.type === "button") {
             this.$emit("click")
