@@ -8,7 +8,7 @@
             :class="inlineClass"
             @click.prevent="click"
         >
-            <slot />
+            <span><slot /></span>
         </button>
     </div>
 </template>
@@ -22,6 +22,9 @@ export default class MainBtn extends Vue {
 
     @Prop({ type: String, default: "button" })
     type!: string
+
+    @Prop({ type: String, default: "" })
+    icon!: string
 
     @Prop({ type: String, default: "" })
     url!: string
@@ -39,13 +42,17 @@ export default class MainBtn extends Vue {
     gradient!: boolean
 
     get inlineClass(): styleClass {
-        return [
+        const styles = [
             {
                 "btn--auto":  this.autoWidth,
                 "btn--width": this.fullWidth,
             },
             `btn--${this.view}`,
         ]
+        if (this.icon) {
+            styles.push(`btn--${this.icon}`)
+        }
+        return styles
     }
 
     get wrapperClass(): styleClassObject {
@@ -57,7 +64,7 @@ export default class MainBtn extends Vue {
 
     click(): void {
         if (this.type === "link") {
-            this.$router.push({ path: this.url })
+            window.open(`${this.url}`, "_blank")
         }
         if (this.type === "button") {
             this.$emit("click")
@@ -145,6 +152,23 @@ export default class MainBtn extends Vue {
         padding: 16px 40px;
         min-width: auto;
         margin-right: 15px;
+    }
+
+    &--telegram {
+        span {
+            display: inline-block;
+            position: relative;
+            margin-left: 45px;
+            &::before {
+                content: "";
+                background: url("../assets/svg/tg.svg");
+                width: 25px;
+                height: 22px;
+                background-size: contain;
+                position: absolute;
+                left: -45px;
+            }
+        }
     }
     @media all and (max-width: 500px) {
         white-space: nowrap;

@@ -66,6 +66,7 @@ export default class InfoCard extends Vue {
             color: $color-white;
             letter-spacing: 0.01em;
             margin-bottom: 30px;
+            text-align: center;
         }
     }
 
