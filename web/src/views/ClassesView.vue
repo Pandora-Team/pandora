@@ -75,7 +75,6 @@ export default class ClassesView extends Vue {
         }
         &__body {
             display: flex;
-            flex-wrap: wrap;
         }
         .event-card {
             margin: 0 40px 40px 0;
