@@ -5,6 +5,7 @@
     >
         <div class="profile-crop">
             <div class="profile-crop__choose">
+                <loader-mini v-if="loading" />
                 <croppa
                     ref="myCroppa"
                     :width="238"
@@ -15,6 +16,8 @@
                     :quality="1"
                     :prevent-white-space="true"
                     @file-choose="chooseFile"
+                    @loading-start="loadingImage(true)"
+                    @loading-end="loadingImage(false)"
                 />
             </div>
             <div
@@ -49,12 +52,14 @@ import MainBtn from "@/components/MainBtn.vue"
 // @ts-ignore
 import Croppa from "vue-croppa"
 import { setAvatar } from "@/api/users"
+import LoaderMini from "@/components/LoaderMini.vue"
 
 @Component({
     components: {
         MainPopup,
         EventCard,
         MainBtn,
+        LoaderMini,
     },
 })
 export default class PopupCrop extends Vue {
@@ -66,8 +71,14 @@ export default class PopupCrop extends Vue {
 
     hasImage = false
 
+    loading = false
+
     chooseFile(): void {
         this.hasImage = true
+    }
+
+    loadingImage(state: boolean): void {
+        this.loading = state
     }
 
     async generateImage(): Promise<void> {
@@ -119,6 +130,7 @@ export default class PopupCrop extends Vue {
             margin-bottom: 30px;
             display: flex;
             justify-content: center;
+            position: relative;
             @media all and (max-width: 500px) {
                 justify-content: flex-start;
             }

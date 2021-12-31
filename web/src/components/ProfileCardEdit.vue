@@ -110,10 +110,6 @@ export default class ProfileCardEdit extends Vue {
 
     instagram = this.$mainStore.user.instagram
 
-    get iconPath(): string {
-        return require("@/assets/svg/save-profile.svg")
-    }
-
     get isMobile(): boolean {
         return this.$mainStore.app.isMobile
     }
