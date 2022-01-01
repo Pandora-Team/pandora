@@ -21,6 +21,7 @@ const routes: RouteConfig[] = [
     {
         path:      paths.LkLayout,
         component: LkLayout,
+        props:     true,
         children:  [
             {
                 path:      "",

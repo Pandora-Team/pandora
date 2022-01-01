@@ -58,6 +58,9 @@ export default class App extends Vue {
         if (this.loading) {
             setTimeout(() => {
                 this.$mainStore.app.setLoading(false)
+                if (this.$route.query?.welcome === "true") {
+                    this.$mainStore.popup.changeActiveWelcomePopup(true)
+                }
             }, 3000)
         }
     }
