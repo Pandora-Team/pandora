@@ -155,6 +155,7 @@ export default class EventRowStudent extends Vue {
        padding: 16px 30px;
        background: $color-white;
        border-radius: 30px;
+       margin-bottom: 20px;
        @media all and (max-width: 500px) {
            flex-direction: column;
            align-items: flex-start;
