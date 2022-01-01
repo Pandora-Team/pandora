@@ -18,6 +18,11 @@ export class Events {
 
     @Mutation()
     public addEventToList(event: EventData): void {
+        if (!this.listEvents.length) {
+            event.status.splice(0, event.status.length)
+            event.status.push(typesStatus.nearest.name)
+            this.nearestEvent = cloneDeep(event)
+        }
         this.listEvents.push(event)
     }
 
