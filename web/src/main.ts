@@ -26,6 +26,9 @@ import "vue-croppa/dist/vue-croppa.css"
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { VueMaskDirective } from "v-mask"
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import wb from "./registerServiceWorker"
 
 Vue.use(Vuelidate)
 Vue.use(VueYoutube)
@@ -40,6 +43,9 @@ Vue.directive("mask", VueMaskDirective)
 Vue.prototype.$mainStore = useStore(store)
 Vue.prototype.$mainPaths = paths
 Vue.prototype.$mainNotification = notification
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+Vue.prototype.$workbox = wb
 
 Sentry.init({
     Vue,
