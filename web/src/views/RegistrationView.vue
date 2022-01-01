@@ -194,7 +194,7 @@ export default class RegistrationView extends Vue {
                 const { _id } = res.data
                 await this.$mainStore.user.setUserId(_id)
                 this.$mainStore.app.setLoading(true)
-                await this.$router.push({ path: this.$mainPaths.LkLayout })
+                await this.$router.push({ path: this.$mainPaths.LkLayout, query: { welcome: "true" } })
 
             } catch (e) {
                 this.$mainStore.notification.changeNotification({ state: true, ...this.$mainNotification.failedReg })

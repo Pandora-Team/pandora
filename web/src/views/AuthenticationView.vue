@@ -94,15 +94,14 @@ export default class AuthenticationView extends Vue {
         this.$v.$touch()
         if (!this.$v.$invalid) {
             try {
-                const res = await auth({
+                const { data } = await auth({
                     phone: this.phone.replaceAll("-", ""),
                     pass:  this.password,
                 })
 
                 this.$mainStore.notification.changeNotification({ state: true, ...this.$mainNotification.successAuth })
 
-                const { _id } = res.data
-                await this.$mainStore.user.setUserId(_id)
+                this.$mainStore.user.setUserId(data)
                 this.$mainStore.app.setLoading(true)
                 await this.$router.push({ path: this.$mainPaths.LkLayout })
             } catch (e) {
