@@ -78,6 +78,9 @@ export default class ClassesView extends Vue {
         }
         &__body {
             display: flex;
+            .flicking-viewport {
+                overflow: hidden;
+            }
             .flicking-camera {
                 display: flex;
             }
