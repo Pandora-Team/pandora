@@ -78,6 +78,9 @@ export default class ClassesView extends Vue {
         }
         &__body {
             display: flex;
+            .flicking-camera {
+                display: flex;
+            }
         }
         .event-card {
             margin: 0 40px 40px 0;
