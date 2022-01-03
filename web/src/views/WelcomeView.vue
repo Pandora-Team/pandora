@@ -70,7 +70,9 @@ export default class WelcomeView extends Vue {
 
 <style lang="scss">
     .welcome {
-        margin-top: 30px;
+        @media all and (max-width: 500px) {
+            margin-top: 30px;
+        }
         &-grid {
             display: grid;
             grid-template-columns: 32.4% 17.1% 17.1% 26%;
