@@ -51,7 +51,7 @@ module.exports = {
         "no-multiple-empty-lines":  ["warn", { max: 2 }],
         "key-spacing":              ["warn", { align: "value" }],
         indent:                     ["warn", 4, { ignoreComments: true }],
-        "linebreak-style":          ["warn", process.platform === 'win32' ? 'windows' : 'unix'],
+        "linebreak-style":          ["warn", process.platform === "win32" ? "windows" : "unix"],
         quotes:                     ["warn", "double", { avoidEscape: true }],
         semi:                       ["warn", "never"],
         "no-mixed-spaces-and-tabs": ["warn", "smart-tabs"],

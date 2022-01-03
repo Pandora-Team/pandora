@@ -43,6 +43,17 @@ import PopupCrop from "@/components/PopupCrop.vue"
     },
 })
 export default class App extends Vue {
+
+    prompt = false
+
+    created(): void {
+        if (this.$workbox) {
+            this.$workbox.addEventListener("waiting", () => {
+                this.prompt = true
+            })
+        }
+    }
+
     @Watch("$mainStore.app.disable")
     changeDisable(): void {
         const body = document.querySelector("body")
