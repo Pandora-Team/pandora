@@ -5,7 +5,7 @@
             <info-card inline-class="info">
                 <welcome-info :path="$mainPaths.AboutView" />
             </info-card>
-            <info-card inline-class="profile">
+            <info-card inline-class="profile-info-card">
                 <welcome-profile :path="$mainPaths.ProfileView" />
             </info-card>
             <info-card-mini
@@ -83,7 +83,7 @@ export default class WelcomeView extends Vue {
                 grid-column: 1 / 4;
                 grid-row: 1;
             }
-            .profile {
+            .profile-info-card {
                 padding: 24px 30px 24px 40px;
                 grid-column: 1 / 2;
                 grid-row: 2;
@@ -139,7 +139,7 @@ export default class WelcomeView extends Vue {
                 grid-column: 2/4;
                 //grid-row: 1/2;
             }
-            .profile {
+            .profile-info-card {
                 grid-column: 1/2;
                 padding: 25px;
             }
@@ -172,7 +172,7 @@ export default class WelcomeView extends Vue {
                 height: 360px!important;
                 box-shadow: $shadow-block;
             }
-            .profile {
+            .profile-info-card {
                 grid-row: 3/4;
                 grid-column: 1/2;
                 box-shadow: $shadow-block;
