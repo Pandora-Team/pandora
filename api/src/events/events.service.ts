@@ -55,8 +55,8 @@ export class EventsService {
                 if (objStatuses && objUser) {
                     // @ts-ignore
                     const { payment_status, event_status, _id } = objStatuses
-                    const { name, avatar } = objUser
-                    const newObj = { payment_status, event_status, status_id: _id, name, avatar }
+                    const { name, avatar, surname } = objUser
+                    const newObj = { payment_status, event_status, status_id: _id, name, avatar, surname }
                     event.users.push(newObj)
                 }
             }

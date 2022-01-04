@@ -11,7 +11,7 @@
                 <lk-avatar />
             </div>
             <div class="event-row__student-name">
-                {{ user.name }}
+                {{ fullName }}
             </div>
         </div>
         <div class="event-row__student-status">
@@ -81,6 +81,10 @@ export default class EventRowStudent extends Vue {
     eventId!: string
 
     typesStatus = typesStatus
+
+    get fullName(): string {
+        return `${this.user.name} ${this.user.surname}`
+    }
 
     get number(): number {
         return this.index + 1
