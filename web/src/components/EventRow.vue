@@ -80,6 +80,9 @@ export default class EventRow extends Vue {
        background: $bg-info;
        padding: 30px 40px;
        color: $color-black;
+       @media all and (max-width: 500px) {
+           padding: 30px 20px;
+       }
        &__head {
            display: flex;
            justify-content: space-between;
