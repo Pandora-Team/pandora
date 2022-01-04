@@ -28,7 +28,6 @@ import { EventData, FlickingOptionData } from "@/definitions/interfaces"
 import EventCardEmpty from "@/components/EventCardEmpty.vue"
 
 import { Flicking } from "@egjs/vue-flicking"
-import "@egjs/vue-flicking/dist/flicking.css"
 
 @Component({
     components: {
@@ -78,12 +77,6 @@ export default class ClassesView extends Vue {
         }
         &__body {
             display: flex;
-            .flicking-viewport {
-                overflow: hidden;
-            }
-            .flicking-camera {
-                display: flex;
-            }
         }
         .event-card {
             margin: 0 40px 40px 0;

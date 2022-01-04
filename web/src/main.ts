@@ -29,6 +29,7 @@ import { VueMaskDirective } from "v-mask"
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import wb from "./registerServiceWorker"
+import "@egjs/vue-flicking/dist/flicking.css"
 
 Vue.use(Vuelidate)
 Vue.use(VueYoutube)
