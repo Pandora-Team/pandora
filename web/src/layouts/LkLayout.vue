@@ -100,6 +100,9 @@ export default class LkLayout extends Vue {
                     width: 0;
                     height: 0;
                 }
+                @media all and (max-width: 500px) {
+                    max-height: 100vh;
+                }
             }
         }
 
