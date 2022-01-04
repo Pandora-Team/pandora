@@ -30,9 +30,17 @@ export default class LkAvatar extends Vue {
     @Prop({ type: String, default: "min" })
     readonly width!: string
 
+    @Prop({ type: String, default: "" })
+    readonly path!: string
+
+    @Prop({ type: Boolean, default: false })
+    readonly student!: boolean
+
     iconPath = ""
 
     get avatar(): string {
+        if (this.path) return this.path
+        if (this.student) return this.path
         return this.$mainStore.user.avatar
     }
 
