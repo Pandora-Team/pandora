@@ -8,7 +8,10 @@
                 {{ number }}
             </div>
             <div class="event-row__student-avatar">
-                <lk-avatar />
+                <lk-avatar
+                    :path="user.avatar"
+                    :student="true"
+                />
             </div>
             <div class="event-row__student-name">
                 {{ fullName }}

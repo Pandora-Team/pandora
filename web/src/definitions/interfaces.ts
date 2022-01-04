@@ -21,6 +21,7 @@ export interface UserInfo {
     surname: string
     payment_status: string
     status_id: string
+    avatar?: string
 }
 
 export interface UpdateUserData {
