@@ -111,7 +111,7 @@ export default class AboutView extends Vue {
             "Уже более 10 лет увлекается k-pop индустрией",
             "Танцует cover dance примерно столько же лет",
             "Собрала классную cover-команду, настоящую семью BOUNCE",
-            "Преподавала в танцвальной школе EXTRA DANCE k-pop направление",
+            "Преподавала в танцевальной школе EXTRA DANCE k-pop направление",
             "Являлась участником и победителем многих фестивалей и мероприятий: IdolCon, FireChamp, " +
             "K-pop cover dance battle, Korean Dream, Yuki no Odori, Animatrix, Ichiharu, Toguchi, Jiyuu",
             "Проводила и проводит мастер-классы",
