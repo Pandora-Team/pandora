@@ -4,9 +4,10 @@ import {Events, EventsDocument} from "./events.schema";
 import {InjectModel} from "@nestjs/mongoose";
 import {CreateEventDto} from "./create-event.dto";
 import {PlacesService} from "../places/places.service";
-import {FileType, FileService} from "../file/file.service";
+import {FileService} from "../file/file.service";
 import {StatusesService} from "../statuses/statuses.service";
 import {UsersService} from "../users/users.service";
+import * as dayjs from 'dayjs';
 
 @Injectable()
 export class EventsService {
@@ -18,8 +19,7 @@ export class EventsService {
         private usersService: UsersService
     ) {}
 
-    async createEvent(dto: CreateEventDto, cover): Promise<Events> {
-        const nameFolder = "events"
+    async createEvent(dto: CreateEventDto, coverId): Promise<Events> {
         let newAddress
         const { place_id, address, ...result } = dto
         if (address) {
@@ -30,8 +30,7 @@ export class EventsService {
             const place = await this.placesService.getOnePlace(place_id)
             newAddress = place.address
         }
-        const coverPath = this.fileService.createFile(FileType.IMAGE, cover, nameFolder)
-        return this.eventsModel.create({...result, address: newAddress, cover: coverPath})
+        return this.eventsModel.create({...result, address: newAddress, cover: coverId})
     }
 
     async getAllEvents(id: string): Promise<Events[]>{
@@ -60,6 +59,11 @@ export class EventsService {
                     event.users.push(newObj)
                 }
             }
+
+            if (dayjs().isBefore(dayjs(event.date).add(3, "hour")) && event.cover) {
+                await this.fileService.deleteFile(event.cover)
+                event.cover = ""
+            }
             return event
         }))
     }
@@ -79,7 +83,11 @@ export class EventsService {
 
     async deleteEvent(id: ObjectId): Promise<Events> {
         await this.statusesService.clearStatusesAllUsers(String(id))
-        return this.eventsModel.findByIdAndDelete({_id: id})
+        const event = await this.eventsModel.findByIdAndDelete({_id: id})
+        if (event.cover) {
+            await this.fileService.deleteFile(event.cover)
+        }
+        return event
     }
 
     sortArrayOnDate(array: Events[]): Events[] {

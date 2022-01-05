@@ -21,7 +21,7 @@ export default class LkAvatar extends Vue {
     @Watch("$mainStore.user.avatar", { immediate: true, deep: true })
     changeAvatar(): void {
         if (this.avatar) {
-            this.iconPath = `${process.env.VUE_APP_API_URL}users/${this.avatar}`
+            this.iconPath = `${process.env.VUE_APP_API_URL}files/${this.avatar}`
             return
         }
         this.iconPath = require("@/assets/images/not-avatar.png")

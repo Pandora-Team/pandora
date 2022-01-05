@@ -6,9 +6,8 @@ import {
     Body,
     Put,
     Delete,
-    UploadedFiles,
     UseInterceptors,
-    UseGuards, Request
+    UseGuards, Request, UploadedFiles
 } from "@nestjs/common";
 import {ObjectId} from "mongoose";
 import {CreateEventDto} from "./create-event.dto";
@@ -54,7 +53,7 @@ export class EventsController {
     ]))
     async createEvent(@UploadedFiles() files, @Body() dto: CreateEventDto ){
         const {cover} = files
-        return this.eventsService.createEvent(dto, cover[0])
+        return this.eventsService.createEvent(dto, cover[0].id)
     }
 
     @UseGuards(JwtAuthGuard)
