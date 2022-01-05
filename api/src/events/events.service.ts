@@ -60,7 +60,7 @@ export class EventsService {
                 }
             }
 
-            if (dayjs().isBefore(dayjs(event.date).add(3, "hour"))) {
+            if (dayjs().isBefore(dayjs(event.date).add(3, "hour")) && event.cover) {
                 await this.fileService.deleteFile(event.cover)
                 event.cover = ""
             }
