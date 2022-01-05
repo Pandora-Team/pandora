@@ -5,7 +5,10 @@
                 {{ number }}
             </div>
             <div class="list-students-row__avatar">
-                <lk-avatar />
+                <lk-avatar
+                    :student="true"
+                    :path="user.avatar"
+                />
             </div>
             <div class="list-students-row__name">
                 {{ `${user.name} ${user.surname}` }}

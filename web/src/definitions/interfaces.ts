@@ -18,8 +18,10 @@ export interface EventData {
 export interface UserInfo {
     event_status: string
     name: string
+    surname: string
     payment_status: string
     status_id: string
+    avatar?: string
 }
 
 export interface UpdateUserData {

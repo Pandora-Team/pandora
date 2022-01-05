@@ -21,7 +21,7 @@ export default class LkAvatar extends Vue {
     @Watch("$mainStore.user.avatar", { immediate: true, deep: true })
     changeAvatar(): void {
         if (this.avatar) {
-            this.iconPath = `${process.env.VUE_APP_API_URL}users/${this.avatar}`
+            this.iconPath = `${process.env.VUE_APP_API_URL}files/${this.avatar}`
             return
         }
         this.iconPath = require("@/assets/images/not-avatar.png")
@@ -30,9 +30,17 @@ export default class LkAvatar extends Vue {
     @Prop({ type: String, default: "min" })
     readonly width!: string
 
+    @Prop({ type: String, default: "" })
+    readonly path!: string
+
+    @Prop({ type: Boolean, default: false })
+    readonly student!: boolean
+
     iconPath = ""
 
     get avatar(): string {
+        if (this.path) return this.path
+        if (this.student) return this.path
         return this.$mainStore.user.avatar
     }
 

@@ -132,7 +132,7 @@ export default class EventCard extends Vue {
 
     get inlineStyle(): { backgroundImage: string } {
         return {
-            backgroundImage: `url(${process.env.VUE_APP_API_URL}events/${this.event.cover})`,
+            backgroundImage: `url(${process.env.VUE_APP_API_URL}files/${this.event.cover})`,
         }
     }
 

@@ -8,35 +8,50 @@
                 {{ number }}
             </div>
             <div class="event-row__student-avatar">
-                <lk-avatar />
+                <lk-avatar
+                    :path="user.avatar"
+                    :student="true"
+                />
             </div>
             <div class="event-row__student-name">
-                {{ user.name }}
+                {{ fullName }}
             </div>
         </div>
-        <div class="event-row__student-payment">
-            <p>Способ оплаты: <b>{{ currentPayment }}</b></p>
-            <div class="event-row__student-action">
-                <btn-status
-                    v-if="visiblePayment"
-                    :status="typesStatus.paid"
-                    @click="setPayment"
-                />
+        <div class="event-row__student-status">
+            <div class="event-row__student-payment">
+                <div class="event-row__student-title">
+                    Способ оплаты:
+                    <div class="event-row__student-value">
+                        <b>{{ currentPayment }}</b>
+                        <div class="event-row__student-action">
+                            <btn-status
+                                v-if="visiblePayment"
+                                :status="typesStatus.paid"
+                                @click="setPayment"
+                            />
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="event-row__student-visit">
-            <p>Статус посещения: <b>{{ currentVisit }}</b></p>
-            <div class="event-row__student-action">
-                <btn-status
-                    v-if="visibleVisit"
-                    :status="typesStatus.visited"
-                    @click="setVisit"
-                />
-                <btn-status
-                    v-if="visibleVisit"
-                    :status="typesStatus.notVisited"
-                    @click="setVisit"
-                />
+            <div class="event-row__student-visit">
+                <div class="event-row__student-title">
+                    Статус посещения:
+                    <div class="event-row__student-value">
+                        <b>{{ currentVisit }}</b>
+                        <div class="event-row__student-action">
+                            <btn-status
+                                v-if="visibleVisit"
+                                :status="typesStatus.visited"
+                                @click="setVisit"
+                            />
+                            <btn-status
+                                v-if="visibleVisit"
+                                :status="typesStatus.notVisited"
+                                @click="setVisit"
+                            />
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -69,6 +84,10 @@ export default class EventRowStudent extends Vue {
     eventId!: string
 
     typesStatus = typesStatus
+
+    get fullName(): string {
+        return `${this.user.name} ${this.user.surname}`
+    }
 
     get number(): number {
         return this.index + 1
@@ -150,13 +169,15 @@ export default class EventRowStudent extends Vue {
 <style lang="scss">
    .event-row__student {
        display: flex;
-       justify-content: space-between;
        align-items: center;
        padding: 16px 30px;
        background: $color-white;
        border-radius: 30px;
        margin-bottom: 20px;
-       @media all and (max-width: 500px) {
+       @media all and (max-width: 1600px) {
+           align-items: flex-start;
+       }
+       @media all and (max-width: 800px) {
            flex-direction: column;
            align-items: flex-start;
            padding: 16px 20px;
@@ -168,10 +189,14 @@ export default class EventRowStudent extends Vue {
            }
        }
        &-block {
+           width: 35%;
            display: flex;
            align-items: center;
+           @media all and (max-width: 800px) {
+               margin-bottom: 20px;
+           }
            @media all and (max-width: 500px) {
-               margin: 0 auto 20px;
+               width: 100%;
            }
        }
        &-number {
@@ -183,46 +208,71 @@ export default class EventRowStudent extends Vue {
        &-name {
 
        }
+       &-status {
+           display: flex;
+           width: 65%;
+           @media all and (max-width: 1600px) {
+               flex-direction: column;
+           }
+           @media all and (max-width: 500px) {
+               width: 100%;
+           }
+       }
        &-payment {
-           position: relative;
-           p {
-               margin-bottom: 0;
-               b {
-                   margin-left: 20px;
-               }
+           width: 50%;
+           @media all and (max-width: 1700px) {
+               position: relative;
+           }
+           @media all and (max-width: 1600px) {
+               width: 100%;
+               height: 100px;
            }
            @media all and (max-width: 500px) {
                margin-bottom: 20px;
-               p {
-                   line-height: 24px;
-                   margin-bottom: 10px;
-                   b {
-                       margin-left: 0;
-                   }
-               }
+               height: auto;
            }
        }
        &-visit {
-           position: relative;
-           p {
-               margin-bottom: 0;
-               b {
-                   margin-left: 20px;
-               }
+           width: 50%;
+           @media all and (max-width: 1700px) {
+               position: relative;
+           }
+           @media all and (max-width: 1600px) {
+               width: 100%;
+               height: 30px;
            }
            @media all and (max-width: 500px) {
-               p {
-                   line-height: 24px;
+               height: auto;
+           }
+       }
+       &-title {
+           display: flex;
+           margin-bottom: 0;
+           white-space: nowrap;
+           @media all and (max-width: 500px) {
+               flex-direction: column;
+               line-height: 24px;
+               margin-bottom: 10px;
+               b {
+                   display: block;
                    margin-bottom: 10px;
-                   b {
-                       margin-left: 0;
-                   }
                }
+           }
+       }
+       &-value {
+           width: 100%;
+           position: relative;
+           margin-left: 20px;
+           @media all and (max-width: 1700px) {
+               position: static;
+           }
+           @media all and (max-width: 500px) {
+               margin-left: 0;
            }
        }
        &-action {
            position: absolute;
-           right: 0;
+           left: 0;
            top: 35px;
            @media all and (max-width: 500px) {
                position: relative;
@@ -238,5 +288,6 @@ export default class EventRowStudent extends Vue {
                }
            }
        }
+
    }
 </style>
