@@ -77,7 +77,11 @@ export class EventsService {
 
     async deleteEvent(id: ObjectId): Promise<Events> {
         await this.statusesService.clearStatusesAllUsers(String(id))
-        return this.eventsModel.findByIdAndDelete({_id: id})
+        const event = await this.eventsModel.findByIdAndDelete({_id: id})
+        if (event.cover) {
+            await this.fileService.deleteFile(event.cover)
+        }
+        return event
     }
 
     sortArrayOnDate(array: Events[]): Events[] {
