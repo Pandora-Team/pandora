@@ -7,7 +7,6 @@ import {PlacesService} from "../places/places.service";
 import {FileService} from "../file/file.service";
 import {StatusesService} from "../statuses/statuses.service";
 import {UsersService} from "../users/users.service";
-import * as dayjs from 'dayjs';
 
 @Injectable()
 export class EventsService {
@@ -58,11 +57,6 @@ export class EventsService {
                     const newObj = { payment_status, event_status, status_id: _id, name, avatar, surname }
                     event.users.push(newObj)
                 }
-            }
-
-            if (dayjs().isBefore(dayjs(event.date).add(3, "hour")) && event.cover) {
-                await this.fileService.deleteFile(event.cover)
-                event.cover = ""
             }
             return event
         }))
