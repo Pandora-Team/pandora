@@ -10,6 +10,8 @@ import {StatusesService} from "../statuses/statuses.service";
 import {Statuses, StatusesSchema} from "../statuses/statuses.schema";
 import {UsersService} from "../users/users.service";
 import {Users, UsersSchema} from "../users/users.schema";
+import {MulterModule} from "@nestjs/platform-express";
+import {GridFsService} from "../file/gridfs.service";
 
 @Module({
     imports: [
@@ -17,8 +19,11 @@ import {Users, UsersSchema} from "../users/users.schema";
         MongooseModule.forFeature([{name: Places.name, schema: PlacesSchema}]),
         MongooseModule.forFeature([{name: Statuses.name, schema: StatusesSchema}]),
         MongooseModule.forFeature([{name: Users.name, schema: UsersSchema}]),
+        MulterModule.registerAsync({
+            useClass: GridFsService,
+        }),
     ],
     controllers: [EventsController],
-    providers: [EventsService, PlacesService, FileService, StatusesService, UsersService]
+    providers: [EventsService, PlacesService, FileService, StatusesService, UsersService, GridFsService]
 })
 export class EventsModule {}

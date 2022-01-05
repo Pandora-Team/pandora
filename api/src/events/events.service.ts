@@ -4,7 +4,7 @@ import {Events, EventsDocument} from "./events.schema";
 import {InjectModel} from "@nestjs/mongoose";
 import {CreateEventDto} from "./create-event.dto";
 import {PlacesService} from "../places/places.service";
-import {FileType, FileService} from "../file/file.service";
+import {FileService} from "../file/file.service";
 import {StatusesService} from "../statuses/statuses.service";
 import {UsersService} from "../users/users.service";
 
@@ -18,8 +18,7 @@ export class EventsService {
         private usersService: UsersService
     ) {}
 
-    async createEvent(dto: CreateEventDto, cover): Promise<Events> {
-        const nameFolder = "events"
+    async createEvent(dto: CreateEventDto, coverId): Promise<Events> {
         let newAddress
         const { place_id, address, ...result } = dto
         if (address) {
@@ -30,8 +29,7 @@ export class EventsService {
             const place = await this.placesService.getOnePlace(place_id)
             newAddress = place.address
         }
-        const coverPath = this.fileService.createFile(FileType.IMAGE, cover, nameFolder)
-        return this.eventsModel.create({...result, address: newAddress, cover: coverPath})
+        return this.eventsModel.create({...result, address: newAddress, cover: coverId})
     }
 
     async getAllEvents(id: string): Promise<Events[]>{
