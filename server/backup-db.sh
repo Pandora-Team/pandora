@@ -16,29 +16,40 @@ then
 fi
 storage_uri="$STORAGE_BASE_URI/$STORAGE_BACKUPS_REPO"
 storage_api_uri="$STORAGE_BASE_URI/api/storage/$STORAGE_BACKUPS_REPO"
-archive_name="$db_container-$(date +'%y%m%d_%H%M%S').tgz"
-local_path=/tmp/$archive_name
+backup_name="$db_container-$(date +'%y%m%d_%H%M%S').tgz"
+local_path=/tmp/$backup_name
 
-echo '--- create and upload a new backup ---'
+echo 'Creating a new backup...'
 
 container_script='
     rm -r /tmp/bkp*
-    mongodump --quiet \
-              --username=$MONGO_INITDB_ROOT_USERNAME \
+
+    echo "Running mongodump..."
+    mongodump --username=$MONGO_INITDB_ROOT_USERNAME \
               --password=$MONGO_INITDB_ROOT_PASSWORD \
-              --out=/tmp/bkp
+              --db=$MONGO_INITDB_DATABASE \
+              --authenticationDatabase=admin \
+              --out=/tmp/bkp \
+              --quiet
     [ $? -ne 0 ] && exit 1
+
+    echo "Archiving the backup..."
     tar czf /tmp/bkp.tgz -C /tmp/bkp .
+
     rm -r /tmp/bkp
 '
 docker exec $db_container sh -c "$container_script"
 [ $? -ne 0 ] && exit 1
+
+echo "Getting the backup from the container..."
 docker cp $db_container:/tmp/bkp.tgz "$local_path"
 [ $? -ne 0 ] && exit 1
-curl -Ssu "$STORAGE_USER:$STORAGE_PASSWORD" -T "$local_path" "$storage_uri/$archive_name"
+
+echo "Uploading the backup..."
+curl -Ssu "$STORAGE_USER:$STORAGE_PASSWORD" -T "$local_path" "$storage_uri/$backup_name"
 [ $? -ne 0 ] && exit 1
 
-echo -e '\n--- clean old backups ---'
+echo -e '\nCleaning old backups...'
 
 backups_info="$(curl -su "$STORAGE_USER:$STORAGE_PASSWORD" $storage_api_uri)"
 jq_expression='[.children[].uri] | sort | .[] | ltrimstr("/")'
@@ -51,7 +62,7 @@ then
   echo "Removing $files_count_to_rm old backup(s): $(echo "$files_to_rm" | xargs)"
   echo "$files_to_rm" | while read -r file
   do
-    response_code="$(curl -Ssu "$STORAGE_USER:$STORAGE_PASSWORD" -w "%{response_code}\n" -X DELETE "$storage_uri/$file")"
-    echo "- $file deletion result (HTTP response code): $response_code"
+    response_code="$(curl -Ssu "$STORAGE_USER:$STORAGE_PASSWORD" -w "%{response_code}" -X DELETE "$storage_uri/$file")"
+    echo "- File '$file' deletion result (HTTP response code): $response_code"
   done
 fi

@@ -3,7 +3,7 @@ on:
     - cron: '20 4 * * *'
 
 jobs:
-  backup:
+  db-backup:
     runs-on: ubuntu-latest
     steps:
       -
