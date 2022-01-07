@@ -11,14 +11,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       -
+        uses: actions/checkout@v2
+      -
         name: Put server's SSH key
         uses: ./.github/actions/ssh-keys
         with:
           action: put
           identity: ${{ secrets.deploy_target_identity }}
           key: ${{ secrets.deploy_target_key }}
-      -
-        uses: actions/checkout@v2
       -
         name: Update server configuration
         shell: bash
