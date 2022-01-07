@@ -16,7 +16,7 @@ jobs:
           identity: ${{ secrets.deploy_target_identity }}
           key: ${{ secrets.deploy_target_key }}
       -
-        name: Deploy
+        name: Backup
         shell: bash
         run: |
           ls -la
