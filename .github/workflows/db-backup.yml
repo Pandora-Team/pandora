@@ -19,10 +19,9 @@ jobs:
         name: Backup
         shell: bash
         run: |
-          ssh -T ci@$DEPLOY_TARGET_HOST -p $DEPLOY_TARGET_PORT << 'EOF'
-            echo "hello from"
-            hostname
-          EOF
+          cat <(echo "STORAGE_USER=github") \
+              ./server/backup-db.sh \
+            | ssh -T ci@$DEPLOY_TARGET_HOST -p $DEPLOY_TARGET_PORT
         env:
           DEPLOY_TARGET_HOST: ${{ secrets.deploy_target_host }}
           DEPLOY_TARGET_PORT: ${{ secrets.deploy_target_port }}
