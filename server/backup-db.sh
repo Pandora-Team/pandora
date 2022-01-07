@@ -21,3 +21,4 @@ storage_api_uri="$STORAGE_BASE_URI/api/storage/$STORAGE_BACKUPS_REPO"
 docker exec $db_container sh -c 'rm -r /tmp/bkp* ; mongodump --username=$MONGO_INITDB_ROOT_USERNAME --password=$MONGO_INITDB_ROOT_PASSWORD --out=/tmp/bkp && tar czvf /tmp/bkp.tgz /tmp/bkp && rm -r /tmp/bkp'
 docker cp $db_container:/tmp/bkp.tgz $local_path
 curl -Ssu $STORAGE_USER:$STORAGE_PASSWORD -T $local_path "$remote_path"
+echo "curl exitted with $?"
