@@ -14,17 +14,15 @@ runs:
   using: composite
   steps:
     -
-      name: Put SSH key
       if: ${{ inputs.action == 'put' }}
       shell: bash
       run: |
         mkdir -v ~/.ssh
         chmod -v 700 ~/.ssh
-        echo "${{ inputs.identity }}" > ~/.ssh/known_hosts
-        echo "${{ inputs.key }}" > ~/.ssh/id_ed25519
+        echo "$INPUT_IDENTITY" > ~/.ssh/known_hosts
+        echo "$INPUT_KEY" > ~/.ssh/id_ed25519
         chmod -v 600 ~/.ssh/*
     -
-      name: Destroy SSH key
       if: ${{ inputs.action == 'destroy' }}
       shell: bash
-      run: shred -u ~/.ssh/*
+      run: shred -v ~/.ssh/*

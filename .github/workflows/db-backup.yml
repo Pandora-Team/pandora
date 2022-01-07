@@ -9,6 +9,7 @@ jobs:
       -
         uses: actions/checkout@v2
       -
+        name: Put server's SSH key
         uses: ./.github/actions/ssh-keys
         with:
           action: put
@@ -20,6 +21,7 @@ jobs:
         run: |
           ls -la
       -
+        name: Destroy server's SSH key
         uses: ./.github/actions/ssh-keys
         with:
           action: destroy
