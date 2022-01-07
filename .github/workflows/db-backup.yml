@@ -2,7 +2,7 @@ on:
   push:
 
 jobs:
-  backup:
+  db-backup:
     runs-on: ubuntu-latest
     steps:
       -

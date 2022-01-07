@@ -7,7 +7,7 @@ on:
       - '.github/workflows/nginx-config-update.yml'
 
 jobs:
-  deploy:
+  nginx-config-update:
     runs-on: ubuntu-latest
     steps:
       -

@@ -25,8 +25,8 @@ container_script='
     rm -r /tmp/bkp*
     mongodump --username=$MONGO_INITDB_ROOT_USERNAME \
               --password=$MONGO_INITDB_ROOT_PASSWORD \
-              --authenticationDatabase=admin \
               --db=$MONGO_INITDB_DATABASE \
+              --authenticationDatabase=admin \
               --out=/tmp/bkp \
               --quiet
     [ $? -ne 0 ] && exit 1
