@@ -18,7 +18,20 @@ local_path=/tmp/$archive_name
 remote_path="$STORAGE_BASE_URI/$STORAGE_BACKUPS_REPO/$archive_name"
 storage_api_uri="$STORAGE_BASE_URI/api/storage/$STORAGE_BACKUPS_REPO"
 
-docker exec $db_container sh -c 'rm -r /tmp/bkp* ; mongodump --username=$MONGO_INITDB_ROOT_USERNAME --password=$MONGO_INITDB_ROOT_PASSWORD --out=/tmp/bkp && tar czvf /tmp/bkp.tgz -C /tmp/bkp . && rm -r /tmp/bkp'
+container_script='
+    rm -r /tmp/bkp*
+    mongodump --quiet \
+              --username=$MONGO_INITDB_ROOT_USERNAME \
+              --password=$MONGO_INITDB_ROOT_PASSWORD \
+              --out=/tmp/bkp
+    [ $? -ne 0 ] && exit 1
+    tar czf /tmp/bkp.tgz -C /tmp/bkp .
+    rm -r /tmp/bkp
+'
+docker exec $db_container sh -c "$container_script"
+[ $? -ne 0 ] && exit 1
+
 docker cp $db_container:/tmp/bkp.tgz $local_path
+
 curl -Ssu $STORAGE_USER:$STORAGE_PASSWORD -T $local_path "$remote_path"
 exit $?
