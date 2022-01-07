@@ -19,8 +19,8 @@ runs:
       run: |
         mkdir -v ~/.ssh
         chmod -v 700 ~/.ssh
-        echo "$INPUT_IDENTITY" > ~/.ssh/known_hosts
-        echo "$INPUT_KEY" > ~/.ssh/id_ed25519
+        echo "${{ inputs.identity }}" > ~/.ssh/known_hosts
+        echo "${{ inputs.key }}" > ~/.ssh/id_ed25519
         chmod -v 600 ~/.ssh/*
     -
       if: ${{ inputs.action == 'destroy' }}
