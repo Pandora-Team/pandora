@@ -1,6 +1,5 @@
 on:
-  schedule:
-    - cron: '20 4 * * *'
+  push:
 
 jobs:
   backup:
