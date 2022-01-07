@@ -19,12 +19,19 @@ jobs:
         name: Backup
         shell: bash
         run: |
-          cat <(echo "STORAGE_USER=github") \
+          cat <(echo "STORAGE_USER=$STORAGE_USER") \
+          cat <(echo "STORAGE_PASSWORD=$STORAGE_PASSWORD") \
+          cat <(echo "STORAGE_BASE_URI=$STORAGE_BASE_URI") \
+          cat <(echo "STORAGE_BACKUPS_REPO=$STORAGE_BACKUPS_REPO") \
               ./server/backup-db.sh \
             | ssh -T ci@$DEPLOY_TARGET_HOST -p $DEPLOY_TARGET_PORT
         env:
           DEPLOY_TARGET_HOST: ${{ secrets.deploy_target_host }}
           DEPLOY_TARGET_PORT: ${{ secrets.deploy_target_port }}
+          STORAGE_USER: github
+          STORAGE_PASSWORD: ${{ secrets.registry_password }}
+          STORAGE_BASE_URI: ${{ secrets.storage_base_uri }}
+          STORAGE_BACKUPS_REPO: ${{ secrets.storage_backups_repo }}
       -
         name: Destroy server's SSH key
         uses: ./.github/actions/ssh-keys
