@@ -45,10 +45,8 @@ export class Events {
     @Action()
     public async getListEvents(): Promise<void> {
         try {
-            console.log("[all events query]")
             const res = await getAllEvent()
             const events: EventData[] = res.data
-            console.log("[events] - ", res.data)
             if (events?.length) {
                 this.updateListEvent(events)
             }
