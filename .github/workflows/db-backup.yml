@@ -19,7 +19,13 @@ jobs:
         name: Backup
         shell: bash
         run: |
-          ls -la
+          ssh -T \
+            ci@$DEPLOY_TARGET_HOST \
+            -p $DEPLOY_TARGET_PORT \
+            "hostname"
+        env:
+          DEPLOY_TARGET_HOST: ${{ secrets.deploy_target_host }}
+          DEPLOY_TARGET_PORT: ${{ secrets.deploy_target_port }}
       -
         name: Destroy server's SSH key
         uses: ./.github/actions/ssh-keys
