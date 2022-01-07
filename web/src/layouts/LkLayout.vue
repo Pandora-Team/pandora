@@ -51,18 +51,12 @@ export default class LkLayout extends Vue {
     }
 
     async mounted(): Promise<void> {
-        if (!this.$mainStore.user.dataReceived) {
-
-            if (this.$mainStore.user.id) {
-                await this.$mainStore.user.getUserInfo()
-                return
-            }
-
+        await this.$mainStore.events.getListEvents()
+        if (!this.$mainStore.user.id) {
             const { data: { id } } = await getUserId()
             this.$mainStore.user.setUserId(id)
-            await this.$mainStore.user.getUserInfo()
         }
-        await this.$mainStore.events.getListEvents()
+        await this.$mainStore.user.getUserInfo()
     }
 }
 </script>
