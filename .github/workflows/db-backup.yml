@@ -1,0 +1,25 @@
+on:
+  push:
+
+jobs:
+
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        uses: ./.github/actions/ssh-keys
+        with:
+          action: put
+          identity: ${{ secrets.deploy_target_identity }}
+          key: ${{ secrets.deploy_target_key }}
+      -
+        uses: actions/checkout@v2
+      -
+        name: Deploy
+        shell: bash
+        run: |
+          ls -la
+      -
+        uses: ./.github/actions/ssh-keys
+        with:
+          action: destroy
