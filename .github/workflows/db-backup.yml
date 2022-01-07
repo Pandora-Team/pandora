@@ -1,8 +1,8 @@
 on:
-  push:
+  schedule:
+    - cron: '20 4 * * *'
 
 jobs:
-
   backup:
     runs-on: ubuntu-latest
     steps:
