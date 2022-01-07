@@ -23,10 +23,12 @@ echo '--- create and upload a new backup ---'
 
 container_script='
     rm -r /tmp/bkp*
-    mongodump --quiet \
-              --username=$MONGO_INITDB_ROOT_USERNAME \
+    mongodump --username=$MONGO_INITDB_ROOT_USERNAME \
               --password=$MONGO_INITDB_ROOT_PASSWORD \
-              --out=/tmp/bkp
+              --authenticationDatabase=admin \
+              --db=$MONGO_INITDB_DATABASE \
+              --out=/tmp/bkp \
+              --quiet
     [ $? -ne 0 ] && exit 1
     tar czf /tmp/bkp.tgz -C /tmp/bkp .
     rm -r /tmp/bkp
