@@ -11,19 +11,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       -
-        name: Put SSH key
-        shell: bash
-        run: |
-          mkdir -v ~/.ssh
-          chmod -v 700 ~/.ssh
-          echo "$DEPLOY_TARGET_IDENTITY" > ~/.ssh/known_hosts
-          echo "$DEPLOY_TARGET_KEY" > ~/.ssh/id_ed25519
-          chmod -v 600 ~/.ssh/*
-        env:
-          DEPLOY_TARGET_IDENTITY: ${{ secrets.deploy_target_identity }}
-          DEPLOY_TARGET_KEY: ${{ secrets.deploy_target_key }}
-      -
         uses: actions/checkout@v2
+      -
+        name: Put server's SSH key
+        uses: ./.github/actions/ssh-keys
+        with:
+          action: put
+          identity: ${{ secrets.deploy_target_identity }}
+          key: ${{ secrets.deploy_target_key }}
       -
         name: Update server configuration
         shell: bash
@@ -42,6 +37,7 @@ jobs:
           DEPLOY_TARGET_PORT: ${{ secrets.deploy_target_port }}
           TAG: ${{ github.run_number }}
       -
-        name: Destroy SSH key
-        shell: bash
-        run: shred -u ~/.ssh/*
+        name: Destroy server's SSH key
+        uses: ./.github/actions/ssh-keys
+        with:
+          action: destroy
