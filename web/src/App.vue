@@ -12,6 +12,10 @@
         <popup-welcome v-if="$mainStore.popup.activeWelcomePopup" />
         <popup-payment v-if="$mainStore.popup.activePaymentPopup" />
         <popup-crop v-if="$mainStore.popup.activeCropPopup" />
+        <popup-update
+            v-if="visiblePopupUpdate"
+            @close="visiblePopupUpdate = false"
+        />
         <notification />
     </div>
 </template>
@@ -28,6 +32,7 @@ import PopupCancel from "@/components/PopupCancel.vue"
 import PopupWelcome from "@/components/PopupWelcome.vue"
 import PopupPayment from "@/components/PopupPayment.vue"
 import PopupCrop from "@/components/PopupCrop.vue"
+import PopupUpdate from "@/components/PopupUpdate.vue"
 
 @Component({
     components: {
@@ -40,16 +45,17 @@ import PopupCrop from "@/components/PopupCrop.vue"
         PopupWelcome,
         PopupPayment,
         PopupCrop,
+        PopupUpdate,
     },
 })
 export default class App extends Vue {
 
-    prompt = false
+    visiblePopupUpdate = false
 
     created(): void {
         if (this.$workbox) {
             this.$workbox.addEventListener("waiting", () => {
-                this.prompt = true
+                this.visiblePopupUpdate = true
             })
         }
     }
