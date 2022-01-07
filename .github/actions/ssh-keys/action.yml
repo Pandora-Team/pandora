@@ -1,8 +1,13 @@
 name: Manage SSH keys
 inputs:
   identity:
+    description: string for known_hosts file
+    required: false
   key:
+    description: string for id_ed25519 file
+    required: false
   action:
+    required: true
     description: put or destroy
     default: put
 runs:
