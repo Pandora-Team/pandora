@@ -2,22 +2,13 @@ import axios from "axios"
 import router from "@/router"
 import Vue from "vue"
 
-import { setupCache, ISetupCache } from "axios-cache-adapter"
 import { Store } from "@/store/store"
 import paths from "@/router/paths"
 import { logout } from "@/api/auth"
 
-const cache : ISetupCache = setupCache({
-    maxAge:  60 * 1000,
-    exclude: {
-        query: false,
-    },
-})
-
 const api = axios.create({
     baseURL:         process.env.VUE_APP_API_URL,
     withCredentials: true,
-    adapter:         cache.adapter,
 })
 
 api.interceptors.response.use(undefined, error => {

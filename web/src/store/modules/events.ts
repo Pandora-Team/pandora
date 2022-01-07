@@ -45,8 +45,10 @@ export class Events {
     @Action()
     public async getListEvents(): Promise<void> {
         try {
+            console.log("[all events query]")
             const res = await getAllEvent()
             const events: EventData[] = res.data
+            console.log("[events] - ", res.data)
             if (events?.length) {
                 this.updateListEvent(events)
             }
@@ -134,6 +136,12 @@ export class Events {
     public removeEvent(id: string): void {
         const newListEvents = this.listEvents.filter(event => event._id !== id)
         this.updateListEvent(newListEvents)
+    }
+
+    @Mutation()
+    public clearEvents(): void {
+        this.nearestEvent = undefined
+        this.listEvents = []
     }
 
 }

@@ -303,6 +303,9 @@ export default class EventCard extends Vue {
            margin-bottom: 15px;
            p {
                margin-bottom: 0;
+               &:first-of-type {
+                   padding-right: 10px;
+               }
                &:nth-last-of-type(1) {
                    margin-bottom: 0;
                }

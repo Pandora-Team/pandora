@@ -91,12 +91,11 @@ export default class ClassesView extends Vue {
             @media all and (max-width: 500px) {
                 margin: 0 20px 0 0;
                 width: 300px;
-                height: 380px!important;
                 &__date {
                     flex-direction: column;
                     align-items: flex-start;
                     p {
-                        margin-bottom: 10px;
+                        margin-bottom: 15px;
                         &:nth-last-of-type(1) {
                             margin-bottom: 0;
                         }
@@ -114,7 +113,19 @@ export default class ClassesView extends Vue {
                 }
             }
             @media all and (max-width: 420px) {
-                width: 260px!important;
+                width: 290px;
+            }
+            @media all and (max-width: 410px) {
+                width: 280px;
+            }
+            @media all and (max-width: 400px) {
+                width: 270px;
+            }
+            @media all and (max-width: 390px) {
+                width: 260px;
+            }
+            @media all and (max-width: 380px) {
+                width: 250px;
             }
         }
     }
