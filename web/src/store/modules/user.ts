@@ -59,6 +59,7 @@ export class User {
         this.clearUserInfo()
         const { data } = await logout()
         if (data) {
+            this.$mainStore.events.clearEvents()
             await router.push({ path: paths.LoginLayout })
         }
     }
