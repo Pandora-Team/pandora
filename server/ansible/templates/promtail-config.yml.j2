@@ -24,3 +24,16 @@ scrape_configs:
         expression: '^(?P<time>(.+?\s){3})(?P<instance>.+?\s)(?P<service>.+?)(\[(?P<pid>.+?)\])?:\s(?P<data>.+)'
     - labels:
         service:
+
+  - job_name: nginx
+    static_configs:
+    - targets: [localhost]
+      labels:
+        job: nginx
+        __path__: /var/log/nginx/*log
+    pipeline_stages:
+    - regex:
+        expression: '^(?P<remote_addr>[.\d]+?) - (?P<remote_user>.+?) \[(?P<time_local>.+?)\] "(?P<request>.+?)" (?P<status>.+?) (?P<body_bytes_sent>.+?) "(?P<http_referer>.+?)" "(?P<http_user_agent>.+?)"$'
+    - labels:
+        remote_addr:
+        status:
