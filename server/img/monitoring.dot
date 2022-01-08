@@ -15,6 +15,7 @@ digraph pandora_monitoring {
         nginx_exporter
         loki
         promtail
+        blackbox_exporter
     }
     
     nginx_grafana_proxy -> grafana [label="localhost:3000"]
@@ -24,10 +25,11 @@ digraph pandora_monitoring {
     
     promtail -> loki
     
-    prometheus -> node_exporter
+    prometheus -> node_exporter  [label="host.docker.internal"]
     prometheus -> cadvisor
-    prometheus -> nginx_exporter [label="host.docker.internal"]
-    
+    prometheus -> nginx_exporter
+    prometheus -> blackbox_exporter
+
     nginx_exporter -> nginx_stub_status [label="host.docker.internal"]
     
 }
