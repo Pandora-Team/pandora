@@ -100,7 +100,6 @@ export class EventsService {
             }
             //@ts-ignore
             const objStatuses = await this.statusesService.getStatuses(event._id, userId)
-            console.log(objStatuses)
             if (objStatuses) {
                 //@ts-ignore
                 event.status_id = objStatuses._id
