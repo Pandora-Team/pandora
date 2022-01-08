@@ -53,9 +53,12 @@ export default class App extends Vue {
     visiblePopupUpdate = false
 
     created(): void {
+        console.log("[workbox] - workbox", this.$workbox)
         if (this.$workbox) {
+            console.log("[workbox] - before event - waiting")
             this.$workbox.addEventListener("waiting", () => {
                 this.visiblePopupUpdate = true
+                console.log("[workbox] - into event handler - waiting")
             })
         }
     }
