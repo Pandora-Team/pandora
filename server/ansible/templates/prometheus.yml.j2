@@ -19,7 +19,7 @@ scrape_configs:
       module: [http_2xx]
     static_configs:
       - targets:
-        - https://pandora-kpop.ru/health
+        - https://pandora-kpop.ru
         - https://api.pandora-kpop.ru/health
     relabel_configs:
       - source_labels: [__address__]
