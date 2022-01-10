@@ -1,8 +1,20 @@
 name: Deploy containers via docker-compose
 inputs:
-  tag:
+  ssh_identity:
+    description: string for known_hosts file
     required: true
+  ssh_key:
+    description: string for id_ed25519 file
+    required: true
+  ssh_host:
+    description: deploy target host
+    required: true
+  ssh_port:
+    description: deploy target port
+    required: true
+  tag:
     description: The PANDORA_IMAGES_TAG variable value
+    required: true
 runs:
   using: composite
   steps:
@@ -11,8 +23,8 @@ runs:
       uses: ./.github/actions/ssh-keys
       with:
         action: put
-        identity: ${{ secrets.deploy_target_identity }}
-        key: ${{ secrets.deploy_target_key }}
+        identity: ${{ inputs.ssh_identity }}
+        key: ${{ inputs.ssh_key }}
     -
       name: Deploy
       shell: bash
@@ -20,8 +32,8 @@ runs:
         remote_docker_compose() {
           cat "$GITHUB_WORKSPACE/docker-compose.yml" \
             | ssh -T \
-                ci@${{ secrets.deploy_target_host }} \
-                -p ${{ secrets.deploy_target_port }} \
+                ci@${{ inputs.ssh_host }} \
+                -p ${{ inputs.ssh_port }} \
                 "PANDORA_IMAGES_TAG=${{ inputs.tag }} docker-compose --project-name pandora --file - $@"
         }
         remote_docker_compose pull --quiet
