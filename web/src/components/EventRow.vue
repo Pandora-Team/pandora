@@ -61,9 +61,9 @@ export default class EventRow extends Vue {
 
     get textBtn(): string {
         if (this.open) {
-            return "Закрыть список участников"
+            return `Закрыть список участников ( ${this.event.users?.length} )`
         }
-        return "Открыть список участников"
+        return `Открыть список участников ( ${this.event.users?.length} )`
     }
 
     openList(): void {
