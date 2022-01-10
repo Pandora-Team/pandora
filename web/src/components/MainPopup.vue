@@ -62,7 +62,7 @@ export default class MainPopup extends Vue {
             position: relative;
             box-shadow: 0 0 60px rgba(255, 255, 255, 0.25);
             border-radius: 30px;
-            @media all and (max-width: 500px) {
+            @media all and (max-width: 700px) {
                 width: calc(100% - 40px);
                 display: flex;
                 justify-content: center;
@@ -79,7 +79,7 @@ export default class MainPopup extends Vue {
             right: -59px;
             width: 44px;
             height: 44px;
-            @media all and (max-width: 500px) {
+            @media all and (max-width: 700px) {
                 top: 10px;
                 right: 10px;
             }
