@@ -1,0 +1,33 @@
+name: Deploy containers via docker-compose
+inputs:
+  tag:
+    required: true
+    description: The PANDORA_IMAGES_TAG variable value
+runs:
+  using: composite
+  steps:
+    -
+      name: Put server's SSH key
+      uses: ./.github/actions/ssh-keys
+      with:
+        action: put
+        identity: ${{ secrets.deploy_target_identity }}
+        key: ${{ secrets.deploy_target_key }}
+    -
+      name: Deploy
+      shell: bash
+      run: |
+        remote_docker_compose() {
+          cat "$GITHUB_WORKSPACE/docker-compose.yml" \
+            | ssh -T \
+                ci@${{ secrets.deploy_target_host }} \
+                -p ${{ secrets.deploy_target_port }} \
+                "PANDORA_IMAGES_TAG=${{ inputs.tag }} docker-compose --project-name pandora --file - $@"
+        }
+        remote_docker_compose pull --quiet
+        remote_docker_compose up --no-build --detach
+    -
+      name: Destroy server's SSH key
+      uses: ./.github/actions/ssh-keys
+      with:
+        action: destroy

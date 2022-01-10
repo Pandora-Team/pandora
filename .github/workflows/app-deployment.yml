@@ -5,11 +5,17 @@ on:
     paths-ignore:
       - 'server/**'
       - '.github/workflows/server-config-update.yml'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: The PANDORA_IMAGES_TAG variable value
+        required: true
 
 jobs:
 
   build:
     runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' }}
     steps:
       -
         uses: actions/checkout@v2
@@ -36,6 +42,7 @@ jobs:
           push: true
           tags: ${{ secrets.registry_host }}/lib/api:${{ github.run_number }}
 
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -43,31 +50,14 @@ jobs:
       -
         uses: actions/checkout@v2
       -
-        name: Put server's SSH key
-        uses: ./.github/actions/ssh-keys
+        name: Auto-deploy
+        if: ${{ github.event_name == 'push' }}
+        uses: ./.github/actions/deploy
         with:
-          action: put
-          identity: ${{ secrets.deploy_target_identity }}
-          key: ${{ secrets.deploy_target_key }}
+          tag: ${{ github.run_number }}
       -
-        name: Deploy
-        shell: bash
-        run: |
-          remote_docker_compose() {
-            cat "$GITHUB_WORKSPACE/docker-compose.yml" \
-              | ssh -T \
-                  ci@$DEPLOY_TARGET_HOST \
-                  -p $DEPLOY_TARGET_PORT \
-                  "PANDORA_IMAGES_TAG=$TAG docker-compose --project-name pandora --file - $@"
-          }
-          remote_docker_compose pull --quiet
-          remote_docker_compose up --no-build --detach
-        env:
-          DEPLOY_TARGET_HOST: ${{ secrets.deploy_target_host }}
-          DEPLOY_TARGET_PORT: ${{ secrets.deploy_target_port }}
-          TAG: ${{ github.run_number }}
-      -
-        name: Destroy server's SSH key
-        uses: ./.github/actions/ssh-keys
+        name: Manual deploy
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        uses: ./.github/actions/deploy
         with:
-          action: destroy
+          tag: ${{ github.event.inputs.tag }}
