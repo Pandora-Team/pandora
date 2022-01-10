@@ -9,6 +9,7 @@ import {StatusesModule} from "./statuses/statuses.module";
 import {AuthModule} from "./auth/auth.module";
 import {PlacesModule} from "./places/places.module";
 import {FileModule} from "./file/file.module";
+import {AppController} from "./app.controller";
 
 @Module({
   imports: [
@@ -27,5 +28,6 @@ import {FileModule} from "./file/file.module";
     StatusesModule,
     FileModule,
   ],
+  controllers: [AppController],
 })
 export class AppModule {}
