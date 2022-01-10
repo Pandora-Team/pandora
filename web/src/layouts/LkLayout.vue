@@ -42,7 +42,7 @@ export default class LkLayout extends Vue {
 
     get inlineClass(): {[key: string]: boolean} {
         return {
-            "lk-body--scroll": this.needScroll,
+            "lk-body--scroll": !this.isMobile && this.needScroll,
         }
     }
 
