@@ -65,12 +65,9 @@
                 <template #privacy>
                     <p class="privacy">
                         Нажимая на кнопку Зарегистрироваться, вы подтверждаете, что согласны с
-                        <a
-                            :href="$mainPaths.PolicyView"
-                            target="_blank"
-                        >
+                        <span @click.prevent="goToPolicy">
                             политикой конфиденциальности
-                        </a>
+                        </span>
                     </p>
                 </template>
                 <template #cancel>
@@ -207,6 +204,10 @@ export default class RegistrationView extends Vue {
     goToAuth(): void {
         this.$router.push(paths.AuthenticationView)
     }
+
+    goToPolicy(): void {
+        this.$router.push(paths.PolicyView)
+    }
 }
 </script>
 
@@ -236,10 +237,16 @@ export default class RegistrationView extends Vue {
         color: white;
         line-height: 1.5;
         margin-bottom: 40px;
-        a {
+        span {
+            cursor: pointer;
+            transition: .5s;
             text-decoration: underline;
             font-size: 14px;
             color: #AD00FF;
+            &:hover {
+                outline: none;
+                color: $color-hover-text;
+            }
         }
     }
     .redirect {
