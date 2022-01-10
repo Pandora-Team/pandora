@@ -6,8 +6,8 @@ RUN npm install
 COPY . .
 RUN npm run build
 
-FROM docker.io/library/node:lts-alpine
-RUN npm install -g http-server
-EXPOSE 8080
+FROM docker.io/library/nginx:alpine
+EXPOSE 80
+RUN mkdir /app
 COPY --from=build /app/dist /app
-CMD [ "http-server", "/app", "--proxy", "http://localhost:8080?" ]
+COPY nginx.conf /etc/nginx/nginx.conf
