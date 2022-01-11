@@ -1,3 +1,5 @@
+name: Nginx Config Update
+
 on:
   push:
     branches:
