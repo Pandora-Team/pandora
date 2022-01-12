@@ -30,11 +30,11 @@ runs:
       shell: bash
       run: |
         ssh_exec() {
-          ssh -T ci@${{ inputs.ssh_host }} -p ${{ inputs.ssh_port }} "$1"
+          ssh -T ci@${{ inputs.ssh_host }} -p ${{ inputs.ssh_port }} "$*"
         }
         remote_docker_compose() {
           cat "$GITHUB_WORKSPACE/docker-compose.yml" \
-            | ssh_exec "PANDORA_IMAGES_TAG=${{ inputs.tag }} docker-compose --project-name pandora --file - $@"
+            | ssh_exec "PANDORA_IMAGES_TAG=${{ inputs.tag }} docker-compose --project-name pandora --file - $*"
         }
 
         remote_docker_compose pull --quiet
