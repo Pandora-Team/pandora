@@ -29,19 +29,17 @@ runs:
       name: Deploy
       shell: bash
       run: |
+        ssh_exec() {
+          ssh -T ci@${{ inputs.ssh_host }} -p ${{ inputs.ssh_port }} "$1"
+        }
         remote_docker_compose() {
           cat "$GITHUB_WORKSPACE/docker-compose.yml" \
-            | ssh -T \
-                ci@${{ inputs.ssh_host }} \
-                -p ${{ inputs.ssh_port }} \
-                "PANDORA_IMAGES_TAG=${{ inputs.tag }} docker-compose --project-name pandora --file - $@"
+            | ssh_exec "PANDORA_IMAGES_TAG=${{ inputs.tag }} docker-compose --project-name pandora --file - $@"
         }
+
         remote_docker_compose pull --quiet
         remote_docker_compose up --no-build --detach
-        ssh -T \
-            ci@${{ inputs.ssh_host }} \
-            -p ${{ inputs.ssh_port }} \
-            "docker image prune --all --filter "until=300h" --force"
+        ssh_exec 'docker image prune --all --filter "until=300h" --force'
     -
       name: Destroy server's SSH key
       uses: ./.github/actions/ssh-keys
