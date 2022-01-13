@@ -3,8 +3,6 @@ import {AuthService} from "./auth.service";
 import {PassportModule} from "@nestjs/passport";
 import {JwtModule} from "@nestjs/jwt";
 import {AuthController} from "./auth.controller";
-import {MongooseModule} from "@nestjs/mongoose";
-import {Users, UsersSchema} from "../users/users.schema";
 import {JwtStrategy} from "./jwt.strategy";
 import {UsersModule} from "../users/users.module";
 import {ConfigModule, ConfigService} from "@nestjs/config";
@@ -21,7 +19,6 @@ import {ConfigModule, ConfigService} from "@nestjs/config";
             }),
             inject: [ConfigService],
         }),
-        MongooseModule.forFeature([{name: Users.name, schema: UsersSchema}])
     ],
     providers: [AuthService, JwtStrategy],
     controllers: [AuthController],

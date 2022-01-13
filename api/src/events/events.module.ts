@@ -22,6 +22,5 @@ import {StatusesModule} from "../statuses/statuses.module";
         EventsService,
         UsersService,
     ],
-    exports: [EventsService]
 })
 export class EventsModule {}

@@ -12,6 +12,9 @@ import {FileModule} from "../file/file.module";
     ],
     controllers: [UsersController],
     providers: [UsersService],
-    exports: [UsersService]
+    exports: [
+        UsersService,
+        MongooseModule,
+    ]
 })
 export class UsersModule {}

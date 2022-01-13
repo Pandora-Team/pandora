@@ -3,7 +3,6 @@ import {MongooseModule} from "@nestjs/mongoose";
 import {ServeStaticModule} from "@nestjs/serve-static";
 import * as path from 'path'
 import {ConfigModule} from "@nestjs/config";
-import {UsersModule} from "./users/users.module";
 import {EventsModule} from "./events/events.module";
 import {AuthModule} from "./auth/auth.module";
 
@@ -18,7 +17,6 @@ import {AuthModule} from "./auth/auth.module";
     }),
     MongooseModule.forRoot(process.env.DB_URI),
     AuthModule,
-    UsersModule,
     EventsModule,
   ],
 })
