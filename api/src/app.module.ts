@@ -5,7 +5,6 @@ import * as path from 'path'
 import {ConfigModule} from "@nestjs/config";
 import {UsersModule} from "./users/users.module";
 import {EventsModule} from "./events/events.module";
-import {StatusesModule} from "./statuses/statuses.module";
 import {AuthModule} from "./auth/auth.module";
 
 @Module({
@@ -21,7 +20,6 @@ import {AuthModule} from "./auth/auth.module";
     AuthModule,
     UsersModule,
     EventsModule,
-    StatusesModule,
   ],
 })
 export class AppModule {}
