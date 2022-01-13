@@ -7,7 +7,6 @@ import {UsersModule} from "./users/users.module";
 import {EventsModule} from "./events/events.module";
 import {StatusesModule} from "./statuses/statuses.module";
 import {AuthModule} from "./auth/auth.module";
-import {PlacesModule} from "./places/places.module";
 import {FileModule} from "./file/file.module";
 
 @Module({
@@ -22,7 +21,6 @@ import {FileModule} from "./file/file.module";
     MongooseModule.forRoot(process.env.DB_URI),
     AuthModule,
     UsersModule,
-    PlacesModule,
     EventsModule,
     StatusesModule,
     FileModule,
