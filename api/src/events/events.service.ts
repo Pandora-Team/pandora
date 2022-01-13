@@ -110,4 +110,12 @@ export class EventsService {
         }))
     }
 
+    async addUserToEvent(eventId: string, userId: string): Promise<void> {
+        await this.eventsModel.updateOne({_id: eventId}, {$addToSet: {users_id: userId}})
+    }
+
+    async removeUserFromEvent(eventId: string, userId: string): Promise<void> {
+        await this.eventsModel.updateOne({_id: eventId}, {$pull: {users_id: userId}})
+    }
+
 }

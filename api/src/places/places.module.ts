@@ -9,6 +9,10 @@ import {PlacesController} from "./places.controller";
         MongooseModule.forFeature([{name: Places.name, schema: PlacesSchema}])
     ],
     providers: [PlacesService],
-    controllers: [PlacesController]
+    controllers: [PlacesController],
+    exports: [
+        PlacesService,
+        MongooseModule,
+    ]
 })
 export class PlacesModule {}
