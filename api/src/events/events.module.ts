@@ -13,7 +13,7 @@ import {UsersModule} from "../users/users.module";
         FileModule,
         PlacesModule,
         forwardRef(() => StatusesModule),
-        UsersModule,
+        forwardRef(() => UsersModule),
         MongooseModule.forFeature([{name: Events.name, schema: EventsSchema}]),
     ],
     controllers: [EventsController],

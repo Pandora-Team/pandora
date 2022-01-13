@@ -1,4 +1,4 @@
-import {Injectable} from "@nestjs/common";
+import {forwardRef, Inject, Injectable} from "@nestjs/common";
 import {InjectModel} from "@nestjs/mongoose";
 import {Users, UsersDocument} from "./users.schema";
 import {Model, ObjectId} from "mongoose";
@@ -11,7 +11,8 @@ export class UsersService {
     constructor(
         @InjectModel(Users.name) private usersModel: Model<UsersDocument>,
         private fileService: FileService,
-        //private eventService: EventsService,
+        @Inject(forwardRef(() => EventsService))
+        private eventsService: EventsService,
     ) {}
 
     async getUserById(id: string): Promise<Users> {
@@ -25,7 +26,8 @@ export class UsersService {
     async getAllStudents(): Promise<Users[]> {
         let users = await this.usersModel.find({role: "dancer"}, {pass: 0})
         return Promise.all(users.map(async user => {
-            //user.events = await this.eventService.getEventListForUser(user._id)
+            user.events = await this.eventsService.getEventListForUser(user._id)
+            console.log(user.events);
             return user
         }))
     }

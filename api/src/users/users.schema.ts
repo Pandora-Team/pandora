@@ -3,7 +3,7 @@ import {Document} from 'mongoose';
 
 export type UsersDocument = Users & Document;
 
-interface EventData {
+class EventData {
     _id?: string
     name: string
     date: Date
