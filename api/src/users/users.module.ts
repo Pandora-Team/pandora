@@ -3,19 +3,15 @@ import {UsersController} from "./users.controller";
 import {UsersService} from "./users.service";
 import {MongooseModule} from "@nestjs/mongoose";
 import {Users, UsersSchema} from "./users.schema";
-import {FileService} from "../file/file.service";
-import {MulterModule} from "@nestjs/platform-express";
-import {GridFsService} from "../file/gridfs.service";
+import {FileModule} from "../file/file.module";
 
 @Module({
     imports: [
         MongooseModule.forFeature([{name: Users.name, schema: UsersSchema}]),
-        MulterModule.registerAsync({
-            useClass: GridFsService,
-        }),
+        FileModule,
     ],
     controllers: [UsersController],
-    providers: [UsersService, FileService, GridFsService],
+    providers: [UsersService],
     exports: [UsersService]
 })
 export class UsersModule {}
