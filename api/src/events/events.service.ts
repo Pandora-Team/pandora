@@ -118,4 +118,8 @@ export class EventsService {
         await this.eventsModel.updateOne({_id: eventId}, {$pull: {users_id: userId}})
     }
 
+    async getEventListForUser(userId: string): Promise<Events[]> {
+        return this.eventsModel.find({users_id: userId}, {name: 1, date: 1})
+    }
+
 }
