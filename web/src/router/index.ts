@@ -27,8 +27,6 @@ const router = new VueRouter({
 
 const openRoutes:string[] = [paths.PolicyView, paths.AuthenticationView, paths.RegistrationView, paths.LoginLayout]
 
-const scrollRoutes: string[] = [paths.RulesView, paths.AboutView]
-
 const loadingRoutes: string[] = [paths.AuthenticationView, paths.RegistrationView, paths.LoginLayout]
 
 const lkRoutes: string[] = [
@@ -50,7 +48,7 @@ router.beforeEach(async (to, from, next) => {
         $mainStore.mobile.setVisibleMobileMenu(true)
     }
 
-    if (scrollRoutes.includes(to.path)) {
+    if (lkRoutes.includes(to.path)) {
         $mainStore.app.setNeedScrollIntoBody(true)
     } else {
         $mainStore.app.setNeedScrollIntoBody(false)

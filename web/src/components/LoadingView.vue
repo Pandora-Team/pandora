@@ -31,13 +31,12 @@ export default class LoadingView extends Vue {
 
 <style lang="scss">
     .loading-view {
-        position: relative;
+        position: fixed;
         z-index: 102;
         display: flex;
         justify-content: center;
         align-items: center;
         background: $gradient-loading;
-        //background: linear-gradient(45deg, #cc2b5e, #753a88);
         background-size: 400% 400%;
         width: 100%;
         height: 100vh;

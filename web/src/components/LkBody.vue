@@ -27,13 +27,8 @@ export default class LkBody extends Vue {
 
     get inlineClass(): styleClassObject {
         return {
-            "lk-body__wrapper--mt":     this.mobile,
-            "lk-body__wrapper--scroll": this.needScroll,
+            "lk-body__wrapper--mt": this.mobile,
         }
-    }
-
-    get needScroll(): boolean {
-        return this.$mainStore.app.needScrollIntoBody
     }
 
 }

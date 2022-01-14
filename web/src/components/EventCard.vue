@@ -224,11 +224,11 @@ export default class EventCard extends Vue {
        background-position: center;
        background-size: cover;
        position: relative;
-       @media all and (min-width: 500px) {
+       /*@media all and (min-width: 500px) {
            &:hover {
                box-shadow: 0 60px 50px -30px rgba(95, 38, 205, 0.3);
            }
-       }
+       }*/
        &:before {
            content: '';
            width: 100%;
