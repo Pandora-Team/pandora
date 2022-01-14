@@ -37,7 +37,22 @@ export default class LoadingView extends Vue {
         justify-content: center;
         align-items: center;
         background: $gradient-loading;
+        //background: linear-gradient(45deg, #cc2b5e, #753a88);
+        background-size: 400% 400%;
         width: 100%;
         height: 100vh;
+        animation: gradient 10s ease infinite alternate;
+    }
+
+    @keyframes gradient {
+        0% {
+            background-position: 0 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0 50%;
+        }
     }
 </style>

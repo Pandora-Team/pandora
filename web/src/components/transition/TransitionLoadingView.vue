@@ -16,13 +16,13 @@ export default class TransitionLoadingView extends Vue {}
 
 <style lang="scss">
 .fade-enter-active {
-    transition: opacity .5s;
+    transition: opacity 1s;
 }
 .fade-leave-active {
     transition: opacity 1s;
 }
 .fade-enter {
-    opacity: 0.8;
+    opacity: 0;
 }
 .fade-leave-to {
     opacity: 0;
