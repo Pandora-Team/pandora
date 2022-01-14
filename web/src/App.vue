@@ -60,6 +60,10 @@ export default class App extends Vue {
         }
     }
 
+    mounted(): void {
+        this.$mainStore.app.setLoading(true)
+    }
+
     @Watch("$mainStore.app.disable")
     changeDisable(): void {
         const body = document.querySelector("body")

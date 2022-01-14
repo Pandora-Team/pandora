@@ -20,19 +20,9 @@
 import { Component, Vue, Watch } from "vue-property-decorator"
 import { Route } from "vue-router"
 import names from "@/router/names"
-import { checkUser } from "@/api/auth"
 
 @Component({})
 export default class LoginLayout extends Vue {
-
-    async mounted(): Promise<void> {
-        const { data } = await checkUser()
-        if (!data) return
-        this.$mainStore.app.setLoading(true)
-        this.$mainStore.user.setUserId(data)
-        await this.$mainStore.user.getUserInfo()
-        this.$router.push({ path: this.$mainPaths.LkLayout })
-    }
 
     auth = false
     reg = false
@@ -78,11 +68,11 @@ export default class LoginLayout extends Vue {
 <style lang="scss">
 
 .login {
-    background: url("../assets/bg/bg1920.jpg") center no-repeat;
+    background: url("../assets/bg/bg1920-min.jpg") center no-repeat;
     background-size: cover;
     &-body {
         transition: .5s;
-        background: #111227 url("../assets/bg/bg-login-center.png");
+        background: #111227 url("../assets/bg/bg-login-center-min.png");
         width: calc(50% - 80px);
         position: relative;
         overflow: hidden;
@@ -121,7 +111,7 @@ export default class LoginLayout extends Vue {
         bottom: 2%;
         width: 1920px;
         height: 258px;
-        background: url("../assets/bg/line.png") no-repeat;
+        background: url("../assets/bg/line-min.png") no-repeat;
         background-size: cover;
         z-index: 0;
         left: -50%;

@@ -1,5 +1,5 @@
 <template>
-    <transition-fade>
+    <transition-loading-view>
         <div class="loading-view">
             <div class="loading-view__logo">
                 <simple-svg
@@ -9,17 +9,17 @@
                 />
             </div>
         </div>
-    </transition-fade>
+    </transition-loading-view>
 </template>
 
 <script lang="ts">
 
 import { Component, Vue } from "vue-property-decorator"
-import TransitionFade from "@/components/transition/TransitionFade.vue"
+import TransitionLoadingView from "@/components/transition/TransitionLoadingView.vue"
 
 @Component({
     components: {
-        TransitionFade,
+        TransitionLoadingView,
     },
 })
 export default class LoadingView extends Vue {

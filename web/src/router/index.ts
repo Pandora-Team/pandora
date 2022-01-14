@@ -3,6 +3,7 @@ import VueRouter from "vue-router"
 import { Store } from "@/store/store"
 import routes from "@/router/routes"
 import paths from "@/router/paths"
+import { checkUser } from "@/api/auth"
 
 Vue.use(VueRouter)
 
@@ -28,6 +29,13 @@ const openRoutes:string[] = [paths.PolicyView, paths.AuthenticationView, paths.R
 
 const scrollRoutes: string[] = [paths.RulesView, paths.AboutView]
 
+const loadingRoutes: string[] = [paths.AuthenticationView, paths.RegistrationView, paths.LoginLayout]
+
+const lkRoutes: string[] = [
+    paths.RulesView, paths.AboutView, paths.LkLayout, paths.ClassesView, paths.ListEventsView,
+    paths.ListStudentsView, paths.ProfileView, paths.StorageView, paths.StudentsView,
+]
+
 router.beforeEach(async (to, from, next) => {
     const $mainStore: Store = Vue.prototype.$mainStore
 
@@ -38,7 +46,6 @@ router.beforeEach(async (to, from, next) => {
 
     if (openRoutes.includes(to.path)) {
         $mainStore.mobile.setVisibleMobileMenu(false)
-        return next()
     } else {
         $mainStore.mobile.setVisibleMobileMenu(true)
     }
@@ -47,6 +54,18 @@ router.beforeEach(async (to, from, next) => {
         $mainStore.app.setNeedScrollIntoBody(true)
     } else {
         $mainStore.app.setNeedScrollIntoBody(false)
+    }
+
+    if (to.path === paths.LoginLayout && lkRoutes.includes(from.path)) {
+        $mainStore.app.setLoading(true)
+    }
+
+    if (loadingRoutes.includes(to.path)) {
+        const { data } = await checkUser()
+        if (!data) return next()
+        $mainStore.user.setUserId(data)
+        await $mainStore.user.getUserInfo()
+        return next({ path: paths.LkLayout })
     }
 
     return next()
