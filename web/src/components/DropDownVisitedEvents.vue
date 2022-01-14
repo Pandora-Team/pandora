@@ -25,7 +25,7 @@
                 class="list-students-row__visited-list"
             >
                 <div>
-                    Нет посещенных мероприятий
+                    Нет посещённых мероприятий
                 </div>
             </div>
         </transition-fade>

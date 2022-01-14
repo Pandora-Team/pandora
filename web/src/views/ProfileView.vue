@@ -25,7 +25,7 @@
                     />
                 </transition-fade>
             </info-card>
-            <!--<profile-events />-->
+            <profile-events />
         </div>
     </div>
 </template>
@@ -83,9 +83,12 @@ export default class ProfileView extends Vue {
             grid-template-columns: 1fr 1fr;
             grid-gap: 40px;
             grid-auto-rows: auto;
-            @media all and (max-width: 800px) {
+            @media all and (max-width: 1500px) {
+                grid-auto-rows: 1fr 320px;
                 grid-template-columns: auto;
                 justify-content: center;
+            }
+            @media all and (max-width: 800px) {
                 .info-card.profile-card {
                     max-width: 400px;
                 }

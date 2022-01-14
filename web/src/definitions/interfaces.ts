@@ -59,9 +59,9 @@ export interface UserData {
 }
 
 export interface UserVisitedEventsData {
-    _id: string
-    date: Date
-    name: string
+    _id?: string
+    date?: Date
+    name?: string
 }
 
 export type styleClass = (string | { [key: string]: boolean })[]

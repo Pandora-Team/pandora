@@ -14,3 +14,5 @@ export const updateEvent = (id: string, params: any): Promise<AxiosResponse> => 
 export const deleteEvent = (id: string): Promise<AxiosResponse> => api.delete(`${BASE_URL}/${id}`)
 
 export const getEventsWithUsers = (): Promise<AxiosResponse> => api.get(`${BASE_URL}/list`)
+
+export const getVisitedEvents = (): Promise<AxiosResponse> => api.get(`${BASE_URL}/visited`)
