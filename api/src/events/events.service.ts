@@ -41,7 +41,7 @@ export class EventsService {
 
     async getAllEventsWithStudents(): Promise<Events[]> {
         const events = await this.eventsModel.find()
-        const sortedEvents = this.sortArrayOnDate(events)
+        const sortedEvents = this.sortArrayOnDate(events, true)
         return await this.getUserInfoForEvent(sortedEvents)
     }
 
@@ -85,10 +85,14 @@ export class EventsService {
         return event
     }
 
-    sortArrayOnDate(array: Events[]): Events[] {
+    sortArrayOnDate(array: Events[], reverse = false): Events[] {
         return array.sort(function compare(a, b) {
             var dateA = new Date(a.date);
             var dateB = new Date(b.date);
+            if (reverse) {
+                // @ts-ignore
+                return dateB - dateA;
+            }
             // @ts-ignore
             return dateA - dateB;
         });
