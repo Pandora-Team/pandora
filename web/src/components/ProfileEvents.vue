@@ -2,12 +2,22 @@
     <div class="profile-events">
         <h3>Посещённые классы</h3>
         <div
-            v-for="item in eventsData"
-            :key="item.id"
-            class="profile-events__item"
+            v-if="events.length"
+            class="profile-events__list"
         >
-            <h4>{{ item.name }}</h4>
-            <h4>Дата: <span>{{ item.date }}</span></h4>
+            <div
+                v-for="item in events"
+                :key="item._id"
+                class="profile-events__item"
+            >
+                <h4>{{ item.name }}</h4>
+                <h4>Дата: <span>{{ item.date }}</span></h4>
+            </div>
+        </div>
+        <div v-else>
+            <div class="profile-events__item">
+                <h4>Нет посещённых мероприятий</h4>
+            </div>
         </div>
     </div>
 </template>
@@ -17,6 +27,9 @@
 import { Component, Vue } from "vue-property-decorator"
 import LkAvatar from "@/components/LkAvatar.vue"
 import LkSocialItem from "@/components/LkSocialItem.vue"
+import { getVisitedEvents } from "@/api/events"
+import { UserVisitedEventsData } from "@/definitions/interfaces"
+import dayjs from "dayjs"
 
 @Component({
     components: {
@@ -26,12 +39,17 @@ import LkSocialItem from "@/components/LkSocialItem.vue"
 })
 export default class ProfileEvents extends Vue {
 
-    eventsData = [
-        { id: 1, name: "Lisa -Lalisa", date: "05.09.21" },
-        { id: 2, name: "Stray Kids - Thunderous", date: "05.09.21" },
-        { id: 3, name: "Ateez - Deja Vu", date: "05.09.21" },
-    ]
+    events: UserVisitedEventsData[] = []
 
+    async mounted(): Promise<void> {
+        const { data } = await getVisitedEvents()
+        if (data.length) {
+            this.events = data.map((event: { date: Date | string }) => {
+                event.date = dayjs(event.date).format("DD.MM.YYYY")
+                return event
+            })
+        }
+    }
 }
 </script>
 
@@ -46,11 +64,24 @@ export default class ProfileEvents extends Vue {
                 margin-bottom: 40px;
                 color: $color-dark;
             }
+            &__list {
+                max-height: 162px;
+                overflow-y: auto;
+                @media all and (max-width: 1500px) {
+                    max-height: 170px;
+                }
+            }
             &__item {
                 margin-bottom: 20px;
                 display: flex;
                 justify-content: space-between;
                 color: inherit;
+                margin-right: 20px;
+                h4 {
+                    &:first-of-type {
+                        margin-right: 10px;
+                    }
+                }
                 &:nth-last-of-type(1) {
                     margin-bottom: 0;
                 }

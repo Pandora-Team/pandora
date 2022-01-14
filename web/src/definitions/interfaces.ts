@@ -55,6 +55,13 @@ export interface UserData {
     vk: string
     instagram: string
     telegram: string
+    events?: UserVisitedEventsData[]
+}
+
+export interface UserVisitedEventsData {
+    _id?: string
+    date?: Date
+    name?: string
 }
 
 export type styleClass = (string | { [key: string]: boolean })[]

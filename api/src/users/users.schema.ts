@@ -3,6 +3,12 @@ import {Document} from 'mongoose';
 
 export type UsersDocument = Users & Document;
 
+class EventData {
+    _id?: string
+    name: string
+    date: Date
+}
+
 @Schema()
 export class Users {
 
@@ -41,6 +47,9 @@ export class Users {
 
     @Prop()
     visit_date?: string
+
+    @Prop()
+    events?: EventData[]
 
 }
 

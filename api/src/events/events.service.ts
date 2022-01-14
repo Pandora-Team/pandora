@@ -7,6 +7,7 @@ import {PlacesService} from "../places/places.service";
 import {FileService} from "../file/file.service";
 import {StatusesService} from "../statuses/statuses.service";
 import {UsersService} from "../users/users.service";
+import * as dayjs from "dayjs";
 
 @Injectable()
 export class EventsService {
@@ -116,6 +117,22 @@ export class EventsService {
 
     async removeUserFromEvent(eventId: string, userId: string): Promise<void> {
         await this.eventsModel.updateOne({_id: eventId}, {$pull: {users_id: userId}})
+    }
+
+    async getEventListForUser(userId: string): Promise<Events[]> {
+        const listEvents = []
+        const events = await this.eventsModel.find({})
+        for(let i = 0; i < events.length; i++) {
+            if (events[i]?.users_id.includes(userId) && dayjs().isAfter(dayjs(events[i].date))) {
+                const eventInfo = {
+                    _id: events[i]._id,
+                    name: events[i].name,
+                    date: events[i].date
+                }
+                listEvents.push(eventInfo)
+            }
+        }
+        return listEvents
     }
 
 }
