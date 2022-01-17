@@ -2,19 +2,7 @@
     <div class="events">
         <h1>Доступные для записи МК</h1>
         <div class="events__body">
-            <flicking
-                :options="flickingOptions"
-                :viewport-tag="'div'"
-                :camera-tag="'div'"
-            >
-                <event-card
-                    v-for="event in events"
-                    :key="event._id"
-                    :event="event"
-                />
-                <event-card-empty v-if="events.length < 1 && !isAdmin" />
-                <event-card-create v-if="isAdmin" />
-            </flicking>
+            <events-carousel-component />
         </div>
     </div>
 </template>
@@ -24,50 +12,23 @@
 import { Component, Vue } from "vue-property-decorator"
 import EventCard from "@/components/EventCard.vue"
 import EventCardCreate from "@/components/EventCardCreate.vue"
-import { EventData, FlickingOptionData } from "@/definitions/interfaces"
 import EventCardEmpty from "@/components/EventCardEmpty.vue"
-
-import { Flicking } from "@egjs/vue-flicking"
+import EventsCarouselComponent from "@/components/EventsCarouselComponent.vue"
 
 @Component({
     components: {
         EventCard,
         EventCardCreate,
-        Flicking,
         EventCardEmpty,
+        EventsCarouselComponent,
     },
 })
-export default class ClassesView extends Vue {
-
-    get flickingOptions(): FlickingOptionData {
-        return {
-            align:                "prev",
-            noPanelStyleOverride: true,
-            disableOnInit:        this.disableFlicking,
-            autoInit:             true,
-            autoResize:           true,
-        }
-    }
-
-    get disableFlicking(): boolean {
-        //return this.events.length < 3
-        return false
-    }
-
-    get events(): EventData[] {
-        return this.$mainStore.events.listEvents
-    }
-
-    get isAdmin(): boolean {
-        return this.$mainStore.user.isAdmin
-    }
-
-}
+export default class ClassesView extends Vue {}
 </script>
 
 <style lang="scss">
     .events {
-        @media all and (max-width: 500px) {
+        @media all and (max-width: 800px) {
             margin-top: 90px;
         }
 
@@ -75,22 +36,16 @@ export default class ClassesView extends Vue {
             color: $color-black;
             margin-bottom: 30px;
         }
-        &__body {
-            display: flex;
-        }
         .event-card {
-            margin: 0 40px 40px 0;
             &--empty {
                 width: 350px!important;
                 height: 485px!important;
                 @media all and (max-width: 500px) {
-                    width: 300px!important;
-                    height: 380px!important;
+                    width: 100% !important;
                 }
             }
             @media all and (max-width: 500px) {
-                margin: 0 20px 0 0;
-                width: 300px;
+                width: 100%;
                 &__date {
                     flex-direction: column;
                     align-items: flex-start;
@@ -112,27 +67,7 @@ export default class ClassesView extends Vue {
                     }
                 }
             }
-            @media all and (max-width: 420px) {
-                width: 290px;
-            }
-            @media all and (max-width: 410px) {
-                width: 280px;
-            }
-            @media all and (max-width: 400px) {
-                width: 270px;
-            }
-            @media all and (max-width: 390px) {
-                width: 260px;
-            }
-            @media all and (max-width: 380px) {
-                width: 250px;
-            }
-        }
-    }
-    .flicking-viewport {
-        padding-bottom: 50px;
-        @media all and (max-width: 500px) {
-            padding-bottom: 0;
+
         }
     }
 </style>
