@@ -12,8 +12,8 @@ const router = new VueRouter({
     base: process.env.BASE_URL,
     routes,
     scrollBehavior (to) {
-        if (to.path === paths.RulesView || to.path === paths.AboutView) {
-            const scrollBlock = document.querySelector(".lk-body__wrapper--scroll")
+        if (lkRoutes.includes(to.path)) {
+            const scrollBlock = document.querySelector(".lk-body__wrapper")
             if (scrollBlock) {
                 scrollBlock.scrollTo(0, 0)
             }
