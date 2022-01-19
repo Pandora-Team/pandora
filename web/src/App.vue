@@ -31,7 +31,6 @@ import PopupCreate from "@/components/PopupCreate.vue"
 import PopupCancel from "@/components/PopupCancel.vue"
 import PopupWelcome from "@/components/PopupWelcome.vue"
 import PopupPayment from "@/components/PopupPayment.vue"
-import PopupCrop from "@/components/PopupCrop.vue"
 import PopupUpdate from "@/components/PopupUpdate.vue"
 import PopupCropImage from "@/components/PopupCropImage.vue"
 
@@ -45,7 +44,6 @@ import PopupCropImage from "@/components/PopupCropImage.vue"
         PopupCancel,
         PopupWelcome,
         PopupPayment,
-        PopupCrop,
         PopupUpdate,
         PopupCropImage,
     },
