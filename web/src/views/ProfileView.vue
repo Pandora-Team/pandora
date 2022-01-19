@@ -85,7 +85,7 @@ export default class ProfileView extends Vue {
             grid-auto-rows: auto;
             @media all and (max-width: 1500px) {
                 grid-auto-rows: 1fr 320px;
-                grid-template-columns: auto;
+                grid-template-columns: 1fr;
                 justify-content: center;
             }
             @media all and (max-width: 800px) {

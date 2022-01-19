@@ -11,7 +11,7 @@
         <popup-cancel v-if="$mainStore.popup.activeCancelPopup" />
         <popup-welcome v-if="$mainStore.popup.activeWelcomePopup" />
         <popup-payment v-if="$mainStore.popup.activePaymentPopup" />
-        <popup-crop v-if="$mainStore.popup.activeCropPopup" />
+        <popup-crop-image v-if="$mainStore.popup.activeCropPopup" />
         <popup-update
             v-if="visiblePopupUpdate"
             @close="visiblePopupUpdate = false"
@@ -33,6 +33,7 @@ import PopupWelcome from "@/components/PopupWelcome.vue"
 import PopupPayment from "@/components/PopupPayment.vue"
 import PopupCrop from "@/components/PopupCrop.vue"
 import PopupUpdate from "@/components/PopupUpdate.vue"
+import PopupCropImage from "@/components/PopupCropImage.vue"
 
 @Component({
     components: {
@@ -46,6 +47,7 @@ import PopupUpdate from "@/components/PopupUpdate.vue"
         PopupPayment,
         PopupCrop,
         PopupUpdate,
+        PopupCropImage,
     },
 })
 export default class App extends Vue {
