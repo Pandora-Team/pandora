@@ -10,13 +10,15 @@
                 :key="item._id"
                 class="profile-events__item"
             >
-                <h4>{{ item.name }}</h4>
-                <h4>Дата: <span>{{ item.date }}</span></h4>
+                <h4 class="profile-events__item-name">
+                    {{ item.name }}
+                </h4>
+                <p>Дата: <span>{{ item.date }}</span></p>
             </div>
         </div>
         <div v-else>
             <div class="profile-events__item">
-                <h4>Нет посещённых мероприятий</h4>
+                <p>Нет посещённых мероприятий</p>
             </div>
         </div>
     </div>
@@ -60,9 +62,15 @@ export default class ProfileEvents extends Vue {
             border-radius: 30px;
             padding: 30px 40px;
             color: $color-black;
+            @media all and (max-width: 500px) {
+                padding: 30px;
+            }
             h3 {
                 margin-bottom: 40px;
                 color: $color-dark;
+                @media all and (max-width: 500px) {
+                    margin-bottom: 20px;
+                }
             }
             &__list {
                 max-height: 162px;
@@ -70,16 +78,28 @@ export default class ProfileEvents extends Vue {
                 @media all and (max-width: 1500px) {
                     max-height: 170px;
                 }
+                @media all and (max-width: 500px) {
+                    max-height: 220px;
+                }
             }
             &__item {
-                margin-bottom: 20px;
+                margin-bottom: 15px;
                 display: flex;
                 justify-content: space-between;
                 color: inherit;
                 margin-right: 20px;
-                h4 {
-                    &:first-of-type {
-                        margin-right: 10px;
+                &-name {
+                    margin-right: 10px;
+                    @media all and (max-width: 500px) {
+                        font-size: 16px;
+                    }
+                }
+                p {
+                    color: #979299;
+                    margin-bottom: 0;
+                    span {
+                        font-size: 16px;
+                        color: $color-black;
                     }
                 }
                 &:nth-last-of-type(1) {

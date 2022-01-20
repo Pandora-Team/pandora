@@ -103,10 +103,16 @@ export default class ProfileCard extends Vue {
                 color: inherit;
                 margin-bottom: 40px;
                 padding-right: 30px;
+                @media all and (max-width: 500px) {
+                    margin-bottom: 20px;
+                }
             }
             p {
                 color: $color-gray;
                 margin-bottom: 30px;
+                @media all and (max-width: 500px) {
+                    margin-bottom: 20px;
+                }
             }
             span {
                 color: $color-black;
