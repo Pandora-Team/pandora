@@ -145,6 +145,7 @@ export default class ListStudentsRow extends Vue {
                 flex-direction: column;
                 align-items: flex-start;
                 b {
+                    margin-left: 0;
                     margin-top: 10px;
                 }
             }
@@ -159,6 +160,7 @@ export default class ListStudentsRow extends Vue {
                 flex-direction: column;
                 align-items: flex-start;
                 b {
+                    margin-left: 0;
                     margin-top: 10px;
                 }
             }

@@ -280,7 +280,6 @@ export default class PopupCropImage extends Vue {
             }
         }
         &__content {
-            margin-bottom: 40px;
             &-name {
                 display: flex;
                 align-items: center;

@@ -256,8 +256,9 @@ export default class ProfileCardEdit extends Vue {
                 }
                 @media all and (max-width: 500px) {
                     &::after {
-
-                        border-radius: 40px;
+                        width: 117px;
+                        height: 117px;
+                        border-radius: 30px;
                         background-size: 40px;
                     }
                 }
