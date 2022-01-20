@@ -7,6 +7,7 @@
             <main-form
                 submit-text="Войти"
                 :cancel-button="false"
+                :loading="loading"
                 @submit="submitForm"
             >
                 <template #top>
@@ -93,6 +94,7 @@ export default class AuthenticationView extends Vue {
     async submitForm() : Promise<void> {
         this.$v.$touch()
         if (!this.$v.$invalid) {
+            this.loading = true
             try {
                 const { data } = await auth({
                     phone: this.phone.replaceAll("-", ""),
@@ -100,12 +102,13 @@ export default class AuthenticationView extends Vue {
                 })
 
                 this.$mainStore.notification.changeNotification({ state: true, ...this.$mainNotification.successAuth })
-
+                this.loading = false
                 this.$mainStore.user.setUserId(data)
                 this.$mainStore.app.setLoading(true)
                 await this.$router.push({ path: this.$mainPaths.LkLayout })
             } catch (e) {
                 this.$mainStore.notification.changeNotification({ state: true, ...this.$mainNotification.failedAuth })
+                this.loading = false
                 await this.$router.push({ path: this.$mainPaths.LoginLayout })
                 throw new Error(`Error Authentication - ${e}`)
             }

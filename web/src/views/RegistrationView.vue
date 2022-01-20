@@ -7,6 +7,7 @@
             <main-form
                 submit-text="Зарегистрироваться"
                 :cancel-button="false"
+                :loading="loading"
                 @submit="submitForm"
             >
                 <template #top>
@@ -129,6 +130,8 @@ export default class RegistrationView extends Vue {
     surname = ""
     birthday = ""
 
+    loading = false
+
     get errorNameInput(): string {
         if(this.$v.name.$dirty && !this.$v.name.required) {
             return "Обязательно для заполнения"
@@ -176,7 +179,7 @@ export default class RegistrationView extends Vue {
     async submitForm(): Promise<void> {
         this.$v.$touch()
         if(!this.$v.$invalid) {
-
+            this.loading = true
             try {
                 const res = await reg({
                     pass:     this.password,
@@ -190,11 +193,13 @@ export default class RegistrationView extends Vue {
 
                 const { _id } = res.data
                 await this.$mainStore.user.setUserId(_id)
+                this.loading = false
                 this.$mainStore.app.setLoading(true)
                 await this.$router.push({ path: this.$mainPaths.LkLayout, query: { welcome: "true" } })
 
             } catch (e) {
                 this.$mainStore.notification.changeNotification({ state: true, ...this.$mainNotification.failedReg })
+                this.loading = false
                 await this.$router.push({ path: this.$mainPaths.LoginLayout })
                 throw new Error(`Error Registration - ${e}`)
             }

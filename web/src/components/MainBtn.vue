@@ -6,6 +6,7 @@
         <button
             class="btn"
             :class="inlineClass"
+            :disabled="loading"
             @click.prevent="click"
         >
             <span><slot /></span>
@@ -43,6 +44,9 @@ export default class MainBtn extends Vue {
 
     @Prop({ type: Boolean, default: false })
     gradient!: boolean
+
+    @Prop({ type: Boolean, default: false })
+    loading!: boolean
 
     get inlineClass(): styleClass {
         const styles = [

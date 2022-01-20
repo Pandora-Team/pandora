@@ -42,6 +42,11 @@ export class AuthService {
         dto.reg_date = date
         dto.visit_date = date
 
+        const oldUser = await this.usersModel.findOne({phone: dto.phone})
+        if (oldUser) {
+            throw new Error("User registered")
+        }
+
         const newUser = await this.usersModel.create({...dto})
 
         if (!newUser) {

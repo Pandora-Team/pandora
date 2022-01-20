@@ -19,6 +19,7 @@
             <div class="form-action">
                 <main-btn
                     :full-width="!cancelButton"
+                    :loading="loading"
                     @click="submit"
                 >
                     {{ submitText }}
@@ -73,6 +74,9 @@ export default class BaseForm extends Vue {
 
     @Prop({ type: String, default: "default" })
     readonly classForm!: string
+
+    @Prop({ type: Boolean, default: false })
+    loading!: boolean
 
     submit(): void {
         this.$emit("submit")
