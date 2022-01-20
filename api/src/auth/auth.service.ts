@@ -6,6 +6,10 @@ import {Model} from "mongoose";
 import {UsersService} from "../users/users.service";
 import {LoginDto, RegisterDto} from "./dto";
 import * as dayjs from 'dayjs'
+import * as utc from "dayjs/plugin/utc"
+import * as timezone from "dayjs/plugin/timezone"
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 @Injectable()
 export class AuthService {
@@ -22,6 +26,7 @@ export class AuthService {
             throw new Error("Error User Login")
         }
 
+        dayjs.tz.setDefault("Russia/Moscow")
         const date = dayjs().format()
         await this.usersModel.updateOne({_id: user._id}, {"visit_date": date})
 
@@ -38,6 +43,8 @@ export class AuthService {
         if(!dto.role){
             dto.role = "dancer"
         }
+
+        dayjs.tz.setDefault("Russia/Moscow")
         const date = dayjs().format()
         dto.reg_date = date
         dto.visit_date = date
@@ -63,6 +70,7 @@ export class AuthService {
     }
 
     async getProfile(req) {
+        dayjs.tz.setDefault("Russia/Moscow")
         const date = dayjs().format()
         await this.usersModel.updateOne({_id: req.user.id}, {"visit_date": date})
         return req.user;
