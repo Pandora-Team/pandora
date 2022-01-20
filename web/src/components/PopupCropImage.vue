@@ -22,11 +22,21 @@
                             ref="cropper"
                             :src="imgSrc"
                             :aspect-ratio="1"
-                            alt="Source Image"
-                            preview=".preview"
+                            alt="Portrait image"
                             :view-mode="2"
                             :auto-crop-area="1"
                         />
+                        <div
+                            v-if="!hasImage && currentAvatar"
+                            class="profile-crop__image-delete__wrapper"
+                        >
+                            <div
+                                class="profile-crop__image-delete"
+                                @click="removeAvatar"
+                            >
+                                Удалить
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="profile-crop__item">
@@ -34,38 +44,31 @@
                         <p>Загрузите изображение:</p>
                         <main-btn
                             :full-width="true"
+                            :gradient="true"
+                            view="without-bg"
                             @click="showFileChooser"
                         >
                             Загрузить
                         </main-btn>
-                    </div>
-                    <div
-                        v-if="hasImage"
-                        class="profile-crop__add"
-                    >
-                        <main-btn
-                            :auto-width="!isMobile"
-                            :full-width="isMobile"
-                            view="error"
-                            @click="clearImg"
+                        <div
+                            v-if="nameFile"
+                            class="profile-crop__content-name"
                         >
-                            Сбросить
-                        </main-btn>
+                            <div class="name-file">
+                                {{ nameFile }}
+                            </div>
+                            <icon-close
+                                color="white"
+                                classes="name-delete"
+                                @close="removeLoadedImg"
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="profile-crop__action">
                 <main-btn
-                    :auto-width="!isMobile"
-                    :full-width="isMobile"
-                    view="error"
-                    @click="closePopup"
-                >
-                    Отменить
-                </main-btn>
-                <main-btn
-                    :auto-width="!isMobile"
-                    :full-width="isMobile"
+                    :full-width="true"
                     @click="cropImage"
                 >
                     Сохранить
@@ -77,13 +80,14 @@
 
 <script lang="ts">
 
-import { Component, Vue, Ref } from "vue-property-decorator"
+import { Component, Vue, Ref, Watch } from "vue-property-decorator"
 import MainPopup from "@/components/MainPopup.vue"
 import MainBtn from "@/components/MainBtn.vue"
 import VueCropper, { VueCropperMethods } from "vue-cropperjs"
 import "cropperjs/dist/cropper.css"
-import { setAvatar } from "@/api/users"
+import { removeAvatar, setAvatar } from "@/api/users"
 import LoaderMini from "@/components/LoaderMini.vue"
+import IconClose from "@/components/IconClose.vue"
 
 @Component({
     components: {
@@ -91,6 +95,7 @@ import LoaderMini from "@/components/LoaderMini.vue"
         MainBtn,
         LoaderMini,
         VueCropper,
+        IconClose,
     },
 })
 export default class PopupCropImage extends Vue {
@@ -99,7 +104,9 @@ export default class PopupCropImage extends Vue {
 
     hasImage = false
 
-    imgSrc = "/assets/images/berserk.jpg"
+    imgSrc = ""
+
+    nameFile = ""
 
     @Ref("inputFile")
     readonly file!: HTMLInputElement
@@ -108,11 +115,12 @@ export default class PopupCropImage extends Vue {
     readonly cropper!: VueCropperMethods
 
     mounted(): void {
-        if (this.currentAvatar) {
-            this.imgSrc = `${process.env.VUE_APP_API_URL}files/${this.currentAvatar}`
-            return
-        }
-        this.imgSrc = require("@/assets/images/not-avatar.png")
+        this.checkAvatar()
+    }
+
+    @Watch("$mainStore.popup.activeCropPopup")
+    checkActivePopup(): void {
+        this.checkAvatar()
     }
 
     get isMobile(): boolean {
@@ -128,16 +136,38 @@ export default class PopupCropImage extends Vue {
         return this.$mainStore.user.avatar
     }
 
-    clearImg(): void {
-        this.cropper.reset()
+    checkAvatar(): void {
+        if (this.currentAvatar) {
+            this.imgSrc = `${process.env.VUE_APP_API_URL}files/${this.currentAvatar}`
+            return
+        }
+        this.imgSrc = require("@/assets/images/not-avatar.png")
+    }
+
+    removeLoadedImg(): void {
+        this.nameFile = ""
+        this.hasImage = false
+        this.checkAvatar()
+        this.cropper.replace(this.imgSrc)
+        this.cropper.destroy()
+    }
+
+    async removeAvatar(): Promise<void> {
+        const { data } = await removeAvatar(this.currentAvatar)
+        if (data) {
+            this.$mainStore.user.setAvatar("")
+            this.checkAvatar()
+        }
     }
 
     cropImage(): void {
         this.cropper.getCroppedCanvas().toBlob(async blob => {
             if (blob) {
                 try {
+                    const nameFileArr = this.nameFile.split(".")
+                    const nameFile = nameFileArr.slice(0, nameFileArr.length - 1).join(".")
                     const formData = new FormData()
-                    formData.append("avatar", blob, "avatar.jpg")
+                    formData.append("avatar", blob, nameFile)
                     const res = await setAvatar(formData)
                     const { data } = res
                     this.$mainStore.user.setAvatar(data)
@@ -166,10 +196,12 @@ export default class PopupCropImage extends Vue {
                 reader.onload = (event: ProgressEvent<FileReader>) => {
                     if (event.target) {
                         if (typeof event.target.result === "string") {
+                            this.cropper.initCrop()
                             this.imgSrc = event.target.result
                             this.cropper.replace(event.target.result)
                             this.hasImage = true
                             this.loading = false
+                            this.nameFile = file.name
                         }
                     }
                 }
@@ -236,9 +268,32 @@ export default class PopupCropImage extends Vue {
         &__image {
             width: 245px;
             position: relative;
+            &-delete__wrapper {
+                display: flex;
+                justify-content: center;
+                margin-top: 20px;
+            }
+            &-delete {
+                display: inline-block;
+                cursor: pointer;
+                color: $color-red;
+            }
         }
         &__content {
             margin-bottom: 40px;
+            &-name {
+                display: flex;
+                align-items: center;
+                margin-top: 20px;
+                .name-delete {
+                    cursor: pointer;
+                    margin-top: 5px;
+                    margin-left: 10px;
+                    svg {
+                        width: 20px!important;
+                    }
+                }
+            }
         }
         &__action {
             display: flex;

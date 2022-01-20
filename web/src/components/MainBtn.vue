@@ -111,6 +111,20 @@ export default class MainBtn extends Vue {
                 height: 56px;
             }
         }
+        &--width.btn-wrapper--gradient {
+            width: 100%;
+            &::before {
+                width: auto;
+            }
+            @media all and (max-width: 380px) {
+                &::before {
+                    z-index: -1;
+                }
+                .btn {
+                    border: 1px solid $color-hover;
+                }
+            }
+        }
         &--width {
             width: 100%;
         }
@@ -137,6 +151,9 @@ export default class MainBtn extends Vue {
         background: $bg-input;
         position: absolute;
         z-index: 1;
+        @media all and (max-width: 400px) {
+            min-width: auto;
+        }
     }
 
     &--error {

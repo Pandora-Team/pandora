@@ -49,4 +49,9 @@ export class UsersService {
         return this.usersModel.findByIdAndDelete({_id: id})
     }
 
+    async deleteAvatar(id: string, userId: string): Promise<any> {
+        await this.usersModel.updateOne({_id: userId}, {avatar: ""})
+        return this.fileService.deleteFile(id)
+    }
+
 }
