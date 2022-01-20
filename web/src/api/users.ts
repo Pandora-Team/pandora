@@ -8,4 +8,5 @@ export const getUser = (id : string): Promise<AxiosResponse> => api.get(`${BASE_
 export const getStudents = (): Promise<AxiosResponse> => api.get(`${BASE_URL}/students`)
 export const updateUser = (id : string, params: UpdateUserData): Promise<AxiosResponse> => api.put(`${BASE_URL}/${id}`, params)
 export const setAvatar = (params: FormData): Promise<AxiosResponse> => api.post(`${BASE_URL}/avatar`, params)
+export const removeAvatar = (id: string): Promise<AxiosResponse> => api.delete(`${BASE_URL}/avatar/${id}`)
 
