@@ -16,6 +16,7 @@
             v-if="visiblePopupUpdate"
             @close="visiblePopupUpdate = false"
         />
+        <popup-remove v-if="$mainStore.popup.activeRemovePopup" />
         <notification />
     </div>
 </template>
@@ -33,6 +34,7 @@ import PopupWelcome from "@/components/PopupWelcome.vue"
 import PopupPayment from "@/components/PopupPayment.vue"
 import PopupUpdate from "@/components/PopupUpdate.vue"
 import PopupCropImage from "@/components/PopupCropImage.vue"
+import PopupRemove from "@/components/PopupRemove.vue"
 
 @Component({
     components: {
@@ -46,6 +48,7 @@ import PopupCropImage from "@/components/PopupCropImage.vue"
         PopupPayment,
         PopupUpdate,
         PopupCropImage,
+        PopupRemove,
     },
 })
 export default class App extends Vue {

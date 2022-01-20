@@ -79,7 +79,6 @@ import { EventData, styleClass } from "@/definitions/interfaces"
 import dayjs from "dayjs"
 import { listStatuses, typesStatus, typeStatus } from "@/definitions/typeStatus"
 import MainRadio from "@/components/MainRadio.vue"
-import { deleteEvent } from "@/api/events"
 import { includes } from "lodash"
 import { enumerate } from "@/definitions/helpers"
 
@@ -195,15 +194,8 @@ export default class EventCard extends Vue {
 
     //удаление занятия
     async onRemove(): Promise<void> {
-        try {
-            const res = await deleteEvent(this.event._id)
-            const { _id } = res.data
-            this.$mainStore.events.removeEvent(_id)
-            this.$mainStore.notification.changeNotification({ state: true, ...this.$mainNotification.successRemove })
-        } catch (e) {
-            this.$mainStore.notification.changeNotification({ state: true, ...this.$mainNotification.failedRemove })
-            throw new Error(`Error delete Event - ${e}`)
-        }
+        this.$mainStore.popup.changeRemovedState(this.event)
+        this.$mainStore.popup.changeActiveRemovePopup(true)
     }
 
     onEdit(): void {

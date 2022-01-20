@@ -54,6 +54,33 @@ export class Popup {
     @State()
     activeCropPopup = false
 
+    @State()
+    activeRemovePopup = false
+
+    @State()
+    removedState: EventData = initCreateState()
+
+    // попап удаления занятия
+
+    @Mutation()
+    public changeActiveRemovePopup(state: boolean): void {
+        this.activeRemovePopup = state
+        this.$mainStore.app.setDisabled(state)
+        if (!state) {
+            this.clearRemovedState()
+        }
+    }
+
+    @Mutation()
+    public changeRemovedState(state: EventData): void {
+        this.removedState = state
+    }
+
+    @Mutation()
+    public clearRemovedState(): void {
+        this.removedState = initCreateState()
+    }
+
     // попап загрузки аватара
 
     @Mutation()
