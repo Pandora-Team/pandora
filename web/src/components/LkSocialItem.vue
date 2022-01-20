@@ -51,21 +51,11 @@ export default class LkSocialItem extends Vue {
             path {
                 transition: .5s;
             }
-            &:hover {
-                path:nth-of-type(1) {
-                    fill: $color-lilac;
-                }
-            }
         }
         &--non_active {
             cursor: auto;
             path:nth-of-type(1) {
                 fill: $color-gray;
-            }
-            .social-item__icon:hover {
-                path:nth-of-type(1) {
-                    fill: $color-gray;
-                }
             }
         }
     }
@@ -77,6 +67,21 @@ export default class LkSocialItem extends Vue {
             &__icon {
                 width: 35px!important;
                 height: 35px!important;;
+            }
+        }
+    }
+
+    @media all and (min-width: 1000px) {
+        .social-item__icon:hover {
+            path:nth-of-type(1) {
+                fill: $color-lilac;
+            }
+        }
+        .social-item--non_active {
+            .social-item__icon:hover {
+                path:nth-of-type(1) {
+                    fill: $color-gray;
+                }
             }
         }
     }
