@@ -60,6 +60,7 @@ export default class EventSelectAddress extends Vue {
 
     updateAddress(value: string): void {
         this.$mainStore.popup.changeAddress(value)
+        this.$mainStore.popup.changePlaceId("")
     }
 
     changePopupAddress(): void {
@@ -73,6 +74,7 @@ export default class EventSelectAddress extends Vue {
         if (_id && address) {
             this.selectedAddress = { _id, address }
             this.$mainStore.popup.changePlaceId(_id)
+            this.$mainStore.popup.changeAddress("")
         }
     }
 
@@ -90,22 +92,18 @@ export default class EventSelectAddress extends Vue {
         width: 100%;
         border-radius: 15px;
         background: white;
-        max-height: 174px;
+        max-height: 200px;
         overflow: auto;
     }
     &__item {
         cursor: pointer;
-        padding: 20px;
+        margin: 20px;
+        padding: 10px;
         transition: .5s;
-        border-radius: 15px;
-        &:hover {
-            background: wheat;
-        }
+        color: $color-black;
+        border-bottom: 2px solid $color-gray;
         &--active {
-            background: cadetblue;
-            &:hover {
-                background: cadetblue;
-            }
+            border-bottom: 2px solid $color-hover;
         }
     }
 }
