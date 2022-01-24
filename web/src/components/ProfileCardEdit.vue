@@ -237,8 +237,12 @@ export default class ProfileCardEdit extends Vue {
                     margin-bottom: 20px;
                 }
             }
-            @media all and (max-width: 500px)  {
+            @media all and (max-width: 1400px) {
+                width: calc(50% - 20px);
                 max-width: none;
+            }
+            @media all and (max-width: 800px)  {
+                width: 100%;
             }
 
         }
@@ -246,7 +250,6 @@ export default class ProfileCardEdit extends Vue {
             &--edit {
                 cursor: pointer;
                 position: relative;
-                margin-right: 85px;
                 &::after {
                     content: "";
                     position: absolute;
@@ -260,6 +263,9 @@ export default class ProfileCardEdit extends Vue {
                     width: 238px;
                     height: 238px;
                     border-radius: 40px;
+                }
+                @media all and (max-width: 1400px) {
+                    width: calc(50% - 40px);
                 }
                 @media all and (max-width: 500px) {
                     &::after {
