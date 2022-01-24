@@ -268,6 +268,7 @@ export default class ProfileCardEdit extends Vue {
                     width: calc(50% - 40px);
                 }
                 @media all and (max-width: 500px) {
+                    width: 100%;
                     &::after {
                         width: 117px;
                         height: 117px;

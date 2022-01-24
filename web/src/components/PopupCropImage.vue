@@ -69,6 +69,7 @@
             <div class="profile-crop__action">
                 <main-btn
                     :full-width="true"
+                    :loading="loading"
                     @click="cropImage"
                 >
                     Сохранить
@@ -161,6 +162,7 @@ export default class PopupCropImage extends Vue {
     }
 
     cropImage(): void {
+        this.loading = true
         this.cropper.getCroppedCanvas().toBlob(async blob => {
             if (blob) {
                 try {
@@ -175,9 +177,11 @@ export default class PopupCropImage extends Vue {
                     this.$mainStore.notification.changeNotification(
                         { state: true, ...this.$mainNotification.successAvatarUpdate })
                     this.hasImage = false
+                    this.loading = false
                 } catch (e) {
                     this.$mainStore.notification.changeNotification(
                         { state: true, ...this.$mainNotification.failedAvatarUpdate })
+                    this.loading = false
                     throw new Error(`Set Avatar Error - ${e}`)
                 }
             }
@@ -230,7 +234,7 @@ export default class PopupCropImage extends Vue {
         padding: 40px;
         box-sizing: border-box;
         width: 800px;
-        max-height: 80vh;
+        max-height: 84vh;
         overflow-y: auto;
         max-width: none;
         height: auto;
@@ -240,7 +244,7 @@ export default class PopupCropImage extends Vue {
         }
         @media all and (max-width: 500px) {
             width: 100%;
-            padding: 60px 40px 40px 40px;
+            padding: 20px 40px;
         }
         h2 {
             margin-bottom: 30px;
@@ -250,6 +254,9 @@ export default class PopupCropImage extends Vue {
             margin-bottom: 40px;
             @media all and (max-width: 1000px) {
                 flex-direction: column;
+            }
+            @media all and (max-width: 500px) {
+                margin-bottom: 20px;
             }
         }
         &__item {
