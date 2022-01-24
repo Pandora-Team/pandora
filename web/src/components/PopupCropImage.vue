@@ -4,7 +4,7 @@
         @close="closePopup"
     >
         <div class="profile-crop">
-            <h2>Портрет профиля</h2>
+            <h2>Фото профиля</h2>
             <input
                 ref="inputFile"
                 class="input-file"
@@ -41,7 +41,7 @@
                 </div>
                 <div class="profile-crop__item">
                     <div class="profile-crop__content">
-                        <p>Загрузите изображение:</p>
+                        <p>Загрузите фото:</p>
                         <main-btn
                             :full-width="true"
                             :gradient="true"
@@ -129,7 +129,7 @@ export default class PopupCropImage extends Vue {
 
     get dynamicText(): string {
         if (this.hasImage) return "Выберите фрагмент:"
-        return "Текущий портрет:"
+        return "Текущее фото:"
     }
 
     get currentAvatar(): string {
