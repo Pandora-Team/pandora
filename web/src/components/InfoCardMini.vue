@@ -81,15 +81,15 @@ export default class InfoCard extends Vue {
         img {
             object-fit: cover;
             transition: 1s;
-            opacity: 60%;
+            opacity: .6;
             @media all and (max-width: 800px) {
-                opacity: 100%;
+                opacity: 1;
             }
         }
         @media all and (min-width: 800px) {
             &:hover {
                 img {
-                    opacity: 100%;
+                    opacity: 1;
                 }
             }
         }
