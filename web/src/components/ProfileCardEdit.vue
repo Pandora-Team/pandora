@@ -208,6 +208,9 @@ export default class ProfileCardEdit extends Vue {
                         margin-bottom: 0;
                     }
                 }
+                @media all and (max-width: 500px) {
+                    max-width: none;
+                }
             }
             &:nth-last-of-type(1) {
                 margin-bottom: 0;
@@ -234,6 +237,10 @@ export default class ProfileCardEdit extends Vue {
                     margin-bottom: 20px;
                 }
             }
+            @media all and (max-width: 500px)  {
+                max-width: none;
+            }
+
         }
         &-avatar {
             &--edit {
