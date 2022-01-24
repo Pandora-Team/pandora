@@ -104,6 +104,9 @@ export default class LoginView extends Vue {
         align-items: center;
         position: relative;
         z-index: 1;
+        .btn--without-bg {
+            min-width: 260px;
+        }
     }
 
     .logo-trans {
