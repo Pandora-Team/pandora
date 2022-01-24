@@ -3,6 +3,10 @@
         :class="`info-card-mini ${inlineClass}`"
         @click="onClick"
     >
+        <img
+            :src="srcPathImg"
+            alt="Image"
+        >
         <h3>{{ text }}</h3>
     </div>
 </template>
@@ -25,6 +29,22 @@ export default class InfoCard extends Vue {
     @Prop({ type: String, default: "" })
     readonly path!: string
 
+    get srcPathImg(): string {
+        if (this.inlineClass === "classes") {
+            if (this.isMobile) return require("@/assets/bg/welcome-classes-min.jpg")
+            return require("@/assets/bg/welcome-classes.png")
+        }
+        if (this.inlineClass === "questions") {
+            if (this.isMobile) return require("@/assets/bg/welcome-questions-min.jpg")
+            return require("@/assets/bg/welcome-questions.png")
+        }
+        return ""
+    }
+
+    get isMobile(): boolean {
+        return this.$mainStore.app.isMobile
+    }
+
     onClick(): void {
         if (this.path) {
             this.$router.push({ path: this.path })
@@ -36,7 +56,6 @@ export default class InfoCard extends Vue {
 
 <style lang="scss">
     .info-card-mini {
-        //width: 257px;
         height: 155px;
         border-radius: 50px;
         display: flex;
@@ -46,6 +65,9 @@ export default class InfoCard extends Vue {
         overflow: hidden;
         cursor: pointer;
         padding: 10px 10px 0 10px;
+        @media all and (max-width: 800px) {
+            border-radius: 30px;
+        }
         &::before {
             content: "";
             position: absolute;
@@ -53,41 +75,27 @@ export default class InfoCard extends Vue {
             left: 0;
             width: 100%;
             height: 199px;
-            background: $gradient-info-card;
+            background: $gradient-mini-info-card;
             z-index: 3;
         }
-        &::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 165px;
+        img {
+            object-fit: cover;
             transition: 1s;
             opacity: 60%;
-            @media all and (max-width: 500px) {
+            @media all and (max-width: 800px) {
                 opacity: 100%;
             }
         }
-        @media all and (min-width: 500px) {
+        @media all and (min-width: 800px) {
             &:hover {
-                &::after {
+                img {
                     opacity: 100%;
                 }
             }
         }
-        &.questions {
-            &::after {
-                background: url("../assets/bg/welcome-questions.png") top/cover no-repeat;
-            }
-        }
-        &.classes {
-            &::after {
-                background: url("../assets/bg/welcome-classes.png") top/cover no-repeat;
-            }
-        }
         h3 {
-            position: relative;
+            position: absolute;
+            bottom: 0;
             z-index: 3;
             color: $color-white;
             letter-spacing: 0.01em;
