@@ -37,8 +37,8 @@ export default class InfoCard extends Vue {
 <style lang="scss">
     .info-card-mini {
         //width: 257px;
-        height: 165px;
-        border-radius: 30px;
+        height: 155px;
+        border-radius: 50px;
         display: flex;
         justify-content: center;
         align-items: flex-end;
@@ -46,18 +46,44 @@ export default class InfoCard extends Vue {
         overflow: hidden;
         cursor: pointer;
         padding: 10px 10px 0 10px;
-        &.questions {
-            background: url("../assets/bg/welcome-questions-2x.jpg") center no-repeat;
-            background-size: cover;
+        &::before {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 199px;
+            background: $gradient-info-card;
+            z-index: 3;
+        }
+        &::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 165px;
+            transition: 1s;
+            opacity: 60%;
             @media all and (max-width: 500px) {
-                background-position: 0 15%;
+                opacity: 100%;
+            }
+        }
+        @media all and (min-width: 500px) {
+            &:hover {
+                &::after {
+                    opacity: 100%;
+                }
+            }
+        }
+        &.questions {
+            &::after {
+                background: url("../assets/bg/welcome-questions.png") top/cover no-repeat;
             }
         }
         &.classes {
-            background: url("../assets/bg/welcome-classes.jpg") center no-repeat;
-            background-size: cover;
-            @media all and (max-width: 500px) {
-                background-position: 0 15%;
+            &::after {
+                background: url("../assets/bg/welcome-classes.png") top/cover no-repeat;
             }
         }
         h3 {
