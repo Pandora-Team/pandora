@@ -159,8 +159,18 @@ export default class LkNavLink extends Vue {
     @media all and (max-width: 800px) {
         .nav-link {
             min-height: 60px;
+            &--active {
+                .nav-link__icon {
+                    path {
+                        fill: $color-hover-text;
+                    }
+                }
+                span {
+                    color: $color-hover-text;
+                }
+            }
             &__wrapper {
-                padding-left: 25px;
+                padding-left: 0;
 
                 span {
                     display: block;

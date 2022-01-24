@@ -58,6 +58,12 @@ export class UsersController {
     }
 
     @UseGuards(JwtAuthGuard)
+    @Delete('avatar/:id')
+    deleteAvatar(@Param('id') id: string, @Request() req){
+        return this.usersService.deleteAvatar(id, req.user.id)
+    }
+
+    @UseGuards(JwtAuthGuard)
     @Delete(':id')
     delete(@Param('id') id: ObjectId){
         return this.usersService.deleteUser(id)

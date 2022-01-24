@@ -11,7 +11,13 @@
                 @click="onEdit"
             />
             <div
-                v-if="statuses.length"
+                v-if="isAdmin && event.users_id.length"
+                class="event-card__number"
+            >
+                {{ numberUsers }}
+            </div>
+            <div
+                v-if="!isAdmin && statuses.length"
                 class="event-card__statuses"
             >
                 <main-status
@@ -73,8 +79,8 @@ import { EventData, styleClass } from "@/definitions/interfaces"
 import dayjs from "dayjs"
 import { listStatuses, typesStatus, typeStatus } from "@/definitions/typeStatus"
 import MainRadio from "@/components/MainRadio.vue"
-import { deleteEvent } from "@/api/events"
 import { includes } from "lodash"
+import { enumerate } from "@/definitions/helpers"
 
 @Component({
     components: {
@@ -149,6 +155,13 @@ export default class EventCard extends Vue {
         return this.$mainStore.user.isAdmin
     }
 
+    get numberUsers(): string | undefined {
+        if (this.event.users_id?.length) {
+            return `${this.event.users_id.length} ${enumerate(this.event.users_id.length, ["участник", "участника", "участников"])}`
+        }
+        return undefined
+    }
+
     updateStatuses(): void {
         this.statuses.splice(0, this.statuses.length)
         this.signedUp = false
@@ -181,15 +194,8 @@ export default class EventCard extends Vue {
 
     //удаление занятия
     async onRemove(): Promise<void> {
-        try {
-            const res = await deleteEvent(this.event._id)
-            const { _id } = res.data
-            this.$mainStore.events.removeEvent(_id)
-            this.$mainStore.notification.changeNotification({ state: true, ...this.$mainNotification.successRemove })
-        } catch (e) {
-            this.$mainStore.notification.changeNotification({ state: true, ...this.$mainNotification.failedRemove })
-            throw new Error(`Error delete Event - ${e}`)
-        }
+        this.$mainStore.popup.changeRemovedState(this.event)
+        this.$mainStore.popup.changeActiveRemovePopup(true)
     }
 
     onEdit(): void {
@@ -210,11 +216,11 @@ export default class EventCard extends Vue {
        background-position: center;
        background-size: cover;
        position: relative;
-       @media all and (min-width: 500px) {
+       /*@media all and (min-width: 500px) {
            &:hover {
                box-shadow: 0 60px 50px -30px rgba(95, 38, 205, 0.3);
            }
-       }
+       }*/
        &:before {
            content: '';
            width: 100%;
@@ -259,6 +265,18 @@ export default class EventCard extends Vue {
            width: 100%;
            height: 100%;
            color: inherit;
+       }
+       &__number {
+           cursor: default;
+           position: absolute;
+           top: -15px;
+           left: -15px;
+           border-radius: 15px;
+           background: $color-green;
+           display: inline-flex;
+           justify-content: center;
+           align-items: center;
+           padding: 10px;
        }
        &__statuses {
            position: absolute;

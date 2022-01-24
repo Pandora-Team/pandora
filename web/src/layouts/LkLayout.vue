@@ -36,20 +36,6 @@ import { getUserId } from "@/api/auth"
 })
 export default class LkLayout extends Vue {
 
-    get isMobile(): boolean {
-        return this.$mainStore.app.isMobile
-    }
-
-    get inlineClass(): {[key: string]: boolean} {
-        return {
-            "lk-body--scroll": this.needScroll,
-        }
-    }
-
-    get needScroll(): boolean {
-        return this.$mainStore.app.needScrollIntoBody
-    }
-
     async mounted(): Promise<void> {
         await this.$mainStore.events.getListEvents()
         if (!this.$mainStore.user.id) {
@@ -57,6 +43,20 @@ export default class LkLayout extends Vue {
             this.$mainStore.user.setUserId(id)
         }
         await this.$mainStore.user.getUserInfo()
+    }
+
+    get isMobile(): boolean {
+        return this.$mainStore.app.isMobile
+    }
+
+    get inlineClass(): {[key: string]: boolean} {
+        return {
+            "lk-body--scroll": !this.isMobile && this.needScroll,
+        }
+    }
+
+    get needScroll(): boolean {
+        return this.$mainStore.app.needScrollIntoBody
     }
 }
 </script>

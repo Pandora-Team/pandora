@@ -58,6 +58,7 @@ export default class LkAvatar extends Vue {
     .avatar {
         img {
             border-radius: 40px;
+            width: 100%;
         }
         &--min {
             img {

@@ -11,9 +11,10 @@
 
 <script lang="ts">
 
-import { Component, Prop, Vue } from "vue-property-decorator"
+import { Component, Prop, Vue, Watch } from "vue-property-decorator"
 import TransitionFade from "@/components/transition/TransitionFade.vue"
 import { styleClassObject } from "@/definitions/interfaces"
+import paths from "@/router/paths"
 
 @Component({
     components: {
@@ -25,15 +26,18 @@ export default class LkBody extends Vue {
     @Prop({ type: Boolean, default: false })
     mobile!: boolean
 
+    isMainLkPage = false
+
     get inlineClass(): styleClassObject {
         return {
-            "lk-body__wrapper--mt":     this.mobile,
-            "lk-body__wrapper--scroll": this.needScroll,
+            "lk-body__wrapper--mt":     this.mobile && !this.isMainLkPage,
+            "lk-body__wrapper--mt_min": this.mobile && this.isMainLkPage,
         }
     }
 
-    get needScroll(): boolean {
-        return this.$mainStore.app.needScrollIntoBody
+    @Watch("$route.path", { immediate: true, deep: true })
+    checkMainLkPage(route: string): void {
+        this.isMainLkPage = route === paths.LkLayout
     }
 
 }
@@ -48,6 +52,12 @@ export default class LkBody extends Vue {
         }
         &--mt {
             margin-top: 60px;
+            @media all and (max-width: 500px) {
+                margin-top: 90px;
+            }
+            &_min {
+                margin-top: 60px;
+            }
         }
     }
 </style>

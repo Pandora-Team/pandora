@@ -7,6 +7,7 @@ import {PlacesService} from "../places/places.service";
 import {FileService} from "../file/file.service";
 import {StatusesService} from "../statuses/statuses.service";
 import {UsersService} from "../users/users.service";
+import * as dayjs from "dayjs";
 
 @Injectable()
 export class EventsService {
@@ -40,7 +41,7 @@ export class EventsService {
 
     async getAllEventsWithStudents(): Promise<Events[]> {
         const events = await this.eventsModel.find()
-        const sortedEvents = this.sortArrayOnDate(events)
+        const sortedEvents = this.sortArrayOnDate(events, true)
         return await this.getUserInfoForEvent(sortedEvents)
     }
 
@@ -84,10 +85,14 @@ export class EventsService {
         return event
     }
 
-    sortArrayOnDate(array: Events[]): Events[] {
+    sortArrayOnDate(array: Events[], reverse = false): Events[] {
         return array.sort(function compare(a, b) {
             var dateA = new Date(a.date);
             var dateB = new Date(b.date);
+            if (reverse) {
+                // @ts-ignore
+                return dateB - dateA;
+            }
             // @ts-ignore
             return dateA - dateB;
         });
@@ -108,6 +113,30 @@ export class EventsService {
             event.status = event.status.filter(e => e.length > 0)
             return event
         }))
+    }
+
+    async addUserToEvent(eventId: string, userId: string): Promise<void> {
+        await this.eventsModel.updateOne({_id: eventId}, {$addToSet: {users_id: userId}})
+    }
+
+    async removeUserFromEvent(eventId: string, userId: string): Promise<void> {
+        await this.eventsModel.updateOne({_id: eventId}, {$pull: {users_id: userId}})
+    }
+
+    async getEventListForUser(userId: string): Promise<Events[]> {
+        const listEvents = []
+        const events = await this.eventsModel.find({})
+        for(let i = 0; i < events.length; i++) {
+            if (events[i]?.users_id.includes(userId) && dayjs().isAfter(dayjs(events[i].date))) {
+                const eventInfo = {
+                    _id: events[i]._id,
+                    name: events[i].name,
+                    date: events[i].date
+                }
+                listEvents.push(eventInfo)
+            }
+        }
+        return listEvents
     }
 
 }

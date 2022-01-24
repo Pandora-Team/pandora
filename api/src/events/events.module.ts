@@ -1,29 +1,23 @@
-import {Module} from "@nestjs/common";
+import {Module, forwardRef} from "@nestjs/common";
 import {EventsController} from "./events.controller";
 import {EventsService} from "./events.service";
 import {MongooseModule} from "@nestjs/mongoose";
 import {Events, EventsSchema} from "./events.schema";
-import {PlacesService} from "../places/places.service";
-import {Places, PlacesSchema} from "../places/places.schema";
-import {FileService} from "../file/file.service";
-import {StatusesService} from "../statuses/statuses.service";
-import {Statuses, StatusesSchema} from "../statuses/statuses.schema";
-import {UsersService} from "../users/users.service";
-import {Users, UsersSchema} from "../users/users.schema";
-import {MulterModule} from "@nestjs/platform-express";
-import {GridFsService} from "../file/gridfs.service";
+import {PlacesModule} from "../places/places.module";
+import {FileModule} from "../file/file.module";
+import {StatusesModule} from "../statuses/statuses.module";
+import {UsersModule} from "../users/users.module";
 
 @Module({
     imports: [
+        FileModule,
+        PlacesModule,
+        forwardRef(() => StatusesModule),
+        forwardRef(() => UsersModule),
         MongooseModule.forFeature([{name: Events.name, schema: EventsSchema}]),
-        MongooseModule.forFeature([{name: Places.name, schema: PlacesSchema}]),
-        MongooseModule.forFeature([{name: Statuses.name, schema: StatusesSchema}]),
-        MongooseModule.forFeature([{name: Users.name, schema: UsersSchema}]),
-        MulterModule.registerAsync({
-            useClass: GridFsService,
-        }),
     ],
     controllers: [EventsController],
-    providers: [EventsService, PlacesService, FileService, StatusesService, UsersService, GridFsService]
+    providers: [EventsService],
+    exports: [EventsService]
 })
 export class EventsModule {}

@@ -11,11 +11,12 @@
         <popup-cancel v-if="$mainStore.popup.activeCancelPopup" />
         <popup-welcome v-if="$mainStore.popup.activeWelcomePopup" />
         <popup-payment v-if="$mainStore.popup.activePaymentPopup" />
-        <popup-crop v-if="$mainStore.popup.activeCropPopup" />
+        <popup-crop-image v-if="$mainStore.popup.activeCropPopup" />
         <popup-update
             v-if="visiblePopupUpdate"
             @close="visiblePopupUpdate = false"
         />
+        <popup-remove v-if="$mainStore.popup.activeRemovePopup" />
         <notification />
     </div>
 </template>
@@ -31,8 +32,9 @@ import PopupCreate from "@/components/PopupCreate.vue"
 import PopupCancel from "@/components/PopupCancel.vue"
 import PopupWelcome from "@/components/PopupWelcome.vue"
 import PopupPayment from "@/components/PopupPayment.vue"
-import PopupCrop from "@/components/PopupCrop.vue"
 import PopupUpdate from "@/components/PopupUpdate.vue"
+import PopupCropImage from "@/components/PopupCropImage.vue"
+import PopupRemove from "@/components/PopupRemove.vue"
 
 @Component({
     components: {
@@ -44,8 +46,9 @@ import PopupUpdate from "@/components/PopupUpdate.vue"
         PopupCancel,
         PopupWelcome,
         PopupPayment,
-        PopupCrop,
         PopupUpdate,
+        PopupCropImage,
+        PopupRemove,
     },
 })
 export default class App extends Vue {
@@ -53,14 +56,15 @@ export default class App extends Vue {
     visiblePopupUpdate = false
 
     created(): void {
-        console.log("[workbox] - workbox", this.$workbox)
         if (this.$workbox) {
-            console.log("[workbox] - before event - waiting")
             this.$workbox.addEventListener("waiting", () => {
                 this.visiblePopupUpdate = true
-                console.log("[workbox] - into event handler - waiting")
             })
         }
+    }
+
+    mounted(): void {
+        this.$mainStore.app.setLoading(true)
     }
 
     @Watch("$mainStore.app.disable")

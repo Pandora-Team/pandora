@@ -1,5 +1,8 @@
 <template>
-    <main-popup @close="closePopup">
+    <main-popup
+        color-icon-close="white"
+        @close="closePopup"
+    >
         <div class="popup-update">
             <h2>Появилась новая версия приложения</h2>
             <main-btn

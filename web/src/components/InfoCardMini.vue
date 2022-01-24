@@ -3,6 +3,10 @@
         :class="`info-card-mini ${inlineClass}`"
         @click="onClick"
     >
+        <img
+            :src="srcPathImg"
+            alt="Image"
+        >
         <h3>{{ text }}</h3>
     </div>
 </template>
@@ -25,6 +29,22 @@ export default class InfoCard extends Vue {
     @Prop({ type: String, default: "" })
     readonly path!: string
 
+    get srcPathImg(): string {
+        if (this.inlineClass === "classes") {
+            if (this.isMobile) return require("@/assets/bg/welcome-classes-min.jpg")
+            return require("@/assets/bg/welcome-classes.png")
+        }
+        if (this.inlineClass === "questions") {
+            if (this.isMobile) return require("@/assets/bg/welcome-questions-min.jpg")
+            return require("@/assets/bg/welcome-questions.png")
+        }
+        return ""
+    }
+
+    get isMobile(): boolean {
+        return this.$mainStore.app.isMobile
+    }
+
     onClick(): void {
         if (this.path) {
             this.$router.push({ path: this.path })
@@ -36,9 +56,8 @@ export default class InfoCard extends Vue {
 
 <style lang="scss">
     .info-card-mini {
-        //width: 257px;
-        height: 165px;
-        border-radius: 30px;
+        height: 155px;
+        border-radius: 50px;
         display: flex;
         justify-content: center;
         align-items: flex-end;
@@ -46,22 +65,37 @@ export default class InfoCard extends Vue {
         overflow: hidden;
         cursor: pointer;
         padding: 10px 10px 0 10px;
-        &.questions {
-            background: url("../assets/bg/welcome-questions-2x.jpg") center no-repeat;
-            background-size: cover;
-            @media all and (max-width: 500px) {
-                background-position: 0 15%;
+        @media all and (max-width: 800px) {
+            border-radius: 30px;
+        }
+        &::before {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 199px;
+            background: $gradient-mini-info-card;
+            z-index: 3;
+        }
+        img {
+            object-fit: cover;
+            transition: 1s;
+            opacity: 60%;
+            @media all and (max-width: 800px) {
+                opacity: 100%;
             }
         }
-        &.classes {
-            background: url("../assets/bg/welcome-classes.jpg") center no-repeat;
-            background-size: cover;
-            @media all and (max-width: 500px) {
-                background-position: 0 15%;
+        @media all and (min-width: 800px) {
+            &:hover {
+                img {
+                    opacity: 100%;
+                }
             }
         }
         h3 {
-            position: relative;
+            position: absolute;
+            bottom: 0;
             z-index: 3;
             color: $color-white;
             letter-spacing: 0.01em;

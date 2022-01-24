@@ -7,8 +7,7 @@
         />
         <div class="profile-row">
             <div
-                class="profile-avatar"
-                :class="{'profile-avatar--edit': !isMobile}"
+                class="profile-avatar profile-avatar--edit"
                 @click="changeAvatar"
             >
                 <lk-avatar :width="widthAvatar" />
@@ -161,7 +160,6 @@ export default class ProfileCardEdit extends Vue {
     }
 
     changeAvatar(): void {
-        if (this.isMobile) return
         this.$mainStore.popup.changeActiveCropPopup(true)
     }
 
@@ -210,6 +208,9 @@ export default class ProfileCardEdit extends Vue {
                         margin-bottom: 0;
                     }
                 }
+                @media all and (max-width: 500px) {
+                    max-width: none;
+                }
             }
             &:nth-last-of-type(1) {
                 margin-bottom: 0;
@@ -236,12 +237,19 @@ export default class ProfileCardEdit extends Vue {
                     margin-bottom: 20px;
                 }
             }
+            @media all and (max-width: 1400px) {
+                width: calc(50% - 20px);
+                max-width: none;
+            }
+            @media all and (max-width: 800px)  {
+                width: 100%;
+            }
+
         }
         &-avatar {
             &--edit {
                 cursor: pointer;
                 position: relative;
-                margin-right: 85px;
                 &::after {
                     content: "";
                     position: absolute;
@@ -256,7 +264,11 @@ export default class ProfileCardEdit extends Vue {
                     height: 238px;
                     border-radius: 40px;
                 }
+                @media all and (max-width: 1400px) {
+                    width: calc(50% - 40px);
+                }
                 @media all and (max-width: 500px) {
+                    width: 100%;
                     &::after {
                         width: 117px;
                         height: 117px;

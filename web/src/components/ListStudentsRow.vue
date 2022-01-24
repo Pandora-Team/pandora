@@ -28,6 +28,7 @@
                 :social="social"
             />
         </div>
+        <drop-down-visited-events :list="user.events" />
     </div>
 </template>
 
@@ -37,11 +38,13 @@ import { Component, Prop, Vue } from "vue-property-decorator"
 import LkAvatar from "@/components/LkAvatar.vue"
 import LkSocialItem from "@/components/LkSocialItem.vue"
 import { SocialData, UserData } from "@/definitions/interfaces"
+import DropDownVisitedEvents from "@/components/DropDownVisitedEvents.vue"
 
 @Component({
     components: {
         LkAvatar,
         LkSocialItem,
+        DropDownVisitedEvents,
     },
 })
 export default class ListStudentsRow extends Vue {
@@ -93,53 +96,32 @@ export default class ListStudentsRow extends Vue {
         &__item {
             display: flex;
             align-items: center;
-            width: 25%;
+            width: calc(20% - 10px);
+            margin-right: 10px;
             b {
                 margin-left: 10px;
             }
-            @media all and (max-width: 1400px) {
-                width: 50%;
-                b {
-                    margin-left: 0;
-                }
-                &.list-students-row__info {
-                    margin-bottom: 20px;
-                }
-                &.list-students-row__birthday {
-                    margin-bottom: 20px;
-                }
+            @media all and (max-width: 1700px) {
+                width: 30%;
+            }
+            @media all and (max-width: 1100px) {
+                width: 40%;
             }
             @media all and (max-width: 800px) {
                 width: 100%;
-                &.list-students-row__phone {
-                    margin-bottom: 20px;
-                }
             }
-            @media all and (max-width: 500px) {
-                .list-students-row__number {
-                    margin-right: 20px;
-                }
-                .list-students-row__avatar {
-                    margin-right: 20px;
-                }
-                .list-students-row__name {
-                    line-height: 1.5;
-                    margin-top: 10px;
-                    width: 100%;
-                }
-                &.list-students-row__birthday,
-                &.list-students-row__phone {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: flex-start;
-                    b {
-                        margin-top: 10px;
-                    }
-                }
+        }
+        &__info {
+            line-height: 22px;
+            @media all and (max-width: 1700px) {
+                margin-bottom: 20px;
             }
         }
         &__number {
-            margin-right: 40px;
+            margin-right: 20px;
+            @media all and (max-width: 500px) {
+                margin-right: 20px;
+            }
         }
         &__avatar {
             margin-right: 20px;
@@ -147,8 +129,46 @@ export default class ListStudentsRow extends Vue {
                 margin-right: 0;
             }
         }
+        &__name {
+            @media all and (max-width: 500px) {
+                line-height: 1.5;
+                margin-left: 10px;
+                width: 100%;
+            }
+        }
+        &__phone {
+            @media all and (max-width: 800px) {
+               margin-bottom: 20px;
+            }
+            @media all and (max-width: 500px) {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                b {
+                    margin-left: 0;
+                    margin-top: 10px;
+                }
+            }
+        }
+        &__birthday {
+            line-height: 22px;
+            @media all and (max-width: 1400px) {
+                margin-bottom: 20px;
+            }
+            @media all and (max-width: 500px) {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                b {
+                    margin-left: 0;
+                    margin-top: 10px;
+                }
+            }
+        }
         &__social {
-
+            @media all and (max-width: 800px) {
+                margin-bottom: 20px;
+            }
         }
     }
 </style>

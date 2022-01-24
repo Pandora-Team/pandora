@@ -1,21 +1,22 @@
-import {Module} from "@nestjs/common";
+import {forwardRef, Module} from "@nestjs/common";
 import {UsersController} from "./users.controller";
 import {UsersService} from "./users.service";
 import {MongooseModule} from "@nestjs/mongoose";
 import {Users, UsersSchema} from "./users.schema";
-import {FileService} from "../file/file.service";
-import {MulterModule} from "@nestjs/platform-express";
-import {GridFsService} from "../file/gridfs.service";
+import {FileModule} from "../file/file.module";
+import {EventsModule} from "../events/events.module";
 
 @Module({
     imports: [
         MongooseModule.forFeature([{name: Users.name, schema: UsersSchema}]),
-        MulterModule.registerAsync({
-            useClass: GridFsService,
-        }),
+        FileModule,
+        forwardRef(() => EventsModule),
     ],
     controllers: [UsersController],
-    providers: [UsersService, FileService, GridFsService],
-    exports: [UsersService]
+    providers: [UsersService],
+    exports: [
+        UsersService,
+        MongooseModule,
+    ]
 })
 export class UsersModule {}

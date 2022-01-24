@@ -1,5 +1,11 @@
 <template>
     <div class="policy">
+        <div
+            class="back"
+            @click="goToBack"
+        >
+            Вернуться
+        </div>
         <h1>Политика в отношении обработки персональных данных</h1>
         <h2>1. Общие положения</h2>
         <p>
@@ -503,7 +509,9 @@ import { Component, Vue } from "vue-property-decorator"
     components: {},
 })
 export default class PolicyView extends Vue {
-
+    goToBack(): void {
+        this.$router.back()
+    }
 }
 </script>
 
@@ -514,6 +522,18 @@ export default class PolicyView extends Vue {
     padding: 20px;
     font-size: 16px;
     color: $color-black;
+    .back {
+        cursor: pointer;
+        transition: .5s;
+        text-decoration: underline;
+        font-size: 14px;
+        color: #AD00FF;
+        margin-bottom: 20px;
+        &:hover {
+            outline: none;
+            color: $color-hover-text;
+        }
+    }
     h1 {
         font-size: 32px;
         margin-bottom: 40px;

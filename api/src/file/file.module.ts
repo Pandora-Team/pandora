@@ -11,7 +11,15 @@ import {FilesController} from "./file.controller";
         }),
     ],
     controllers: [FilesController],
-    providers: [FileService , GridFsService]
+    providers: [
+        FileService,
+        GridFsService,
+    ],
+    exports: [
+        FileService,
+        GridFsService,
+        MulterModule,
+    ]
 })
 
 export class FileModule{}
