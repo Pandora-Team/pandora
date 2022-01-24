@@ -133,6 +133,9 @@ export default class MobileMenu extends Vue {
             border-top: 1px solid white;
             padding-top: 20px;
             padding-left: 25px;
+            @media all and (max-width: 800px) {
+                padding-left: 0;
+            }
             .logout__icon {
                 path {
                     fill: white;

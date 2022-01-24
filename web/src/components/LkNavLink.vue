@@ -170,7 +170,7 @@ export default class LkNavLink extends Vue {
                 }
             }
             &__wrapper {
-                padding-left: 25px;
+                padding-left: 0;
 
                 span {
                     display: block;
