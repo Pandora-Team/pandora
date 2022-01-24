@@ -27,7 +27,6 @@ export class UsersService {
         let users = await this.usersModel.find({role: "dancer"}, {pass: 0})
         return Promise.all(users.map(async user => {
             user.events = await this.eventsService.getEventListForUser(user._id)
-            console.log(user.events);
             return user
         }))
     }
