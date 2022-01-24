@@ -58,10 +58,19 @@ export default class ProfileEvents extends Vue {
 <style lang="scss">
     .profile {
         &-events {
+            max-width: 760px;
+            width: 100%;
             background: $bg-info;
             border-radius: 30px;
             padding: 30px 40px;
             color: $color-black;
+            box-sizing: border-box;
+            margin-left: 40px;
+            @media all and (max-width: 1500px) {
+                margin-left: 0;
+                margin-top: 40px;
+                max-width: 700px;
+            }
             @media all and (max-width: 500px) {
                 padding: 30px;
             }
