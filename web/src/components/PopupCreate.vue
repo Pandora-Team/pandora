@@ -4,43 +4,45 @@
         @close="closePopup"
     >
         <div class="event-create">
-            <h3>{{ titlePopup }}</h3>
-            <main-form
-                class-form="create"
-                :submit-text="textBtnSubmit"
-                width-form="560px"
-                :cancel-button="false"
-                @submit="submitForm"
-            >
-                <template #top>
-                    <main-form-item
-                        id="name"
-                        :value="state.name"
-                        label="Наименование *"
-                        type="text"
-                        @input="updateName"
-                    />
-                    <main-form-item
-                        id="price"
-                        :value="state.price"
-                        label="Стоимость (руб.) *"
-                        type="text"
-                        @input="updatePrice"
-                    />
-                    <event-date
-                        :update="isUpdatePopup"
-                        :date="stateDate"
-                        :end-time="state.end_time"
-                    />
-                </template>
-                <template #center>
-                    <event-select-address
-                        :address="state.address"
-                        :place-id="state.place_id"
-                    />
-                    <event-file v-if="!isUpdatePopup" />
-                </template>
-            </main-form>
+            <div class="event-create-block">
+                <h3>{{ titlePopup }}</h3>
+                <main-form
+                    class-form="create"
+                    :submit-text="textBtnSubmit"
+                    width-form="560px"
+                    :cancel-button="false"
+                    @submit="submitForm"
+                >
+                    <template #top>
+                        <main-form-item
+                            id="name"
+                            :value="state.name"
+                            label="Наименование *"
+                            type="text"
+                            @input="updateName"
+                        />
+                        <main-form-item
+                            id="price"
+                            :value="state.price"
+                            label="Стоимость (руб.) *"
+                            type="text"
+                            @input="updatePrice"
+                        />
+                        <event-date
+                            :update="isUpdatePopup"
+                            :date="stateDate"
+                            :end-time="state.end_time"
+                        />
+                    </template>
+                    <template #center>
+                        <event-select-address
+                            :address="state.address"
+                            :place-id="state.place_id"
+                        />
+                        <event-file v-if="!isUpdatePopup" />
+                    </template>
+                </main-form>
+            </div>
         </div>
     </main-popup>
 </template>
@@ -157,12 +159,17 @@ export default class PopupCreate extends Vue {
         height: auto;
         border-radius: 25px;
         background: $bg-input;
-        padding: 60px;
-        box-sizing: border-box;
         @media all and (max-width: 500px) {
-            padding: 20px;
-            overflow-y: scroll;
             height: 600px;
+        }
+        &-block {
+            padding: 60px;
+            box-sizing: border-box;
+            @media all and (max-width: 500px) {
+                padding: 20px;
+                overflow-y: scroll;
+                height: 580px;
+            }
         }
         h3 {
             text-transform: uppercase;
