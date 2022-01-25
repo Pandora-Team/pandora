@@ -21,10 +21,6 @@ import { Integrations } from "@sentry/tracing"
 import VueYoutube from "vue-youtube"
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import Croppa from "vue-croppa"
-import "vue-croppa/dist/vue-croppa.css"
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import { VueMaskDirective } from "v-mask"
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -35,8 +31,6 @@ Vue.use(VueYoutube)
 
 Vue.component("simple-svg", SimpleSVG)
 Vue.component("date-picker", DatePicker)
-Vue.component("croppa", Croppa.component)
-
 
 Vue.directive("mask", VueMaskDirective)
 
