@@ -185,7 +185,7 @@ export default class PopupCropImage extends Vue {
                     throw new Error(`Set Avatar Error - ${e}`)
                 }
             }
-        })
+        }, "image/jpeg", 0.8)
     }
 
     setImage(e: {target: HTMLInputElement}): void {
