@@ -172,8 +172,11 @@ export default class PopupCropImage extends Vue {
             if (blob && blob.type) {
                 const nameFileArr = this.nameFile.split(".")
                 const nameFile = nameFileArr.slice(0, nameFileArr.length - 1).join(".")
+                const file = new File([blob], nameFile, {
+                    type: blob.type,
+                })
                 const formData = new FormData()
-                formData.append("avatar", blob, nameFile)
+                formData.append("avatar", file)
 
                 for (const value of formData.values()) {
                     console.log("[formData] value - ", value)
