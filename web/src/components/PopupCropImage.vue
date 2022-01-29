@@ -137,6 +137,10 @@ export default class PopupCropImage extends Vue {
         return this.$mainStore.user.avatar
     }
 
+    get userId(): string {
+        return this.$mainStore.user.id
+    }
+
     checkAvatar(): void {
         if (this.currentAvatar) {
             this.imgSrc = `${process.env.VUE_APP_API_URL}files/${this.currentAvatar}`
@@ -170,7 +174,7 @@ export default class PopupCropImage extends Vue {
                     const nameFile = nameFileArr.slice(0, nameFileArr.length - 1).join(".")
                     const formData = new FormData()
                     formData.append("avatar", blob, nameFile)
-                    const res = await setAvatar(formData)
+                    const res = await setAvatar(formData, this.userId)
                     const { data } = res
                     this.$mainStore.user.setAvatar(data)
                     this.$mainStore.popup.changeActiveCropPopup(false)
