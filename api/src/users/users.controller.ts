@@ -48,13 +48,13 @@ export class UsersController {
     }
 
     @UseGuards(JwtAuthGuard)
-    @Post('avatar')
+    @Post('avatar/:id')
     @UseInterceptors(FileFieldsInterceptor([
         { name: 'avatar', maxCount: 1 }
     ]))
-    async setAvatar(@UploadedFiles() files, @Request() req){
+    async setAvatar(@UploadedFiles() files, @Param('id') userId: string){
         const { avatar } = files
-        return this.usersService.setAvatar(avatar[0].id, req.user.id)
+        return this.usersService.setAvatar(avatar[0].id, userId)
     }
 
     @UseGuards(JwtAuthGuard)

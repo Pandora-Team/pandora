@@ -35,12 +35,12 @@ export class UsersService {
         return this.usersModel.updateOne({_id: id}, {$set: {...dto}})
     }
 
-    async setAvatar(avatarId, id): Promise<string> {
-        const user = await this.getUserById(id)
+    async setAvatar(avatarId, userId): Promise<string> {
+        const user = await this.getUserById(userId)
         if (user.avatar) {
             await this.fileService.deleteFile(user.avatar)
         }
-        await this.usersModel.updateOne({_id: id}, {avatar: avatarId})
+        await this.usersModel.updateOne({_id: userId}, {avatar: avatarId})
         return avatarId
     }
 
