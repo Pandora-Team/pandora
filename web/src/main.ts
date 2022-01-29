@@ -47,7 +47,7 @@ Sentry.init({
     integrations: [
         new Integrations.BrowserTracing({
             routingInstrumentation: Sentry.vueRouterInstrumentation(router),
-            tracingOrigins:         ["localhost", "my-site-url.com", /^\//],
+            tracingOrigins:         ["localhost", "pandora-kpop.ru", /^\//],
         }),
     ],
     tracesSampleRate: 1.0,
