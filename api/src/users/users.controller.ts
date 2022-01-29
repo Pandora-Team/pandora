@@ -8,13 +8,15 @@ import {
     Post,
     UseInterceptors,
     UploadedFiles,
-    Request, Body
+    Request, Body,
+    InternalServerErrorException
 } from "@nestjs/common";
 import {ObjectId} from "mongoose";
 import {UsersService} from "./users.service";
 import {JwtAuthGuard} from "../auth/jwt-auth.guard";
 import {FileFieldsInterceptor} from "@nestjs/platform-express";
 import {UpdateUserDto} from "./create-user.dto"
+import {SentryInterceptor} from "../sentry.interceptor"
 
 @Controller('users')
 export class UsersController {
@@ -52,9 +54,12 @@ export class UsersController {
     @UseInterceptors(FileFieldsInterceptor([
         { name: 'avatar', maxCount: 1 }
     ]))
+    @UseInterceptors(SentryInterceptor)
     async setAvatar(@UploadedFiles() files, @Param('id') userId: string){
         const { avatar } = files
-        return this.usersService.setAvatar(avatar[0].id, userId)
+        console.log(avatar[0])
+        throw new InternalServerErrorException()
+        //return this.usersService.setAvatar(avatar[0].id, userId)
     }
 
     @UseGuards(JwtAuthGuard)
