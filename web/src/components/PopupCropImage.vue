@@ -167,37 +167,40 @@ export default class PopupCropImage extends Vue {
 
     cropImage(): void {
         this.loading = true
-        this.cropper.getCroppedCanvas().toBlob(async blob => {
+        this.cropper.getCroppedCanvas().toBlob(blob => {
             console.log("[blob] - ", blob?.type)
             if (blob && blob.type) {
-                try {
-                    const nameFileArr = this.nameFile.split(".")
-                    const nameFile = nameFileArr.slice(0, nameFileArr.length - 1).join(".")
-                    const formData = new FormData()
-                    formData.append("avatar", blob, nameFile)
+                const nameFileArr = this.nameFile.split(".")
+                const nameFile = nameFileArr.slice(0, nameFileArr.length - 1).join(".")
+                const formData = new FormData()
+                formData.append("avatar", blob, nameFile)
 
-                    for (const value of formData.values()) {
-                        console.log("[formData] value - ", value)
-                    }
-                    const { data } = await setAvatar(formData, this.userId)
-                    console.log("[data] - ", data)
-                    this.$mainStore.user.setAvatar(data)
-                    this.$mainStore.popup.changeActiveCropPopup(false)
-                    this.$mainStore.notification.changeNotification(
-                        { state: true, ...this.$mainNotification.successAvatarUpdate })
-                    this.hasImage = false
-                    this.loading = false
-                } catch (e) {
-                    this.$mainStore.notification.changeNotification(
-                        { state: true, ...this.$mainNotification.failedAvatarUpdate })
-                    this.loading = false
-                    throw new Error(`Set Avatar Error - ${e}`)
+                for (const value of formData.values()) {
+                    console.log("[formData] value - ", value)
                 }
+
+                setAvatar(formData, this.userId)
+                    .then((res) => {
+                        const { data } = res
+                        console.log("[data] - ", data)
+                        this.$mainStore.user.setAvatar(data)
+                        this.$mainStore.popup.changeActiveCropPopup(false)
+                        this.$mainStore.notification.changeNotification(
+                            { state: true, ...this.$mainNotification.successAvatarUpdate })
+                        this.hasImage = false
+                        this.loading = false
+                    })
+                    .catch(e => {
+                        this.$mainStore.notification.changeNotification(
+                            { state: true, ...this.$mainNotification.failedAvatarUpdate })
+                        this.loading = false
+                        throw new Error(`Set Avatar Error - ${e}`)
+                    })
             } else {
                 this.loading = false
                 throw new Error("Set Avatar Error - Blob is empty")
             }
-        }, "image/jpeg")
+        }, "image/jpeg", 0.8)
     }
 
     setImage(e: {target: HTMLInputElement}): void {
