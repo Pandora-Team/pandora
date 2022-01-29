@@ -54,11 +54,7 @@ export class UsersController {
     ]))
     async setAvatar(@UploadedFiles() files, @Param('id') userId: string){
         const { avatar } = files
-        console.log("[files]", files)
-        console.log("[avatar]", avatar)
-        const res = this.usersService.setAvatar(avatar[0].id, userId)
-        res.then(value => console.log("[res]", value))
-        return res
+        return this.usersService.setAvatar(avatar[0].id, userId)
     }
 
     @UseGuards(JwtAuthGuard)

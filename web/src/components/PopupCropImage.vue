@@ -168,8 +168,8 @@ export default class PopupCropImage extends Vue {
     cropImage(): void {
         this.loading = true
         this.cropper.getCroppedCanvas().toBlob(async blob => {
-            console.log("[blob] - ", blob)
-            if (blob) {
+            console.log("[blob] - ", blob?.type)
+            if (blob && blob.type) {
                 try {
                     const nameFileArr = this.nameFile.split(".")
                     const nameFile = nameFileArr.slice(0, nameFileArr.length - 1).join(".")
@@ -179,9 +179,8 @@ export default class PopupCropImage extends Vue {
                     for (const value of formData.values()) {
                         console.log("[formData] value - ", value)
                     }
-                    const res = await setAvatar(formData, this.userId)
-                    console.log("[res] - ", res)
-                    const { data } = res
+                    const { data } = await setAvatar(formData, this.userId)
+                    console.log("[data] - ", data)
                     this.$mainStore.user.setAvatar(data)
                     this.$mainStore.popup.changeActiveCropPopup(false)
                     this.$mainStore.notification.changeNotification(
@@ -194,8 +193,11 @@ export default class PopupCropImage extends Vue {
                     this.loading = false
                     throw new Error(`Set Avatar Error - ${e}`)
                 }
+            } else {
+                this.loading = false
+                throw new Error("Set Avatar Error - Blob is empty")
             }
-        }, "image/jpeg", 0.8)
+        }, "image/jpeg")
     }
 
     setImage(e: {target: HTMLInputElement}): void {
