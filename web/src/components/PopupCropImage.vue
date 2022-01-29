@@ -168,13 +168,19 @@ export default class PopupCropImage extends Vue {
     cropImage(): void {
         this.loading = true
         this.cropper.getCroppedCanvas().toBlob(async blob => {
+            console.log("[blob] - ", blob)
             if (blob) {
                 try {
                     const nameFileArr = this.nameFile.split(".")
                     const nameFile = nameFileArr.slice(0, nameFileArr.length - 1).join(".")
                     const formData = new FormData()
                     formData.append("avatar", blob, nameFile)
+
+                    for (const value of formData.values()) {
+                        console.log("[formData] value - ", value)
+                    }
                     const res = await setAvatar(formData, this.userId)
+                    console.log("[res] - ", res)
                     const { data } = res
                     this.$mainStore.user.setAvatar(data)
                     this.$mainStore.popup.changeActiveCropPopup(false)
