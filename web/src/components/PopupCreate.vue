@@ -11,6 +11,7 @@
                     :submit-text="textBtnSubmit"
                     width-form="560px"
                     :cancel-button="false"
+                    :loading="loading"
                     @submit="submitForm"
                 >
                     <template #top>
@@ -39,7 +40,7 @@
                             :address="state.address"
                             :place-id="state.place_id"
                         />
-                        <event-file v-if="!isUpdatePopup" />
+                        <event-file />
                     </template>
                 </main-form>
             </div>
@@ -74,6 +75,8 @@ import { EventData } from "@/definitions/interfaces"
     },
 })
 export default class PopupCreate extends Vue {
+
+    loading = false
 
     get isUpdatePopup(): boolean {
         return this.$mainStore.popup.updatePopup
@@ -115,34 +118,47 @@ export default class PopupCreate extends Vue {
     }
 
     async submitForm(): Promise<void> {
-        if (!this.isUpdatePopup) {
-            const formData = new FormData()
-            const data = { ...this.state }
-            for (const key in data) {
-                if (data.hasOwnProperty(key) && data[key]) {
-                    formData.append(key, data[key])
-                }
+        this.loading = true
+        const formData = new FormData()
+        const data = { ...this.state }
+        const nonIncludeKey = ["status", "users_id", "users"]
+        for (const key in data) {
+            if (data.hasOwnProperty(key) && data[key]) {
+                if (nonIncludeKey.includes(key)) continue
+                formData.append(key, data[key])
             }
+        }
+
+        if (!this.isUpdatePopup) {
             try {
                 const res = await createEvent(formData)
                 this.$mainStore.events.addEventToList(res?.data)
                 this.$mainStore.notification.changeNotification(
                     { state: true, ...this.$mainNotification.successCreate })
+                this.loading = false
                 this.closePopup()
                 return
             } catch (e) {
                 this.$mainStore.notification.changeNotification(
                     { state: true, ...this.$mainNotification.failedCreate })
+                this.loading = false
                 throw new Error(`Error create Event - ${e}`)
             }
         }
-        const params = { ...this.state }
+
         try {
-            await updateEvent(this.state._id, params)
-            this.$mainStore.events.updateEventIntoList(this.state)
+            const { data } = await updateEvent(this.state._id, formData)
+            const { cover } = data
+            const newState = { ...this.state }
+            if (cover) {
+                newState.cover = cover
+            }
+            this.$mainStore.events.updateEventIntoList(newState)
+            this.loading = false
             this.closePopup()
         } catch (e) {
             this.$mainStore.notification.changeNotification({ state: true, ...this.$mainNotification.error })
+            this.loading = false
             throw new Error(`Error update Event - ${e}`)
         }
 

@@ -55,10 +55,13 @@ export default class PopupCancel extends Vue {
 
     async onClick(): Promise<void> {
         try {
-            await clearStatuses(this.event.status_id)
-            this.$mainStore.events.clearStatuses(this.event._id)
-            this.closePopup()
-            this.$mainStore.notification.changeNotification({ state: true, ...this.$mainNotification.successCancel })
+            if (this.event.status_id) {
+                await clearStatuses(this.event.status_id)
+                this.$mainStore.events.clearStatuses(this.event._id)
+                this.closePopup()
+                this.$mainStore.notification.changeNotification(
+                    { state: true, ...this.$mainNotification.successCancel })
+            }
         } catch (e) {
             this.$mainStore.notification.changeNotification({ state: true, ...this.$mainNotification.failedCancel })
             throw new Error(`Error clear Statuses - ${e}`)

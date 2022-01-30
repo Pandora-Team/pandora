@@ -1,12 +1,13 @@
 <template>
     <div
+        v-click-away="away"
         class="form__item address-popup"
         @click="changePopupAddress"
     >
         <label>Адрес проведения МК *</label>
         <main-input
             id="place"
-            :value="selectedAddress.address"
+            :value="address"
             type="text"
             placeholder="ул. Жуковского, д. 27"
             @input="updateAddress"
@@ -31,9 +32,10 @@
 
 <script lang="ts">
 
-import { Component, Vue } from "vue-property-decorator"
+import { Component, Vue, Prop } from "vue-property-decorator"
 import MainInput from "@/components/MainInput.vue"
 import { getAllPlaces } from "@/api/places"
+import { PlaceData } from "@/definitions/interfaces"
 
 @Component({
     components: {
@@ -42,19 +44,29 @@ import { getAllPlaces } from "@/api/places"
 })
 export default class EventSelectAddress extends Vue {
 
-    selectedAddress = {
-        _id:     "",
-        address: "",
-    }
+    @Prop({ type: String, default: "" })
+    address!: string
+
+    @Prop({ type: String, default: "" })
+    placeId!: string
+
+    selectedAddress!: PlaceData
     visiblePopupAddress = false
-    places = []
+    places!: PlaceData[]
 
     async mounted(): Promise<void> {
         const { data } = await getAllPlaces()
         if (data?.length) {
             this.places = data
-            this.selectedAddress = data[0]
-            this.$mainStore.popup.changePlaceId(data[0]._id)
+            let currentPlace
+            if (this.placeId) {
+                currentPlace = this.places.find((place: PlaceData) => place._id === this.placeId)
+            } else {
+                currentPlace = data[0]
+            }
+            this.selectedAddress = currentPlace
+            this.$mainStore.popup.changePlaceId(this.selectedAddress._id)
+            this.$mainStore.popup.changeAddress(this.selectedAddress.address)
         }
     }
 
@@ -70,12 +82,19 @@ export default class EventSelectAddress extends Vue {
     checkOldAddress(event: { target: HTMLInputElement }): void {
         const target = event.target
         const _id = target?.getAttribute("data-id")
-        const address = target?.textContent
-        if (_id && address) {
-            this.selectedAddress = { _id, address }
-            this.$mainStore.popup.changePlaceId(_id)
-            this.$mainStore.popup.changeAddress("")
+        if (_id) {
+            const currentPlace = this.places.find((place: PlaceData) => place._id === _id)
+            if (currentPlace) {
+                this.selectedAddress = currentPlace
+                this.$mainStore.popup.changePlaceId(this.selectedAddress._id)
+                this.$mainStore.popup.changeAddress(this.selectedAddress.address)
+            }
+
         }
+    }
+
+    away(): void {
+        if (this.visiblePopupAddress) this.visiblePopupAddress = false
     }
 
 }

@@ -1,9 +1,9 @@
 import { State, Mutation } from "vuex-simple"
-import { EventData } from "@/definitions/interfaces"
+import { CreateEventData, EventData } from "@/definitions/interfaces"
 import { Store } from "@/store/store"
 import { cloneDeep } from "lodash"
 
-const initCreateState = () => ({
+const initEventDataState = () => ({
     _id:       "",
     date:      new Date(),
     end_time:  "",
@@ -17,6 +17,18 @@ const initCreateState = () => ({
     status_id: "",
 })
 
+const initCreateEventDataState = () => ({
+    _id:      "",
+    date:     new Date(),
+    end_time: "",
+    name:     "",
+    price:    "500",
+    place_id: "",
+    address:  "",
+    cover:    undefined,
+    payment:  "",
+})
+
 export class Popup {
 
     constructor(private $mainStore: Store) {}
@@ -25,19 +37,19 @@ export class Popup {
     activeCreatePopup = false
 
     @State()
-    createdState: EventData = initCreateState()
+    createdState: CreateEventData = initCreateEventDataState()
 
     @State()
     activeRecordPopup = false
 
     @State()
-    recordedState: EventData = initCreateState()
+    recordedState: EventData = initEventDataState()
 
     @State()
     activeCancelPopup = false
 
     @State()
-    canceledState: EventData = initCreateState()
+    canceledState: EventData = initEventDataState()
 
     @State()
     activeWelcomePopup = false
@@ -58,7 +70,7 @@ export class Popup {
     activeRemovePopup = false
 
     @State()
-    removedState: EventData = initCreateState()
+    removedState: EventData = initEventDataState()
 
     // попап удаления занятия
 
@@ -78,7 +90,7 @@ export class Popup {
 
     @Mutation()
     public clearRemovedState(): void {
-        this.removedState = initCreateState()
+        this.removedState = initEventDataState()
     }
 
     // попап загрузки аватара
@@ -131,7 +143,7 @@ export class Popup {
 
     @Mutation()
     public clearCanceledState(): void {
-        this.canceledState = initCreateState()
+        this.canceledState = initEventDataState()
     }
 
     // попап записи
@@ -152,7 +164,7 @@ export class Popup {
 
     @Mutation()
     public clearRecordedState(): void {
-        this.recordedState = initCreateState()
+        this.recordedState = initEventDataState()
     }
 
     // попап создания
@@ -174,7 +186,7 @@ export class Popup {
 
     @Mutation()
     public clearCreatedState(): void {
-        this.createdState = initCreateState()
+        this.createdState = initEventDataState()
         this.updatePopup = false
     }
 

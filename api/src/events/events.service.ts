@@ -72,8 +72,15 @@ export class EventsService {
         return sortedEvents[0]
     }
 
-    async updateEvent(id: ObjectId, dto: CreateEventDto): Promise<any> {
-        return this.eventsModel.updateOne({_id: id}, {...dto})
+    async updateEvent(id: ObjectId, dto: CreateEventDto, coverId?: string): Promise<any> {
+        const event = await this.getOneEvent(id)
+        if (coverId && event.cover) {
+            await this.fileService.deleteFile(event.cover)
+            await this.eventsModel.updateOne({_id: id}, {...dto, cover: coverId})
+            return { update: true, cover: coverId }
+        }
+        await this.eventsModel.updateOne({_id: id}, {...dto})
+        return { update: true }
     }
 
     async deleteEvent(id: ObjectId): Promise<Events> {
