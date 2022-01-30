@@ -1,7 +1,6 @@
 export interface EventData {
     _id: string
     date: Date | string
-    start_time?: string
     end_time: string
     name: string
     price: string
@@ -10,9 +9,20 @@ export interface EventData {
     users_id?: string[]
     cover?: File
     status: string[]
-    status_id: string
+    status_id?: string
     payment?: string
     users?: UserInfo[]
+}
+
+export interface CreateEventData {
+    _id: string
+    date: Date | string
+    end_time: string
+    name: string
+    price: string
+    place_id?: string
+    address?: string
+    cover?: File
 }
 
 export interface UserInfo {
@@ -68,10 +78,9 @@ export type styleClass = (string | { [key: string]: boolean })[]
 
 export type styleClassObject = { [key: string]: boolean }
 
-export interface FlickingOptionData {
-    align:                string
-    noPanelStyleOverride: boolean
-    disableOnInit:        boolean
-    autoInit:             boolean
-    autoResize:           boolean
+export interface PlaceData {
+    address: string
+    _v?: number
+    _id: string
 }
+

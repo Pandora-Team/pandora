@@ -65,8 +65,16 @@ export class EventsController {
 
     @UseGuards(JwtAuthGuard)
     @Put(':id')
-    async updateEvent(@Param('id') id: ObjectId, @Body() dto: any) {
-        return this.eventsService.updateEvent(id, dto)
+    @UseInterceptors(FileFieldsInterceptor([
+        { name: 'cover', maxCount: 1 }
+    ]))
+    async updateEvent(@UploadedFiles() files, @Param('id') id: ObjectId, @Body() dto: CreateEventDto) {
+        const obj = Object.assign({}, files)
+        if (Object.keys(obj).length === 0) {
+            return this.eventsService.updateEvent(id, dto)
+        }
+        const {cover} = obj
+        return this.eventsService.updateEvent(id, dto, cover[0].id)
     }
 
     @UseGuards(JwtAuthGuard)
