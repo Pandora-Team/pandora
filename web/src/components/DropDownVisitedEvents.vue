@@ -1,5 +1,6 @@
 <template>
     <div
+        v-click-away="away"
         :class="classes"
         @click="active = !active"
     >
@@ -56,6 +57,10 @@ export default class DropDownVisitedEvents extends Vue {
             "list-students-row__visited",
             { "list-students-row__visited--active": this.active },
         ]
+    }
+
+    away(): void {
+        if (this.active) this.active = false
     }
 
 }

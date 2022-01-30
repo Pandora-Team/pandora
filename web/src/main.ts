@@ -22,6 +22,7 @@ import VueYoutube from "vue-youtube"
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { VueMaskDirective } from "v-mask"
+import { directive as onClickaway } from "vue-clickaway"
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import wb from "./registerServiceWorker"
@@ -33,6 +34,8 @@ Vue.component("simple-svg", SimpleSVG)
 Vue.component("date-picker", DatePicker)
 
 Vue.directive("mask", VueMaskDirective)
+
+Vue.directive("click-away", onClickaway)
 
 Vue.prototype.$mainStore = useStore(store)
 Vue.prototype.$mainPaths = paths

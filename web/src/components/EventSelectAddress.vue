@@ -1,5 +1,6 @@
 <template>
     <div
+        v-click-away="away"
         class="form__item address-popup"
         @click="changePopupAddress"
     >
@@ -90,6 +91,10 @@ export default class EventSelectAddress extends Vue {
             }
 
         }
+    }
+
+    away(): void {
+        if (this.visiblePopupAddress) this.visiblePopupAddress = false
     }
 
 }

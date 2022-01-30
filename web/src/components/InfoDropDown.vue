@@ -1,5 +1,6 @@
 <template>
     <div
+        v-click-away="away"
         class="info-dropdown"
         :class="{'info-dropdown--active': active}"
         @click="changeActive"
@@ -38,6 +39,10 @@ export default class InfoDropDown extends Vue {
 
     changeActive(): void {
         this.active = !this.active
+    }
+
+    away(): void {
+        if (this.active) this.active = false
     }
 
 }
