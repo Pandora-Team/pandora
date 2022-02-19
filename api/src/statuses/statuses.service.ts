@@ -1,14 +1,17 @@
-import {Injectable} from "@nestjs/common";
+import {forwardRef, Inject, Injectable} from "@nestjs/common";
 import {InjectModel} from "@nestjs/mongoose";
 import {Model} from "mongoose";
 import {Statuses, StatusesDocument} from "./statuses.schema";
-import {CreateStatusData} from "./definitions";
+import {CreateStatusData, TypeStatus} from "./definitions";
+import {EventsService} from "../events/events.service";
 
 @Injectable()
 export class StatusesService {
 
     constructor(
-        @InjectModel(Statuses.name) private statusesModel: Model<StatusesDocument>
+        @InjectModel(Statuses.name) private statusesModel: Model<StatusesDocument>,
+        @Inject(forwardRef(() => EventsService))
+        private eventsService: EventsService
     ) {}
 
     async getStatuses(eventId: string, userId: string): Promise<Statuses> {
@@ -16,7 +19,16 @@ export class StatusesService {
     }
 
     async updateStatuses(id: string, dto: CreateStatusData): Promise<any> {
-        return this.statusesModel.updateOne({_id: id}, {...dto})
+        const status = await this.statusesModel.findById(id)
+        if (status.payment_status === TypeStatus.Paid && dto.event_status === TypeStatus.NotVisited) {
+            dto.payment_status = TypeStatus.NeedRefund
+        }
+        if (dto.event_status === TypeStatus.NotVisited) {
+            await this.eventsService.removeUserFromEvent(status.event_id, status.user_id)
+            await this.eventsService.addUserInCanceled(status.event_id, status.user_id)
+        }
+        await this.statusesModel.updateOne({_id: id}, {...dto})
+        return dto
     }
 
     async createStatus(userId: string, dto: CreateStatusData): Promise<Statuses> {
