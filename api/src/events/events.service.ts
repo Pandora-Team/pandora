@@ -2,7 +2,7 @@ import {Injectable} from "@nestjs/common";
 import {Model, ObjectId} from "mongoose";
 import {Events, EventsDocument} from "./events.schema";
 import {InjectModel} from "@nestjs/mongoose";
-import {CreateEventDto, RecordOnEventDate} from "./create-event.dto";
+import {CreateEvent, RecordOnEventDate} from "./definitions";
 import {PlacesService} from "../places/places.service";
 import {FileService} from "../file/file.service";
 import {StatusesService} from "../statuses/statuses.service";
@@ -19,7 +19,7 @@ export class EventsService {
         private usersService: UsersService
     ) {}
 
-    async createEvent(dto: CreateEventDto, coverId): Promise<Events> {
+    async createEvent(dto: CreateEvent, coverId): Promise<Events> {
         let newAddress
         const { place_id, address, ...result } = dto
         if (address) {
@@ -47,7 +47,7 @@ export class EventsService {
 
     async getUserInfoForEvent(events: Events[]): Promise<Events[]>  {
         return Promise.all(events.map( async event => {
-            for (const user of event.users_id) {
+            for (const user of event.recorded) {
                 // @ts-ignore
                 const objStatuses = await this.statusesService.getStatuses(event._id, user)
                 const objUser = await this.usersService.getUserById(user)
@@ -72,7 +72,7 @@ export class EventsService {
         return sortedEvents[0]
     }
 
-    async updateEvent(id: ObjectId, dto: CreateEventDto, coverId?: string): Promise<any> {
+    async updateEvent(id: ObjectId, dto: CreateEvent, coverId?: string): Promise<any> {
         const event = await this.getOneEvent(id)
         if (coverId && event.cover) {
             await this.fileService.deleteFile(event.cover)
@@ -123,11 +123,11 @@ export class EventsService {
     }
 
     async addUserToEvent(eventId: string, userId: string): Promise<void> {
-        await this.eventsModel.updateOne({_id: eventId}, {$addToSet: {users_id: userId}})
+        await this.eventsModel.updateOne({_id: eventId}, {$addToSet: {recorded: userId}})
     }
 
     async removeUserFromEvent(eventId: string, userId: string): Promise<void> {
-        await this.eventsModel.updateOne({_id: eventId}, {$pull: {users_id: userId}})
+        await this.eventsModel.updateOne({_id: eventId}, {$pull: {recorded: userId}})
     }
 
     async addUserInCanceled(eventId: string, userId: string) {
@@ -142,7 +142,7 @@ export class EventsService {
         const listEvents = []
         const events = await this.eventsModel.find({})
         for(let i = 0; i < events.length; i++) {
-            if (events[i]?.users_id.includes(userId) && dayjs().isAfter(dayjs(events[i].date))) {
+            if (events[i]?.recorded.includes(userId) && dayjs().isAfter(dayjs(events[i].date))) {
                 const eventInfo = {
                     _id: events[i]._id,
                     name: events[i].name,

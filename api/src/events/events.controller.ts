@@ -10,7 +10,7 @@ import {
     UseGuards, Request, UploadedFiles
 } from "@nestjs/common";
 import {ObjectId} from "mongoose";
-import {CreateEventDto, RecordOnEventDate} from "./create-event.dto";
+import {CreateEvent, RecordOnEventDate} from "./definitions";
 import {EventsService} from "./events.service";
 import {FileFieldsInterceptor} from "@nestjs/platform-express";
 import {JwtAuthGuard} from "../auth/jwt-auth.guard";
@@ -70,7 +70,7 @@ export class EventsController {
     @UseInterceptors(FileFieldsInterceptor([
         { name: 'cover', maxCount: 1 }
     ]))
-    async createEvent(@UploadedFiles() files, @Body() dto: CreateEventDto ){
+    async createEvent(@UploadedFiles() files, @Body() dto: CreateEvent ){
         const {cover} = files
         return this.eventsService.createEvent(dto, cover[0].id)
     }
@@ -80,7 +80,7 @@ export class EventsController {
     @UseInterceptors(FileFieldsInterceptor([
         { name: 'cover', maxCount: 1 }
     ]))
-    async updateEvent(@UploadedFiles() files, @Param('id') id: ObjectId, @Body() dto: CreateEventDto) {
+    async updateEvent(@UploadedFiles() files, @Param('id') id: ObjectId, @Body() dto: CreateEvent) {
         const obj = Object.assign({}, files)
         if (Object.keys(obj).length === 0) {
             return this.eventsService.updateEvent(id, dto)

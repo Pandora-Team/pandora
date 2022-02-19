@@ -43,7 +43,7 @@ export class Events {
     description?: string;
 
     @Prop()
-    users_id: string[];
+    recorded: string[];
 
     @Prop()
     canceled: string[];

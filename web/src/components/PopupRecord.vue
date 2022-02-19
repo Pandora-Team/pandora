@@ -135,7 +135,6 @@ export default class PopupRecord extends Vue {
         }
         try {
             const res = await recordOnEvent(params)
-            console.log("[res] - record res", res)
             this.$mainStore.events.updateStatuses(res.data)
             this.$mainStore.popup.changeActiveRecordPopup(false)
             this.$mainStore.popup.setTypePayment(this.payment)
