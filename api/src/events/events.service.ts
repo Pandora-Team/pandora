@@ -9,6 +9,7 @@ import {StatusesService} from "../statuses/statuses.service";
 import {UsersService} from "../users/users.service";
 import * as dayjs from "dayjs";
 import {TypeStatus} from "../statuses/definitions";
+import { DateTime } from "luxon"
 
 @Injectable()
 export class EventsService {
@@ -37,7 +38,33 @@ export class EventsService {
     async getAllEvents(id: string): Promise<Events[]>{
         const events = await this.eventsModel.find({date: {$gte: new Date()}})
         const sortedEvents = this.sortArrayOnDate(events)
+        const discount = await this.checkDiscountForUser(id)
+        if (discount) {
+            const discountAmount = 20
+            this.setDiscountInEvents(sortedEvents, discountAmount)
+        }
         return await this.getStatuses(sortedEvents, id)
+    }
+
+    // Проверка давать ли скидку
+    async checkDiscountForUser(userId: string) {
+        const user = await this.usersService.getUserById(userId)
+        const beginStock = 1644958800000
+        const eventsUser = await this.getEventListForUser(userId)
+        // для новичков
+        if (DateTime.fromISO(user.reg_date).toMillis() > beginStock && !eventsUser.length) {
+            return true
+        }
+        return false
+    }
+
+    // Установка скидки в каждое занятие
+    setDiscountInEvents(events, discountAmount) {
+        return events.map(event => {
+            event.discount = true
+            event.price = event.price / 100 * (100 - discountAmount)
+            return event
+        })
     }
 
     async getAllEventsWithStudents(): Promise<Events[]> {

@@ -14,6 +14,7 @@ export interface EventData {
     payment?: string
     recorded_users?: UserInfo[]
     canceled_users?: UserInfo[]
+    discount?: boolean
 }
 
 export interface CreateEventData {

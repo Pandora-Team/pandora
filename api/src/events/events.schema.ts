@@ -59,6 +59,9 @@ export class Events {
 
     @Prop()
     status_id?: string
+
+    @Prop()
+    discount?: boolean
 }
 
 export const EventsSchema = SchemaFactory.createForClass(Events);

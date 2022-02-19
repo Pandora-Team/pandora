@@ -17,9 +17,7 @@
                     <p>
                         Адрес: <span>{{ event.address }}</span>
                     </p>
-                    <p>
-                        Стоимость: <span>{{ event.price }} р.</span>
-                    </p>
+                    <p v-html="paymentText" />
                     <div
                         class="event-card__payment"
                         :class="{'event-card__payment--mb': $v.$error}"
@@ -117,6 +115,12 @@ export default class PopupRecord extends Vue {
         return `${start}-${this.event.end_time}`
     }
 
+    get paymentText(): string {
+        if (this.event.discount) {
+            return `Стоимость: <span>${this.event.price} р. с учетом скидки</span>`
+        }
+        return `Стоимость: <span>${this.event.price} р.</span>`
+    }
     changePayment(value: string): void {
         this.payment = value
     }
