@@ -1,44 +1,45 @@
-import {Injectable, Inject, forwardRef} from "@nestjs/common";
+import {Injectable} from "@nestjs/common";
 import {InjectModel} from "@nestjs/mongoose";
 import {Model, ObjectId} from "mongoose";
 import {Statuses, StatusesDocument} from "./statuses.schema";
 import {CreateStatusDto} from "./create-status.dto";
-import {EventsService} from "../events/events.service";
 
 @Injectable()
 export class StatusesService {
 
     constructor(
-        @InjectModel(Statuses.name) private statusesModel: Model<StatusesDocument>,
-        @Inject(forwardRef(() => EventsService))
-        private eventsService: EventsService
+        @InjectModel(Statuses.name) private statusesModel: Model<StatusesDocument>
     ) {}
 
     async getStatuses(eventId: string, userId: string): Promise<Statuses> {
         return this.statusesModel.findOne({event_id: eventId, user_id: userId})
     }
 
-    async createStatuses(userId: string, dto: CreateStatusDto): Promise<Statuses> {
+    /*async createStatuses(userId: string, dto: CreateStatusDto): Promise<Statuses> {
         const status = await this.statusesModel.create({...dto, user_id: userId})
         if (status) {
             await this.eventsService.addUserToEvent(dto.event_id, userId)
         }
         return status
-    }
+    }*/
 
     async updateStatuses(id: ObjectId, dto: CreateStatusDto): Promise<any> {
         return this.statusesModel.updateOne({_id: id}, {...dto})
     }
 
-    async clearStatuses(statusId: string): Promise<Statuses> {
+   /* async clearStatuses(statusId: string): Promise<Statuses> {
         const status = await this.statusesModel.findByIdAndDelete({_id: statusId})
         if (status) {
             await this.eventsService.removeUserFromEvent(status.event_id, status.user_id)
         }
         return status
+    }*/
+
+    async createStatus(userId: string, dto: CreateStatusDto): Promise<Statuses> {
+        return this.statusesModel.create({...dto, user_id: userId})
     }
 
-    async clearStatusAtCancel(statusId: string) {
+    async clearStatus(statusId: string) {
         return this.statusesModel.findByIdAndDelete({_id: statusId})
     }
 

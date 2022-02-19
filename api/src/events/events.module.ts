@@ -12,7 +12,7 @@ import {UsersModule} from "../users/users.module";
     imports: [
         FileModule,
         PlacesModule,
-        forwardRef(() => StatusesModule),
+        StatusesModule,
         forwardRef(() => UsersModule),
         MongooseModule.forFeature([{name: Events.name, schema: EventsSchema}]),
     ],

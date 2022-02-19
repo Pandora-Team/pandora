@@ -134,6 +134,10 @@ export class EventsService {
         await this.eventsModel.updateOne({_id: eventId}, {$addToSet: {canceled: userId}})
     }
 
+    async removeUserInCanceled(eventId: string, userId: string) {
+        await this.eventsModel.updateOne({_id: eventId}, {$pull: {canceled: userId}})
+    }
+
     async getEventListForUser(userId: string): Promise<Events[]> {
         const listEvents = []
         const events = await this.eventsModel.find({})
@@ -150,16 +154,22 @@ export class EventsService {
         return listEvents
     }
 
+    // Отмена записи на занятие
     async cancelRecordOnEvent(status_id: string) {
-        const status = await this.statusesService.clearStatusAtCancel(status_id)
+        const status = await this.statusesService.clearStatus(status_id)
         if (status) {
             await this.removeUserFromEvent(status.event_id, status.user_id)
             await this.addUserInCanceled(status.event_id, status.user_id)
         }
     }
 
+    // Запись на занятие
     async recordOnEvent(userId: string, data: RecordOnEventDate) {
-
+        const { event_id } = data
+        await this.removeUserInCanceled(event_id, userId)
+        const resStatus = await this.statusesService.createStatus( userId, data )
+        await this.addUserToEvent( event_id, userId )
+        return resStatus
     }
 
 }

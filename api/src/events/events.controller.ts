@@ -42,7 +42,7 @@ export class EventsController {
 
     @UseGuards(JwtAuthGuard)
     @Get("visited")
-    async getVisitedEvent(@Request() req){
+    async getVisitedEvent(@Request() req) {
         return this.eventsService.getEventListForUser(req.user.id)
     }
 
@@ -55,14 +55,14 @@ export class EventsController {
 
     @UseGuards(JwtAuthGuard)
     @Get('cancel/:id')
-    async cancelRecordOnEvent(@Param('id') id: string){
+    async cancelRecordOnEvent(@Param('id') id: string) {
         return this.eventsService.cancelRecordOnEvent(id)
     }
 
     @UseGuards(JwtAuthGuard)
     @Post("record")
-    async recordOnEvent(@Request() req, @Body() data: RecordOnEventDate ){
-        return this.eventsService.recordOnEvent(req.user_id, data)
+    async recordOnEvent(@Request() req, @Body() data: RecordOnEventDate ) {
+        return this.eventsService.recordOnEvent(req.user.id, data)
     }
 
     @UseGuards(JwtAuthGuard)

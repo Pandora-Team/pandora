@@ -71,9 +71,9 @@ import MainPopup from "@/components/MainPopup.vue"
 import MainBtn from "@/components/MainBtn.vue"
 import MainRadio from "@/components/MainRadio.vue"
 import { statusData, typesStatus } from "@/definitions/typeStatus"
-import { createStatuses } from "@/api/statuses"
 import dayjs from "dayjs"
 import { required } from "vuelidate/lib/validators"
+import { recordOnEvent } from "@/api/events"
 
 @Component({
     components: {
@@ -134,7 +134,8 @@ export default class PopupRecord extends Vue {
             event_status:   this.typesStatuses.go.name,
         }
         try {
-            const res = await createStatuses(params)
+            const res = await recordOnEvent(params)
+            console.log("[res] - record res", res)
             this.$mainStore.events.updateStatuses(res.data)
             this.$mainStore.popup.changeActiveRecordPopup(false)
             this.$mainStore.popup.setTypePayment(this.payment)
