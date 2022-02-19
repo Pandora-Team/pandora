@@ -2,7 +2,7 @@ import {Injectable} from "@nestjs/common";
 import {Model, ObjectId} from "mongoose";
 import {Events, EventsDocument} from "./events.schema";
 import {InjectModel} from "@nestjs/mongoose";
-import {CreateEventDto} from "./create-event.dto";
+import {CreateEventDto, RecordOnEventDate} from "./create-event.dto";
 import {PlacesService} from "../places/places.service";
 import {FileService} from "../file/file.service";
 import {StatusesService} from "../statuses/statuses.service";
@@ -130,6 +130,10 @@ export class EventsService {
         await this.eventsModel.updateOne({_id: eventId}, {$pull: {users_id: userId}})
     }
 
+    async addUserInCanceled(eventId: string, userId: string) {
+        await this.eventsModel.updateOne({_id: eventId}, {$addToSet: {canceled: userId}})
+    }
+
     async getEventListForUser(userId: string): Promise<Events[]> {
         const listEvents = []
         const events = await this.eventsModel.find({})
@@ -144,6 +148,18 @@ export class EventsService {
             }
         }
         return listEvents
+    }
+
+    async cancelRecordOnEvent(status_id: string) {
+        const status = await this.statusesService.clearStatusAtCancel(status_id)
+        if (status) {
+            await this.removeUserFromEvent(status.event_id, status.user_id)
+            await this.addUserInCanceled(status.event_id, status.user_id)
+        }
+    }
+
+    async recordOnEvent(userId: string, data: RecordOnEventDate) {
+
     }
 
 }

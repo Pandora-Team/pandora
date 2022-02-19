@@ -10,7 +10,7 @@ import {
     UseGuards, Request, UploadedFiles
 } from "@nestjs/common";
 import {ObjectId} from "mongoose";
-import {CreateEventDto} from "./create-event.dto";
+import {CreateEventDto, RecordOnEventDate} from "./create-event.dto";
 import {EventsService} from "./events.service";
 import {FileFieldsInterceptor} from "@nestjs/platform-express";
 import {JwtAuthGuard} from "../auth/jwt-auth.guard";
@@ -51,6 +51,18 @@ export class EventsController {
     @Get(':id')
     async getEvent(@Param('id') id: ObjectId){
         return this.eventsService.getOneEvent(id)
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Get('cancel/:id')
+    async cancelRecordOnEvent(@Param('id') id: string){
+        return this.eventsService.cancelRecordOnEvent(id)
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Post("record")
+    async recordOnEvent(@Request() req, @Body() data: RecordOnEventDate ){
+        return this.eventsService.recordOnEvent(req.user_id, data)
     }
 
     @UseGuards(JwtAuthGuard)

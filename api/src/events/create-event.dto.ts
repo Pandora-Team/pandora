@@ -10,4 +10,11 @@ export class CreateEventDto {
     readonly address?: string;
     readonly description?: string;
     readonly users_id?: [];
+    readonly canceled?: [];
+}
+
+export class RecordOnEventDate {
+    readonly event_id: string
+    readonly event_status: string
+    readonly payment_status: string
 }

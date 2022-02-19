@@ -38,6 +38,10 @@ export class StatusesService {
         return status
     }
 
+    async clearStatusAtCancel(statusId: string) {
+        return this.statusesModel.findByIdAndDelete({_id: statusId})
+    }
+
     async clearStatusesAllUsers(eventId: string): Promise<void> {
         const statuses = await this.statusesModel.find({event_id: eventId})
         if (statuses.length) {

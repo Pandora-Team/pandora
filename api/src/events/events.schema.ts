@@ -46,6 +46,9 @@ export class Events {
     users_id: string[];
 
     @Prop()
+    canceled: string[];
+
+    @Prop()
     users?: UserInfo[]
 
     @Prop()

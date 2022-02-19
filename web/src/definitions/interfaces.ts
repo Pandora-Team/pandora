@@ -25,6 +25,12 @@ export interface CreateEventData {
     cover?: File
 }
 
+export interface RecordOnEventData {
+    event_id?: string
+    event_status?: string
+    payment_status?: string
+}
+
 export interface UserInfo {
     event_status: string
     name: string

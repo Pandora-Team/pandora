@@ -16,3 +16,5 @@ export const deleteEvent = (id: string): Promise<AxiosResponse> => api.delete(`$
 export const getEventsWithUsers = (): Promise<AxiosResponse> => api.get(`${BASE_URL}/list`)
 
 export const getVisitedEvents = (): Promise<AxiosResponse> => api.get(`${BASE_URL}/visited`)
+
+export const cancelRecordOnEvent = (status_id: string): Promise<AxiosResponse> => api.get(`${BASE_URL}/cancel/${status_id}`)
