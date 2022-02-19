@@ -6,7 +6,9 @@ export const listStatuses = [
     { title: "Наличными", class: "payment", name: "cash" },
     { title: "Перевод на карту", class: "payment", name: "card" },
     { title: "Оплатил", class: "payment", name: "paid" },
-    { title: "Возврат", class: "payment", name: "needRefund" },
+    { title: "Нужен возврат", class: "payment", name: "needRefund" },
+    { title: "Сделать возврат", class: "payment", name: "makeRefund" },
+    { title: "Возврат сделан", class: "payment", name: "madeRefund" },
 ] as const
 
 export const typesStatus = {
@@ -19,7 +21,9 @@ export const typesStatus = {
     paid:         { title: "Оплатил", class: "payment", name: "paid" },
     linkEvents:   { title: "Мероприятия", class: "link", name: "events" },
     linkStudents: { title: "Все участники", class: "link", name: "students" },
-    needRefund:   { title: "Возврат", class: "payment", name: "needRefund" },
+    needRefund:   { title: "Нужен возврат", class: "payment", name: "needRefund" },
+    makeRefund:   { title: "Сделать возврат", class: "payment", name: "makeRefund" },
+    madeRefund:   { title: "Возврат сделан", class: "payment", name: "madeRefund" },
 } as const
 
 export interface typeStatus {

@@ -24,11 +24,18 @@
                     <div class="event-row__student-value">
                         <b>{{ currentPayment }}</b>
                         <div class="event-row__student-action">
-                            <btn-status
-                                v-if="visiblePayment"
-                                :status="typesStatus.paid"
-                                @click="setPayment"
-                            />
+                            <template v-if="visiblePayment">
+                                <btn-status
+                                    v-if="user.payment_status === typesStatus.needRefund.name"
+                                    :status="typesStatus.makeRefund"
+                                    @click="setPayment"
+                                />
+                                <btn-status
+                                    v-else
+                                    :status="typesStatus.paid"
+                                    @click="setPayment"
+                                />
+                            </template>
                         </div>
                     </div>
                 </div>
@@ -39,16 +46,16 @@
                     <div class="event-row__student-value">
                         <b>{{ currentVisit }}</b>
                         <div class="event-row__student-action">
-                            <btn-status
-                                v-if="visibleVisit"
-                                :status="typesStatus.visited"
-                                @click="setVisit"
-                            />
-                            <btn-status
-                                v-if="visibleVisit"
-                                :status="typesStatus.notVisited"
-                                @click="setVisit"
-                            />
+                            <template v-if="visibleVisit">
+                                <btn-status
+                                    :status="typesStatus.visited"
+                                    @click="setVisit"
+                                />
+                                <btn-status
+                                    :status="typesStatus.notVisited"
+                                    @click="setVisit"
+                                />
+                            </template>
                         </div>
                     </div>
                 </div>
@@ -113,7 +120,8 @@ export default class EventRowStudent extends Vue {
     }
 
     get visiblePayment(): boolean {
-        return this.user.payment_status !== this.typesStatus.paid.name
+        return !(this.user.payment_status === this.typesStatus.paid.name ||
+            this.user.payment_status === this.typesStatus.madeRefund.name)
     }
 
     get visibleVisit(): boolean {
@@ -133,11 +141,11 @@ export default class EventRowStudent extends Vue {
             const params = {
                 payment_status: status.name,
             }
-            await updateStatuses(this.user.status_id, params)
+            const res = await updateStatuses(this.user.status_id, params)
             const paramsForStore = {
                 eventId:       this.eventId,
                 statusId:      this.user.status_id,
-                paymentStatus: status.name,
+                paymentStatus: res.data.payment_status,
             }
             this.$mainStore.students.updateStatusPayment(paramsForStore)
         } catch (e) {
