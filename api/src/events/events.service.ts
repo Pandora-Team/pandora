@@ -2,7 +2,7 @@ import {Injectable} from "@nestjs/common";
 import {Model, ObjectId} from "mongoose";
 import {Events, EventsDocument} from "./events.schema";
 import {InjectModel} from "@nestjs/mongoose";
-import {CreateEvent, RecordOnEventDate} from "./definitions";
+import {CreateEventData, RecordOnEventData} from "./definitions";
 import {PlacesService} from "../places/places.service";
 import {FileService} from "../file/file.service";
 import {StatusesService} from "../statuses/statuses.service";
@@ -20,7 +20,7 @@ export class EventsService {
         private usersService: UsersService
     ) {}
 
-    async createEvent(dto: CreateEvent, coverId): Promise<Events> {
+    async createEvent(dto: CreateEventData, coverId): Promise<Events> {
         let newAddress
         const { place_id, address, ...result } = dto
         if (address) {
@@ -73,7 +73,7 @@ export class EventsService {
         return sortedEvents[0]
     }
 
-    async updateEvent(id: ObjectId, dto: CreateEvent, coverId?: string): Promise<any> {
+    async updateEvent(id: ObjectId, dto: CreateEventData, coverId?: string): Promise<any> {
         const event = await this.getOneEvent(id)
         if (coverId && event.cover) {
             await this.fileService.deleteFile(event.cover)
@@ -178,7 +178,7 @@ export class EventsService {
     }
 
     // Запись на занятие
-    async recordOnEvent(userId: string, data: RecordOnEventDate) {
+    async recordOnEvent(userId: string, data: RecordOnEventData) {
         let resStatus
         const { event_id, payment_status } = data
         await this.removeUserInCanceled(event_id, userId)

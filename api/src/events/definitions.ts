@@ -1,4 +1,4 @@
-export class CreateEvent {
+export class CreateEventData {
     readonly date: Date;
     readonly end_time: string;
     readonly name: string;
@@ -12,7 +12,7 @@ export class CreateEvent {
     readonly canceled?: [];
 }
 
-export class RecordOnEventDate {
+export class RecordOnEventData {
     readonly event_id: string
     readonly payment_status: string
 }

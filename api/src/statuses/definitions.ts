@@ -1,11 +1,3 @@
-export class StatusData {
-    _id: string
-    user_id: string
-    event_id: string
-    payment_status: string
-    event_status: string
-}
-
 export class CreateStatusData {
     readonly user_id?: string
     readonly event_id?: string
