@@ -8,6 +8,7 @@ import {FileService} from "../file/file.service";
 import {StatusesService} from "../statuses/statuses.service";
 import {UsersService} from "../users/users.service";
 import * as dayjs from "dayjs";
+import {TypeStatus} from "../statuses/definitions";
 
 @Injectable()
 export class EventsService {
@@ -122,22 +123,6 @@ export class EventsService {
         }))
     }
 
-    async addUserToEvent(eventId: string, userId: string): Promise<void> {
-        await this.eventsModel.updateOne({_id: eventId}, {$addToSet: {recorded: userId}})
-    }
-
-    async removeUserFromEvent(eventId: string, userId: string): Promise<void> {
-        await this.eventsModel.updateOne({_id: eventId}, {$pull: {recorded: userId}})
-    }
-
-    async addUserInCanceled(eventId: string, userId: string) {
-        await this.eventsModel.updateOne({_id: eventId}, {$addToSet: {canceled: userId}})
-    }
-
-    async removeUserInCanceled(eventId: string, userId: string) {
-        await this.eventsModel.updateOne({_id: eventId}, {$pull: {canceled: userId}})
-    }
-
     async getEventListForUser(userId: string): Promise<Events[]> {
         const listEvents = []
         const events = await this.eventsModel.find({})
@@ -154,20 +139,72 @@ export class EventsService {
         return listEvents
     }
 
+    // Добавление участника к занятию
+    async addUserToEvent(eventId: string, userId: string): Promise<void> {
+        await this.eventsModel.updateOne({_id: eventId}, {$addToSet: {recorded: userId}})
+    }
+
+    // Удаление участника из занятия
+    async removeUserFromEvent(eventId: string, userId: string): Promise<void> {
+        await this.eventsModel.updateOne({_id: eventId}, {$pull: {recorded: userId}})
+    }
+
+    // Добавление участника к списку участников, которые отменили запись
+    async addUserInCanceled(eventId: string, userId: string) {
+        await this.eventsModel.updateOne({_id: eventId}, {$addToSet: {canceled: userId}})
+    }
+
+    // Удаление участника из списка участников, которые отменили запись
+    async removeUserInCanceled(eventId: string, userId: string) {
+        await this.eventsModel.updateOne({_id: eventId}, {$pull: {canceled: userId}})
+    }
+
     // Отмена записи на занятие
     async cancelRecordOnEvent(status_id: string) {
         const status = await this.statusesService.clearStatus(status_id)
         if (status) {
             await this.removeUserFromEvent(status.event_id, status.user_id)
             await this.addUserInCanceled(status.event_id, status.user_id)
+            if (status.payment_status === TypeStatus.Paid) {
+                const newStatus = {
+                    user_id: status.user_id,
+                    event_id: status.event_id,
+                    payment_status: TypeStatus.NeedRefund,
+                    event_status: TypeStatus.NotVisited
+                }
+                await this.statusesService.createStatus(status.user_id, newStatus)
+            }
         }
     }
 
     // Запись на занятие
     async recordOnEvent(userId: string, data: RecordOnEventDate) {
-        const { event_id } = data
+        let resStatus
+        const { event_id, payment_status } = data
         await this.removeUserInCanceled(event_id, userId)
-        const resStatus = await this.statusesService.createStatus( userId, data )
+        const status = await this.statusesService.getStatuses(event_id, userId)
+        if (status) {
+            const newStatus = {
+                user_id: status.user_id,
+                event_id: status.event_id,
+                payment_status,
+                event_status: TypeStatus.Go,
+            }
+            if (status.payment_status === TypeStatus.NeedRefund) {
+                newStatus.payment_status = TypeStatus.Paid
+            }
+            // @ts-ignore
+            await this.statusesService.updateStatuses(status._id, newStatus)
+            resStatus = newStatus
+        } else {
+            const newStatus = {
+                user_id: userId,
+                event_id: event_id,
+                payment_status: payment_status,
+                event_status: TypeStatus.Go,
+            }
+            resStatus = await this.statusesService.createStatus( userId, newStatus )
+        }
         await this.addUserToEvent( event_id, userId )
         return resStatus
     }

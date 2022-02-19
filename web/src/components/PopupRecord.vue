@@ -131,7 +131,6 @@ export default class PopupRecord extends Vue {
         const params: statusData = {
             event_id:       this.event._id,
             payment_status: this.payment,
-            event_status:   this.typesStatuses.go.name,
         }
         try {
             const res = await recordOnEvent(params)
