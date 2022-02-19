@@ -32,8 +32,8 @@ export class Students {
     public updateStatusPayment(obj: {eventId: string, statusId: string, paymentStatus: string}): void {
         const newListEvents = this.listEvents.map(event => {
             if (event._id === obj.eventId) {
-                if (event.users?.length) {
-                    const user = event.users.find(user => user.status_id === obj.statusId)
+                if (event.recorded_users?.length) {
+                    const user = event.recorded_users.find(user => user.status_id === obj.statusId)
                     if (user) {
                         user.payment_status = obj.paymentStatus
                     }
@@ -49,13 +49,12 @@ export class Students {
     public updateStatusEvent(obj: {eventId: string, statusId: string, eventStatus: string}): void {
         const newListEvents = this.listEvents.map(event => {
             if (event._id === obj.eventId) {
-                if (event.users?.length) {
-                    const user = event.users.find(user => user.status_id === obj.statusId)
+                if (event.recorded_users?.length) {
+                    const user = event.recorded_users.find(user => user.status_id === obj.statusId)
                     if (user) {
                         user.event_status = obj.eventStatus
                     }
                 }
-
             }
             return event
         })

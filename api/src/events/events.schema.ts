@@ -43,16 +43,25 @@ export class Events {
     description?: string;
 
     @Prop()
-    users_id: string[];
+    recorded: string[];
 
     @Prop()
-    users?: UserInfo[]
+    canceled: string[];
+
+    @Prop()
+    recorded_users?: UserInfo[]
+
+    @Prop()
+    canceled_users?: UserInfo[]
 
     @Prop()
     status?: string[] | undefined
 
     @Prop()
     status_id?: string
+
+    @Prop()
+    discount?: boolean
 }
 
 export const EventsSchema = SchemaFactory.createForClass(Events);

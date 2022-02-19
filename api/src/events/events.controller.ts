@@ -10,7 +10,7 @@ import {
     UseGuards, Request, UploadedFiles
 } from "@nestjs/common";
 import {ObjectId} from "mongoose";
-import {CreateEventDto} from "./create-event.dto";
+import {CreateEventData, RecordOnEventData} from "./definitions";
 import {EventsService} from "./events.service";
 import {FileFieldsInterceptor} from "@nestjs/platform-express";
 import {JwtAuthGuard} from "../auth/jwt-auth.guard";
@@ -42,7 +42,7 @@ export class EventsController {
 
     @UseGuards(JwtAuthGuard)
     @Get("visited")
-    async getVisitedEvent(@Request() req){
+    async getVisitedEvent(@Request() req) {
         return this.eventsService.getEventListForUser(req.user.id)
     }
 
@@ -54,11 +54,23 @@ export class EventsController {
     }
 
     @UseGuards(JwtAuthGuard)
+    @Get('cancel/:id')
+    async cancelRecordOnEvent(@Param('id') id: string) {
+        return this.eventsService.cancelRecordOnEvent(id)
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Post("record")
+    async recordOnEvent(@Request() req, @Body() data: RecordOnEventData ) {
+        return this.eventsService.recordOnEvent(req.user.id, data)
+    }
+
+    @UseGuards(JwtAuthGuard)
     @Post()
     @UseInterceptors(FileFieldsInterceptor([
         { name: 'cover', maxCount: 1 }
     ]))
-    async createEvent(@UploadedFiles() files, @Body() dto: CreateEventDto ){
+    async createEvent(@UploadedFiles() files, @Body() dto: CreateEventData ){
         const {cover} = files
         return this.eventsService.createEvent(dto, cover[0].id)
     }
@@ -68,7 +80,7 @@ export class EventsController {
     @UseInterceptors(FileFieldsInterceptor([
         { name: 'cover', maxCount: 1 }
     ]))
-    async updateEvent(@UploadedFiles() files, @Param('id') id: ObjectId, @Body() dto: CreateEventDto) {
+    async updateEvent(@UploadedFiles() files, @Param('id') id: ObjectId, @Body() dto: CreateEventData) {
         const obj = Object.assign({}, files)
         if (Object.keys(obj).length === 0) {
             return this.eventsService.updateEvent(id, dto)

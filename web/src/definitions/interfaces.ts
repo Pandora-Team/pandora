@@ -6,12 +6,15 @@ export interface EventData {
     price: string
     place_id?: string
     address?: string
-    users_id?: string[]
+    recorded?: string[]
+    canceled?: string[]
     cover?: File
     status: string[]
     status_id?: string
     payment?: string
-    users?: UserInfo[]
+    recorded_users?: UserInfo[]
+    canceled_users?: UserInfo[]
+    discount?: boolean
 }
 
 export interface CreateEventData {
@@ -23,6 +26,12 @@ export interface CreateEventData {
     place_id?: string
     address?: string
     cover?: File
+}
+
+export interface RecordOnEventData {
+    event_id?: string
+    event_status?: string
+    payment_status?: string
 }
 
 export interface UserInfo {

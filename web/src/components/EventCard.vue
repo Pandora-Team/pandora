@@ -11,7 +11,13 @@
                 @click="onEdit"
             />
             <div
-                v-if="isAdmin && event.users_id.length"
+                v-if="event.discount"
+                class="event-card__discount"
+            >
+                20%
+            </div>
+            <div
+                v-if="isAdmin && event.recorded.length"
                 class="event-card__number"
             >
                 {{ numberUsers }}
@@ -156,8 +162,8 @@ export default class EventCard extends Vue {
     }
 
     get numberUsers(): string | undefined {
-        if (this.event.users_id?.length) {
-            return `${this.event.users_id.length} ${enumerate(this.event.users_id.length, ["участник", "участника", "участников"])}`
+        if (this.event.recorded?.length) {
+            return `${this.event.recorded.length} ${enumerate(this.event.recorded.length, ["участник", "участника", "участников"])}`
         }
         return undefined
     }
@@ -359,6 +365,23 @@ export default class EventCard extends Vue {
            background: $color-gray url("../assets/svg/icon-edit.svg") center no-repeat;
            background-size: 29px;
            border-radius: 0 20px 0 20px;
+           color: white;
+       }
+       &__discount {
+           position: absolute;
+           top: -30px;
+           right: -30px;
+           width: 54px;
+           height: 55px;
+           background: $color-hover;
+           background-size: 29px;
+           border-radius: 0 20px 0 20px;
+           display: flex;
+           justify-content: center;
+           align-items: center;
+           font-size: $font-size-big-text;
+           line-height: $line-height-big-text;
+           font-weight: 600;
        }
    }
 

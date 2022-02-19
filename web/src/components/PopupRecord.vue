@@ -17,9 +17,7 @@
                     <p>
                         Адрес: <span>{{ event.address }}</span>
                     </p>
-                    <p>
-                        Стоимость: <span>{{ event.price }} р.</span>
-                    </p>
+                    <p v-html="paymentText" />
                     <div
                         class="event-card__payment"
                         :class="{'event-card__payment--mb': $v.$error}"
@@ -71,9 +69,9 @@ import MainPopup from "@/components/MainPopup.vue"
 import MainBtn from "@/components/MainBtn.vue"
 import MainRadio from "@/components/MainRadio.vue"
 import { statusData, typesStatus } from "@/definitions/typeStatus"
-import { createStatuses } from "@/api/statuses"
 import dayjs from "dayjs"
 import { required } from "vuelidate/lib/validators"
+import { recordOnEvent } from "@/api/events"
 
 @Component({
     components: {
@@ -117,6 +115,12 @@ export default class PopupRecord extends Vue {
         return `${start}-${this.event.end_time}`
     }
 
+    get paymentText(): string {
+        if (this.event.discount) {
+            return `Стоимость: <span>${this.event.price} р. с учетом скидки</span>`
+        }
+        return `Стоимость: <span>${this.event.price} р.</span>`
+    }
     changePayment(value: string): void {
         this.payment = value
     }
@@ -131,10 +135,9 @@ export default class PopupRecord extends Vue {
         const params: statusData = {
             event_id:       this.event._id,
             payment_status: this.payment,
-            event_status:   this.typesStatuses.go.name,
         }
         try {
-            const res = await createStatuses(params)
+            const res = await recordOnEvent(params)
             this.$mainStore.events.updateStatuses(res.data)
             this.$mainStore.popup.changeActiveRecordPopup(false)
             this.$mainStore.popup.setTypePayment(this.payment)

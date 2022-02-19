@@ -2,12 +2,14 @@ import {Injectable} from "@nestjs/common";
 import {Model, ObjectId} from "mongoose";
 import {Events, EventsDocument} from "./events.schema";
 import {InjectModel} from "@nestjs/mongoose";
-import {CreateEventDto} from "./create-event.dto";
+import {CreateEventData, RecordOnEventData} from "./definitions";
 import {PlacesService} from "../places/places.service";
 import {FileService} from "../file/file.service";
 import {StatusesService} from "../statuses/statuses.service";
 import {UsersService} from "../users/users.service";
 import * as dayjs from "dayjs";
+import {TypeStatus} from "../statuses/definitions";
+import { DateTime } from "luxon"
 
 @Injectable()
 export class EventsService {
@@ -19,7 +21,7 @@ export class EventsService {
         private usersService: UsersService
     ) {}
 
-    async createEvent(dto: CreateEventDto, coverId): Promise<Events> {
+    async createEvent(dto: CreateEventData, coverId): Promise<Events> {
         let newAddress
         const { place_id, address, ...result } = dto
         if (address) {
@@ -36,7 +38,33 @@ export class EventsService {
     async getAllEvents(id: string): Promise<Events[]>{
         const events = await this.eventsModel.find({date: {$gte: new Date()}})
         const sortedEvents = this.sortArrayOnDate(events)
+        const discount = await this.checkDiscountForUser(id)
+        if (discount) {
+            const discountAmount = 20
+            this.setDiscountInEvents(sortedEvents, discountAmount)
+        }
         return await this.getStatuses(sortedEvents, id)
+    }
+
+    // Проверка давать ли скидку
+    async checkDiscountForUser(userId: string) {
+        const user = await this.usersService.getUserById(userId)
+        const beginStock = 1644958800000
+        const eventsUser = await this.getEventListForUser(userId)
+        // для новичков
+        if (DateTime.fromISO(user.reg_date).toMillis() > beginStock && !eventsUser.length) {
+            return true
+        }
+        return false
+    }
+
+    // Установка скидки в каждое занятие
+    setDiscountInEvents(events, discountAmount) {
+        return events.map(event => {
+            event.discount = true
+            event.price = event.price / 100 * (100 - discountAmount)
+            return event
+        })
     }
 
     async getAllEventsWithStudents(): Promise<Events[]> {
@@ -47,7 +75,7 @@ export class EventsService {
 
     async getUserInfoForEvent(events: Events[]): Promise<Events[]>  {
         return Promise.all(events.map( async event => {
-            for (const user of event.users_id) {
+            for (const user of event.recorded) {
                 // @ts-ignore
                 const objStatuses = await this.statusesService.getStatuses(event._id, user)
                 const objUser = await this.usersService.getUserById(user)
@@ -56,7 +84,19 @@ export class EventsService {
                     const { payment_status, event_status, _id } = objStatuses
                     const { name, avatar, surname } = objUser
                     const newObj = { payment_status, event_status, status_id: _id, name, avatar, surname }
-                    event.users.push(newObj)
+                    event.recorded_users.push(newObj)
+                }
+            }
+            for (const user of event.canceled) {
+                // @ts-ignore
+                const objStatuses = await this.statusesService.getStatuses(event._id, user)
+                const objUser = await this.usersService.getUserById(user)
+                if (objStatuses && objUser) {
+                    // @ts-ignore
+                    const { payment_status, event_status, _id } = objStatuses
+                    const { name, avatar, surname } = objUser
+                    const newObj = { payment_status, event_status, status_id: _id, name, avatar, surname }
+                    event.canceled_users.push(newObj)
                 }
             }
             return event
@@ -72,7 +112,7 @@ export class EventsService {
         return sortedEvents[0]
     }
 
-    async updateEvent(id: ObjectId, dto: CreateEventDto, coverId?: string): Promise<any> {
+    async updateEvent(id: ObjectId, dto: CreateEventData, coverId?: string): Promise<any> {
         const event = await this.getOneEvent(id)
         if (coverId && event.cover) {
             await this.fileService.deleteFile(event.cover)
@@ -122,19 +162,11 @@ export class EventsService {
         }))
     }
 
-    async addUserToEvent(eventId: string, userId: string): Promise<void> {
-        await this.eventsModel.updateOne({_id: eventId}, {$addToSet: {users_id: userId}})
-    }
-
-    async removeUserFromEvent(eventId: string, userId: string): Promise<void> {
-        await this.eventsModel.updateOne({_id: eventId}, {$pull: {users_id: userId}})
-    }
-
     async getEventListForUser(userId: string): Promise<Events[]> {
         const listEvents = []
         const events = await this.eventsModel.find({})
         for(let i = 0; i < events.length; i++) {
-            if (events[i]?.users_id.includes(userId) && dayjs().isAfter(dayjs(events[i].date))) {
+            if (events[i]?.recorded.includes(userId) && dayjs().isAfter(dayjs(events[i].date))) {
                 const eventInfo = {
                     _id: events[i]._id,
                     name: events[i].name,
@@ -144,6 +176,76 @@ export class EventsService {
             }
         }
         return listEvents
+    }
+
+    // Добавление участника к занятию
+    async addUserToEvent(eventId: string, userId: string): Promise<void> {
+        await this.eventsModel.updateOne({_id: eventId}, {$addToSet: {recorded: userId}})
+    }
+
+    // Удаление участника из занятия
+    async removeUserFromEvent(eventId: string, userId: string): Promise<void> {
+        await this.eventsModel.updateOne({_id: eventId}, {$pull: {recorded: userId}})
+    }
+
+    // Добавление участника к списку участников, которые отменили запись
+    async addUserInCanceled(eventId: string, userId: string) {
+        await this.eventsModel.updateOne({_id: eventId}, {$addToSet: {canceled: userId}})
+    }
+
+    // Удаление участника из списка участников, которые отменили запись
+    async removeUserInCanceled(eventId: string, userId: string) {
+        await this.eventsModel.updateOne({_id: eventId}, {$pull: {canceled: userId}})
+    }
+
+    // Отмена записи на занятие
+    async cancelRecordOnEvent(status_id: string) {
+        const status = await this.statusesService.clearStatus(status_id)
+        if (status) {
+            await this.removeUserFromEvent(status.event_id, status.user_id)
+            await this.addUserInCanceled(status.event_id, status.user_id)
+            if (status.payment_status === TypeStatus.Paid) {
+                const newStatus = {
+                    user_id: status.user_id,
+                    event_id: status.event_id,
+                    payment_status: TypeStatus.NeedRefund,
+                    event_status: TypeStatus.NotVisited
+                }
+                await this.statusesService.createStatus(status.user_id, newStatus)
+            }
+        }
+    }
+
+    // Запись на занятие
+    async recordOnEvent(userId: string, data: RecordOnEventData) {
+        let resStatus
+        const { event_id, payment_status } = data
+        await this.removeUserInCanceled(event_id, userId)
+        const status = await this.statusesService.getStatuses(event_id, userId)
+        if (status) {
+            const newStatus = {
+                user_id: status.user_id,
+                event_id: status.event_id,
+                payment_status,
+                event_status: TypeStatus.Go,
+            }
+            if (status.payment_status === TypeStatus.NeedRefund) {
+                newStatus.payment_status = TypeStatus.Paid
+            }
+            // @ts-ignore
+            await this.statusesService.updateStatuses(status._id, newStatus)
+            resStatus = newStatus
+        } else {
+            const newStatus = {
+                user_id: userId,
+                event_id: event_id,
+                payment_status: payment_status,
+                event_status: TypeStatus.Go,
+            }
+            resStatus = await this.statusesService.createStatus( userId, newStatus )
+        }
+        await this.addUserToEvent( event_id, userId )
+        return resStatus
     }
 
 }

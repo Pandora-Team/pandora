@@ -34,7 +34,7 @@ import { EventData } from "@/definitions/interfaces"
 import MainPopup from "@/components/MainPopup.vue"
 import EventCard from "@/components/EventCard.vue"
 import MainBtn from "@/components/MainBtn.vue"
-import { clearStatuses } from "@/api/statuses"
+import { cancelRecordOnEvent } from "@/api/events"
 
 @Component({
     components: {
@@ -56,7 +56,7 @@ export default class PopupCancel extends Vue {
     async onClick(): Promise<void> {
         try {
             if (this.event.status_id) {
-                await clearStatuses(this.event.status_id)
+                await cancelRecordOnEvent(this.event.status_id)
                 this.$mainStore.events.clearStatuses(this.event._id)
                 this.closePopup()
                 this.$mainStore.notification.changeNotification(

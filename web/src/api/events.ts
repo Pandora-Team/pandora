@@ -3,6 +3,7 @@ import api from "./index"
 const BASE_URL = "events"
 
 import { AxiosResponse } from "axios"
+import { statusData } from "@/definitions/typeStatus"
 
 export const getAllEvent = (): Promise<AxiosResponse> => api.get(`${BASE_URL}`)
 export const getNearestEvent = (): Promise<AxiosResponse> => api.get(`${BASE_URL}/nearest`)
@@ -16,3 +17,7 @@ export const deleteEvent = (id: string): Promise<AxiosResponse> => api.delete(`$
 export const getEventsWithUsers = (): Promise<AxiosResponse> => api.get(`${BASE_URL}/list`)
 
 export const getVisitedEvents = (): Promise<AxiosResponse> => api.get(`${BASE_URL}/visited`)
+
+export const cancelRecordOnEvent = (status_id: string): Promise<AxiosResponse> => api.get(`${BASE_URL}/cancel/${status_id}`)
+
+export const recordOnEvent = (data: statusData): Promise<AxiosResponse> => api.post(`${BASE_URL}/record`, data)
