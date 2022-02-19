@@ -49,7 +49,10 @@ export class Events {
     canceled: string[];
 
     @Prop()
-    users?: UserInfo[]
+    recorded_users?: UserInfo[]
+
+    @Prop()
+    canceled_users?: UserInfo[]
 
     @Prop()
     status?: string[] | undefined

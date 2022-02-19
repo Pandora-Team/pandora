@@ -156,8 +156,8 @@ export default class EventCard extends Vue {
     }
 
     get numberUsers(): string | undefined {
-        if (this.event.users_id?.length) {
-            return `${this.event.users_id.length} ${enumerate(this.event.users_id.length, ["участник", "участника", "участников"])}`
+        if (this.event.recorded?.length) {
+            return `${this.event.recorded.length} ${enumerate(this.event.recorded.length, ["участник", "участника", "участников"])}`
         }
         return undefined
     }

@@ -8,19 +8,47 @@
             </div>
         </div>
         <div
-            v-if="event.users.length"
-            class="event-row__more"
+            class="event-row__action"
+            :class="{'event-row__action--open': openRecorded || openCanceled}"
         >
             <div
+                v-if="event.recorded_users.length"
                 class="event-row__more-btn"
-                :class="{'event-row__more-btn--active': open}"
-                @click="openList"
+                :class="{'event-row__more-btn--active': openRecorded}"
+                @click="openRecordedList"
             >
-                {{ textBtn }}
+                {{ textRecordedBtn }}
             </div>
-            <template v-if="open">
+            <div
+                v-if="event.canceled_users.length"
+                class="event-row__more-btn"
+                :class="{'event-row__more-btn--active': openCanceled}"
+                @click="openCanceledList"
+            >
+                {{ textCanceledBtn }}
+            </div>
+        </div>
+        <div
+            v-if="event.recorded_users.length"
+            class="event-row__more"
+        >
+            <template v-if="openRecorded">
                 <event-row-student
-                    v-for="(user, index) in event.users"
+                    v-for="(user, index) in event.recorded_users"
+                    :key="user.status_id"
+                    :user="user"
+                    :index="index"
+                    :event-id="event._id"
+                />
+            </template>
+        </div>
+        <div
+            v-if="event.canceled_users.length"
+            class="event-row__more"
+        >
+            <template v-if="openCanceled">
+                <event-row-student
+                    v-for="(user, index) in event.canceled_users"
                     :key="user.status_id"
                     :user="user"
                     :index="index"
@@ -48,7 +76,8 @@ export default class EventRow extends Vue {
     @Prop({ type: Object })
     event!: EventData
     
-    open = false
+    openRecorded = false
+    openCanceled = false
 
     get date(): string {
         return dayjs(this.event.date).format("DD.MM.YYYY")
@@ -59,15 +88,38 @@ export default class EventRow extends Vue {
         return `${start}-${this.event.end_time}`
     }
 
-    get textBtn(): string {
-        if (this.open) {
-            return `Закрыть список участников ( ${this.event.users?.length} )`
-        }
-        return `Открыть список участников ( ${this.event.users?.length} )`
+    get isMobile(): boolean {
+        return this.$mainStore.app.isMobile
     }
 
-    openList(): void {
-        this.open = !this.open
+    get textRecordedBtn(): string {
+        if (this.isMobile) {
+            return `Участники ( ${this.event.recorded_users?.length} )`
+        }
+        if (this.openRecorded) {
+            return `Закрыть список участников ( ${this.event.recorded_users?.length} )`
+        }
+        return `Открыть список участников ( ${this.event.recorded_users?.length} )`
+    }
+
+    get textCanceledBtn(): string {
+        if (this.isMobile) {
+            return `Беспредельщики ( ${this.event.recorded_users?.length} )`
+        }
+        if (this.openCanceled) {
+            return `Закрыть список беспредельщиков ( ${this.event.canceled_users?.length} )`
+        }
+        return `Открыть список беспредельщиков ( ${this.event.canceled_users?.length} )`
+    }
+
+    openRecordedList(): void {
+        this.openCanceled = false
+        this.openRecorded = !this.openRecorded
+    }
+
+    openCanceledList(): void {
+        this.openRecorded = false
+        this.openCanceled = !this.openCanceled
     }
 
 }
@@ -134,6 +186,10 @@ export default class EventRow extends Vue {
                cursor: pointer;
                color: $color-gray;
                position: relative;
+               margin-right: 40px;
+               &:nth-last-of-type(1) {
+                   margin-right: 0;
+               }
                &::after {
                    transition: .5s;
                    content: "";
@@ -150,6 +206,19 @@ export default class EventRow extends Vue {
                        transform: rotate(180deg);
                        transform-origin: center;
                    }
+               }
+               @media all and (max-width: 440px) {
+                   margin-bottom: 20px;
+                   &:nth-last-of-type(1) {
+                       margin-bottom: 0;
+                   }
+               }
+           }
+       }
+       &__action {
+           &--open {
+               @media all and (max-width: 440px) {
+                   margin-bottom: 20px;
                }
            }
        }

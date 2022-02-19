@@ -39,7 +39,7 @@ export default class StudentsView extends Vue {
 
 <style lang="scss">
     .students {
-        @media all and (max-width: 500px) {
+        @media all and (max-width: 800px) {
             margin-top: 90px;
         }
         h1 {

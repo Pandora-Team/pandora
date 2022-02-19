@@ -105,7 +105,7 @@ export class Events {
                 if (data.event_status && data.payment_status) {
                     event.status.push(data.event_status, data.payment_status)
                 }
-                event.users_id?.push(this.$mainStore.user.id)
+                event.recorded?.push(this.$mainStore.user.id)
                 if (data._id) {
                     event.status_id = data._id
                 }
@@ -121,7 +121,7 @@ export class Events {
             if (event._id === _id) {
                 event.status.splice(0, event.status.length)
                 event.status_id = ""
-                event.users_id = event.users_id?.filter(user => user !== this.$mainStore.user.id)
+                event.recorded = event.recorded?.filter(user => user !== this.$mainStore.user.id)
                 if (event._id === this.nearestEvent?._id) {
                     event.status.push(typesStatus.nearest.name)
                 }
