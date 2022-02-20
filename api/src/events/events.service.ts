@@ -50,9 +50,31 @@ export class EventsService {
     async checkDiscountForUser(userId: string) {
         const user = await this.usersService.getUserById(userId)
         const beginStock = 1644958800000
+        // список занятий пользователя
         const eventsUser = await this.getEventListForUser(userId)
+        // массив новичков, кто давно зарегистрирован, но ни разу не ходил
+        const newbieUsers = [
+            "61d47f99082349001d59666c", // Левина
+            "61d4c286082349001d596674", // Босых
+            "61d4dc05082349001d596676", // Бучева
+            "61dc6e5649d5f3001e7e6bcc", // Дектярникова
+            "61e4575940e9e5001eedc64f", // марданова
+            "61e5776440e9e5001eedc652", // Соловьева
+            "61ec5d5d40e9e5001eedc65f", // Рязанова
+            "61f03ba02d9133001eb442fa", // Аленичева
+            "61f132042d9133001eb44311", // Кузнецова
+            "61f475ba2d9133001eb44323", // Супранович
+            "61fbb5af204d0d0020b1bdc6", // Суханова
+            "6200252c204d0d0020b1bdcb", // Kolodyazhnaya
+            "620159e0204d0d0020b1bdcc", // У
+            "6205616b204d0d0020b1bdcd", // рассадина
+            "620f8f63204d0d0020b1bdf0" // Попова
+        ]
         // для новичков
-        if (DateTime.fromISO(user.reg_date).toMillis() > beginStock && !eventsUser.length) {
+        if (
+            (DateTime.fromISO(user.reg_date).toMillis() > beginStock && !eventsUser.length) ||
+            (!eventsUser.length && newbieUsers.includes(userId))
+        ) {
             return true
         }
         return false
