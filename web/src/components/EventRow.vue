@@ -104,7 +104,7 @@ export default class EventRow extends Vue {
 
     get textCanceledBtn(): string {
         if (this.isMobile) {
-            return `Беспредельщики ( ${this.event.recorded_users?.length} )`
+            return `Беспредельщики ( ${this.event.canceled_users?.length} )`
         }
         if (this.openCanceled) {
             return `Закрыть список беспредельщиков ( ${this.event.canceled_users?.length} )`
