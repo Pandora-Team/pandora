@@ -98,27 +98,31 @@ export class EventsService {
     async getUserInfoForEvent(events: Events[]): Promise<Events[]>  {
         return Promise.all(events.map( async event => {
             for (const user of event.recorded) {
-                // @ts-ignore
-                const objStatuses = await this.statusesService.getStatuses(event._id, user)
-                const objUser = await this.usersService.getUserById(user)
-                if (objStatuses && objUser) {
+                if (user) {
                     // @ts-ignore
-                    const { payment_status, event_status, _id } = objStatuses
-                    const { name, avatar, surname } = objUser
-                    const newObj = { payment_status, event_status, status_id: _id, name, avatar, surname }
-                    event.recorded_users.push(newObj)
+                    const objStatuses = await this.statusesService.getStatuses(event._id, user)
+                    const objUser = await this.usersService.getUserById(user)
+                    if (objStatuses && objUser) {
+                        // @ts-ignore
+                        const { payment_status, event_status, _id } = objStatuses
+                        const { name, avatar, surname } = objUser
+                        const newObj = { payment_status, event_status, status_id: _id, name, avatar, surname }
+                        event.recorded_users.push(newObj)
+                    }
                 }
             }
             for (const user of event.canceled) {
-                // @ts-ignore
-                const objStatuses = await this.statusesService.getStatuses(event._id, user)
-                const objUser = await this.usersService.getUserById(user)
-                if (objStatuses && objUser) {
+                if (user) {
                     // @ts-ignore
-                    const { payment_status, event_status, _id } = objStatuses
-                    const { name, avatar, surname } = objUser
-                    const newObj = { payment_status, event_status, status_id: _id, name, avatar, surname }
-                    event.canceled_users.push(newObj)
+                    const objStatuses = await this.statusesService.getStatuses(event._id, user)
+                    const objUser = await this.usersService.getUserById(user)
+                    if (objStatuses && objUser) {
+                        // @ts-ignore
+                        const { payment_status, event_status, _id } = objStatuses
+                        const { name, avatar, surname } = objUser
+                        const newObj = { payment_status, event_status, status_id: _id, name, avatar, surname }
+                        event.canceled_users.push(newObj)
+                    }
                 }
             }
             return event
