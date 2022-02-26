@@ -202,16 +202,17 @@ export class EventsService {
         if (status) {
             await this.removeUserFromEvent(status.event_id, status.user_id)
             await this.addUserInCanceled(status.event_id, status.user_id)
-            if (status.payment_status === TypeStatus.Paid) {
-                await this.statusesService.clearStatus(status_id)
-                const newStatus = {
-                    user_id: status.user_id,
-                    event_id: status.event_id,
-                    payment_status: TypeStatus.NeedRefund,
-                    event_status: TypeStatus.NotVisited
-                }
-                await this.statusesService.createStatus(status.user_id, newStatus)
+            const newStatus = {
+                user_id: status.user_id,
+                event_id: status.event_id,
+                payment_status: TypeStatus.NotPaid,
+                event_status: TypeStatus.NotVisited
             }
+            if (status.payment_status === TypeStatus.Paid) {
+                newStatus.payment_status = TypeStatus.NeedRefund
+            }
+            await this.statusesService.clearStatus(status_id)
+            await this.statusesService.createStatus(status.user_id, newStatus)
         }
     }
 
