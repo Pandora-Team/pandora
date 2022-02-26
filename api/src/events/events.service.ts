@@ -7,7 +7,6 @@ import {PlacesService} from "../places/places.service";
 import {FileService} from "../file/file.service";
 import {StatusesService} from "../statuses/statuses.service";
 import {UsersService} from "../users/users.service";
-import * as dayjs from "dayjs";
 import {TypeStatus} from "../statuses/definitions";
 import { DateTime } from "luxon"
 import { isEmpty } from "lodash"
@@ -157,25 +156,6 @@ export class EventsService {
         }))
     }
 
-    // получение списка занятий, которые посетил пользователь
-    async getEventListForUser(userId: string): Promise<Events[]> {
-        const listEvents = []
-        const events = await this.eventsModel.find({})
-        if (events.length) {
-            for(let i = 0; i < events.length; i++) {
-                if (events[i]?.recorded.includes(userId) && dayjs().isAfter(dayjs(events[i].date))) {
-                    const eventInfo = {
-                        _id: events[i]._id,
-                        name: events[i].name,
-                        date: events[i].date
-                    }
-                    listEvents.push(eventInfo)
-                }
-            }
-        }
-        return listEvents
-    }
-
     // Добавление участника к занятию
     async addUserToEvent(eventId: string, userId: string): Promise<void> {
         await this.eventsModel.updateOne({_id: eventId}, {$addToSet: {recorded: userId}})
@@ -260,7 +240,45 @@ export class EventsService {
         ) {
             return true
         }
+        // для тех, кто посещал 4 занятия подряд
+        if (eventsUser.length > 3 && await this.checkVisitFourEvents(userId)) {
+            return true
+        }
         return false
+    }
+
+    // получение списка занятий, которые посетил пользователь
+    async getEventListForUser(userId: string): Promise<Events[]> {
+        const listEvents = []
+        const events = await this.eventsModel.find({$and : [{recorded: {$all: [userId]}}, {date: {$lte: new Date()}}]})
+        if (events.length) {
+            for(let i = 0; i < events.length; i++) {
+                const eventInfo = {
+                    _id: events[i]._id,
+                    name: events[i].name,
+                    date: events[i].date
+                }
+                listEvents.push(eventInfo)
+            }
+        }
+        return listEvents
+    }
+
+    async checkVisitFourEvents(userId: string) {
+        const events = await this.eventsModel.find({date: {$lte: new Date()}})
+        const sortArr = this.sortArrayOnDate(events)
+        const arr = sortArr.slice(-4)
+        if (arr.length < 4) return false
+        let checkVisit = false
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i].recorded.includes(userId)) {
+                checkVisit = true
+            } else {
+                checkVisit = false
+                break
+            }
+        }
+        return checkVisit
     }
 
     // Установка скидки в каждое занятие
