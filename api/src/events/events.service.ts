@@ -2,7 +2,7 @@ import {Injectable} from "@nestjs/common";
 import {Model, ObjectId} from "mongoose";
 import {Events, EventsDocument} from "./events.schema";
 import {InjectModel} from "@nestjs/mongoose";
-import {CreateEventData, RecordOnEventData} from "./definitions";
+import {CreateEventData, RecordOnEventData, beginStock, newbieUsers} from "./definitions";
 import {PlacesService} from "../places/places.service";
 import {FileService} from "../file/file.service";
 import {StatusesService} from "../statuses/statuses.service";
@@ -10,6 +10,7 @@ import {UsersService} from "../users/users.service";
 import * as dayjs from "dayjs";
 import {TypeStatus} from "../statuses/definitions";
 import { DateTime } from "luxon"
+import { isEmpty } from "lodash"
 
 @Injectable()
 export class EventsService {
@@ -21,6 +22,7 @@ export class EventsService {
         private usersService: UsersService
     ) {}
 
+    // создание занятия
     async createEvent(dto: CreateEventData, coverId): Promise<Events> {
         let newAddress
         const { place_id, address, ...result } = dto
@@ -35,6 +37,7 @@ export class EventsService {
         return this.eventsModel.create({...result, address: newAddress, cover: coverId})
     }
 
+    // получение списка всех занятий
     async getAllEvents(id: string): Promise<Events[]>{
         const events = await this.eventsModel.find({date: {$gte: new Date()}})
         const sortedEvents = this.sortArrayOnDate(events)
@@ -46,63 +49,22 @@ export class EventsService {
         return await this.getStatuses(sortedEvents, id)
     }
 
-    // Проверка давать ли скидку
-    async checkDiscountForUser(userId: string) {
-        const user = await this.usersService.getUserById(userId)
-        const beginStock = 1644958800000
-        // список занятий пользователя
-        const eventsUser = await this.getEventListForUser(userId)
-        // массив новичков, кто давно зарегистрирован, но ни разу не ходил
-        const newbieUsers = [
-            "61d47f99082349001d59666c", // Левина
-            "61d4c286082349001d596674", // Босых
-            "61d4dc05082349001d596676", // Бучева
-            "61dc6e5649d5f3001e7e6bcc", // Дектярникова
-            "61e4575940e9e5001eedc64f", // марданова
-            "61e5776440e9e5001eedc652", // Соловьева
-            "61ec5d5d40e9e5001eedc65f", // Рязанова
-            "61f03ba02d9133001eb442fa", // Аленичева
-            "61f132042d9133001eb44311", // Кузнецова
-            "61f475ba2d9133001eb44323", // Супранович
-            "61fbb5af204d0d0020b1bdc6", // Суханова
-            "6200252c204d0d0020b1bdcb", // Kolodyazhnaya
-            "620159e0204d0d0020b1bdcc", // У
-            "6205616b204d0d0020b1bdcd", // рассадина
-            "620f8f63204d0d0020b1bdf0" // Попова
-        ]
-        // для новичков
-        if (
-            (DateTime.fromISO(user.reg_date).toMillis() > beginStock && !eventsUser.length) ||
-            (!eventsUser.length && newbieUsers.includes(userId))
-        ) {
-            return true
-        }
-        return false
-    }
-
-    // Установка скидки в каждое занятие
-    setDiscountInEvents(events, discountAmount) {
-        return events.map(event => {
-            event.discount = true
-            event.price = event.price / 100 * (100 - discountAmount)
-            return event
-        })
-    }
-
+    // получение списка занятий с данными о студентах
     async getAllEventsWithStudents(): Promise<Events[]> {
         const events = await this.eventsModel.find()
         const sortedEvents = this.sortArrayOnDate(events, true)
         return await this.getUserInfoForEvent(sortedEvents)
     }
 
+    // получение данных о пользователе из каждого занятия
     async getUserInfoForEvent(events: Events[]): Promise<Events[]>  {
         return Promise.all(events.map( async event => {
-            for (const user of event.recorded) {
-                if (user) {
+            if (event.recorded.length) {
+                for (const user of event.recorded) {
                     // @ts-ignore
                     const objStatuses = await this.statusesService.getStatuses(event._id, user)
                     const objUser = await this.usersService.getUserById(user)
-                    if (objStatuses && objUser) {
+                    if (!isEmpty(objStatuses) && !isEmpty(objUser)) {
                         // @ts-ignore
                         const { payment_status, event_status, _id } = objStatuses
                         const { name, avatar, surname } = objUser
@@ -111,12 +73,13 @@ export class EventsService {
                     }
                 }
             }
-            for (const user of event.canceled) {
-                if (user) {
+
+            if (event.canceled.length) {
+                for (const user of event.canceled) {
                     // @ts-ignore
                     const objStatuses = await this.statusesService.getStatuses(event._id, user)
                     const objUser = await this.usersService.getUserById(user)
-                    if (objStatuses && objUser) {
+                    if (!isEmpty(objStatuses) && !isEmpty(objUser)) {
                         // @ts-ignore
                         const { payment_status, event_status, _id } = objStatuses
                         const { name, avatar, surname } = objUser
@@ -129,15 +92,18 @@ export class EventsService {
         }))
     }
 
+    // получение одного занятия
     async getOneEvent(id: ObjectId): Promise<Events>{
         return this.eventsModel.findById({_id: id})
     }
 
+    // получение ближайшего занятия
     async getNearestEvent(id: string): Promise<Events> {
         const sortedEvents = await this.getAllEvents(id)
         return sortedEvents[0]
     }
 
+    // обновление данных занятия
     async updateEvent(id: ObjectId, dto: CreateEventData, coverId?: string): Promise<any> {
         const event = await this.getOneEvent(id)
         if (coverId && event.cover) {
@@ -149,6 +115,7 @@ export class EventsService {
         return { update: true }
     }
 
+    // удаление занятия
     async deleteEvent(id: ObjectId): Promise<Events> {
         await this.statusesService.clearStatusesAllUsers(String(id))
         const event = await this.eventsModel.findByIdAndDelete({_id: id})
@@ -158,6 +125,7 @@ export class EventsService {
         return event
     }
 
+    // сортировка занятий по дате проведения
     sortArrayOnDate(array: Events[], reverse = false): Events[] {
         return array.sort(function compare(a, b) {
             var dateA = new Date(a.date);
@@ -171,6 +139,7 @@ export class EventsService {
         });
     }
 
+    // получение статусов пользователя для списка занятий
     async getStatuses(events: Events[], userId: string): Promise<Events[]> {
         return Promise.all(events.map( async (event, index) => {
             if (index === 0) {
@@ -178,7 +147,7 @@ export class EventsService {
             }
             //@ts-ignore
             const objStatuses = await this.statusesService.getStatuses(event._id, userId)
-            if (objStatuses) {
+            if (!isEmpty(objStatuses)) {
                 //@ts-ignore
                 event.status_id = objStatuses._id
                 event.status.push(objStatuses.event_status, objStatuses.payment_status)
@@ -188,17 +157,20 @@ export class EventsService {
         }))
     }
 
+    // получение списка занятий, которые посетил пользователь
     async getEventListForUser(userId: string): Promise<Events[]> {
         const listEvents = []
         const events = await this.eventsModel.find({})
-        for(let i = 0; i < events.length; i++) {
-            if (events[i]?.recorded.includes(userId) && dayjs().isAfter(dayjs(events[i].date))) {
-                const eventInfo = {
-                    _id: events[i]._id,
-                    name: events[i].name,
-                    date: events[i].date
+        if (events.length) {
+            for(let i = 0; i < events.length; i++) {
+                if (events[i]?.recorded.includes(userId) && dayjs().isAfter(dayjs(events[i].date))) {
+                    const eventInfo = {
+                        _id: events[i]._id,
+                        name: events[i].name,
+                        date: events[i].date
+                    }
+                    listEvents.push(eventInfo)
                 }
-                listEvents.push(eventInfo)
             }
         }
         return listEvents
@@ -226,11 +198,12 @@ export class EventsService {
 
     // Отмена записи на занятие
     async cancelRecordOnEvent(status_id: string) {
-        const status = await this.statusesService.clearStatus(status_id)
+        const status = await this.statusesService.getStatusById(status_id)
         if (status) {
             await this.removeUserFromEvent(status.event_id, status.user_id)
             await this.addUserInCanceled(status.event_id, status.user_id)
             if (status.payment_status === TypeStatus.Paid) {
+                await this.statusesService.clearStatus(status_id)
                 const newStatus = {
                     user_id: status.user_id,
                     event_id: status.event_id,
@@ -272,6 +245,30 @@ export class EventsService {
         }
         await this.addUserToEvent( event_id, userId )
         return resStatus
+    }
+
+    // Проверка давать ли скидку
+    async checkDiscountForUser(userId: string) {
+        const user = await this.usersService.getUserById(userId)
+        // список занятий пользователя
+        const eventsUser = await this.getEventListForUser(userId)
+        // для новичков
+        if (
+            (DateTime.fromISO(user.reg_date).toMillis() > beginStock && !eventsUser.length) ||
+            (!eventsUser.length && newbieUsers.includes(userId))
+        ) {
+            return true
+        }
+        return false
+    }
+
+    // Установка скидки в каждое занятие
+    setDiscountInEvents(events, discountAmount) {
+        return events.map(event => {
+            event.discount = true
+            event.price = event.price / 100 * (100 - discountAmount)
+            return event
+        })
     }
 
 }

@@ -18,6 +18,10 @@ export class StatusesService {
         return this.statusesModel.findOne({event_id: eventId, user_id: userId})
     }
 
+    async getStatusById(statusId: string): Promise<Statuses> {
+        return this.statusesModel.findById({_id: statusId})
+    }
+
     async updateStatuses(id: string, dto: CreateStatusData): Promise<any> {
         const status = await this.statusesModel.findById(id)
         if (status.payment_status === TypeStatus.Paid && dto.event_status === TypeStatus.NotVisited) {
