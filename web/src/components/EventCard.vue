@@ -181,6 +181,16 @@ export default class EventCard extends Vue {
                     if (statusOutList.name === typesStatus.nearest.name && this.event.status.length > 1) {
                         return
                     }
+                    if (
+                        statusOutList.name === typesStatus.notPaid.name ||
+                        statusOutList.name === typesStatus.notVisited.name
+                    ) {
+                        if (!this.statuses.includes(typesStatus.nearest) &&
+                            this.event.status.includes(typesStatus.nearest.name)) {
+                            this.statuses.push(typesStatus.nearest)
+                        }
+                        return
+                    }
                     this.statuses.push(statusOutList)
                 }
             })

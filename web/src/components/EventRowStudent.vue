@@ -121,7 +121,9 @@ export default class EventRowStudent extends Vue {
 
     get visiblePayment(): boolean {
         return !(this.user.payment_status === this.typesStatus.paid.name ||
-            this.user.payment_status === this.typesStatus.madeRefund.name)
+            this.user.payment_status === this.typesStatus.madeRefund.name ||
+            this.user.payment_status === this.typesStatus.notPaid.name
+        )
     }
 
     get visibleVisit(): boolean {

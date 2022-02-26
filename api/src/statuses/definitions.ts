@@ -13,6 +13,7 @@ export enum TypeStatus {
     Cash = "cash", // Наличными
     Card = "card", // Перевод на карту
     Paid = "paid", // Оплатил
+    NotPaid = "notPaid", // Не оплатил
     NeedRefund = "needRefund", // Нужен возврат
     makeRefund = "makeRefund", // Сделать возврат
     madeRefund = "madeRefund" // Возврат сделан
