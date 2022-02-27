@@ -38,7 +38,7 @@ export class EventsService {
 
     // получение списка всех занятий
     async getAllEvents(id: string): Promise<Events[]>{
-        const events = await this.eventsModel.find({date: {$gte: new Date()}})
+        const events = await this.eventsModel.find({date: {$gte: DateTime.now().minus({hour: 1}).toJSDate()}})
         const sortedEvents = this.sortArrayOnDate(events)
         const discount = await this.checkDiscountForUser(id)
         if (discount) {
