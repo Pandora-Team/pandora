@@ -38,7 +38,7 @@ export class EventsService {
 
     // получение списка всех занятий
     async getAllEvents(id: string): Promise<Events[]>{
-        const events = await this.eventsModel.find({date: {$gte: new Date()}})
+        const events = await this.eventsModel.find({date: {$gte: DateTime.now().minus({hour: 1}).toJSDate()}})
         const sortedEvents = this.sortArrayOnDate(events)
         const discount = await this.checkDiscountForUser(id)
         if (discount) {
@@ -264,8 +264,9 @@ export class EventsService {
         return listEvents
     }
 
+    // проверка на посещение всех 4-х занятий
     async checkVisitFourEvents(userId: string) {
-        const events = await this.eventsModel.find({date: {$lte: new Date()}})
+        const events = await this.eventsModel.find({$and : [{date: {$lte: new Date()}}, {date: {$gte: new Date(beginStock)}}]})
         const sortArr = this.sortArrayOnDate(events)
         const arr = sortArr.slice(-4)
         if (arr.length < 4) return false
