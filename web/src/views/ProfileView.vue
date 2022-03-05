@@ -86,7 +86,7 @@ export default class ProfileView extends Vue {
             display: flex;
             align-items: flex-start;
             .info-card.profile-card {
-                max-width: 700px;
+                max-width: 640px;
                 box-sizing: border-box;
                 width: 100%;
             }
