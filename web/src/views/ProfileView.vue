@@ -25,7 +25,7 @@
                     />
                 </transition-fade>
             </info-card>
-            <profile-events />
+            <profile-events v-if="!isAdmin" />
         </div>
     </div>
 </template>
@@ -65,6 +65,10 @@ export default class ProfileView extends Vue {
 
     get isMobile(): boolean {
         return this.$mainStore.app.isMobile
+    }
+
+    get isAdmin(): boolean {
+        return this.$mainStore.user.isAdmin
     }
 
 }
