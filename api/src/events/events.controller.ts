@@ -43,7 +43,7 @@ export class EventsController {
     @UseGuards(JwtAuthGuard)
     @Get("visited")
     async getVisitedEvent(@Request() req) {
-        return this.eventsService.getEventListForUser(req.user.id)
+        return this.eventsService.getEventList(req.user.id)
     }
 
 

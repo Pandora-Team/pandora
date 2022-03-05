@@ -264,6 +264,27 @@ export class EventsService {
         return listEvents
     }
 
+    // получение списка занятий, которые посетил пользователь [2]
+    async getEventList(userId: string): Promise<Events[]> {
+        const listEvents = []
+        const events = await this.eventsModel.find({})
+        if (events.length) {
+            for(let i = 0; i < events.length; i++) {
+                if (events[i].recorded.includes(userId) && DateTime.fromJSDate(events[i].date) < DateTime.now()) {
+                    const eventInfo = {
+                        _id: events[i]._id,
+                        name: events[i].name,
+                        date: events[i].date
+                    }
+                    listEvents.push(eventInfo)
+                } else {
+                    break
+                }
+            }
+        }
+        return listEvents
+    }
+
     // проверка на посещение всех 4-х занятий
     async checkVisitFourEvents(userId: string) {
         const events = await this.eventsModel.find({$and : [{date: {$lte: new Date()}}, {date: {$gte: new Date(beginStock)}}]})
