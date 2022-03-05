@@ -61,6 +61,11 @@ export default class EventsCarouselComponent extends Vue {
                 display: flex;
                 justify-content: center;
             }
+            @media all and (max-width: 500px) {
+                .event-card {
+                    margin:0 20px;
+                }
+            }
         }
     }
 </style>

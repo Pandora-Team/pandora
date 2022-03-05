@@ -31,11 +31,11 @@ export default class InfoCard extends Vue {
 
     get srcPathImg(): string {
         if (this.inlineClass === "classes") {
-            if (this.isMobile) return require("@/assets/bg/welcome-classes-min.jpg")
+            if (this.isMobile) return require("@/assets/bg/welcome-classes-min.png")
             return require("@/assets/bg/welcome-classes.png")
         }
         if (this.inlineClass === "questions") {
-            if (this.isMobile) return require("@/assets/bg/welcome-questions-min.jpg")
+            if (this.isMobile) return require("@/assets/bg/welcome-questions-min.png")
             return require("@/assets/bg/welcome-questions.png")
         }
         return ""
@@ -57,17 +57,13 @@ export default class InfoCard extends Vue {
 <style lang="scss">
     .info-card-mini {
         height: 155px;
-        border-radius: 50px;
+        border-radius: 30px;
         display: flex;
         justify-content: center;
         align-items: flex-end;
         position: relative;
         overflow: hidden;
         cursor: pointer;
-        padding: 10px 10px 0 10px;
-        @media all and (max-width: 800px) {
-            border-radius: 30px;
-        }
         &::before {
             content: "";
             position: absolute;
@@ -77,6 +73,11 @@ export default class InfoCard extends Vue {
             height: 199px;
             background: $gradient-mini-info-card;
             z-index: 3;
+        }
+        @media all and (max-width: 800px) {
+            &::before {
+                position: initial;
+            }
         }
         img {
             object-fit: cover;

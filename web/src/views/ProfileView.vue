@@ -25,7 +25,7 @@
                     />
                 </transition-fade>
             </info-card>
-            <profile-events />
+            <profile-events v-if="!isAdmin" />
         </div>
     </div>
 </template>
@@ -67,6 +67,10 @@ export default class ProfileView extends Vue {
         return this.$mainStore.app.isMobile
     }
 
+    get isAdmin(): boolean {
+        return this.$mainStore.user.isAdmin
+    }
+
 }
 </script>
 
@@ -82,7 +86,7 @@ export default class ProfileView extends Vue {
             display: flex;
             align-items: flex-start;
             .info-card.profile-card {
-                max-width: 700px;
+                max-width: 640px;
                 box-sizing: border-box;
                 width: 100%;
             }

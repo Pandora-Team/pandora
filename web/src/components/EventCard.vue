@@ -11,7 +11,7 @@
                 @click="onEdit"
             />
             <div
-                v-if="event.discount"
+                v-if="!isAdmin && event.discount"
                 class="event-card__discount"
             >
                 20%

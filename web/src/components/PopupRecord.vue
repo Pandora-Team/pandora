@@ -20,7 +20,7 @@
                     <p v-html="paymentText" />
                     <div
                         class="event-card__payment"
-                        :class="{'event-card__payment--mb': $v.$error}"
+                        :class="{'event-card__payment--mb': errorPayment}"
                     >
                         <p>Оплата:</p>
                         <main-radio
@@ -70,7 +70,6 @@ import MainBtn from "@/components/MainBtn.vue"
 import MainRadio from "@/components/MainRadio.vue"
 import { statusData, typesStatus } from "@/definitions/typeStatus"
 import dayjs from "dayjs"
-import { required } from "vuelidate/lib/validators"
 import { recordOnEvent } from "@/api/events"
 
 @Component({
@@ -79,13 +78,11 @@ import { recordOnEvent } from "@/api/events"
         MainBtn,
         MainRadio,
     },
-    validations: {
-        payment: required,
-    },
 })
 export default class PopupRecord extends Vue {
 
     payment = ""
+    dirty = false
 
     typesStatuses = typesStatus
 
@@ -100,7 +97,7 @@ export default class PopupRecord extends Vue {
     }
 
     get errorPayment(): string {
-        if (this.$v.payment.$dirty && !this.$v.payment.required) {
+        if (this.dirty && !this.payment) {
             return "Выбор оплаты обязателен"
         }
         return ""
@@ -130,8 +127,8 @@ export default class PopupRecord extends Vue {
     }
 
     async onClick(): Promise<void> {
-        this.$v.$touch()
-        if (this.$v.$invalid) return
+        this.dirty = true
+        if (this.errorPayment) return
         const params: statusData = {
             event_id:       this.event._id,
             payment_status: this.payment,
