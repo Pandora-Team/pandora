@@ -66,6 +66,7 @@ export interface SocialData {
 }
 
 export interface UserData {
+    id?: number
     name: string
     phone: string
     birthday: string
@@ -75,6 +76,7 @@ export interface UserData {
     instagram: string
     telegram: string
     events?: UserVisitedEventsData[]
+    reg_date: Date
 }
 
 export interface UserVisitedEventsData {

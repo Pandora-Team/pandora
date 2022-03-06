@@ -2,7 +2,7 @@
     <div class="list-students-row">
         <div class="list-students-row__item list-students-row__info">
             <div class="list-students-row__number">
-                {{ number }}
+                {{ user.id }}
             </div>
             <div class="list-students-row__avatar">
                 <lk-avatar
@@ -51,13 +51,6 @@ export default class ListStudentsRow extends Vue {
 
     @Prop({ type: Object })
     readonly user!: UserData
-
-    @Prop({ type: Number })
-    readonly index!: number
-
-    get number(): number {
-        return this.index + 1
-    }
 
     get birthdayText(): string {
         if (this.user.birthday) return `Дата рождения: <b>${this.user.birthday}</b>`
