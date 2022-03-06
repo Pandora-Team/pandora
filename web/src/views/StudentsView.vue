@@ -48,6 +48,14 @@ export default class StudentsView extends Vue {
         }
         &-nav {
             margin-bottom: 30px;
+            @media all and (max-width: 500px) {
+                .btn-status {
+                    font-size: 14px;
+                    &--link {
+                        margin-right: 10px;
+                    }
+                }
+            }
         }
     }
 </style>
