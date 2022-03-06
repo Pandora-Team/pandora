@@ -31,10 +31,12 @@
     "vuelidate": "^0.7.5",
     "vuex": "^3.4.0",
     "vuex-simple": "^2.2.0",
-    "workbox-window": "^6.4.2"
+    "workbox-window": "^6.4.2",
+    "luxon": "^2.3.0"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.150",
+    "@types/luxon": "^2.3.0",
     "@types/vue-clickaway": "^2.2.0",
     "@types/vue-cropperjs": "^4.1.2",
     "@types/vuelidate": "^0.7.13",
