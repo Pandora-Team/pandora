@@ -19,6 +19,7 @@
             <div
                 v-if="isAdmin && event.recorded.length"
                 class="event-card__number"
+                @click="goToEvent"
             >
                 {{ numberUsers }}
             </div>
@@ -218,6 +219,10 @@ export default class EventCard extends Vue {
         this.$mainStore.popup.changeCreatedState(this.event)
         this.$mainStore.popup.changeActiveCreatePopup(true)
     }
+
+    async goToEvent(): Promise<void> {
+        await this.$router.push({ path: this.$mainPaths.ListEventsView, query: { id: this.event._id } })
+    }
 }
 </script>
 
@@ -283,7 +288,7 @@ export default class EventCard extends Vue {
            color: inherit;
        }
        &__number {
-           cursor: default;
+           cursor: pointer;
            position: absolute;
            top: -15px;
            left: -15px;

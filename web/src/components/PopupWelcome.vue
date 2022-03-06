@@ -28,7 +28,6 @@
 <script lang="ts">
 
 import { Component, Vue } from "vue-property-decorator"
-import { EventData } from "@/definitions/interfaces"
 import MainPopup from "@/components/MainPopup.vue"
 import EventCard from "@/components/EventCard.vue"
 import MainBtn from "@/components/MainBtn.vue"
@@ -41,10 +40,6 @@ import MainBtn from "@/components/MainBtn.vue"
     },
 })
 export default class PopupWelcome extends Vue {
-
-    get event(): EventData {
-        return this.$mainStore.popup.canceledState
-    }
 
     closePopup(): void {
         this.$mainStore.popup.changeActiveWelcomePopup(false)

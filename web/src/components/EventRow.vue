@@ -1,5 +1,8 @@
 <template>
-    <div class="event-row">
+    <div
+        class="event-row"
+        :data-id="event._id"
+    >
         <div class="event-row__head">
             <h2>{{ event.name }}</h2>
             <div class="event-row__date">
@@ -78,6 +81,31 @@ export default class EventRow extends Vue {
     
     openRecorded = false
     openCanceled = false
+
+    mounted(): void {
+        if (this.$route.query?.id === this.event._id) {
+            this.openRecorded = true
+            const body = document.querySelector(".lk-body__wrapper")
+            const rows = document.querySelectorAll(".event-row")
+            const currentRow = [...rows].find(row => {
+                const id = row.getAttribute("data-id")
+                if (id === this.event._id) {
+                    return row
+                }
+            })
+            if (body && currentRow) {
+                const { top: topRow } = currentRow.getBoundingClientRect()
+                const { top: topBody } = body.getBoundingClientRect()
+                const scroll = topRow - topBody
+                body.scrollTo({
+                    top:      scroll,
+                    left:     0,
+                    behavior: "smooth",
+                })
+            }
+
+        }
+    }
 
     get date(): string {
         return dayjs(this.event.date).format("DD.MM.YYYY")

@@ -88,7 +88,6 @@ export default class ListEventsView extends Vue {
             cursor: pointer;
             margin: 0 auto 30px;
             border-radius: 30px;
-            //background: #F6F6FC;
             padding: 30px 40px;
             font-size: 18px;
             font-weight: 600;
