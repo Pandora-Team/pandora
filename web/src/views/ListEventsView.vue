@@ -94,6 +94,10 @@ export default class ListEventsView extends Vue {
             color: $color-gray;
             position: relative;
             width: 350px;
+            line-height: 22px;
+            @media all and (max-width: 500px) {
+                width: calc(100% - 80px);
+            }
             &::after {
                 transition: .5s;
                 content: "";
