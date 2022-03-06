@@ -84,14 +84,15 @@ export default class ListEventsView extends Vue {
         flex-direction: column;
         width: 100%;
         &__btn {
+            text-align: center;
             cursor: pointer;
-            margin-bottom: 30px;
+            margin: 0 auto 30px;
             border-radius: 30px;
-            background: #F6F6FC;
+            //background: #F6F6FC;
             padding: 30px 40px;
             font-size: 18px;
             font-weight: 600;
-            color: $color-gray;
+            color: $color-purple;
             position: relative;
             width: 350px;
             line-height: 22px;
@@ -106,7 +107,12 @@ export default class ListEventsView extends Vue {
                 right: 20px;
                 border-style: solid;
                 border-width: 5.4px 5px 0 5px;
-                border-color: $color-gray transparent transparent transparent;
+                border-color: $color-purple transparent transparent transparent;
+                @media all and (max-width: 500px) {
+                    top: auto;
+                    bottom: 10px;
+                    right: calc(50% - 5px);
+                }
             }
             &--active {
                 &::after {
