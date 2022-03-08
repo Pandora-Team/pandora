@@ -2,7 +2,7 @@
     <div class="events">
         <h1>Доступные для записи МК</h1>
         <div class="events__body">
-            <events-carousel-component />
+            <events-list />
         </div>
     </div>
 </template>
@@ -13,14 +13,14 @@ import { Component, Vue } from "vue-property-decorator"
 import EventCard from "@/components/EventCard.vue"
 import EventCardCreate from "@/components/EventCardCreate.vue"
 import EventCardEmpty from "@/components/EventCardEmpty.vue"
-import EventsCarouselComponent from "@/components/EventsCarouselComponent.vue"
+import EventsList from "@/components/EventsList.vue"
 
 @Component({
     components: {
         EventCard,
         EventCardCreate,
         EventCardEmpty,
-        EventsCarouselComponent,
+        EventsList,
     },
 })
 export default class ClassesView extends Vue {}
@@ -45,7 +45,6 @@ export default class ClassesView extends Vue {}
                 }
             }
             @media all and (max-width: 500px) {
-                width: 100%;
                 &__date {
                     flex-direction: column;
                     align-items: flex-start;
