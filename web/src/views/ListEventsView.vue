@@ -7,13 +7,6 @@
                 :event="event"
             />
         </template>
-        <template v-if="pastEvents.length && visiblePastEvents">
-            <event-row
-                v-for="event in pastEvents"
-                :key="event._id"
-                :event="event"
-            />
-        </template>
         <div
             class="events-list__btn"
             :class="{'events-list__btn--active': visiblePastEvents}"
@@ -21,6 +14,13 @@
         >
             {{ textShowPastEvents }}
         </div>
+        <template v-if="pastEvents.length && visiblePastEvents">
+            <event-row
+                v-for="event in pastEvents"
+                :key="event._id"
+                :event="event"
+            />
+        </template>
     </div>
 </template>
 
