@@ -277,8 +277,6 @@ export class EventsService {
                         date: events[i].date
                     }
                     listEvents.push(eventInfo)
-                } else {
-                    break
                 }
             }
         }
