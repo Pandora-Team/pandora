@@ -121,7 +121,7 @@ export default class PopupCreate extends Vue {
         this.loading = true
         const formData = new FormData()
         const data = { ...this.state }
-        const nonIncludeKey = ["status", "users_id", "users"]
+        const nonIncludeKey = ["status", "users_id", "users", "recorded", "canceled", "recorded_users", "canceled_users"]
         for (const key in data) {
             if (data.hasOwnProperty(key) && data[key]) {
                 if (nonIncludeKey.includes(key)) continue
