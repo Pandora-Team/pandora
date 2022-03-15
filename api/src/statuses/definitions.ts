@@ -3,6 +3,8 @@ export class CreateStatusData {
     readonly event_id?: string
     payment_status?: string
     readonly event_status?: string
+    price?: number
+    discount?: number
 }
 
 export enum TypeStatus {
