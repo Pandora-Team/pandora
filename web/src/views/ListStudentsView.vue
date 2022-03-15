@@ -5,8 +5,14 @@
     >
         <div
             class="students-list__sorting"
+            :class="{'students-list__sorting-reverse': needSorting}"
             @click="sorting"
-        />
+        >
+            <simple-svg
+                :src="iconPath"
+                custom-class-name="students-list__sorting-icon"
+            />
+        </div>
         <list-students-row
             v-for="(user, index) in students"
             :key="`${user.surname}_${user.id}_${index}`"
@@ -64,6 +70,10 @@ export default class ListStudentsView extends Vue {
         this.needSorting = !this.needSorting
         this.students.sort(this.sortByReg)
     }
+
+    get iconPath(): string {
+        return require("@/assets/svg/sort.svg")
+    }
 }
 </script>
 
@@ -79,13 +89,31 @@ export default class ListStudentsView extends Vue {
         }
         &__sorting {
             cursor: pointer;
-            width: 30px;
-            height: 30px;
+            width: 40px;
+            height: 40px;
             position: absolute;
-            top: -65px;
+            top: -70px;
             right: 0;
-            background: url("../assets/sort.png");
-            background-size: 30px;
+            &-icon {
+                path:nth-of-type(1) {
+                    transition: .5s;
+                    opacity: 0.3;
+                }
+                path:nth-of-type(2) {
+                    transition: .5s;
+                    opacity: 1;
+                }
+            }
+            &-reverse {
+                .students-list__sorting-icon {
+                    path:nth-of-type(1) {
+                        opacity: 1;
+                    }
+                    path:nth-of-type(2) {
+                        opacity: 0.3;
+                    }
+                }
+            }
         }
     }
 </style>
