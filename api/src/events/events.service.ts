@@ -7,7 +7,7 @@ import {PlacesService} from "../places/places.service";
 import {FileService} from "../file/file.service";
 import {StatusesService} from "../statuses/statuses.service";
 import {UsersService} from "../users/users.service";
-import {TypeStatus} from "../statuses/definitions";
+import {CreateStatusData, TypeStatus} from "../statuses/definitions";
 import { DateTime } from "luxon"
 import { isEmpty } from "lodash"
 
@@ -65,9 +65,9 @@ export class EventsService {
                     const objUser = await this.usersService.getUserById(user)
                     if (!isEmpty(objStatuses) && !isEmpty(objUser)) {
                         // @ts-ignore
-                        const { payment_status, event_status, _id } = objStatuses
+                        const { payment_status, event_status, _id, price, discount } = objStatuses
                         const { name, avatar, surname } = objUser
-                        const newObj = { payment_status, event_status, status_id: _id, name, avatar, surname }
+                        const newObj = { payment_status, event_status, status_id: _id, name, avatar, surname, price, discount }
                         event.recorded_users.push(newObj)
                     }
                 }
@@ -199,15 +199,21 @@ export class EventsService {
     // Запись на занятие
     async recordOnEvent(userId: string, data: RecordOnEventData) {
         let resStatus
-        const { event_id, payment_status } = data
+        const { event_id, payment_status, price, discount } = data
         await this.removeUserInCanceled(event_id, userId)
         const status = await this.statusesService.getStatuses(event_id, userId)
         if (status) {
-            const newStatus = {
+            const newStatus: CreateStatusData = {
                 user_id: status.user_id,
                 event_id: status.event_id,
                 payment_status,
                 event_status: TypeStatus.Go,
+            }
+            if (price) {
+                newStatus.price = price
+            }
+            if (discount) {
+                newStatus.discount = discount
             }
             if (status.payment_status === TypeStatus.NeedRefund) {
                 newStatus.payment_status = TypeStatus.Paid
@@ -216,11 +222,17 @@ export class EventsService {
             await this.statusesService.updateStatuses(status._id, newStatus)
             resStatus = newStatus
         } else {
-            const newStatus = {
+            const newStatus: CreateStatusData = {
                 user_id: userId,
                 event_id: event_id,
                 payment_status: payment_status,
                 event_status: TypeStatus.Go,
+            }
+            if (price) {
+                newStatus.price = price
+            }
+            if (discount) {
+                newStatus.discount = discount
             }
             resStatus = await this.statusesService.createStatus( userId, newStatus )
         }

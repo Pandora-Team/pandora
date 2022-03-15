@@ -18,6 +18,12 @@ export class Statuses {
     @Prop()
     event_status: string
 
+    @Prop()
+    discount?: number
+
+    @Prop()
+    price?: number
+
 }
 
 export const StatusesSchema = SchemaFactory.createForClass(Statuses);

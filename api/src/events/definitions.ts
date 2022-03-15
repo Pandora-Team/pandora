@@ -15,6 +15,8 @@ export class CreateEventData {
 export class RecordOnEventData {
     readonly event_id: string
     readonly payment_status: string
+    readonly price?: number
+    readonly discount?: number
 }
 
 // Начало акции для новичков и тех, кто посещает 4 занятия подряд

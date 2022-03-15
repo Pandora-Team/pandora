@@ -39,4 +39,6 @@ export interface statusData {
     event_id?: string
     event_status?: string
     payment_status?: string
+    price?: number
+    discount?: number
 }

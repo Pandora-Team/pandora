@@ -41,6 +41,8 @@ export interface UserInfo {
     payment_status: string
     status_id: string
     avatar?: string
+    price?: number
+    discount?: number
 }
 
 export interface UpdateUserData {

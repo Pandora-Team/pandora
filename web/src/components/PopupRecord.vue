@@ -132,6 +132,10 @@ export default class PopupRecord extends Vue {
         const params: statusData = {
             event_id:       this.event._id,
             payment_status: this.payment,
+            price:          Number(this.event.price),
+        }
+        if (this.event.discount) {
+            params.discount = 20
         }
         try {
             const res = await recordOnEvent(params)
