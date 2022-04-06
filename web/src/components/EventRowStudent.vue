@@ -20,7 +20,7 @@
         <div class="event-row__student-status">
             <div class="event-row__student-payment">
                 <div class="event-row__student-title">
-                    Способ оплаты{{ priceForEvent }}:
+                    Способ оплаты:
                     <div class="event-row__student-value">
                         <b>{{ currentPayment }}</b>
                         <div class="event-row__student-action">
@@ -103,14 +103,14 @@ export default class EventRowStudent extends Vue {
     get currentPayment(): string {
         const payment = listStatuses.find(status => status.name === this.user.payment_status)
         if (payment) {
-            return payment.title
+            return `${payment.title} ${this.priceForEvent}`
         }
         return ""
     }
 
     get priceForEvent(): string {
         if (this.user.price) {
-            return ` ( ${this.user.price} ) `
+            return ` - ${this.user.price} р.`
         }
         return ""
     }
