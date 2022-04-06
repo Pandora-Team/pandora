@@ -58,7 +58,8 @@ export default class App extends Vue {
     created(): void {
         if (this.$workbox) {
             this.$workbox.addEventListener("waiting", () => {
-                this.visiblePopupUpdate = true
+                //this.visiblePopupUpdate = true
+                this.$workbox.messageSW({ type: "SKIP_WAITING" })
             })
         }
     }
