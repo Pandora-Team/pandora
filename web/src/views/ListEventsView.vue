@@ -51,18 +51,18 @@ export default class ListEventsView extends Vue {
     get futureEvents(): EventData[] {
         return this.events.filter(event => {
             if (typeof event.date === "string") {
-                return DateTime.fromISO(event.date) >= DateTime.now().plus({ hour: 1 })
+                return DateTime.fromISO(event.date).plus({ hour: 1 }) >= DateTime.now()
             }
-            return DateTime.fromJSDate(event.date) >= DateTime.now().plus({ hour: 1 })
+            return DateTime.fromJSDate(event.date).plus({ hour: 1 }) >= DateTime.now()
         })
     }
 
     get pastEvents(): EventData[] {
         return this.events.filter(event => {
             if (typeof event.date === "string") {
-                return DateTime.fromISO(event.date) < DateTime.now().plus({ hour: 1 })
+                return DateTime.fromISO(event.date).plus({ hour: 1 }) < DateTime.now()
             }
-            return DateTime.fromJSDate(event.date) < DateTime.now().plus({ hour: 1 })
+            return DateTime.fromJSDate(event.date).plus({ hour: 1 }) < DateTime.now()
         })
     }
 
