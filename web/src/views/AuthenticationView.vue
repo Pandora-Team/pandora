@@ -95,10 +95,16 @@ export default class AuthenticationView extends Vue {
         this.$v.$touch()
         if (!this.$v.$invalid) {
             this.loading = true
+            let phone
+            try {
+                phone = this.phone.replaceAll("-", "")
+            } catch (e) {
+                throw new Error(`Error replace phone - ${this.phone}`)
+            }
             try {
                 const { data } = await auth({
-                    phone: this.phone.replaceAll("-", ""),
-                    pass:  this.password,
+                    phone,
+                    pass: this.password,
                 })
 
                 this.$mainStore.notification.changeNotification({ state: true, ...this.$mainNotification.successAuth })
@@ -110,7 +116,7 @@ export default class AuthenticationView extends Vue {
                 this.$mainStore.notification.changeNotification({ state: true, ...this.$mainNotification.failedAuth })
                 this.loading = false
                 await this.$router.push({ path: this.$mainPaths.LoginLayout })
-                throw new Error(`Error Authentication - ${e}`)
+                throw new Error(`Error Authentication - ${e} - ${this.phone} - ${phone} - ${this.password}`)
             }
         }
     }
