@@ -116,7 +116,7 @@ export default class AuthenticationView extends Vue {
                 this.$mainStore.notification.changeNotification({ state: true, ...this.$mainNotification.failedAuth })
                 this.loading = false
                 await this.$router.push({ path: this.$mainPaths.LoginLayout })
-                throw new Error(`Error Authentication - ${e}`)
+                throw new Error(`Error Authentication - ${e} - ${this.phone} - ${phone} - ${this.password}`)
             }
         }
     }
