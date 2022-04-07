@@ -182,9 +182,13 @@ export default class RegistrationView extends Vue {
             this.loading = true
             try {
                 const res = await reg({
-                    pass:     this.password,
-                    name:     this.name,
-                    phone:    this.phone.replaceAll("-", ""),
+                    pass:  this.password,
+                    name:  this.name,
+                    phone: this.phone
+                        .replace("-", "")
+                        .replace("-", "")
+                        .replace("-", "")
+                        .replace("-", ""),
                     surname:  this.surname,
                     birthday: this.birthday,
                 })
