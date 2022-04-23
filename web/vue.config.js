@@ -56,7 +56,7 @@ module.exports = {
         manifestOptions:                 {
             name:             "K-pop Dance Pandora",
             short_name:       "Pandora",
-            display:          "fullscreen",
+            display:          "standalone",
             orientation:      "portrait",
             background_color: "#242424",
             icons:            [

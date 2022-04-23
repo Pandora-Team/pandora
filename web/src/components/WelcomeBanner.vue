@@ -8,7 +8,15 @@
                         Добро пожаловать в PANDORA! Здесь ты можешь записаться на&nbsp;занятия,
                         узнать о будущих и прошедших событиях.
                     </p>
-                    <p>Будь в курсе k-pop движухи в Туле.</p>
+                    <p>
+                        Будь в курсе k-pop движухи в Туле. Вступай в 
+                        <a 
+                            href="https://t.me/+yInFhfRRC7FiMTIy" 
+                            target="_blank"
+                        >
+                            чат участников!
+                        </a>
+                    </p>
                 </div>
             </div>
         </div>
@@ -59,6 +67,9 @@ export default class WelcomeBanner extends Vue {
                 &:nth-last-of-type(1) {
                     margin-bottom: 0;
                 }
+            }
+            a {
+                text-decoration: underline;
             }
         }
     }
@@ -129,6 +140,7 @@ export default class WelcomeBanner extends Vue {
         }
         .welcome-banner {
             box-shadow: $shadow-banner;
+            height: 480px;
         }
     }
 </style>
