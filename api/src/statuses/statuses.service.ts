@@ -24,15 +24,18 @@ export class StatusesService {
 
     async updateStatuses(id: string, dto: CreateStatusData): Promise<any> {
         const status = await this.statusesModel.findById(id)
-        if (status.payment_status === TypeStatus.Paid && dto.event_status === TypeStatus.NotVisited) {
-            dto.payment_status = TypeStatus.NeedRefund
-        }
+
         if (dto.payment_status === TypeStatus.makeRefund) {
             dto.payment_status = TypeStatus.madeRefund
         }
         if (dto.event_status === TypeStatus.NotVisited) {
             await this.eventsService.removeUserFromEvent(status.event_id, status.user_id)
             await this.eventsService.addUserInCanceled(status.event_id, status.user_id)
+            if (status.payment_status === TypeStatus.Paid) {
+                dto.payment_status = TypeStatus.NeedRefund
+            } else {
+                dto.payment_status = TypeStatus.NotPaid
+            }
         }
         await this.statusesModel.updateOne({_id: id}, {...dto})
         return dto
