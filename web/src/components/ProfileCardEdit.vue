@@ -45,7 +45,7 @@
                 v-model="vk"
                 label="ВКонтакте"
                 type="text"
-                placeholder="Ссылка"
+                placeholder="pandoradancetula"
                 inline-class="profile-item"
             />
         </div>
@@ -55,7 +55,7 @@
                 v-model="instagram"
                 label="Инстаграм"
                 type="text"
-                placeholder="Ссылка"
+                placeholder="pandora.kpop.dance"
                 inline-class="profile-item"
             />
             <main-form-item
@@ -63,7 +63,7 @@
                 v-model="telegram"
                 label="Телеграм"
                 type="text"
-                placeholder="Ссылка"
+                placeholder="pandorakpop"
                 inline-class="profile-item"
             />
         </div>

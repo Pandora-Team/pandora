@@ -30,6 +30,22 @@ export default class LkSocialItem extends Vue {
 
     onClick(): void {
         if (!this.social.path) return
+        if (!this.social.path.includes("http")) {
+            let link = "https://"
+            switch (this.social.icon) {
+            case "vk": 
+                link += `vk.com/${ this.social.path}`
+                break
+            case "inst":
+                link += `www.instagram.com/${ this.social.path}`
+                break
+            case "telegram":
+                link += `t.me/${ this.social.path}`
+                break
+            }
+            window.open(link, "_blank")
+            return
+        }
         window.open(`${this.social.path}`, "_blank")
     }
 
