@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import {Document} from 'mongoose';
+import {typeEvent} from "./definitions";
 
 export type EventsDocument = Events & Document;
 
@@ -62,6 +63,9 @@ export class Events {
 
     @Prop()
     discount?: boolean
+
+    @Prop()
+    type?: typeEvent
 }
 
 export const EventsSchema = SchemaFactory.createForClass(Events);

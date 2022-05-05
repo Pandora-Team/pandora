@@ -2,14 +2,14 @@ import {Injectable} from "@nestjs/common";
 import {Model, ObjectId} from "mongoose";
 import {Events, EventsDocument} from "./events.schema";
 import {InjectModel} from "@nestjs/mongoose";
-import {CreateEventData, RecordOnEventData, beginStock, newbieUsers} from "./definitions";
+import {beginStock, CreateEventData, newbieUsers, RecordOnEventData, typeEvent} from "./definitions";
 import {PlacesService} from "../places/places.service";
 import {FileService} from "../file/file.service";
 import {StatusesService} from "../statuses/statuses.service";
 import {UsersService} from "../users/users.service";
 import {CreateStatusData, TypeStatus} from "../statuses/definitions";
-import { DateTime } from "luxon"
-import { isEmpty } from "lodash"
+import {DateTime} from "luxon"
+import {isEmpty} from "lodash"
 
 @Injectable()
 export class EventsService {
@@ -25,6 +25,11 @@ export class EventsService {
     async createEvent(dto: CreateEventData, coverId): Promise<Events> {
         let newAddress
         const { place_id, address, ...result } = dto
+
+        if (!dto.type) {
+            dto.type = typeEvent.OneTime
+        }
+
         if (address) {
             const place = await this.placesService.createPlace({ address })
             newAddress = place.address
@@ -316,6 +321,7 @@ export class EventsService {
     // Установка скидки в каждое занятие
     setDiscountInEvents(events, discountAmount) {
         return events.map(event => {
+            if (event.type === typeEvent.Project) return event
             event.discount = true
             event.price = event.price / 100 * (100 - discountAmount)
             return event

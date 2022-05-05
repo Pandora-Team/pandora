@@ -10,6 +10,7 @@ export class CreateEventData {
     readonly description?: string;
     readonly recorded?: [];
     readonly canceled?: [];
+    type?: typeEvent
 }
 
 export class RecordOnEventData {
@@ -17,6 +18,11 @@ export class RecordOnEventData {
     readonly payment_status: string
     readonly price?: number
     readonly discount?: number
+}
+
+export enum typeEvent {
+    OneTime = "oneTime",
+    Project = "project"
 }
 
 // Начало акции для новичков и тех, кто посещает 4 занятия подряд
