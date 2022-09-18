@@ -1,16 +1,23 @@
 export class CreateEventData {
-    readonly date: Date;
-    readonly end_time: string;
-    readonly name: string;
+    // Список дат
+    readonly dates?: DateData[]
+    readonly name?: string;
     readonly cover?: string;
     readonly message?: string;
-    readonly price: string;
+    readonly price?: string;
     readonly place_id?: string;
     readonly address?: string;
     readonly description?: string;
     readonly recorded?: [];
     readonly canceled?: [];
-    type?: typeEvent
+    // Предоплата
+    prepayment?: string | undefined
+    // Тип занятия
+    type?: EventTypeEnum
+    // Доступность занятия
+    availability?: EventAvailabilityEnum
+    // Id главного занятия ( для проектов )
+    main_event?: string
 }
 
 export class RecordOnEventData {
@@ -20,9 +27,19 @@ export class RecordOnEventData {
     readonly discount?: number
 }
 
-export enum typeEvent {
-    OneTime = "oneTime",
-    Project = "project"
+export interface DateData {
+    date: string
+    end_time: string
+}
+
+export enum EventTypeEnum {
+    MasterClass = "МК",
+    Project = "Проект"
+}
+
+export enum EventAvailabilityEnum {
+    OpenStatus = "Открытое занятие",
+    CloseStatus = "Закрытое занятие"
 }
 
 // Начало акции для новичков и тех, кто посещает 4 занятия подряд

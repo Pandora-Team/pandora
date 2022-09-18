@@ -7,6 +7,8 @@ const names = {
     RulesView:          "rules",
     AboutView:          "about",
     ClassesView:        "classes",
+    ClassesAddView:     "classes-add",
+    ClassesEditView:    "classes-edit",
     StorageView:        "storage",
     StudentsView:       "students",
     WelcomeView:        "welcome",

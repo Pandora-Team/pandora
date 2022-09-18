@@ -2,7 +2,14 @@ import {Injectable} from "@nestjs/common";
 import {Model, ObjectId} from "mongoose";
 import {Events, EventsDocument} from "./events.schema";
 import {InjectModel} from "@nestjs/mongoose";
-import {beginStock, CreateEventData, newbieUsers, RecordOnEventData, typeEvent} from "./definitions";
+import {
+    beginStock,
+    CreateEventData,
+    EventAvailabilityEnum,
+    EventTypeEnum,
+    newbieUsers,
+    RecordOnEventData
+} from "./definitions";
 import {PlacesService} from "../places/places.service";
 import {FileService} from "../file/file.service";
 import {StatusesService} from "../statuses/statuses.service";
@@ -22,23 +29,46 @@ export class EventsService {
     ) {}
 
     // создание занятия
-    async createEvent(dto: CreateEventData, coverId): Promise<Events> {
-        let newAddress
+    async createEvent(dto: CreateEventData) {
+
+        let newAddress, availability, main_event
         const { place_id, address, ...result } = dto
 
-        if (!dto.type) {
-            dto.type = typeEvent.OneTime
+        if (!dto.availability) {
+            availability = EventAvailabilityEnum.OpenStatus
         }
 
-        if (address) {
-            const place = await this.placesService.createPlace({ address })
-            newAddress = place.address
-        }
-        if(place_id) {
+        if (place_id) {
             const place = await this.placesService.getOnePlace(place_id)
             newAddress = place.address
         }
-        return this.eventsModel.create({...result, address: newAddress, cover: coverId})
+
+        const events = await Promise.all(dto.dates.map(async (item, index) => {
+            if (dto.type === EventTypeEnum.Project) {
+                if (index === 0) {
+                    availability = EventAvailabilityEnum.OpenStatus
+                    const res = await this.eventsModel.create({ ...result, date: item.date, end_time: item.end_time, address: newAddress, availability })
+                    main_event = res._id
+                    return res
+                } else {
+                    availability = EventAvailabilityEnum.CloseStatus
+                    result.prepayment = undefined
+                    return await this.eventsModel.create({ ...result, date: item.date, end_time: item.end_time, address: newAddress, availability })
+                }
+            }
+
+            return await this.eventsModel.create({ ...result, date: item.date, end_time: item.end_time, address: newAddress, availability })
+        }))
+
+        if (dto.type !== EventTypeEnum.Project) return events
+
+        for (const event of events) {
+            if (event._id === main_event) continue
+            // Добавляем id главного ( первого ) занятия в последующие занятия
+            await this.eventsModel.updateOne({_id: event._id}, { main_event })
+        }
+
+        return events
     }
 
     // получение списка всех занятий
@@ -110,12 +140,15 @@ export class EventsService {
     // обновление данных занятия
     async updateEvent(id: ObjectId, dto: CreateEventData, coverId?: string): Promise<any> {
         const event = await this.getOneEvent(id)
+
         if (coverId && event.cover) {
             await this.fileService.deleteFile(event.cover)
             await this.eventsModel.updateOne({_id: id}, {...dto, cover: coverId})
             return { update: true, cover: coverId }
         }
+
         await this.eventsModel.updateOne({_id: id}, {...dto})
+
         return { update: true }
     }
 
@@ -124,9 +157,18 @@ export class EventsService {
         await this.statusesService.clearStatusesAllUsers(String(id))
         const event = await this.eventsModel.findByIdAndDelete({_id: id})
         if (event.cover) {
-            await this.fileService.deleteFile(event.cover)
+            try {
+                await this.fileService.deleteFile(event.cover)
+            } catch (e) {
+                console.log("[deleteEvent] error - ",e)
+            }
         }
         return event
+    }
+
+    // Удаление обложки занятия
+    async removeCover(id: string) {
+        await this.fileService.deleteFile(id)
     }
 
     // сортировка занятий по дате проведения
@@ -321,7 +363,7 @@ export class EventsService {
     // Установка скидки в каждое занятие
     setDiscountInEvents(events, discountAmount) {
         return events.map(event => {
-            if (event.type === typeEvent.Project) return event
+            if (event.type === EventTypeEnum.Project) return event
             event.discount = true
             event.price = event.price / 100 * (100 - discountAmount)
             return event

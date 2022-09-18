@@ -8,6 +8,8 @@ const paths = {
     RulesView:          "/lk/rules",
     AboutView:          "/lk/about",
     ClassesView:        "/lk/classes",
+    ClassesAddView:     "/lk/classes/add",
+    ClassesEditView:    "/lk/classes/edit",
     StorageView:        "/lk/storage",
     StudentsView:       "/lk/students",
     ListEventsView:     "/lk/students/list-events",

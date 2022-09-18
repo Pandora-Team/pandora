@@ -1,7 +1,6 @@
 import { State, Mutation } from "vuex-simple"
-import { CreateEventData, EventData } from "@/definitions/interfaces"
+import { EventData } from "@/definitions/interfaces"
 import { Store } from "@/store/store"
-import { cloneDeep } from "lodash"
 
 const initEventDataState = () => ({
     _id:       "",
@@ -17,27 +16,12 @@ const initEventDataState = () => ({
     status_id: "",
 })
 
-const initCreateEventDataState = () => ({
-    _id:      "",
-    date:     new Date(),
-    end_time: "",
-    name:     "",
-    price:    "500",
-    place_id: "",
-    address:  "",
-    cover:    undefined,
-    payment:  "",
-})
-
 export class Popup {
 
     constructor(private $mainStore: Store) {}
 
     @State()
     activeCreatePopup = false
-
-    @State()
-    createdState: CreateEventData = initCreateEventDataState()
 
     @State()
     activeRecordPopup = false
@@ -166,63 +150,4 @@ export class Popup {
     public clearRecordedState(): void {
         this.recordedState = initEventDataState()
     }
-
-    // попап создания
-
-    @Mutation()
-    public changeActiveCreatePopup(state: boolean): void {
-        this.activeCreatePopup = state
-        this.$mainStore.app.setDisabled(state)
-        if (!state) {
-            this.clearCreatedState()
-        }
-    }
-
-    @Mutation()
-    public changeCreatedState(state: EventData): void {
-        this.updatePopup = true
-        this.createdState = cloneDeep(state)
-    }
-
-    @Mutation()
-    public clearCreatedState(): void {
-        this.createdState = initEventDataState()
-        this.updatePopup = false
-    }
-
-    @Mutation()
-    public changeCover(cover: File): void {
-        this.createdState.cover = cover
-    }
-
-    @Mutation()
-    public changeDate(date: Date): void {
-        this.createdState.date = date
-    }
-
-    @Mutation()
-    public changeEndTime(endTime: string): void {
-        this.createdState.end_time = endTime
-    }
-
-    @Mutation()
-    public changeName(name: string): void {
-        this.createdState.name = name
-    }
-
-    @Mutation()
-    public changePrice(price: string): void {
-        this.createdState.price = price
-    }
-
-    @Mutation()
-    public changeAddress(address: string): void {
-        this.createdState.address = address
-    }
-
-    @Mutation()
-    public changePlaceId(place_id: string): void {
-        this.createdState.place_id = place_id
-    }
-
 }

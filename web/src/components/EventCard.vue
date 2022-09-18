@@ -35,6 +35,7 @@
             </div>
             <div class="event-card__content">
                 <h2>{{ event.name }}</h2>
+                <h3>{{ event.availability }}</h3>
                 <div
                     class="event-card__date"
                     :class="{'event-card__date--mb': welcome}"
@@ -45,6 +46,9 @@
 
                 <p v-if="!welcome">
                     Адрес: <span>{{ event.address }}</span>
+                </p>
+                <p v-if="!welcome && event.prepayment">
+                    Предоплата: <span>{{ event.prepayment }} р.</span>
                 </p>
                 <p v-if="!welcome">
                     Стоимость: <span>{{ event.price }} р.</span>
@@ -82,7 +86,7 @@
 import { Component, Prop, Vue, Watch } from "vue-property-decorator"
 import MainStatus from "@/components/MainStatus.vue"
 import MainBtn from "@/components/MainBtn.vue"
-import { EventData, styleClass } from "@/definitions/interfaces"
+import { EventAvailabilityEnum, EventData, styleClass } from "@/definitions/interfaces"
 import dayjs from "dayjs"
 import { listStatuses, typesStatus, typeStatus } from "@/definitions/typeStatus"
 import MainRadio from "@/components/MainRadio.vue"
@@ -128,6 +132,9 @@ export default class EventCard extends Vue {
     }
 
     get visibleRecordBtn(): boolean {
+        // Если закрытое занятие
+        if (this.isClosedEvent) return false
+
         if (includes(this.statuses, typesStatus.visited)) {
             return false
         }
@@ -167,6 +174,10 @@ export default class EventCard extends Vue {
             return `${this.event.recorded.length} ${enumerate(this.event.recorded.length, ["участник", "участника", "участников"])}`
         }
         return undefined
+    }
+
+    get isClosedEvent(): boolean {
+        return this.event.availability === EventAvailabilityEnum.CloseStatus
     }
 
     updateStatuses(): void {
@@ -216,8 +227,7 @@ export default class EventCard extends Vue {
     }
 
     onEdit(): void {
-        this.$mainStore.popup.changeCreatedState(this.event)
-        this.$mainStore.popup.changeActiveCreatePopup(true)
+        this.$router.push({ path: this.$mainPaths.ClassesEditView })
     }
 
     async goToEvent(): Promise<void> {
@@ -252,6 +262,12 @@ export default class EventCard extends Vue {
            top: 0;
            border-radius: 30px;
        }
+
+       h3 {
+           font-size: 20px;
+           margin-bottom: 15px;
+       }
+
        &--welcome {
            //height: 393px!important;
            height: 100%;

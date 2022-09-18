@@ -65,7 +65,7 @@ export class EventsController {
         return this.eventsService.recordOnEvent(req.user.id, data)
     }
 
-    @UseGuards(JwtAuthGuard)
+/*    @UseGuards(JwtAuthGuard)
     @Post()
     @UseInterceptors(FileFieldsInterceptor([
         { name: 'cover', maxCount: 1 }
@@ -73,6 +73,28 @@ export class EventsController {
     async createEvent(@UploadedFiles() files, @Body() dto: CreateEventData ){
         const {cover} = files
         return this.eventsService.createEvent(dto, cover[0].id)
+    }*/
+
+    @UseGuards(JwtAuthGuard)
+    @Post("create")
+    async createEvent(@Body() dto: CreateEventData ){
+        return this.eventsService.createEvent(dto)
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Post('cover/create')
+    @UseInterceptors(FileFieldsInterceptor([
+        { name: 'cover', maxCount: 1 }
+    ]))
+    async downloadCover(@UploadedFiles() files){
+        const { cover } = files
+        return cover[0].id
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Delete('cover/remove/:id')
+    async removeCover(@Param('id') id: string) {
+        return this.eventsService.removeCover(id)
     }
 
     @UseGuards(JwtAuthGuard)

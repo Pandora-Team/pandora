@@ -7,7 +7,6 @@
         <loading-view v-if="loading" />
         <router-view v-else />
         <popup-record v-if="$mainStore.popup.activeRecordPopup" />
-        <popup-create v-if="$mainStore.popup.activeCreatePopup" />
         <popup-cancel v-if="$mainStore.popup.activeCancelPopup" />
         <popup-welcome v-if="$mainStore.popup.activeWelcomePopup" />
         <popup-payment v-if="$mainStore.popup.activePaymentPopup" />
@@ -28,7 +27,6 @@ import Notification from "@/components/Notification.vue"
 import LoadingView from "@/components/LoadingView.vue"
 import MobileMenu from "@/components/MobileMenu.vue"
 import PopupRecord from "@/components/PopupRecord.vue"
-import PopupCreate from "@/components/PopupCreate.vue"
 import PopupCancel from "@/components/PopupCancel.vue"
 import PopupWelcome from "@/components/PopupWelcome.vue"
 import PopupPayment from "@/components/PopupPayment.vue"
@@ -42,7 +40,6 @@ import PopupRemove from "@/components/PopupRemove.vue"
         LoadingView,
         MobileMenu,
         PopupRecord,
-        PopupCreate,
         PopupCancel,
         PopupWelcome,
         PopupPayment,
