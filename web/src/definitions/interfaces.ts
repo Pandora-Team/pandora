@@ -15,6 +15,20 @@ export interface EventData {
     recorded_users?: UserInfo[]
     canceled_users?: UserInfo[]
     discount?: boolean
+    type?: EventTypeEnum
+    availability?: EventAvailabilityEnum
+    prepayment?: string
+    main_event?: string
+}
+
+export enum EventTypeEnum {
+    MasterClass = "МК",
+    Project = "Project classes"
+}
+
+export enum EventAvailabilityEnum {
+    OpenStatus = "Открытое занятие",
+    CloseStatus = "Закрытое занятие"
 }
 
 export interface CreateEventData {
@@ -26,6 +40,13 @@ export interface CreateEventData {
     place_id?: string
     address?: string
     cover?: File
+    type: string
+}
+
+export interface DateData {
+    id: number
+    date: string
+    end_time: string
 }
 
 export interface RecordOnEventData {

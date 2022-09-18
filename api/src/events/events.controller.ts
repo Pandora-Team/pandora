@@ -66,27 +66,31 @@ export class EventsController {
     }
 
     @UseGuards(JwtAuthGuard)
-    @Post()
+    @Post("create")
+    async createEvent(@Body() dto: CreateEventData ){
+        return this.eventsService.createEvent(dto)
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Post('cover/create')
     @UseInterceptors(FileFieldsInterceptor([
         { name: 'cover', maxCount: 1 }
     ]))
-    async createEvent(@UploadedFiles() files, @Body() dto: CreateEventData ){
-        const {cover} = files
-        return this.eventsService.createEvent(dto, cover[0].id)
+    async downloadCover(@UploadedFiles() files){
+        const { cover } = files
+        return cover[0].id
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Delete('cover/remove/:id')
+    async removeCover(@Param('id') id: string) {
+        return this.eventsService.removeCover(id)
     }
 
     @UseGuards(JwtAuthGuard)
     @Put(':id')
-    @UseInterceptors(FileFieldsInterceptor([
-        { name: 'cover', maxCount: 1 }
-    ]))
-    async updateEvent(@UploadedFiles() files, @Param('id') id: ObjectId, @Body() dto: CreateEventData) {
-        const obj = Object.assign({}, files)
-        if (Object.keys(obj).length === 0) {
-            return this.eventsService.updateEvent(id, dto)
-        }
-        const {cover} = obj
-        return this.eventsService.updateEvent(id, dto, cover[0].id)
+    async updateEvent(@Param('id') id: ObjectId, @Body() dto: CreateEventData) {
+        return this.eventsService.updateEvent(id, dto)
     }
 
     @UseGuards(JwtAuthGuard)

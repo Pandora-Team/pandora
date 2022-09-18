@@ -24,6 +24,9 @@ export class Statuses {
     @Prop()
     price?: number
 
+    @Prop()
+    prepayment?: string
+
 }
 
 export const StatusesSchema = SchemaFactory.createForClass(Statuses);

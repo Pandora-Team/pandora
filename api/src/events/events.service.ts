@@ -2,7 +2,14 @@ import {Injectable} from "@nestjs/common";
 import {Model, ObjectId} from "mongoose";
 import {Events, EventsDocument} from "./events.schema";
 import {InjectModel} from "@nestjs/mongoose";
-import {beginStock, CreateEventData, newbieUsers, RecordOnEventData, typeEvent} from "./definitions";
+import {
+    beginStock,
+    CreateEventData,
+    EventAvailabilityEnum,
+    EventTypeEnum,
+    newbieUsers,
+    RecordOnEventData
+} from "./definitions";
 import {PlacesService} from "../places/places.service";
 import {FileService} from "../file/file.service";
 import {StatusesService} from "../statuses/statuses.service";
@@ -22,35 +29,84 @@ export class EventsService {
     ) {}
 
     // создание занятия
-    async createEvent(dto: CreateEventData, coverId): Promise<Events> {
-        let newAddress
+    async createEvent(dto: CreateEventData) {
+
+        let newAddress, availability, main_event
         const { place_id, address, ...result } = dto
 
-        if (!dto.type) {
-            dto.type = typeEvent.OneTime
+        if (!dto.availability) {
+            availability = EventAvailabilityEnum.OpenStatus
         }
 
-        if (address) {
-            const place = await this.placesService.createPlace({ address })
-            newAddress = place.address
-        }
-        if(place_id) {
+        if (place_id) {
             const place = await this.placesService.getOnePlace(place_id)
             newAddress = place.address
         }
-        return this.eventsModel.create({...result, address: newAddress, cover: coverId})
+
+        const events = await Promise.all(dto.dates.map(async (item, index) => {
+            if (dto.type === EventTypeEnum.Project) {
+                // Если добавляем занятия к существующему проекту
+                if (result.main_event) {
+                    availability = EventAvailabilityEnum.CloseStatus
+
+                    const res = await this.eventsModel.create({ ...result, date: item.date, end_time: item.end_time, address: newAddress, availability })
+                    if (result.recorded?.length) {
+                        result.recorded.map(async userId => {
+                            const newStatus: CreateStatusData = {
+                                user_id: userId,
+                                event_id: res._id,
+                                payment_status: TypeStatus.Cash,
+                                event_status: TypeStatus.Go,
+                                price: Number(res.price)
+                            }
+
+                            await this.statusesService.createStatus( userId, newStatus )
+
+                            await this.addUserToEvent( res._id, userId )
+                        })
+                    }
+                    return res
+                }
+
+                if (index === 0) {
+                    availability = EventAvailabilityEnum.OpenStatus
+                    const res = await this.eventsModel.create({ ...result, date: item.date, end_time: item.end_time, address: newAddress, availability })
+                    main_event = res._id
+                    return res
+                } else {
+                    availability = EventAvailabilityEnum.CloseStatus
+                    result.prepayment = undefined
+                    return await this.eventsModel.create({ ...result, date: item.date, end_time: item.end_time, address: newAddress, availability })
+                }
+            }
+
+            return await this.eventsModel.create({ ...result, date: item.date, end_time: item.end_time, address: newAddress, availability })
+        }))
+
+
+        if (result.main_event || dto.type !== EventTypeEnum.Project ) return events
+
+        for (const event of events) {
+            if (event._id === main_event) continue
+            // Добавляем id главного ( первого ) занятия в последующие занятия
+            await this.eventsModel.updateOne({_id: event._id}, { main_event })
+        }
+
+        return events
     }
 
     // получение списка всех занятий
-    async getAllEvents(id: string): Promise<Events[]>{
+    async getAllEvents(userId?: string): Promise<Events[]>{
         const events = await this.eventsModel.find({date: {$gte: DateTime.now().minus({hour: 1}).toJSDate()}})
         const sortedEvents = this.sortArrayOnDate(events)
-        const discount = await this.checkDiscountForUser(id)
-        if (discount) {
-            const discountAmount = 20
-            this.setDiscountInEvents(sortedEvents, discountAmount)
+        if (userId) {
+            const discount = await this.checkDiscountForUser(userId)
+            if (discount) {
+                const discountAmount = 20
+                this.setDiscountInEvents(sortedEvents, discountAmount)
+            }
         }
-        return await this.getStatuses(sortedEvents, id)
+        return await this.getStatuses(sortedEvents, userId)
     }
 
     // получение списка занятий с данными о студентах
@@ -108,14 +164,17 @@ export class EventsService {
     }
 
     // обновление данных занятия
-    async updateEvent(id: ObjectId, dto: CreateEventData, coverId?: string): Promise<any> {
+    async updateEvent(id: ObjectId, dto: CreateEventData): Promise<any> {
         const event = await this.getOneEvent(id)
-        if (coverId && event.cover) {
+
+        if (dto.cover && event.cover && dto.cover !== event.cover) {
             await this.fileService.deleteFile(event.cover)
-            await this.eventsModel.updateOne({_id: id}, {...dto, cover: coverId})
-            return { update: true, cover: coverId }
+            await this.eventsModel.updateOne({_id: id}, {...dto, cover: dto.cover})
+            return { update: true, cover: dto.cover }
         }
+
         await this.eventsModel.updateOne({_id: id}, {...dto})
+
         return { update: true }
     }
 
@@ -124,9 +183,18 @@ export class EventsService {
         await this.statusesService.clearStatusesAllUsers(String(id))
         const event = await this.eventsModel.findByIdAndDelete({_id: id})
         if (event.cover) {
-            await this.fileService.deleteFile(event.cover)
+            try {
+                await this.fileService.deleteFile(event.cover)
+            } catch (e) {
+                console.log("[deleteEvent] error - ",e)
+            }
         }
         return event
+    }
+
+    // Удаление обложки занятия
+    async removeCover(id: string) {
+        await this.fileService.deleteFile(id)
     }
 
     // сортировка занятий по дате проведения
@@ -204,9 +272,36 @@ export class EventsService {
     // Запись на занятие
     async recordOnEvent(userId: string, data: RecordOnEventData) {
         let resStatus
-        const { event_id, payment_status, price, discount } = data
-        await this.removeUserInCanceled(event_id, userId)
-        const status = await this.statusesService.getStatuses(event_id, userId)
+
+        await this.removeUserInCanceled(data.event_id, userId)
+
+        resStatus = await this.changeStatus(userId, data.event_id, data)
+
+        if (data.type === EventTypeEnum.Project) {
+            await this.recordOnAnotherEvent(userId, data)
+        }
+
+        return resStatus
+    }
+
+    // Запись на проект ( на несколько занятий )
+    async recordOnAnotherEvent(userId: string, data: RecordOnEventData) {
+        // Ищём все дополнительные занятия, которые относятся к проекту
+        const events = await this.eventsModel.find({ main_event: data.event_id })
+        if (events) {
+            events.map(async event => {
+                // Все последующие занятия, которые входят в проект, без предоплаты
+                await this.changeStatus(userId, event._id, data, false)
+            })
+        }
+    }
+
+    // Создание / изменение статусов по занятиям
+    async changeStatus(userId: string, eventId: string, data: RecordOnEventData, withPrepayment = true) {
+        let response
+        const { payment_status, price, discount } = data
+
+        const status = await this.statusesService.getStatuses(eventId, userId)
         if (status) {
             const newStatus: CreateStatusData = {
                 user_id: status.user_id,
@@ -225,11 +320,12 @@ export class EventsService {
             }
             // @ts-ignore
             await this.statusesService.updateStatuses(status._id, newStatus)
-            resStatus = newStatus
+
+            response = newStatus
         } else {
             const newStatus: CreateStatusData = {
                 user_id: userId,
-                event_id: event_id,
+                event_id: eventId,
                 payment_status: payment_status,
                 event_status: TypeStatus.Go,
             }
@@ -239,10 +335,18 @@ export class EventsService {
             if (discount) {
                 newStatus.discount = discount
             }
-            resStatus = await this.statusesService.createStatus( userId, newStatus )
+
+            if (withPrepayment && data.prepayment) {
+                newStatus.prepayment = data.prepayment
+            }
+
+            await this.statusesService.createStatus( userId, newStatus )
+
+            response = newStatus
         }
-        await this.addUserToEvent( event_id, userId )
-        return resStatus
+        await this.addUserToEvent( eventId, userId )
+
+        return response
     }
 
     // Проверка давать ли скидку
@@ -321,7 +425,7 @@ export class EventsService {
     // Установка скидки в каждое занятие
     setDiscountInEvents(events, discountAmount) {
         return events.map(event => {
-            if (event.type === typeEvent.Project) return event
+            if (event.type === EventTypeEnum.Project) return event
             event.discount = true
             event.price = event.price / 100 * (100 - discountAmount)
             return event

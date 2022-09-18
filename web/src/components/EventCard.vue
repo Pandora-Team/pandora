@@ -36,6 +36,19 @@
             <div class="event-card__content">
                 <h2>{{ event.name }}</h2>
                 <div
+                    v-if="isProjectClass"
+                    class="project"
+                >
+                    <h4>{{ event.type }}</h4>
+                    <div
+                        class="info"
+                        @click="openPopupProjectInfo"
+                    >
+                        <simple-svg :src="iconInfoPath" />
+                    </div>
+                </div>
+
+                <div
                     class="event-card__date"
                     :class="{'event-card__date--mb': welcome}"
                 >
@@ -45,6 +58,9 @@
 
                 <p v-if="!welcome">
                     Адрес: <span>{{ event.address }}</span>
+                </p>
+                <p v-if="!welcome && event.prepayment">
+                    Предоплата: <span>{{ event.prepayment }} р.</span>
                 </p>
                 <p v-if="!welcome">
                     Стоимость: <span>{{ event.price }} р.</span>
@@ -82,7 +98,7 @@
 import { Component, Prop, Vue, Watch } from "vue-property-decorator"
 import MainStatus from "@/components/MainStatus.vue"
 import MainBtn from "@/components/MainBtn.vue"
-import { EventData, styleClass } from "@/definitions/interfaces"
+import { EventAvailabilityEnum, EventData, EventTypeEnum, styleClass } from "@/definitions/interfaces"
 import dayjs from "dayjs"
 import { listStatuses, typesStatus, typeStatus } from "@/definitions/typeStatus"
 import MainRadio from "@/components/MainRadio.vue"
@@ -127,7 +143,14 @@ export default class EventCard extends Vue {
         this.updateStatuses()
     }
 
+    get iconInfoPath(): string {
+        return require("@/assets/svg/info.svg")
+    }
+
     get visibleRecordBtn(): boolean {
+        // Если закрытое занятие
+        if (this.isClosedEvent) return false
+
         if (includes(this.statuses, typesStatus.visited)) {
             return false
         }
@@ -162,11 +185,24 @@ export default class EventCard extends Vue {
         return this.$mainStore.user.isAdmin
     }
 
+    get isProjectClass(): boolean {
+        return this.event.type === EventTypeEnum.Project
+    }
+
     get numberUsers(): string | undefined {
         if (this.event.recorded?.length) {
             return `${this.event.recorded.length} ${enumerate(this.event.recorded.length, ["участник", "участника", "участников"])}`
         }
         return undefined
+    }
+
+    get isClosedEvent(): boolean {
+        return this.event.availability === EventAvailabilityEnum.CloseStatus
+    }
+
+
+    openPopupProjectInfo(): void {
+        this.$mainStore.popup.changeActiveProjectInfoPopup(true)
     }
 
     updateStatuses(): void {
@@ -216,8 +252,7 @@ export default class EventCard extends Vue {
     }
 
     onEdit(): void {
-        this.$mainStore.popup.changeCreatedState(this.event)
-        this.$mainStore.popup.changeActiveCreatePopup(true)
+        this.$router.push({ path: this.$mainPaths.ClassesEditView, query: { id: this.event._id } })
     }
 
     async goToEvent(): Promise<void> {
@@ -252,6 +287,12 @@ export default class EventCard extends Vue {
            top: 0;
            border-radius: 30px;
        }
+
+       h3 {
+           font-size: 20px;
+           margin-bottom: 15px;
+       }
+
        &--welcome {
            //height: 393px!important;
            height: 100%;
@@ -313,12 +354,26 @@ export default class EventCard extends Vue {
            h2 {
                color: inherit;
                font-weight: 700;
-               margin-bottom: 15px;
+               margin-bottom: 10px;
                text-transform: uppercase;
            }
+
+           .project {
+               margin-bottom: 10px;
+               display: flex;
+
+               h4 {
+                   margin-right: 15px;
+               }
+
+               .info {
+                   cursor: pointer;
+               }
+           }
+
            p {
                color: inherit;
-               margin-bottom: 15px;
+               margin-bottom: 10px;
                font-weight: 600;
                font-size: $font-size-big-text;
                line-height: $line-height-big-text;
@@ -339,7 +394,7 @@ export default class EventCard extends Vue {
            display: flex;
            justify-content: space-between;
            align-items: center;
-           margin-bottom: 15px;
+           margin-bottom: 10px;
            p {
                margin-bottom: 0;
                &:first-of-type {

@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import {Document} from 'mongoose';
-import {typeEvent} from "./definitions";
+import {EventAvailabilityEnum, EventTypeEnum} from "./definitions";
 
 export type EventsDocument = Events & Document;
 
@@ -65,7 +65,16 @@ export class Events {
     discount?: boolean
 
     @Prop()
-    type?: typeEvent
+    type?: EventTypeEnum
+
+    @Prop()
+    availability?: EventAvailabilityEnum
+
+    @Prop()
+    prepayment?: string
+
+    @Prop()
+    main_event?: string
 }
 
 export const EventsSchema = SchemaFactory.createForClass(Events);

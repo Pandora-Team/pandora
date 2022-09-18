@@ -16,6 +16,8 @@ import LoginView from "@/views/LoginView.vue"
 import AuthenticationView from "@/views/AuthenticationView.vue"
 import RegistrationView from "@/views/RegistrationView.vue"
 import PolicyView from "@/views/PolicyView.vue"
+import ClassesAddView from "@/views/ClassesAddView.vue"
+import ClassesEditView from "@/views/ClassesEditView.vue"
 
 const routes: RouteConfig[] = [
     {
@@ -37,6 +39,16 @@ const routes: RouteConfig[] = [
                 path:      paths.ClassesView,
                 name:      names.ClassesView,
                 component: ClassesView,
+            },
+            {
+                path:      paths.ClassesAddView,
+                name:      names.ClassesAddView,
+                component: ClassesAddView,
+            },
+            {
+                path:      paths.ClassesEditView,
+                name:      names.ClassesEditView,
+                component: ClassesEditView,
             },
             {
                 path:      paths.RulesView,
