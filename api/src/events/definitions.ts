@@ -25,6 +25,8 @@ export class RecordOnEventData {
     readonly payment_status: string
     readonly price?: number
     readonly discount?: number
+    readonly type?: EventTypeEnum
+    readonly prepayment?: string
 }
 
 export interface DateData {

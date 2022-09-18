@@ -35,7 +35,9 @@
             </div>
             <div class="event-card__content">
                 <h2>{{ event.name }}</h2>
-                <h3>{{ event.availability }}</h3>
+                <h3 v-if="isProjectClass">
+                    {{ event.type }}
+                </h3>
                 <div
                     class="event-card__date"
                     :class="{'event-card__date--mb': welcome}"
@@ -86,7 +88,7 @@
 import { Component, Prop, Vue, Watch } from "vue-property-decorator"
 import MainStatus from "@/components/MainStatus.vue"
 import MainBtn from "@/components/MainBtn.vue"
-import { EventAvailabilityEnum, EventData, styleClass } from "@/definitions/interfaces"
+import { EventAvailabilityEnum, EventData, EventTypeEnum, styleClass } from "@/definitions/interfaces"
 import dayjs from "dayjs"
 import { listStatuses, typesStatus, typeStatus } from "@/definitions/typeStatus"
 import MainRadio from "@/components/MainRadio.vue"
@@ -167,6 +169,10 @@ export default class EventCard extends Vue {
 
     get isAdmin(): boolean {
         return this.$mainStore.user.isAdmin
+    }
+
+    get isProjectClass(): boolean {
+        return this.event.type === EventTypeEnum.Project
     }
 
     get numberUsers(): string | undefined {

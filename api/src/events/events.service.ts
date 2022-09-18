@@ -72,15 +72,17 @@ export class EventsService {
     }
 
     // получение списка всех занятий
-    async getAllEvents(id: string): Promise<Events[]>{
+    async getAllEvents(userId?: string): Promise<Events[]>{
         const events = await this.eventsModel.find({date: {$gte: DateTime.now().minus({hour: 1}).toJSDate()}})
         const sortedEvents = this.sortArrayOnDate(events)
-        const discount = await this.checkDiscountForUser(id)
-        if (discount) {
-            const discountAmount = 20
-            this.setDiscountInEvents(sortedEvents, discountAmount)
+        if (userId) {
+            const discount = await this.checkDiscountForUser(userId)
+            if (discount) {
+                const discountAmount = 20
+                this.setDiscountInEvents(sortedEvents, discountAmount)
+            }
         }
-        return await this.getStatuses(sortedEvents, id)
+        return await this.getStatuses(sortedEvents, userId)
     }
 
     // получение списка занятий с данными о студентах
@@ -246,9 +248,36 @@ export class EventsService {
     // Запись на занятие
     async recordOnEvent(userId: string, data: RecordOnEventData) {
         let resStatus
-        const { event_id, payment_status, price, discount } = data
-        await this.removeUserInCanceled(event_id, userId)
-        const status = await this.statusesService.getStatuses(event_id, userId)
+
+        await this.removeUserInCanceled(data.event_id, userId)
+
+        resStatus = await this.changeStatus(userId, data.event_id, data)
+
+        if (data.type === EventTypeEnum.Project) {
+            await this.recordOnAnotherEvent(userId, data)
+        }
+
+        return resStatus
+    }
+
+    // Запись на проект ( на несколько занятий )
+    async recordOnAnotherEvent(userId: string, data: RecordOnEventData) {
+        // Ищём все дополнительные занятия, которые относятся к проекту
+        const events = await this.eventsModel.find({ main_event: data.event_id })
+        if (events) {
+            events.map(async event => {
+                // Все последующие занятия, которые входят в проект, без предоплаты
+                await this.changeStatus(userId, event._id, data, false)
+            })
+        }
+    }
+
+    // Создание / изменение статусов по занятиям
+    async changeStatus(userId: string, eventId: string, data: RecordOnEventData, withPrepayment = true) {
+        let response
+        const { payment_status, price, discount } = data
+
+        const status = await this.statusesService.getStatuses(eventId, userId)
         if (status) {
             const newStatus: CreateStatusData = {
                 user_id: status.user_id,
@@ -267,11 +296,12 @@ export class EventsService {
             }
             // @ts-ignore
             await this.statusesService.updateStatuses(status._id, newStatus)
-            resStatus = newStatus
+
+            response = newStatus
         } else {
             const newStatus: CreateStatusData = {
                 user_id: userId,
-                event_id: event_id,
+                event_id: eventId,
                 payment_status: payment_status,
                 event_status: TypeStatus.Go,
             }
@@ -281,10 +311,18 @@ export class EventsService {
             if (discount) {
                 newStatus.discount = discount
             }
-            resStatus = await this.statusesService.createStatus( userId, newStatus )
+
+            if (withPrepayment && data.prepayment) {
+                newStatus.prepayment = data.prepayment
+            }
+
+            await this.statusesService.createStatus( userId, newStatus )
+
+            response = newStatus
         }
-        await this.addUserToEvent( event_id, userId )
-        return resStatus
+        await this.addUserToEvent( eventId, userId )
+
+        return response
     }
 
     // Проверка давать ли скидку

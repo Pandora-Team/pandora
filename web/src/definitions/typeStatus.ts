@@ -1,3 +1,5 @@
+import { EventTypeEnum } from "@/definitions/interfaces"
+
 export const listStatuses = [
     { title: "Ближайший МК", class: "success", name: "nearest" },
     { title: "Пойду", class: "success", name: "go" },
@@ -41,4 +43,6 @@ export interface statusData {
     payment_status?: string
     price?: number
     discount?: number
+    type?: EventTypeEnum
+    prepayment?: string
 }

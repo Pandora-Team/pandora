@@ -65,16 +65,6 @@ export class EventsController {
         return this.eventsService.recordOnEvent(req.user.id, data)
     }
 
-/*    @UseGuards(JwtAuthGuard)
-    @Post()
-    @UseInterceptors(FileFieldsInterceptor([
-        { name: 'cover', maxCount: 1 }
-    ]))
-    async createEvent(@UploadedFiles() files, @Body() dto: CreateEventData ){
-        const {cover} = files
-        return this.eventsService.createEvent(dto, cover[0].id)
-    }*/
-
     @UseGuards(JwtAuthGuard)
     @Post("create")
     async createEvent(@Body() dto: CreateEventData ){

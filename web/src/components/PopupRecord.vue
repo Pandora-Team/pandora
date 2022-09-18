@@ -17,6 +17,9 @@
                     <p>
                         Адрес: <span>{{ event.address }}</span>
                     </p>
+                    <p v-if="event.prepayment">
+                        Предоплата: <span>{{ event.prepayment }} р.</span>
+                    </p>
                     <p v-html="paymentText" />
                     <div
                         class="event-card__payment"
@@ -133,6 +136,8 @@ export default class PopupRecord extends Vue {
             event_id:       this.event._id,
             payment_status: this.payment,
             price:          Number(this.event.price),
+            type:           this.event.type,
+            prepayment:     this.event.prepayment ? this.event.prepayment : undefined,
         }
         if (this.event.discount) {
             params.discount = 20
@@ -145,6 +150,7 @@ export default class PopupRecord extends Vue {
             this.$mainStore.popup.changeActivePaymentPopup(true)
             this.$mainStore.notification.changeNotification(
                 { state: true, ...this.$mainNotification.successRecord })
+            await this.$mainStore.events.getListEvents()
         } catch (e) {
             this.$mainStore.notification.changeNotification(
                 { state: true, ...this.$mainNotification.failedRecord })
