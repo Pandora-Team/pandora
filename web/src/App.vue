@@ -9,6 +9,7 @@
         <popup-record v-if="$mainStore.popup.activeRecordPopup" />
         <popup-cancel v-if="$mainStore.popup.activeCancelPopup" />
         <popup-welcome v-if="$mainStore.popup.activeWelcomePopup" />
+        <popup-project-info v-if="$mainStore.popup.activeProjectInfoPopup" />
         <popup-payment v-if="$mainStore.popup.activePaymentPopup" />
         <popup-crop-image v-if="$mainStore.popup.activeCropPopup" />
         <popup-update
@@ -33,9 +34,11 @@ import PopupPayment from "@/components/PopupPayment.vue"
 import PopupUpdate from "@/components/PopupUpdate.vue"
 import PopupCropImage from "@/components/PopupCropImage.vue"
 import PopupRemove from "@/components/PopupRemove.vue"
+import PopupProjectInfo from "@/components/PopupProjectInfo.vue"
 
 @Component({
     components: {
+        PopupProjectInfo,
         Notification,
         LoadingView,
         MobileMenu,

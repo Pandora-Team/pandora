@@ -23,7 +23,7 @@ export interface EventData {
 
 export enum EventTypeEnum {
     MasterClass = "МК",
-    Project = "Проект"
+    Project = "Project classes"
 }
 
 export enum EventAvailabilityEnum {

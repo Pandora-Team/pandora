@@ -35,9 +35,19 @@
             </div>
             <div class="event-card__content">
                 <h2>{{ event.name }}</h2>
-                <h3 v-if="isProjectClass">
-                    {{ event.type }}
-                </h3>
+                <div
+                    v-if="isProjectClass"
+                    class="project"
+                >
+                    <h4>{{ event.type }}</h4>
+                    <div
+                        class="info"
+                        @click="openPopupProjectInfo"
+                    >
+                        <simple-svg :src="iconInfoPath" />
+                    </div>
+                </div>
+
                 <div
                     class="event-card__date"
                     :class="{'event-card__date--mb': welcome}"
@@ -133,6 +143,10 @@ export default class EventCard extends Vue {
         this.updateStatuses()
     }
 
+    get iconInfoPath(): string {
+        return require("@/assets/svg/info.svg")
+    }
+
     get visibleRecordBtn(): boolean {
         // Если закрытое занятие
         if (this.isClosedEvent) return false
@@ -184,6 +198,11 @@ export default class EventCard extends Vue {
 
     get isClosedEvent(): boolean {
         return this.event.availability === EventAvailabilityEnum.CloseStatus
+    }
+
+
+    openPopupProjectInfo(): void {
+        this.$mainStore.popup.changeActiveProjectInfoPopup(true)
     }
 
     updateStatuses(): void {
@@ -335,12 +354,26 @@ export default class EventCard extends Vue {
            h2 {
                color: inherit;
                font-weight: 700;
-               margin-bottom: 15px;
+               margin-bottom: 10px;
                text-transform: uppercase;
            }
+
+           .project {
+               margin-bottom: 10px;
+               display: flex;
+
+               h4 {
+                   margin-right: 15px;
+               }
+
+               .info {
+                   cursor: pointer;
+               }
+           }
+
            p {
                color: inherit;
-               margin-bottom: 15px;
+               margin-bottom: 10px;
                font-weight: 600;
                font-size: $font-size-big-text;
                line-height: $line-height-big-text;
@@ -361,7 +394,7 @@ export default class EventCard extends Vue {
            display: flex;
            justify-content: space-between;
            align-items: center;
-           margin-bottom: 15px;
+           margin-bottom: 10px;
            p {
                margin-bottom: 0;
                &:first-of-type {

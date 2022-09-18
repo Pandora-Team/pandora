@@ -56,6 +56,9 @@ export class Popup {
     @State()
     removedState: EventData = initEventDataState()
 
+    @State()
+    activeProjectInfoPopup = false
+
     // попап удаления занятия
 
     @Mutation()
@@ -106,6 +109,14 @@ export class Popup {
     @Mutation()
     public changeActiveWelcomePopup(state: boolean): void {
         this.activeWelcomePopup = state
+        this.$mainStore.app.setDisabled(state)
+    }
+
+    // попап информации о проекте
+
+    @Mutation()
+    public changeActiveProjectInfoPopup(state: boolean): void {
+        this.activeProjectInfoPopup = state
         this.$mainStore.app.setDisabled(state)
     }
 
