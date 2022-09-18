@@ -45,6 +45,29 @@ export class EventsService {
 
         const events = await Promise.all(dto.dates.map(async (item, index) => {
             if (dto.type === EventTypeEnum.Project) {
+                // Если добавляем занятия к существующему проекту
+                if (result.main_event) {
+                    availability = EventAvailabilityEnum.CloseStatus
+
+                    const res = await this.eventsModel.create({ ...result, date: item.date, end_time: item.end_time, address: newAddress, availability })
+                    if (result.recorded?.length) {
+                        result.recorded.map(async userId => {
+                            const newStatus: CreateStatusData = {
+                                user_id: userId,
+                                event_id: res._id,
+                                payment_status: TypeStatus.Cash,
+                                event_status: TypeStatus.Go,
+                                price: Number(res.price)
+                            }
+
+                            await this.statusesService.createStatus( userId, newStatus )
+
+                            await this.addUserToEvent( res._id, userId )
+                        })
+                    }
+                    return res
+                }
+
                 if (index === 0) {
                     availability = EventAvailabilityEnum.OpenStatus
                     const res = await this.eventsModel.create({ ...result, date: item.date, end_time: item.end_time, address: newAddress, availability })
@@ -60,7 +83,8 @@ export class EventsService {
             return await this.eventsModel.create({ ...result, date: item.date, end_time: item.end_time, address: newAddress, availability })
         }))
 
-        if (dto.type !== EventTypeEnum.Project) return events
+
+        if (result.main_event || dto.type !== EventTypeEnum.Project ) return events
 
         for (const event of events) {
             if (event._id === main_event) continue
@@ -140,13 +164,13 @@ export class EventsService {
     }
 
     // обновление данных занятия
-    async updateEvent(id: ObjectId, dto: CreateEventData, coverId?: string): Promise<any> {
+    async updateEvent(id: ObjectId, dto: CreateEventData): Promise<any> {
         const event = await this.getOneEvent(id)
 
-        if (coverId && event.cover) {
+        if (dto.cover && event.cover && dto.cover !== event.cover) {
             await this.fileService.deleteFile(event.cover)
-            await this.eventsModel.updateOne({_id: id}, {...dto, cover: coverId})
-            return { update: true, cover: coverId }
+            await this.eventsModel.updateOne({_id: id}, {...dto, cover: dto.cover})
+            return { update: true, cover: dto.cover }
         }
 
         await this.eventsModel.updateOne({_id: id}, {...dto})

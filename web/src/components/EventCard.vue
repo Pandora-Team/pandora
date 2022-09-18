@@ -233,7 +233,7 @@ export default class EventCard extends Vue {
     }
 
     onEdit(): void {
-        this.$router.push({ path: this.$mainPaths.ClassesEditView })
+        this.$router.push({ path: this.$mainPaths.ClassesEditView, query: { id: this.event._id } })
     }
 
     async goToEvent(): Promise<void> {

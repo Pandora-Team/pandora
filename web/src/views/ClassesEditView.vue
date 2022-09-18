@@ -1,6 +1,6 @@
 <template>
-    <div class="classes-add-view">
-        <h3>{{ "Создать занятие" }}</h3>
+    <div class="classes-edit-view">
+        <h3>{{ "Редактировать занятие" }}</h3>
         <base-form
             text-submit-btn="Создать"
             :loading="isLoading"
@@ -12,6 +12,15 @@
                     label="Тип занятия"
                     :items="listType"
                 />
+
+                <base-button
+                    v-if="main_event"
+                    :view="viewButton.First"
+                    class="submit-btn"
+                    @click="addMoreEvent"
+                >
+                    {{ "Добавить занятие в проект" }}
+                </base-button>
 
                 <base-input
                     id="name"
@@ -59,14 +68,15 @@ import { Component, Vue } from "vue-property-decorator"
 import EventFile from "@/components/event-file.vue"
 import EventDate from "@/components/event-date.vue"
 import { DateData, EventTypeEnum, PlaceData } from "@/definitions/interfaces"
-import { createEvent } from "@/api/events"
+import { updateEvent, getOneEvent } from "@/api/events"
 import BaseForm from "@/components/new/forms/base-form.vue"
 import BaseDropdown from "@/components/new/dropdown/base-dropdown.vue"
 import BaseInput from "@/components/new/inputs/base-input.vue"
 import { DropdownData } from "@/components/new/dropdown/dropdown"
 import { getAllPlaces } from "@/api/places"
 import EventDateList from "@/components/event-date-list.vue"
-import { DateTime } from "luxon"
+import { ViewButton } from "@/components/new/buttons/interfaces"
+import BaseButton from "@/components/new/buttons/base-button.vue"
 
 
 @Component({
@@ -77,26 +87,55 @@ import { DateTime } from "luxon"
         BaseDropdown,
         BaseInput,
         EventDateList,
+        BaseButton,
     },
 })
 export default class ClassesEditView extends Vue {
     async mounted(): Promise<void> {
-        const { data } = await getAllPlaces()
+        const id = this.$route.query.id
 
-        const startDate = DateTime.now().set({ weekday: 7, hour: 16, minute: 30 })
+        if (!id) {
+            await this.$router.push({ path: this.$mainPaths.ClassesView })
+        }
+
+        this.event_id = id as string
+
+        const res = await getOneEvent(this.event_id)
+
+        if (res.status !== 200) {
+            await this.$router.push({ path: this.$mainPaths.ClassesView })
+            return
+        }
+
+        const { type, name, price, cover, date, end_time, recorded, address, prepayment, main_event } = res.data
+        this.type = type
+        this.name = name
+        this.price = price
+        this.cover = cover
         this.dates.push({
             id:       1,
-            date:     startDate.toString(),
-            end_time: startDate
-                .plus({ hour: 2, minute: 30 })
-                .toFormat("HH:mm"),
+            date:     date,
+            end_time: end_time,
         })
+        this.recorded = recorded
+
+        if (prepayment) {
+            this.prepayment = prepayment
+        }
+
+        if (main_event) {
+            this.main_event = main_event
+        }
+
+        const { data } = await getAllPlaces()
 
         this.rawPlaces = data
-        this.place_id = this.rawPlaces[0]._id
+        this.place_id = data.find((item: { address: string, place_id: string }) => item.address === address)._id
     }
 
+
     isLoading = false
+    viewButton = ViewButton
 
     type = EventTypeEnum.MasterClass
     prepayment = ""
@@ -105,6 +144,9 @@ export default class ClassesEditView extends Vue {
     dates: DateData[] = []
     place_id = ""
     cover = ""
+    recorded: string[] = []
+    event_id = ""
+    main_event = ""
 
     rawPlaces: PlaceData[] = []
 
@@ -138,6 +180,13 @@ export default class ClassesEditView extends Vue {
         this.cover = cover
     }
 
+    addMoreEvent(): void {
+        this.$router.push({ path:  this.$mainPaths.ClassesAddView, query: {
+            main_event: this.main_event,
+            recorded:   JSON.stringify(this.recorded),
+        } })
+    }
+
     async onSave(): Promise<void> {
         this.isLoading = true
 
@@ -152,7 +201,7 @@ export default class ClassesEditView extends Vue {
         }
 
         try {
-            const res = await createEvent(data)
+            const res = await updateEvent(this.event_id, data)
 
             if (res.status !== 201) {
                 this.$mainStore.notification.changeNotification(
@@ -177,7 +226,7 @@ export default class ClassesEditView extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.classes-add-view {
+.classes-edit-view {
     max-width: 350px;
     h3 {
         color: #242424;

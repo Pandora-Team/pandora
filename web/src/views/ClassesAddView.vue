@@ -94,6 +94,20 @@ export default class ClassesAddView extends Vue {
 
         this.rawPlaces = data
         this.place_id = this.rawPlaces[0]._id
+
+        if (this.$route.query) {
+            const main_event = this.$route.query.main_event
+
+            if (main_event) {
+                this.main_event = main_event as string
+            }
+
+            const recorded = this.$route.query.recorded
+
+            if (recorded) {
+                this.recorded = JSON.parse(this.$route.query.recorded as string)
+            }
+        }
     }
 
     isLoading = false
@@ -105,6 +119,9 @@ export default class ClassesAddView extends Vue {
     dates: DateData[] = []
     place_id = ""
     cover = ""
+
+    main_event = ""
+    recorded: string[] = []
 
     rawPlaces: PlaceData[] = []
 
@@ -149,6 +166,8 @@ export default class ClassesAddView extends Vue {
             dates:      this.dates,
             place_id:   this.place_id,
             cover:      this.cover,
+            main_event: this.main_event ? this.main_event : undefined,
+            recorded:   this.recorded.length ? this.recorded : undefined,
         }
 
         try {
