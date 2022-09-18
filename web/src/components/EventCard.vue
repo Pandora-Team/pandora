@@ -56,13 +56,13 @@
                     <p>Время:&nbsp;<span>{{ time }}</span></p>
                 </div>
 
-                <p v-if="!welcome">
+                <p>
                     Адрес: <span>{{ event.address }}</span>
                 </p>
-                <p v-if="!welcome && event.prepayment">
+                <p v-if="event.prepayment">
                     Предоплата: <span>{{ event.prepayment }} р.</span>
                 </p>
-                <p v-if="!welcome">
+                <p>
                     Стоимость: <span>{{ event.price }} р.</span>
                 </p>
                 <main-btn
