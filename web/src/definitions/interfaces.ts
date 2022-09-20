@@ -64,6 +64,7 @@ export interface UserInfo {
     avatar?: string
     price?: number
     discount?: number
+    prepayment?: string
 }
 
 export interface UpdateUserData {

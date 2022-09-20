@@ -126,9 +126,9 @@ export class EventsService {
                     const objUser = await this.usersService.getUserById(user)
                     if (!isEmpty(objStatuses) && !isEmpty(objUser)) {
                         // @ts-ignore
-                        const { payment_status, event_status, _id, price, discount } = objStatuses
+                        const { payment_status, event_status, _id, price, discount, prepayment } = objStatuses
                         const { name, avatar, surname } = objUser
-                        const newObj = { payment_status, event_status, status_id: _id, name, avatar, surname, price, discount }
+                        const newObj = { payment_status, event_status, status_id: _id, name, avatar, surname, price, discount, prepayment }
                         event.recorded_users.push(newObj)
                     }
                 }

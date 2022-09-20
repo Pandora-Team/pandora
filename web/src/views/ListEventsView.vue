@@ -54,6 +54,28 @@ export default class ListEventsView extends Vue {
                 return DateTime.fromISO(event.date).plus({ hour: 1 }) >= DateTime.now()
             }
             return DateTime.fromJSDate(event.date).plus({ hour: 1 }) >= DateTime.now()
+        }).sort((a, b) => {
+            let aDate, bDate
+            if (typeof a.date === "string") {
+                aDate = DateTime.fromISO(a.date)
+            } else {
+                aDate = DateTime.fromJSDate(a.date)
+            }
+
+            if (typeof b.date === "string") {
+                bDate = DateTime.fromISO(b.date)
+            } else {
+                bDate = DateTime.fromJSDate(b.date)
+            }
+
+
+            if (aDate > bDate) {
+                return 1
+            } else if (aDate < bDate) {
+                return -1
+            }
+
+            return 0
         })
     }
 

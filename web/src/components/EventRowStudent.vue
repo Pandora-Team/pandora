@@ -110,8 +110,14 @@ export default class EventRowStudent extends Vue {
 
     get priceForEvent(): string {
         if (this.user.price) {
+            if (this.user?.prepayment) {
+                const price = Number(this.user.price) + Number(this.user.prepayment)
+                return ` - ${price} р.`
+            }
+
             return ` - ${this.user.price} р.`
         }
+
         return ""
     }
 
