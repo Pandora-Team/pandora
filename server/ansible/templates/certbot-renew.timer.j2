@@ -1,0 +1,12 @@
+# {{ ansible_managed }}
+
+[Unit]
+Description=renewing Let's Encrypt certificates
+Requires=certbot-renew.timer
+
+[Timer]
+Unit=certbot-renew.timer
+OnUnitActiveSec=1d
+
+[Install]
+WantedBy=timers.target

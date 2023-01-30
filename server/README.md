@@ -42,4 +42,3 @@ dot -Tsvg img/monitoring.dot -o img/monitoring.dot.svg
     1. Добавить секреты в файл `/home/ci/.env`: дополнить список переменных из [.env.example](../.env.example) переменной `PANDORA_IMAGES_PREFIX`.
     1. Задеплоить приложение через GitHub Actions. Если что-то пошло не так, починить и дополнить инструкцию/плэйбук.
     1. Получить SSL-сертификаты через `certbot`.
-    1. [Настроить автообновление SSL-сертификатов](https://certbot.eff.org/docs/using.html?highlight=renew#setting-up-automated-renewal)

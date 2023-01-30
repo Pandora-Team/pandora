@@ -20,7 +20,7 @@
               - "{{ apt_output.stdout_lines }}"
               - "{{ apt_output.stderr_lines }}"
           when: apt_output.stdout_lines is defined
-        
+
         - name: required apt packages installed
           apt:
             name: "{{ apt_packages }}"
@@ -62,7 +62,7 @@
             src: docker-daemon.json.j2
             dest: /etc/docker/daemon.json
           notify: restart docker
-      
+
         - name: ensure that nginx unit is defined in /etc
           copy:
             remote_src: yes
@@ -82,6 +82,38 @@
       become: yes
       tags: docker
 
+
+
+    - name: certbot renew scheluled
+      block:
+        - name: find certbot
+          command: which certbot
+          failed_when: no
+          changed_when: no
+          check_mode: no
+          register: certbot_info
+
+        - name: systemd timer configured
+          template:
+            src: "{{ item }}.j2"
+            dest: "/etc/systemd/system/{{ item }}"
+            owner: root
+            group: root
+            mode: "644"
+          with_items:
+            - certbot-renew.service
+            - certbot-renew.timer
+          when: certbot_info.rc == 0
+
+        - name: systemd timer enabled
+          systemd:
+            daemon_reload: yes
+            name: certbot-renew.timer
+            enabled: yes
+            state: started
+          when: certbot_info.rc == 0
+      become: yes
+      tags: certbot-renew
 
 
 
@@ -196,7 +228,7 @@
             owner: "{{ ci_user_name }}"
             group: "{{ ci_user_name }}"
             mode: "0644"
-        
+
         - name: secrets file has correct permissions
           file:
             path: "/home/ci/.env"
