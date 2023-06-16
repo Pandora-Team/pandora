@@ -1,12 +1,10 @@
 #!/bin/bash
 set -e 
 
-usage_msg="Usage: $0 ssh_address [target_dir]"
+usage_msg="Usage: $0 ssh_address [target_dir] [db_container]"
 ssh_address=${1?$usage_msg}
-target_dir="${2:-.}"
-
-db_container=pandora_db_1
-target_path="${target_dir%%/}/$db_container-$(date +'%y%m%d_%H%M%S').tgz"
+target_path="${2:-bkp.tgz}"
+db_container="${3:-pandora_db_1}"
 
 echo "Connecting to '$ssh_address' via ssh..."
 ( sed "\$a main $db_container" | ssh -T $ssh_address ) << 'END_OF_SCRIPT'

@@ -3,40 +3,40 @@ name: DB Backup
 on:
   schedule:
     - cron: '20 4 * * *'
+  workflow_dispatch:
 
 jobs:
   db-backup:
     runs-on: ubuntu-latest
     steps:
       -
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       -
         name: Put server's SSH key
         uses: ./.github/actions/ssh-keys
         with:
           action: put
           identity: ${{ secrets.deploy_target_identity }}
-          key: ${{ secrets.deploy_target_key }}
+          key: ${{ secrets.deploy_target_key }}      
       -
         name: Backup
         shell: bash
         run: |
           echo "
-            STORAGE_USER=$STORAGE_USER
-            STORAGE_PASSWORD=$STORAGE_PASSWORD
-            STORAGE_BASE_URI=$STORAGE_BASE_URI
-            STORAGE_BACKUPS_REPO=$STORAGE_BACKUPS_REPO
-            $(cat ./server/backup-db.sh)
-          " | ssh -T ci@$DEPLOY_TARGET_HOST -p $DEPLOY_TARGET_PORT
-        env:
-          DEPLOY_TARGET_HOST: ${{ secrets.deploy_target_host }}
-          DEPLOY_TARGET_PORT: ${{ secrets.deploy_target_port }}
-          STORAGE_USER: github
-          STORAGE_PASSWORD: ${{ secrets.registry_password }}
-          STORAGE_BASE_URI: ${{ secrets.storage_base_uri }}
-          STORAGE_BACKUPS_REPO: ${{ secrets.storage_backups_repo }}
+            Host pandora
+              HostName ${{ secrets.deploy_target_host }}
+              Port ${{ secrets.deploy_target_port }}
+              User ci
+          " >> ~/.ssh/config
+          ./server/get-backup.sh pandora bkp.tgz
       -
         name: Destroy server's SSH key
         uses: ./.github/actions/ssh-keys
         with:
           action: destroy
+      - 
+        name: upload backup
+        uses: actions/upload-artifact@v3
+        with:
+          name: pandora-backup
+          path: bkp.tgz
