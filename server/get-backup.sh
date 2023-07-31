@@ -15,7 +15,7 @@ main() {
     container_script='
         set -e
         echo "Running inside the container..."
-        rm -r /tmp/bkp*
+        rm -r /tmp/bkp* || :
         echo "Starting mongodump..."
         mongodump --username=$MONGO_INITDB_ROOT_USERNAME \
                   --password=$MONGO_INITDB_ROOT_PASSWORD \
